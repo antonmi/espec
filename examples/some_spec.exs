@@ -34,7 +34,7 @@ defmodule SomeSpec do
 
   end
 end
-
-# SomeSpec.examples |> Enum.each(&IO.puts(ESpec.Example.full_description(&1)))
+#
+SomeSpec.examples |> Enum.each(&IO.puts(ESpec.Example.full_description(&1)))
 
 SomeSpec.run

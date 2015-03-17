@@ -5,7 +5,7 @@ defmodule ESpec.Example do
   defmacro example(description, do: block) do
     function = String.to_atom(description)
     quote do
-      context = Enum.reverse(@context || [])
+      context = Enum.reverse(@context)
       @examples %ESpec.Example{ description: unquote(description), function: unquote(function), context: context }
       def unquote(function)(), do: unquote(block)
     end

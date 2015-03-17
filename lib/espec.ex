@@ -5,7 +5,7 @@ defmodule ESpec do
       import unquote(__MODULE__)
 
       Module.register_attribute __MODULE__, :examples, accumulate: true
-      Module.register_attribute __MODULE__, :context, []
+      @context []
 
       @before_compile unquote(__MODULE__)
 
@@ -22,5 +22,12 @@ defmodule ESpec do
       def run, do: ESpec.Runner.run(@examples, __MODULE__)
     end
   end
+
+  defmacro let(var, do: block) do
+    quote do
+      defp unquote(var)(), do: unquote(block)
+    end
+  end
+
 
 end

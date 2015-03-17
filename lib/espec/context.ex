@@ -6,7 +6,7 @@ defmodule ESpec.Context do
     quote do
       tail = @context
       head =  %ESpec.Context{ description: unquote(description) }
-      @context if tail, do: [head | tail], else: [head]
+      @context [head | tail]
       unquote(body)
       @context tail
     end
