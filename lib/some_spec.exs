@@ -3,17 +3,19 @@ defmodule SomeSpec do
 
   describe "d1" do
     it "some_spec_1" do
-      IO.puts("it")
+      expect(2+2).to eq(4)
     end
 
     describe "d1_1" do
 
-      it "some_spec_1" do
-        IO.puts("it")
+      it "some_spec_2" do
+        expect(5).to be :>, 2
       end
 
       describe "d1_2" do
-
+        it "some_spec_3" do
+          expect(1 == 1).to be true
+        end
       end
 
     end
@@ -22,11 +24,17 @@ defmodule SomeSpec do
 
   describe "d2" do
     describe "d2_1" do
-
+      it "EXPECT" do
+        (expect do: 1+1).to eq(2)
+      end
     end
   end
 
-  describe "d3" do
+  it "some_spec_5" do
 
   end
 end
+
+# SomeSpec.examples |> Enum.each(&IO.puts(ESpec.Example.full_description(&1)))
+
+SomeSpec.run

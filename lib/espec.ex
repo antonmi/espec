@@ -1,60 +1,63 @@
 defmodule ESpec do
 
-  Module.register_attribute __MODULE__, :group_level, accumulate: true
-
   defmacro __using__(_arg) do
     quote do
-      {:ok, var!(buffer)} = start_buffer([])
       import unquote(__MODULE__)
 
-      Module.register_attribute __MODULE__, :specs, accumulate: true
-      Module.register_attribute __MODULE__, :groups, accumulate: true
-
+      Module.register_attribute __MODULE__, :examples, accumulate: true
+      Module.register_attribute __MODULE__, :context, []
 
       @before_compile unquote(__MODULE__)
 
-      def run do
-        IO.puts "Running tests #{inspect(@specs)}"
-        ESpec.Runner.run(@specs, __MODULE__)
+      import ESpec.Context
+      import ESpec.Example
+
+require IEx
+
+      def expect(do: value) do
+        {ESpec.To, value}
       end
+
+      def expect(value) do
+        {ESpec.To, value}
+      end
+
+
+
+      def eq(value) do
+        {:eq, value}
+      end
+
+      def be(operator, value \\ nil) do
+        {:be, operator,  value}
+      end
+
+      def be_between(min, max) do
+        {:be, :between, [min, max]}
+      end
+
 
     end
   end
 
   defmacro __before_compile__(_env) do
     quote do
-      def specs, do: @specs
-      def groups, do: @groups
+      def examples, do: @examples
+      def run, do: ESpec.Runner.run(@examples, __MODULE__)
     end
   end
 
+end
 
-  defmacro it(description, do: block) do
-    function = String.to_atom(description)
-    quote do
-      @specs { unquote(function), unquote(description) }
-      def unquote(function)(), do: unquote(block)
+defmodule ESpec.To do
+
+  def to(rhs, {ESpec.To, lhs}) do
+    case rhs do
+      {:eq, value} -> ESpec.Assertion.assert(:==, lhs, value)
+      {:be, :>, value} -> ESpec.Assertion.assert(:>, lhs, value)
+      {:be, true, value} -> ESpec.Assertion.assert(:>, lhs, value)
+      {:be, :between, [l, r]} -> ESpec.Assertion.assert(:between, lhs, l, r)
+      _ -> IO.puts "No match"
     end
   end
-
-  defmacro describe(description, body) do
-
-    quote do
-      # IO.puts(inspect @groups)
-      desc = unquote(description)
-      put_buffer var!(buffer), "1"
-      IO.puts(desc)
-      group = { %ESpec.Group{ description: desc } }
-
-      @groups group
-      unquote(body)
-      # @groups prev
-    end
-  end
-
-  def start_buffer(state), do: Agent.start_link(fn -> state end)
-  def stop_buffer(buff), do: Agent.stop(buff)
-  def put_buffer(buff, content), do: Agent.update(buff, &[content | &1])
-  def render(buff), do: Agent.get(buff, &(&1)) |> Enum.reverse |> Enum.join("")
-
 end
