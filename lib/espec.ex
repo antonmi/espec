@@ -12,31 +12,7 @@ defmodule ESpec do
       import ESpec.Context
       import ESpec.Example
 
-require IEx
-
-      def expect(do: value) do
-        {ESpec.To, value}
-      end
-
-      def expect(value) do
-        {ESpec.To, value}
-      end
-
-
-
-      def eq(value) do
-        {:eq, value}
-      end
-
-      def be(operator, value \\ nil) do
-        {:be, operator,  value}
-      end
-
-      def be_between(min, max) do
-        {:be, :between, [min, max]}
-      end
-
-
+      import ESpec.Expect
     end
   end
 
@@ -47,17 +23,4 @@ require IEx
     end
   end
 
-end
-
-defmodule ESpec.To do
-
-  def to(rhs, {ESpec.To, lhs}) do
-    case rhs do
-      {:eq, value} -> ESpec.Assertion.assert(:==, lhs, value)
-      {:be, :>, value} -> ESpec.Assertion.assert(:>, lhs, value)
-      {:be, true, value} -> ESpec.Assertion.assert(:>, lhs, value)
-      {:be, :between, [l, r]} -> ESpec.Assertion.assert(:between, lhs, l, r)
-      _ -> IO.puts "No match"
-    end
-  end
 end
