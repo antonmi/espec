@@ -13,6 +13,9 @@ defmodule ESpec do
       import ESpec.Example
 
       import ESpec.Expect
+
+      import ESpec.Before
+      import ESpec.Let
     end
   end
 
@@ -23,11 +26,9 @@ defmodule ESpec do
     end
   end
 
-  defmacro let(var, do: block) do
-    quote do
-      defp unquote(var)(), do: unquote(block)
-    end
-  end
+
+
+
 
 
 end
