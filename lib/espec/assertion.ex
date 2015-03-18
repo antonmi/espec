@@ -1,4 +1,4 @@
-defmodule ESpec.Assertion do
+defmodule Espec.Assertion do
 
   def assert(:==, lhs, rhs) do
     if lhs == rhs do

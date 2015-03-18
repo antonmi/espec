@@ -1,6 +1,6 @@
 defmodule EspecTest do
   use ExUnit.Case
-  doctest ESpec
+  doctest Espec
 
   setup context do
 

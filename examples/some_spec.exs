@@ -1,5 +1,5 @@
-defmodule SomeSpec do
-  use ESpec
+defmodule SomEspec do
+  use Espec
 
   describe "d1" do
     it "some_spec_1" do
@@ -35,6 +35,6 @@ defmodule SomeSpec do
   end
 end
 #
-# SomeSpec.examples |> Enum.each(&IO.puts(ESpec.Example.full_description(&1)))
-IO.puts(inspect SomeSpec.examples)
-SomeSpec.run
+# SomEspec.examples |> Enum.each(&IO.puts(Espec.Example.full_description(&1)))
+IO.puts(inspect SomEspec.examples)
+SomEspec.run

@@ -1,4 +1,4 @@
-defmodule ESpec.Group do
+defmodule Espec.Group do
 
   defstruct description: ""
 end

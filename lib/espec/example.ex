@@ -1,6 +1,6 @@
-defmodule ESpec.Example do
+defmodule Espec.Example do
 
-  alias ESpec.Support
+  alias Espec.Support
 
   defstruct description: "", function: "", context: []
 
@@ -8,7 +8,7 @@ defmodule ESpec.Example do
     function = (random_atom(description))
     quote do
       context = Enum.reverse(@context)
-      @examples %ESpec.Example{ description: unquote(description), function: unquote(function), context: context }
+      @examples %Espec.Example{ description: unquote(description), function: unquote(function), context: context }
       def unquote(function)(var!(bdata)), do: unquote(block)
     end
   end
@@ -31,9 +31,9 @@ defmodule ESpec.Example do
     end
   end
 
-  def full_description(%ESpec.Example{context: context, description: description, function: function}) do
+  def full_description(%Espec.Example{context: context, description: description, function: function}) do
     context_description = context
-    |> Enum.filter(fn(struct) -> struct.__struct__ == ESpec.Context end)
+    |> Enum.filter(fn(struct) -> struct.__struct__ == Espec.Context end)
     |> Enum.map(&(&1.description))
     context_description ++ [description]
     |> Enum.join(" ")

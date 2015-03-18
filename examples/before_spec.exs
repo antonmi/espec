@@ -1,6 +1,6 @@
-defmodule BeforeSpec do
+defmodule BeforEspec do
 
-  use ESpec
+  use Espec
 
   before do
     IO.puts "top before"
@@ -28,6 +28,6 @@ defmodule BeforeSpec do
 
 end
 
-# IO.puts(inspect BeforeSpec.examples)
+# IO.puts(inspect BeforEspec.examples)
 
-BeforeSpec.run
+BeforEspec.run

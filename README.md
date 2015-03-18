@@ -1,4 +1,4 @@
-ESpec
+Espec
 =====
 
 **TODO: Add description**

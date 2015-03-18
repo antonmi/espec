@@ -1,4 +1,4 @@
-defmodule ESpec.Support do
+defmodule Espec.Support do
 
   def random_string, do: "#{Enum.shuffle(97..122)}"
 

@@ -1,4 +1,4 @@
-defmodule ESpec do
+defmodule Espec do
 
   defmacro __using__(_arg) do
     quote do
@@ -9,20 +9,20 @@ defmodule ESpec do
 
       @before_compile unquote(__MODULE__)
 
-      import ESpec.Context
-      import ESpec.Example
+      import Espec.Context
+      import Espec.Example
 
-      import ESpec.Expect
+      import Espec.Expect
 
-      import ESpec.Before
-      import ESpec.Let
+      import Espec.Before
+      import Espec.Let
     end
   end
 
   defmacro __before_compile__(_env) do
     quote do
       def examples, do: @examples
-      def run, do: ESpec.Runner.run(@examples, __MODULE__)
+      def run, do: Espec.Runner.run(@examples, __MODULE__)
     end
   end
 

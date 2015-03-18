@@ -1,11 +1,11 @@
-defmodule ESpec.Context do
+defmodule Espec.Context do
 
   defstruct description: ""
 
   defmacro context(description, body) do
     quote do
       tail = @context
-      head =  %ESpec.Context{ description: unquote(description) }
+      head =  %Espec.Context{ description: unquote(description) }
       @context [head | tail]
       unquote(body)
       @context tail

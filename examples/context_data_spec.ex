@@ -1,6 +1,6 @@
 defmodule ContextDataSpec do
 
-  use ESpec
+  use Espec
 
   before do
     { :ok, [a: 1, b: 2]}

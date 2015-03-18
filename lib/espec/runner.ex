@@ -1,11 +1,11 @@
-defmodule ESpec.Runner do
+defmodule Espec.Runner do
 
   require IEx
 
   def run(examples, module) do
     examples |> Enum.reverse
     |> Enum.each(fn(example) ->
-      # IO.puts("Running \"#{ESpec.Example.full_description(ex)}\"")
+      # IO.puts("Running \"#{Espec.Example.full_description(ex)}\"")
       bdata = run_befores(example, module)
       run_expamle(example, module, bdata)
     end)
@@ -26,7 +26,7 @@ defmodule ESpec.Runner do
   defp extract_befores(context) do
     context |>
     Enum.filter(fn(struct) ->
-      struct.__struct__ == ESpec.Before
+      struct.__struct__ == Espec.Before
     end)
     |> Enum.map(&(&1.function))
   end

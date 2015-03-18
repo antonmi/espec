@@ -1,4 +1,4 @@
-defmodule ESpec.Let do
+defmodule Espec.Let do
 
   defmacro let(var, do: block) do
     quote do

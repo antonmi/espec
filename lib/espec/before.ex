@@ -1,6 +1,6 @@
-defmodule ESpec.Before do
+defmodule Espec.Before do
 
-  alias ESpec.Support
+  alias Espec.Support
 
   defstruct function: "", opts: []
 
@@ -8,7 +8,7 @@ defmodule ESpec.Before do
     function = random_atom
     quote do
       tail = @context
-      head =  %ESpec.Before{function: unquote(function)}
+      head =  %Espec.Before{function: unquote(function)}
       def unquote(function)(), do: unquote(block)
       @context [head | tail]
     end
