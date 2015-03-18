@@ -6,20 +6,21 @@ defmodule ESpec.Runner do
     examples |> Enum.reverse
     |> Enum.each(fn(example) ->
       # IO.puts("Running \"#{ESpec.Example.full_description(ex)}\"")
-      run_befores(example, module)
-      run_expamle(example, module)
+      bdata = run_befores(example, module)
+      run_expamle(example, module, bdata)
     end)
   end
 
-  defp run_expamle(example, module) do
-    apply(module, example.function, example.opts)
+  defp run_expamle(example, module, bdata) do
+    apply(module, example.function, [bdata])
   end
 
   defp run_befores(example, module) do
-    extract_befores(example.context)
-    |> Enum.each(fn(fuction) ->
+    res = extract_befores(example.context)
+    |> Enum.map(fn(fuction) ->
       apply(module, fuction, [])
     end)
+    fill_dict(%{}, res)
   end
 
   defp extract_befores(context) do
@@ -28,6 +29,16 @@ defmodule ESpec.Runner do
       struct.__struct__ == ESpec.Before
     end)
     |> Enum.map(&(&1.function))
+  end
+
+  defp fill_dict(dict, res) do
+    Enum.reduce(res, dict, fn(el, acc) ->
+      IO.puts(inspect el)
+      case el do
+        {:ok, list} when is_list(list)-> Enum.reduce(list, acc, fn({k,v}, a) -> Dict.put(a, k, v) end)
+        _ -> acc
+      end
+    end)
   end
 
 end

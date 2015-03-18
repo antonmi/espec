@@ -2,14 +2,14 @@ defmodule ESpec.Example do
 
   alias ESpec.Support
 
-  defstruct description: "", function: "", context: [], opts: []
+  defstruct description: "", function: "", context: []
 
   defmacro example(description, do: block) do
     function = (random_atom(description))
     quote do
       context = Enum.reverse(@context)
       @examples %ESpec.Example{ description: unquote(description), function: unquote(function), context: context }
-      def unquote(function)(), do: unquote(block)
+      def unquote(function)(var!(bdata)), do: unquote(block)
     end
   end
 
@@ -31,7 +31,7 @@ defmodule ESpec.Example do
     end
   end
 
-  def full_description(%ESpec.Example{context: context, description: description, function: function, opts: opts}) do
+  def full_description(%ESpec.Example{context: context, description: description, function: function}) do
     context_description = context
     |> Enum.filter(fn(struct) -> struct.__struct__ == ESpec.Context end)
     |> Enum.map(&(&1.description))
@@ -40,8 +40,8 @@ defmodule ESpec.Example do
   end
 
   defp random_atom(arg) do
-     String.to_atom("example_#{Support.word_chars(arg)}_#{Support.random_string}")
-   end
+    String.to_atom("example_#{Support.word_chars(arg)}_#{Support.random_string}")
+  end
 
 
 end
