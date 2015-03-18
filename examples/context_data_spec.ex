@@ -17,9 +17,9 @@ defmodule ContextDataSpec do
       end
 
       it "test data" do
-        expect(bdata[:a]).to eq(1)
-        expect(bdata[:b]).to eq(2)
-        expect(bdata[:c]).to eq(3)
+        expect(assigns[:a]).to eq(1)
+        expect(assigns[:b]).to eq(2)
+        expect(assigns[:c]).to eq(3)
       end
     end
   end

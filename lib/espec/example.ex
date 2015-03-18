@@ -9,7 +9,7 @@ defmodule Espec.Example do
     quote do
       context = Enum.reverse(@context)
       @examples %Espec.Example{ description: unquote(description), function: unquote(function), context: context }
-      def unquote(function)(var!(bdata)), do: unquote(block)
+      def unquote(function)(var!(assigns)), do: unquote(block)
     end
   end
 

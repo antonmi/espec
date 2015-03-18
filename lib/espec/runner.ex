@@ -6,13 +6,13 @@ defmodule Espec.Runner do
     examples |> Enum.reverse
     |> Enum.each(fn(example) ->
       # IO.puts("Running \"#{Espec.Example.full_description(ex)}\"")
-      bdata = run_befores(example, module)
-      run_expamle(example, module, bdata)
+      assigns = run_befores(example, module)
+      run_expamle(example, module, assigns)
     end)
   end
 
-  defp run_expamle(example, module, bdata) do
-    apply(module, example.function, [bdata])
+  defp run_expamle(example, module, assigns) do
+    apply(module, example.function, [assigns])
   end
 
   defp run_befores(example, module) do
