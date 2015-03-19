@@ -2,9 +2,10 @@ defmodule ESpec.Assertion do
 
   def assert(:==, lhs, rhs) do
     if lhs == rhs do
-      IO.write(".")
+      IO.write("\e[32;1m.\e[0m")
     else
-      IO.write("F")
+      IO.write("\e[31;1mF\e[0m")
+      raise ESpec.AssertionError, lhs: lhs, rhs: rhs, message: "ERROR"
     end
   end
 

@@ -16,7 +16,7 @@ defmodule ESpecTest do
 
   test "the truth", context do
     IO.puts(inspect context)
-    assert context[:a] == :b
+    assert context[:a] != :b
     assert context[:b] == :c
   end
 end

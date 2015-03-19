@@ -30,6 +30,14 @@ defmodule ESpec do
     end
   end
 
+  def run do
+    ESpec.Runner.run
+    |> ESpec.ExampleResult.failed
+    |> Enum.each(fn(res) ->
+      IO.puts(res.error.message)
+    end)
+  end
+
   def start do
     {:ok, _} = Application.ensure_all_started(:espec)
     start_specs_agent(@spec_agent_name)

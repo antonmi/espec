@@ -7,6 +7,7 @@ defmodule ESpec.Runner do
     |> Enum.map(fn(module) ->
       run_examples(module.examples, module)
     end)
+    |> List.flatten
   end
 
   def run_examples(examples, module) do
@@ -14,13 +15,18 @@ defmodule ESpec.Runner do
     |> Enum.map(fn(example) ->
       # IO.puts("Running \"#{ESpec.Example.full_description(ex)}\"")
       assigns = run_befores(example, module)
-      run_expamle(example, module, assigns)
+      run_example(example, module, assigns)
     end)
   end
 
-  defp run_expamle(example, module, assigns) do
-    result = apply(module, example.function, [assigns])
-    %ESpec.ExampleResult{example: example, result: result}
+  defp run_example(example, module, assigns) do
+    try do
+      apply(module, example.function, [assigns])
+      %ESpec.ExampleResult{example: example, success: true}
+    rescue
+      error in [ESpec.AssertionError] ->
+      %ESpec.ExampleResult{example: example, success: false, error: error}
+    end
   end
 
   defp run_befores(example, module) do

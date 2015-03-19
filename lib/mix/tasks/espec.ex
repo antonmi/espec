@@ -47,8 +47,8 @@ defmodule Mix.Tasks.Spec do
     spec_files = Mix.Utils.extract_files(spec_files, spec_pattern)
     _ = Kernel.ParallelRequire.files(spec_files)
 
-    ESpec.Runner.run
-    # require IEx; IEx.pry
+    ESpec.run
+
     # # Run the test suite, coverage tools and register an exit hook
     # %{failures: failures} = ExUnit.run
     # if cover, do: cover.()
