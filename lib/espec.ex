@@ -1,7 +1,11 @@
-defmodule Espec do
+defmodule ESpec do
+
+  @spec_agent_name :espec_specs_agent
 
   defmacro __using__(_arg) do
     quote do
+      unquote(__MODULE__).add_spec(__MODULE__)
+
       import unquote(__MODULE__)
 
       Module.register_attribute __MODULE__, :examples, accumulate: true
@@ -9,26 +13,38 @@ defmodule Espec do
 
       @before_compile unquote(__MODULE__)
 
-      import Espec.Context
-      import Espec.Example
+      import ESpec.Context
+      import ESpec.Example
 
-      import Espec.Expect
+      import ESpec.Expect
 
-      import Espec.Before
-      import Espec.Let
+      import ESpec.Before
+      import ESpec.Let
     end
   end
 
   defmacro __before_compile__(_env) do
     quote do
       def examples, do: @examples
-      def run, do: Espec.Runner.run(@examples, __MODULE__)
+      def run, do: ESpec.Runner.run_examples(@examples, __MODULE__)
     end
   end
 
+  def start do
+    {:ok, _} = Application.ensure_all_started(:espec)
+    start_specs_agent(@spec_agent_name)
+  end
 
+  def start_specs_agent(name) do
+    Agent.start_link(fn -> [] end, name: name)
+  end
 
+  def specs do
+    Agent.get(@spec_agent_name, &(&1))
+  end
 
-
+  def add_spec(module) do
+    Agent.update(@spec_agent_name, &[module | &1])
+  end
 
 end

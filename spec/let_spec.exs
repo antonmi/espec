@@ -1,5 +1,5 @@
 defmodule LetSpec do
-  use Espec
+  use ESpec
 
   let :top, do: 10
 
@@ -15,6 +15,3 @@ defmodule LetSpec do
   end
 
 end
-
-
-LetSpec.run

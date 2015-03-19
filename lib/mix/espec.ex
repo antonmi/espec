@@ -1,4 +1,4 @@
-defmodule Mix.Espec do
+defmodule Mix.ESpec do
 
   
 

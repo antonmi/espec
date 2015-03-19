@@ -1,5 +1,5 @@
-defmodule SomEspec do
-  use Espec
+defmodule SomESpec do
+  use ESpec
 
   describe "d1" do
     it "some_spec_1" do

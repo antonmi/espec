@@ -1,5 +1,5 @@
 defmodule Some2Spec do
-  use Espec
+  use ESpec
 
   describe "expectation with block" do
     it "one line" do
@@ -17,5 +17,3 @@ defmodule Some2Spec do
 
 
 end
-
-Some2Spec.run

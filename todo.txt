@@ -1,0 +1,8 @@
+
+Implement let: make memoizable
+
+Implement fine output
+
+Implement cover: see ex_unit
+
+Think about 'subject' an 'is_expected'

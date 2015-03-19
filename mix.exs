@@ -1,8 +1,8 @@
-defmodule Espec.Mixfile do
+defmodule ESpec.Mixfile do
   use Mix.Project
 
   def project do
-    [app: :Espec,
+    [app: :espec,
      version: "0.0.1",
      elixir: "~> 1.1-dev",
      deps: deps]

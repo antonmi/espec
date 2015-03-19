@@ -1,11 +1,11 @@
-defmodule Espec.Expect do
+defmodule ESpec.Expect do
 
   def expect(do: value) do
-    {Espec.To, value}
+    {ESpec.To, value}
   end
 
   def expect(value) do
-    {Espec.To, value}
+    {ESpec.To, value}
   end
 
   def eq(value) do
