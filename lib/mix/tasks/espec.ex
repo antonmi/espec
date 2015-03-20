@@ -17,38 +17,40 @@ defmodule Mix.Tasks.Spec do
       {:error, {:already_loaded, :espec}} -> :ok
     end
 
-
-    ESpec.Configuration.add(opts)
-
-    Enum.each(["spec"], &require_spec_helper(&1))
-
-
-    files_with_opts = parse_files(files)
+    spec_paths = ["spec"]
     spec_pattern = "*_spec.exs"
 
-    spec_files = files_with_opts |> Enum.map(fn {f,_} -> f end)
+    ESpec.Configuration.add(opts)
+    Enum.each([spec_paths], &require_spec_helper(&1))
 
-    spec_files = Mix.Utils.extract_files(spec_files, "*_spec.exs")
-    _ = Kernel.ParallelRequire.files(spec_files)
+    files_with_opts = []
+
+    if Enum.any?(files) do
+
+      files_with_opts = parse_files(files)
+      spec_files = files_with_opts |> Enum.map(fn {f,_} -> f end)
+      spec_files = Mix.Utils.extract_files(spec_files, spec_pattern)
+    else
+      spec_files = Mix.Utils.extract_files(spec_paths, spec_pattern)
+    end
+
+    Kernel.ParallelRequire.files(spec_files)
+
 
 
 
     ESpec.run(%{file_opts: files_with_opts})
 
-    # # Run the test suite, coverage tools and register an exit hook
-    # %{failures: failures} = ExUnit.run
-    # if cover, do: cover.()
-    #
-    # System.at_exit fn _ ->
-    #   if failures > 0, do: exit({:shutdown, 1})
-    # end
   end
+
 
   def parse_files(files) do
     files |> Enum.map(fn(file) ->
       {file, opts} =  parse_file(file)
     end)
   end
+
+
 
   def parse_file(file) do
     case Regex.run(~r/^(.+):(\d+)$/, file, capture: :all_but_first) do

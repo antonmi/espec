@@ -32,10 +32,7 @@ defmodule ESpec do
 
   def run(opts) do
     ESpec.Runner.run(opts)
-    |> ESpec.ExampleResult.failed
-    |> Enum.each(fn(res) ->
-      IO.puts(res.error.message)
-    end)
+    |> ESpec.Formatter.print_result
   end
 
   def start do

@@ -2,7 +2,7 @@ defmodule ESpec.Example do
 
   alias ESpec.Support
 
-  defstruct description: "", function: "", file: nil, line: nil, context: []
+  defstruct description: "", function: "", file: nil, line: nil, context: [], success: nil, error: %ESpec.AssertionError{}
 
   defmacro example(description, do: block) do
     function = (random_atom(description))
@@ -42,6 +42,14 @@ defmodule ESpec.Example do
 
   defp random_atom(arg) do
     String.to_atom("example_#{Support.word_chars(arg)}_#{Support.random_string}")
+  end
+
+  def success(results) do
+    results |> Enum.filter(&(&1.success))
+  end
+
+  def failed(results) do
+    results |> Enum.filter(&(!&1.success))
   end
 
 

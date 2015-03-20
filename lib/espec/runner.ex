@@ -23,10 +23,12 @@ defmodule ESpec.Runner do
   defp run_example(example, module, assigns) do
     try do
       apply(module, example.function, [assigns])
-      %ESpec.ExampleResult{example: example, success: true}
+      IO.write("\e[32;1m.\e[0m")
+      %ESpec.Example{example | success: true}
     rescue
       error in [ESpec.AssertionError] ->
-      %ESpec.ExampleResult{example: example, success: false, error: error}
+        IO.write("\e[31;1mF\e[0m")
+        %ESpec.Example{example | success: false, error: error}
     end
   end
 
@@ -65,8 +67,10 @@ defmodule ESpec.Runner do
   end
 
   defp opts_for_file(file, opts_list) do
-    {_file, opts} = opts_list |> Enum.find(fn {k, _} -> k == file end)
-    opts
+    case opts_list |> Enum.find(fn {k, _} -> k == file end) do
+      {_file, opts} -> opts
+      nil -> []
+    end
   end
 
 end
