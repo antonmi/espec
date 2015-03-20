@@ -10,12 +10,7 @@ defmodule ESpec.Assertions.EqSpec do
     end
 
     context "Errors" do
-
-      it "is wrong" do
-        expect(1+1).to eq(3)
-      end
-
-
+      it do expect(1+1).to eq(3)
       it do: expect(1+1).to_not eq(2)
     end
 

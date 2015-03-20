@@ -20,4 +20,9 @@ defmodule ESpec.Expect do
     {:be, :between, [min, max]}
   end
 
+  def raise_exception(), do: {:raise_exception, []}
+  def raise_exception(exception, message), do: {:raise_exception, [exception, message]}
+  def raise_exception(exception), do: {:raise_exception, [exception]}
+
+
 end

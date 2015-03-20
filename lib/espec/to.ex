@@ -5,7 +5,8 @@ defmodule ESpec.To do
       {:eq, value} -> ESpec.Assertions.Eq.assert(lhs, value, positive)
       # {:be, :>, value} -> ESpec.Assertions.GreaterThan.assert(lhs, value)
       # {:be, true, value} -> ESpec.Assertions.True.assert(lhs, value)
-      {:be, :between, [l, r]} -> ESpec.Assertions.Between.assert(lhs, [l, r], positive)
+      {:be, :between, value} -> ESpec.Assertions.Between.assert(lhs, value, positive)
+      {:raise_exception, value} -> ESpec.Assertions.RaiseException.assert(lhs, value, positive)
       _ -> IO.puts "No match"
     end
   end

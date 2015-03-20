@@ -13,12 +13,14 @@ defmodule ESpec.Assertions.Between do
   end
 
   defp match(act, exp) do
-    act == exp
+    [l, r] = exp
+    act >= l && act <= r
   end
 
   def error_message(act, exp, positive) do
     to = if positive, do: "to", else: "not to"
-    "Expected #{act} #{to} equals #{exp}"
+    [l, r] = exp
+    "Expected #{act} #{to} be between #{l} and #{r}"
   end
 
 end
