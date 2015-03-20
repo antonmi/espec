@@ -6,3 +6,5 @@ Implement fine output
 Implement cover: see ex_unit
 
 Think about 'subject' an 'is_expected'
+
+Implement command line opts
