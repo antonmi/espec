@@ -1,4 +1,4 @@
-defmodule Mix.Tasks.Spec do
+defmodule Mix.Tasks.Espec do
   use Mix.Task
 
   def run(args) do
@@ -36,11 +36,7 @@ defmodule Mix.Tasks.Spec do
 
     Kernel.ParallelRequire.files(spec_files)
 
-
-
-
     ESpec.run(%{file_opts: files_with_opts})
-
   end
 
 
