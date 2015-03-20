@@ -2,10 +2,11 @@ defmodule ESpec.Runner do
 
   require IEx
 
-  def run(opts \\ []) do
+  def run(opts) do
     ESpec.specs |> Enum.reverse
     |> Enum.map(fn(module) ->
-      run_examples(module.examples, module)
+      filter(module.examples, opts)
+      |> run_examples(module)
     end)
     |> List.flatten
   end
@@ -47,12 +48,25 @@ defmodule ESpec.Runner do
 
   defp fill_dict(dict, res) do
     Enum.reduce(res, dict, fn(el, acc) ->
-      IO.puts(inspect el)
       case el do
         {:ok, list} when is_list(list)-> Enum.reduce(list, acc, fn({k,v}, a) -> Dict.put(a, k, v) end)
         _ -> acc
       end
     end)
+  end
+
+  defp filter(examples, opts) do
+    file_opts = opts[:file_opts]
+    examples |> Enum.filter(fn(example) ->
+      opts = opts_for_file(example.file, file_opts)
+      line = Keyword.get(opts, :line)
+      if line, do: example.line == line, else: true
+    end)
+  end
+
+  defp opts_for_file(file, opts_list) do
+    {_file, opts} = opts_list |> Enum.find(fn {k, _} -> k == file end)
+    opts
   end
 
 end

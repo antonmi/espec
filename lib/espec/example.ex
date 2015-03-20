@@ -2,14 +2,14 @@ defmodule ESpec.Example do
 
   alias ESpec.Support
 
-  defstruct description: "", function: "", line: nil, context: []
+  defstruct description: "", function: "", file: nil, line: nil, context: []
 
   defmacro example(description, do: block) do
     function = (random_atom(description))
     quote do
       context = Enum.reverse(@context)
       @examples %ESpec.Example{ description: unquote(description), function: unquote(function),
-                                line: __ENV__.line, context: context }
+                                file: __ENV__.file, line: __ENV__.line, context: context }
       def unquote(function)(var!(__)), do: unquote(block)
     end
   end

@@ -30,8 +30,8 @@ defmodule ESpec do
     end
   end
 
-  def run do
-    ESpec.Runner.run
+  def run(opts) do
+    ESpec.Runner.run(opts)
     |> ESpec.ExampleResult.failed
     |> Enum.each(fn(res) ->
       IO.puts(res.error.message)
@@ -55,5 +55,5 @@ defmodule ESpec do
     Agent.update(@spec_agent_name, &[module | &1])
   end
 
- 
+
 end

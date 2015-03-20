@@ -2,7 +2,7 @@ defmodule Mix.Tasks.Spec do
   use Mix.Task
 
   def run(args) do
-    {opts, files, _} = OptionParser.parse(args, switches: @switches)
+    {opts, files, _} = OptionParser.parse(args)
 
     Mix.Task.run "loadpaths", args
 
@@ -18,20 +18,22 @@ defmodule Mix.Tasks.Spec do
     end
 
 
-    ESpec.Config.configure(opts)
+    ESpec.Configuration.add(opts)
 
     Enum.each(["spec"], &require_spec_helper(&1))
 
 
-    spec_files   = parse_files(files)
+    files_with_opts = parse_files(files)
     spec_pattern = "*_spec.exs"
-    #
+
+    spec_files = files_with_opts |> Enum.map(fn {f,_} -> f end)
+
     spec_files = Mix.Utils.extract_files(spec_files, "*_spec.exs")
     _ = Kernel.ParallelRequire.files(spec_files)
 
- require IEx; IEx.pry
 
-    ESpec.run
+
+    ESpec.run(%{file_opts: files_with_opts})
 
     # # Run the test suite, coverage tools and register an exit hook
     # %{failures: failures} = ExUnit.run
@@ -45,17 +47,15 @@ defmodule Mix.Tasks.Spec do
   def parse_files(files) do
     files |> Enum.map(fn(file) ->
       {file, opts} =  parse_file(file)
-      ESpec.Config.configure([{file, opts}])
-      file
     end)
   end
 
   def parse_file(file) do
     case Regex.run(~r/^(.+):(\d+)$/, file, capture: :all_but_first) do
       [file, line_number] ->
-        {file, [line: line_number]}
+        {Path.absname(file), [line: String.to_integer(line_number)]}
       nil ->
-        {file, []}
+        {Path.absname(file), []}
     end
   end
 
