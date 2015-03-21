@@ -30,11 +30,6 @@ defmodule ESpec.Let do
     Agent.update(agent_name(module), &(Dict.put(&1, key, value)))
   end
 
-  def del(module, key) do
-    start_agent(module)
-    Agent.update(agent_name(module), &(Dict.delete(&1, key)))
-  end
-
   def agent_name(module) do
     String.to_atom("#{module}_let_agent")
   end
