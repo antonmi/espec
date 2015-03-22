@@ -13,6 +13,7 @@ defmodule LetSpec do
     let :top, do: 100500 #don't change the top
 
     it "check top", do: expect(top).to eq(10)
+
     it "checks inner", do: expect(inner).to eq(55)
   end
 

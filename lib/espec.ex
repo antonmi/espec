@@ -2,6 +2,7 @@ defmodule ESpec do
 
   @spec_agent_name :espec_specs_agent
 
+
   defmacro __using__(_arg) do
     quote do
       unquote(__MODULE__).add_spec(__MODULE__)
@@ -16,10 +17,13 @@ defmodule ESpec do
       import ESpec.Context
       import ESpec.Example
 
+      import ESpec.Subject
       import ESpec.Expect
 
       import ESpec.Before
       import ESpec.Let
+
+
     end
   end
 
@@ -37,11 +41,12 @@ defmodule ESpec do
 
   def start do
     {:ok, _} = Application.ensure_all_started(:espec)
-    start_specs_agent(@spec_agent_name)
+    start_specs_agent
+    ESpec.Let.start_let_agent
   end
 
-  def start_specs_agent(name) do
-    Agent.start_link(fn -> [] end, name: name)
+  def start_specs_agent do
+    Agent.start_link(fn -> [] end, name: @spec_agent_name)
   end
 
   def specs do
@@ -51,6 +56,8 @@ defmodule ESpec do
   def add_spec(module) do
     Agent.update(@spec_agent_name, &[module | &1])
   end
+
+
 
 
 end

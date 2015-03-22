@@ -1,15 +1,15 @@
 defmodule ESpec.Let do
 
+  @let_agent_name :espec_let_agent
+
   defmacro let(var, do: block) do
     quote do
 
-      defp unquote(var)() do
-        unless Process.whereis(agent_name(__MODULE__)), do: start_agent(__MODULE__)
-        cached = get(__MODULE__, unquote(var))
+      def unquote(var)() do
+        cached = let_agent_get({__MODULE__, unquote(var)})
         unless cached do
           cached = unquote(block)
-          put(__MODULE__, unquote(var), cached)
-          cached
+          let_agent_put({__MODULE__, unquote(var)}, cached)
         end
         cached
       end
@@ -17,21 +17,21 @@ defmodule ESpec.Let do
     end
   end
 
-  def start_agent(module) do
-    Agent.start_link(fn -> HashDict.new end, name: agent_name(module))
+  def start_let_agent do
+    Agent.start_link(fn -> HashDict.new end, name: @let_agent_name)
   end
 
-  def get(module, key) do
-    dict = Agent.get(agent_name(module), &(&1))
-    Dict.get(dict, key)
+  def let_agent_get({module, func}) do
+    dict = Agent.get(@let_agent_name, &(&1))
+    Dict.get(dict, {module, func})
   end
 
-  def put(module, key, value) do
-    Agent.update(agent_name(module), &(Dict.put(&1, key, value)))
+  def let_agent_put({module, func}, value) do
+    Agent.update(@let_agent_name, &(Dict.put(&1, {module, func}, value)))
   end
 
-  def agent_name(module) do
-    String.to_atom("#{module}_let_agent")
+  def let_agent_del({module, func}) do
+    Agent.update(@let_agent_name, &(Dict.delete(&1, {module, func})))
   end
 
 end
