@@ -4,7 +4,6 @@ defmodule ESpec.Let do
 
   defmacro let(var, do: block) do
     quote do
-
       def unquote(var)() do
         cached = let_agent_get({__MODULE__, unquote(var)})
         unless cached do
@@ -16,6 +15,16 @@ defmodule ESpec.Let do
 
     end
   end
+
+  # defmacro subject(do: block) do
+  #   quote do
+  #
+  #     let_agent_put({__MODULE__, :subject}, unquote(block))
+  #
+  #
+  #   end
+  # end
+
 
   def start_let_agent do
     Agent.start_link(fn -> HashDict.new end, name: @let_agent_name)

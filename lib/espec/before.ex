@@ -1,7 +1,5 @@
 defmodule ESpec.Before do
 
-  alias ESpec.Support
-
   defstruct function: "", opts: []
 
   defmacro before(do: block) do
