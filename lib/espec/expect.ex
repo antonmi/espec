@@ -4,10 +4,14 @@ defmodule ESpec.Expect do
   def expect(value), do: {ESpec.To, value}
 
   def eq(value), do: {:eq, value}
+  def eql(value), do: {:eql, value}
+
   def be(value), do: {:eq, value}
 
 
   #TODO
+
+
   def be(operator, value) do
     IO.puts(inspect(operator))
     {:be, operator,  value}
