@@ -23,6 +23,19 @@ defmodule ESpec.Let do
     end
   end
 
+  defmacro subject(var) do
+    quote do
+      unquote(__MODULE__).let(:subject, do: unquote(var))
+    end
+  end
+
+  defmacro subject(var, do: block) do
+    quote do
+      unquote(__MODULE__).let(unquote(var), do: unquote(block))
+    end
+  end
+
+
   def random_let_name, do: String.to_atom("let_#{ESpec.Support.random_string}")
 
   defmacro subject(do: block) do

@@ -15,7 +15,6 @@ defmodule ESpec.Runner do
     examples |> Enum.reverse
     |> Enum.map(fn(example) ->
       set_lets(example, module)
-      set_subject(example, module)
       assigns = run_befores(example, module)
       run_example(example, module, assigns)
     end)
@@ -41,11 +40,6 @@ defmodule ESpec.Runner do
     fill_dict(%{}, res)
   end
 
-  defp set_subject(example, module) do
-    subject = List.first(extract_subject(example.context))
-    if subject, do: ESpec.Let.let_agent_put({module, :subject}, subject.value)
-  end
-
   defp set_lets(example, module) do
     extract_lets(example.context)
     |> Enum.each(fn(let) ->
@@ -54,8 +48,6 @@ defmodule ESpec.Runner do
   end
 
   defp extract_befores(context), do: extract(context, ESpec.Before)
-
-  defp extract_subject(context), do: extract(context, ESpec.Subject)
 
   defp extract_lets(context), do: extract(context, ESpec.Let)
 
