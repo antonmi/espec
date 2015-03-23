@@ -17,12 +17,10 @@ defmodule ESpec do
       import ESpec.Context
       import ESpec.Example
 
-      import ESpec.Subject
       import ESpec.Expect
 
       import ESpec.Before
       import ESpec.Let
-
 
       def subject do
         ESpec.Let.let_agent_get({__MODULE__, :subject})
@@ -39,9 +37,6 @@ defmodule ESpec do
     quote do
       def examples, do: @examples
       def run, do: ESpec.Runner.run_examples(@examples, __MODULE__)
-
-
-
     end
   end
 

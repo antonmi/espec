@@ -8,6 +8,7 @@ defmodule ESpec.Example do
     function = (random_atom(description))
     quote do
       context = Enum.reverse(@context)
+
       @examples %ESpec.Example{ description: unquote(description), function: unquote(function),
                                 file: __ENV__.file, line: __ENV__.line, context: context }
       def unquote(function)(var!(__)), do: unquote(block)

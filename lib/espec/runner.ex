@@ -14,8 +14,9 @@ defmodule ESpec.Runner do
   def run_examples(examples, module) do
     examples |> Enum.reverse
     |> Enum.map(fn(example) ->
-      assigns = run_befores(example, module)
+      set_lets(example, module)
       set_subject(example, module)
+      assigns = run_befores(example, module)
       run_example(example, module, assigns)
     end)
   end
@@ -34,29 +35,34 @@ defmodule ESpec.Runner do
 
   defp run_befores(example, module) do
     res = extract_befores(example.context)
-    |> Enum.map(fn(fuction) ->
-      apply(module, fuction, [])
+    |> Enum.map(fn(before) ->
+      apply(module, before.function, [])
     end)
     fill_dict(%{}, res)
   end
 
   defp set_subject(example, module) do
-    subject = extract_subject(example.context)
-    ESpec.Let.let_agent_put({module, :subject}, subject.value)
+    subject = List.first(extract_subject(example.context))
+    if subject, do: ESpec.Let.let_agent_put({module, :subject}, subject.value)
   end
 
-  defp extract_befores(context) do
+  defp set_lets(example, module) do
+    extract_lets(example.context)
+    |> Enum.each(fn(let) ->
+      ESpec.Let.let_agent_put({module, let.var}, apply(module, let.function, []))
+    end)
+  end
+
+  defp extract_befores(context), do: extract(context, ESpec.Before)
+
+  defp extract_subject(context), do: extract(context, ESpec.Subject)
+
+  defp extract_lets(context), do: extract(context, ESpec.Let)
+
+  defp extract(context, module) do
     context |>
     Enum.filter(fn(struct) ->
-      struct.__struct__ == ESpec.Before
-    end)
-    |> Enum.map(&(&1.function))
-  end
-
-  defp extract_subject(context) do
-    context |> Enum.reverse
-    |> Enum.find(fn(struct) ->
-      struct.__struct__ == ESpec.Subject
+      struct.__struct__ == module
     end)
   end
 
