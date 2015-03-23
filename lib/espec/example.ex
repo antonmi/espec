@@ -1,9 +1,28 @@
 defmodule ESpec.Example do
+  @moduledoc """
+    Defines macros 'example' and 'it'.
+    These macros defines function with random name to be called when example runs.
+    Example structs %ESpec.Example are accumulated in @examples attribute
+  """
 
-  alias ESpec.Support
+  @doc """
+    Expampe struct.
+    description - the description of example,
+    function - random function name,
+    file - spec file path,
+    line - the line where example is defined,
+    context - example context. Accumulator for 'contexts' and 'lets',
+    success - store example result,
+    error - store an error
+  """
+  defstruct description: "", function: "",
+            file: nil, line: nil, context: [],
+            success: nil, error: %ESpec.AssertionError{}
 
-  defstruct description: "", function: "", file: nil, line: nil, context: [], success: nil, error: %ESpec.AssertionError{}
-
+  @doc """
+    Add example to @examples and defines function to wrap the spec.
+    Sends 'double underscore `__`' variable to the example block.
+  """
   defmacro example(description, do: block) do
     function = (random_atom(description))
     quote do
@@ -15,40 +34,48 @@ defmodule ESpec.Example do
     end
   end
 
+  @doc """
+    Defines example without description
+  """
   defmacro example(do: block) do
     quote do
       unquote(__MODULE__).example("", do: unquote(block))
     end
   end
 
+  @doc """
+    Alias for example/2
+  """
   defmacro it(description, do: block) do
     quote do
       unquote(__MODULE__).example(unquote(description), do: unquote(block))
     end
   end
 
+  @doc """
+    Alias for example/1
+  """
   defmacro it(do: block) do
     quote do
       unquote(__MODULE__).example("", do: unquote(block))
     end
   end
 
-  def full_description(%ESpec.Example{context: context, description: description, function: function}) do
-    context_description = context
-    |> Enum.filter(fn(struct) -> struct.__struct__ == ESpec.Context end)
-    |> Enum.map(&(&1.description))
-    context_description ++ [description]
-    |> Enum.join(" ")
-  end
-
+  @doc false
   defp random_atom(arg) do
-    String.to_atom("example_#{Support.word_chars(arg)}_#{Support.random_string}")
+    String.to_atom("example_#{ESpec.Support.word_chars(arg)}_#{ESpec.Support.random_string}")
   end
 
+  @doc """
+    Filters success examples
+  """
   def success(results) do
     results |> Enum.filter(&(&1.success))
   end
 
+  @doc """
+    Filters failed examples
+  """
   def failed(results) do
     results |> Enum.filter(&(!&1.success))
   end

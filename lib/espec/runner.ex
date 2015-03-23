@@ -12,7 +12,7 @@ defmodule ESpec.Runner do
   end
 
   def run_examples(examples, module) do
-    examples |> Enum.reverse
+    examples
     |> Enum.map(fn(example) ->
       set_lets(example, module)
       assigns = run_befores(example, module)

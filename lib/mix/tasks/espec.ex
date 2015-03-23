@@ -6,8 +6,6 @@ defmodule Mix.Tasks.Espec do
 
     Mix.Task.run "loadpaths", args
 
-    project = Mix.Project.config
-
     Mix.shell.print_app
     Mix.Task.run "app.start", args
 
@@ -40,13 +38,7 @@ defmodule Mix.Tasks.Espec do
   end
 
 
-  def parse_files(files) do
-    files |> Enum.map(fn(file) ->
-      {file, opts} =  parse_file(file)
-    end)
-  end
-
-
+  def parse_files(files), do: files |> Enum.map(&parse_file(&1))
 
   def parse_file(file) do
     case Regex.run(~r/^(.+):(\d+)$/, file, capture: :all_but_first) do

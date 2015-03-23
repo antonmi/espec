@@ -35,7 +35,7 @@ defmodule ESpec do
 
   defmacro __before_compile__(_env) do
     quote do
-      def examples, do: @examples
+      def examples, do: Enum.reverse(@examples)
       def run, do: ESpec.Runner.run_examples(@examples, __MODULE__)
     end
   end
