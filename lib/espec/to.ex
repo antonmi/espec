@@ -7,7 +7,8 @@ defmodule ESpec.To do
       {:eql, value} -> ESpec.Assertions.Eql.assert(lhs, value, positive)
       {:be, op, value} when op in ~w(> < >= <= == != === !== <> =~)a ->
         ESpec.Assertions.Be.assert(lhs, [op, value], positive) #TODO
-      {:be, :between, value} -> ESpec.Assertions.Between.assert(lhs, value, positive)
+      {:be_between, min, max} -> ESpec.Assertions.Between.assert(lhs, [min, max], positive)
+      {:be_close, value, delta} -> ESpec.Assertions.BeCloseTo.assert(lhs, [value, delta], positive)
       {:raise_exception, value} -> ESpec.Assertions.RaiseException.assert(lhs, value, positive)
     end
   end

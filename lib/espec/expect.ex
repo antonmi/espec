@@ -12,7 +12,8 @@ defmodule ESpec.Expect do
     {:be, operator,  value}
   end
 
-  def be_between(min, max), do: {:be, :between, [min, max]}
+  def be_between(min, max), do: {:be_between, min, max}
+  def be_close_to(value, delta), do: {:be_close, value, delta}
 
   def be_true(), do: {:be, :true, []}
   def be_false(), do: {:be, :false, []}
