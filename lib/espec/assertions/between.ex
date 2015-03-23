@@ -20,7 +20,7 @@ defmodule ESpec.Assertions.Between do
   def error_message(act, exp, positive) do
     to = if positive, do: "to", else: "not to"
     [l, r] = exp
-    "Expected #{act} #{to} be between #{l} and #{r}"
+    "Expected `#{act}` #{to} be between `#{l}` and `#{r}`"
   end
 
 end

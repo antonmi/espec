@@ -4,7 +4,9 @@ defmodule ESpec.To do
     case rhs do
       {:eq, value} -> ESpec.Assertions.Eq.assert(lhs, value, positive)
       # {:be, :>, value} -> ESpec.Assertions.GreaterThan.assert(lhs, value)
-      # {:be, true, value} -> ESpec.Assertions.True.assert(lhs, value)
+      {:be, true, _value} -> ESpec.Assertions.True.assert(lhs, _value, positive)
+      {:be, false, _value} -> ESpec.Assertions.False.assert(lhs, _value, positive)
+      {:be, nil, _value} -> ESpec.Assertions.Nil.assert(lhs, _value, positive)
       {:be, :between, value} -> ESpec.Assertions.Between.assert(lhs, value, positive)
       {:raise_exception, value} -> ESpec.Assertions.RaiseException.assert(lhs, value, positive)
       _ -> IO.puts "No match"
