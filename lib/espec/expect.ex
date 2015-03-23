@@ -8,12 +8,7 @@ defmodule ESpec.Expect do
 
   def be(value), do: {:eq, value}
 
-
-  #TODO
-
-
   def be(operator, value) do
-    IO.puts(inspect(operator))
     {:be, operator,  value}
   end
 

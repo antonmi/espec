@@ -5,7 +5,8 @@ defmodule ESpec.To do
     case rhs do
       {:eq, value} -> ESpec.Assertions.Eq.assert(lhs, value, positive)
       {:eql, value} -> ESpec.Assertions.Eql.assert(lhs, value, positive)
-      {:be, :>, value} -> ESpec.Assertions.GreaterThan.assert(lhs, value)
+      {:be, op, value} when op in ~w(> < >= <= == != === !== <> =~)a ->
+        ESpec.Assertions.Be.assert(lhs, [op, value], positive) #TODO
       {:be, :between, value} -> ESpec.Assertions.Between.assert(lhs, value, positive)
       {:raise_exception, value} -> ESpec.Assertions.RaiseException.assert(lhs, value, positive)
     end
