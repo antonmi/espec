@@ -9,6 +9,7 @@ defmodule ESpec.To do
         ESpec.Assertions.Be.assert(lhs, [op, value], positive) #TODO
       {:be_between, min, max} -> ESpec.Assertions.Between.assert(lhs, [min, max], positive)
       {:be_close, value, delta} -> ESpec.Assertions.BeCloseTo.assert(lhs, [value, delta], positive)
+      {:match, value} -> ESpec.Assertions.Match.assert(lhs, value, positive)
       {:raise_exception, value} -> ESpec.Assertions.RaiseException.assert(lhs, value, positive)
     end
   end

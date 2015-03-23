@@ -19,6 +19,8 @@ defmodule ESpec.Expect do
   def be_false(), do: {:be, :false, []}
   def be_nil(), do: {:be, :nil, []}
 
+  def match(value), do: {:match, value}
+
   def raise_exception(), do: {:raise_exception, []}
   def raise_exception(exception, message), do: {:raise_exception, [exception, message]}
   def raise_exception(exception), do: {:raise_exception, [exception]}
