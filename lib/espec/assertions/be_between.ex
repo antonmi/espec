@@ -1,4 +1,4 @@
-defmodule ESpec.Assertions.Between do
+defmodule ESpec.Assertions.BeBetween do
 
   @behaviour ESpec.Assertion
 

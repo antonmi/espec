@@ -3,7 +3,6 @@ defmodule ESpec.Assertions.EqSpec do
   use ESpec
 
   describe "ESpec.Assertions.Eq" do
-
     context "Success" do
       it do: expect(1+1).to eq(2.0)
       it do: expect(1+1).to_not eq(3)
@@ -13,7 +12,6 @@ defmodule ESpec.Assertions.EqSpec do
       it do: expect(1+1).to eq(3.0)
       it do: expect(1+1).to_not eq(2)
     end
-
   end
 
   describe "be" do
@@ -29,7 +27,6 @@ defmodule ESpec.Assertions.EqSpec do
       it do: expect(1+1 == 1).to be true
       it do: expect(1+1 == 1).to_not be false
     end
-
   end
 
 end

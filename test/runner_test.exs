@@ -42,7 +42,7 @@ defmodule RunnerTest do
   end
 
   test "run_examples", context do
-    examples = ESpec.Runner.run_examples([context[:ex1], context[:ex2]], SomeSpec)
+    examples = ESpec.Runner.run_examples(SomeSpec.examples, SomeSpec)
     assert(List.first(examples).success == true)
     assert(List.first(examples).success == true)
   end
