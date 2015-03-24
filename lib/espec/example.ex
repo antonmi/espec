@@ -1,7 +1,7 @@
 defmodule ESpec.Example do
   @moduledoc """
     Defines macros 'example' and 'it'.
-    These macros defines function with random name to be called when example runs.
+    These macros defines function with random name which will be called when example runs.
     Example structs %ESpec.Example are accumulated in @examples attribute
   """
 
@@ -13,14 +13,15 @@ defmodule ESpec.Example do
     line - the line where example is defined,
     context - example context. Accumulator for 'contexts' and 'lets',
     success - store example result,
+    result - the value returned by example block
     error - store an error
   """
   defstruct description: "", function: "",
             file: nil, line: nil, context: [],
-            success: nil, error: %ESpec.AssertionError{}
+            success: nil, result: nil, error: %ESpec.AssertionError{}
 
   @doc """
-    Add example to @examples and defines function to wrap the spec.
+    Adds example to @examples and defines function to wrap the spec.
     Sends 'double underscore `__`' variable to the example block.
   """
   defmacro example(description, do: block) do

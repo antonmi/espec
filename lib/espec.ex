@@ -2,7 +2,6 @@ defmodule ESpec do
 
   @spec_agent_name :espec_specs_agent
 
-
   defmacro __using__(_arg) do
     quote do
       unquote(__MODULE__).add_spec(__MODULE__)
@@ -62,8 +61,5 @@ defmodule ESpec do
   def add_spec(module) do
     Agent.update(@spec_agent_name, &[module | &1])
   end
-
-
-
 
 end

@@ -40,7 +40,24 @@ defmodule BeforESpec do
     it do: expect(__[:a].(5)).to eq(10)
     it do: expect(__[:b]).to eq(nil)
     it do: expect(__[:c]).to eq(nil)
-  
+  end
+
+  context "before block does not return :ok" do
+    before do
+      :smth
+    end
+
+    it do: expect(__[:a]).to eq("top before")
+  end
+
+  context "many before blocks" do
+    before do: { :ok, a: "a" }
+    before do: { :ok, a: "aa", b: "b"}
+    before do: { :ok, a: "aaa", b: "bbb", c: "ccc"}
+
+    it do: expect(__[:a]).to eq("aaa")
+    it do: expect(__[:b]).to eq("bbb")
+    it do: expect(__[:c]).to eq("ccc")
   end
 
 

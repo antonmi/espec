@@ -2,17 +2,16 @@ defmodule ExampleTest do
 
   use ExUnit.Case
 
-  ESpec.start()
   defmodule SomeSpec do
     use ESpec
 
     example do: "some example"
-    example "with name" do
-      "example with name"
+    example "failed example with name" do
+      expect(true).to be(false)
     end
 
     it do: "it example"
-    it "is named eample" do
+    it "is named example" do
       "it is with name"
     end
 
@@ -32,13 +31,26 @@ defmodule ExampleTest do
   test "check ex1", context do
     assert(context[:ex1].description == "")
     assert(context[:ex1].file ==  __ENV__.file)
-    assert(context[:ex1].line == 9)
+    assert(context[:ex1].line == 8)
+  end
+
+  test "run ex1", context do
+    example = ESpec.Runner.run_example(context[:ex1], SomeSpec)
+    assert(example.success == true)
+    assert(example.result == "some example")
   end
 
   test "check ex2", context do
-    assert(context[:ex2].description == "with name")
+    assert(context[:ex2].description == "failed example with name")
     assert(context[:ex2].file ==  __ENV__.file)
-    assert(context[:ex2].line == 10)
+    assert(context[:ex2].line == 9)
+  end
+
+  test "run ex2", context do
+    example = ESpec.Runner.run_example(context[:ex2], SomeSpec)
+    assert(example.success == false)
+    assert(example.error.act == true)
+    assert(example.error.exp == false)
   end
 
 end

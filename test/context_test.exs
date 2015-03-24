@@ -2,7 +2,6 @@ defmodule ContextTest do
 
   use ExUnit.Case
 
-  ESpec.start()
   defmodule SomeSpec do
     use ESpec
 

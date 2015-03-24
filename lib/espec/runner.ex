@@ -14,17 +14,17 @@ defmodule ESpec.Runner do
   def run_examples(examples, module) do
     examples
     |> Enum.map(fn(example) ->
-      set_lets(example, module)
-      assigns = run_befores(example, module)
-      run_example(example, module, assigns)
+      run_example(example, module)
     end)
   end
 
-  defp run_example(example, module, assigns) do
+  def run_example(example, module) do
+    set_lets(example, module)
+    assigns = run_befores(example, module)
     try do
-      apply(module, example.function, [assigns])
+      result = apply(module, example.function, [assigns])
       IO.write("\e[32;1m.\e[0m")
-      %ESpec.Example{example | success: true}
+      %ESpec.Example{example | success: true, result: result}
     rescue
       error in [ESpec.AssertionError] ->
         IO.write("\e[31;1mF\e[0m")
@@ -32,7 +32,7 @@ defmodule ESpec.Runner do
     end
   end
 
-  defp run_befores(example, module) do
+  def run_befores(example, module) do
     res = extract_befores(example.context)
     |> Enum.map(fn(before) ->
       apply(module, before.function, [])
@@ -40,7 +40,7 @@ defmodule ESpec.Runner do
     fill_dict(%{}, res)
   end
 
-  defp set_lets(example, module) do
+  def set_lets(example, module) do
     extract_lets(example.context)
     |> Enum.each(fn(let) ->
       ESpec.Let.let_agent_put({module, let.var}, apply(module, let.function, []))

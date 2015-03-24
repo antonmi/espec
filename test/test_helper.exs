@@ -1,1 +1,3 @@
+ESpec.start()
+
 ExUnit.start()
