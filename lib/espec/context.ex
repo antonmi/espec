@@ -22,7 +22,7 @@ defmodule ESpec.Context do
   end
 
   @doc """
-    Alias for context/2.
+    Alias for `context/2`.
   """
   defmacro describe(description, body) do
     quote do
@@ -40,7 +40,7 @@ defmodule ESpec.Context do
   end
 
   @doc """
-    Alias for context/1.
+    Alias for `context/1`.
   """
   defmacro describe(do: block) do
     quote do

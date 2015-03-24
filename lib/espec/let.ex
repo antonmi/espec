@@ -76,6 +76,5 @@ defmodule ESpec.Let do
     Agent.update(@let_agent_name, &(Dict.put(&1, {module, func}, value)))
   end
 
-
   defp random_let_name, do: String.to_atom("let_#{ESpec.Support.random_string}")
 end

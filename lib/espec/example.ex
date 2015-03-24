@@ -45,7 +45,7 @@ defmodule ESpec.Example do
   end
 
   @doc """
-    Alias for example/2
+    Alias for `example/2`
   """
   defmacro it(description, do: block) do
     quote do
@@ -54,7 +54,7 @@ defmodule ESpec.Example do
   end
 
   @doc """
-    Alias for example/1
+    Alias for `example/1`
   """
   defmacro it(do: block) do
     quote do

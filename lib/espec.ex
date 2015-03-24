@@ -17,17 +17,10 @@ defmodule ESpec do
       import ESpec.Example
 
       import ESpec.Expect
+      use ESpec.Expect
 
       import ESpec.Before
       import ESpec.Let
-
-      def subject do
-        ESpec.Let.let_agent_get({__MODULE__, :subject})
-      end
-
-      def is_expected do
-        {ESpec.To, subject}
-      end
 
     end
   end

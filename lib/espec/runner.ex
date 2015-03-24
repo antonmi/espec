@@ -1,7 +1,14 @@
 defmodule ESpec.Runner do
+  @moduledoc """
+    Defines functions which runs the examples.
+  """
 
-  require IEx
-
+  @doc """
+    Runs all examples.
+    Uses `filter/2` to select examples to run.
+    The options are:
+    TODO
+  """
   def run(opts) do
     ESpec.specs |> Enum.reverse
     |> Enum.map(fn(module) ->
@@ -11,6 +18,9 @@ defmodule ESpec.Runner do
     |> List.flatten
   end
 
+  @doc """
+    Runs example for specific 'spec  module'
+  """
   def run_examples(examples, module) do
     examples
     |> Enum.map(fn(example) ->
@@ -18,6 +28,12 @@ defmodule ESpec.Runner do
     end)
   end
 
+  @doc """
+    Runs one specific example and returns an `%ESpec.Example{}` struct.
+    The struct has fields `[success: true, result: result]` or `[success: false, error: error]`
+    The `result` is the value returned by example block.
+    `error` is a `%ESpec.AssertionError{}` struct.
+  """
   def run_example(example, module) do
     set_lets(example, module)
     assigns = run_befores(example, module)
@@ -32,6 +48,7 @@ defmodule ESpec.Runner do
     end
   end
 
+  @doc false
   def run_befores(example, module) do
     res = extract_befores(example.context)
     |> Enum.map(fn(before) ->
@@ -40,6 +57,7 @@ defmodule ESpec.Runner do
     fill_dict(%{}, res)
   end
 
+  @doc false
   def set_lets(example, module) do
     extract_lets(example.context)
     |> Enum.each(fn(let) ->
@@ -69,11 +87,15 @@ defmodule ESpec.Runner do
 
   defp filter(examples, opts) do
     file_opts = opts[:file_opts]
-    examples |> Enum.filter(fn(example) ->
-      opts = opts_for_file(example.file, file_opts)
-      line = Keyword.get(opts, :line)
-      if line, do: example.line == line, else: true
-    end)
+    if file_opts do
+      examples |> Enum.filter(fn(example) ->
+        opts = opts_for_file(example.file, file_opts)
+        line = Keyword.get(opts, :line)
+        if line, do: example.line == line, else: true
+      end)
+    else
+      examples
+    end
   end
 
   defp opts_for_file(file, opts_list) do

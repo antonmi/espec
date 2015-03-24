@@ -1,6 +1,11 @@
 defmodule ESpec.Formatter do
+  @moduledoc """
+    Functions to print espec results
+  """
 
-
+  @doc """
+    Prints results
+  """
   def print_result(examples) do
     failed = ESpec.Example.failed(examples)
     print_failed(failed)
