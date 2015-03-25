@@ -1,4 +1,4 @@
-defmodule SomeSpec do
+defmodule AllowSpec do
 
 	use ESpec
 

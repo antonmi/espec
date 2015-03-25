@@ -19,6 +19,8 @@ defmodule ESpec do
       import ESpec.Expect
       use ESpec.Expect
 
+      import ESpec.Allow
+
       import ESpec.Before
       import ESpec.Let
 
