@@ -9,6 +9,7 @@ defmodule ESpec.Mixfile do
      description: description,
      package: package,
      deps: deps,
+     source_url: "https://github.com/antonmi/espec",
      preferred_cli_env: [espec: :test]  
    ]
   end
@@ -19,8 +20,9 @@ defmodule ESpec.Mixfile do
 
   defp deps do
     [
-     {:earmark, "~> 0.1", only: :docs},
-     {:ex_doc, "~> 0.7.1", only: :docs},
+      {:earmark, "~> 0.1", only: :docs},
+      {:ex_doc, "~> 0.7.0", only: :docs},
+      {:inch_ex, "~> 0.2", only: :docs}
     ]
   end
 
