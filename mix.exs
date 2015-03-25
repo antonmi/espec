@@ -18,7 +18,10 @@ defmodule ESpec.Mixfile do
   end
 
   defp deps do
-    []
+    [
+     {:earmark, "~> 0.1", only: :docs},
+     {:ex_doc, "~> 0.7.1", only: :docs},
+    ]
   end
 
   defp description do
