@@ -8,7 +8,8 @@ defmodule ESpec.Mixfile do
      elixir: "~> 1.0",
      description: description,
      package: package,
-     deps: deps]
+     deps: deps,
+     preferred_cli_env: [espec: :test]]
   end
 
   def application do

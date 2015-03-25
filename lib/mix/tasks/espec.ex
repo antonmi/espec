@@ -6,6 +6,10 @@ defmodule Mix.Tasks.Espec do
   def run(args) do
     {opts, files, _} = OptionParser.parse(args)
 
+    unless System.get_env("MIX_ENV") || Mix.env == :test do
+      Mix.raise "mix espec is running on environment #{Mix.env}. If you are running specs along another task, please set MIX_ENV explicitly"
+    end
+
     Mix.Task.run "loadpaths", args
 
     Mix.shell.print_app
