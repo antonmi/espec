@@ -9,7 +9,8 @@ defmodule ESpec.Mixfile do
      description: description,
      package: package,
      deps: deps,
-     preferred_cli_env: [espec: :test]]
+     preferred_cli_env: [espec: :test]  
+   ]
   end
 
   def application do
@@ -28,7 +29,7 @@ defmodule ESpec.Mixfile do
 
   defp package do
    [
-     #files: ["lib", "spec", "mix.exs", "README.md"],
+     files: ~w(lib spec mix.exs README.md),
      contributors: ["Anton Mishchuk"],
      licenses: ["MIT"],
      links: %{"github" => "https://github.com/antonmi/espec"}

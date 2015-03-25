@@ -7,7 +7,10 @@ defmodule Mix.Tasks.Espec do
     {opts, files, _} = OptionParser.parse(args)
 
     unless System.get_env("MIX_ENV") || Mix.env == :test do
-      Mix.raise "mix espec is running on environment #{Mix.env}. If you are running specs along another task, please set MIX_ENV explicitly"
+      Mix.raise "espec is running on environment #{Mix.env}.\n" <>
+                "It is recommended to run espec in test environment.\n" <>
+                "Please add `preferred_cli_env: [espec: :test]` to project configurations in mix.exs file.\n" <>
+                "Or set MIX_ENV explicitly (MIX_ENV=test mix espec)"
     end
 
     Mix.Task.run "loadpaths", args
