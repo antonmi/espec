@@ -18,9 +18,7 @@ defmodule ESpec.Runner do
     |> List.flatten
   end
 
-  @doc """
-    Runs example for specific 'spec  module'
-  """
+  @doc "Runs example for specific 'spec  module'."
   def run_examples(examples, module) do
     examples
     |> Enum.map(fn(example) ->
