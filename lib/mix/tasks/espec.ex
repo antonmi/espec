@@ -1,6 +1,8 @@
 defmodule Mix.Tasks.Espec do
   use Mix.Task
 
+  @shortdoc "runs specs"
+
   def run(args) do
     {opts, files, _} = OptionParser.parse(args)
 
