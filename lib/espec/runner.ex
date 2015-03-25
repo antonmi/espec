@@ -35,8 +35,8 @@ defmodule ESpec.Runner do
     `error` is a `%ESpec.AssertionError{}` struct.
   """
   def run_example(example, module) do
-    set_lets(example, module)
     assigns = run_befores(example, module)
+    set_lets(example, module)
     try do
       result = apply(module, example.function, [assigns])
       IO.write("\e[32;1m.\e[0m")
