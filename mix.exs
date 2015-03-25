@@ -22,7 +22,7 @@ defmodule ESpec.Mixfile do
 
   defp package do
    [
-     files: ["lib", "spec"]
+     files: ["lib", "spec"],
      contributors: ["Anton Mishchuk"],
      licenses: ["MIT"],
      links: %{"github" => "https://github.com/antonmi/espec"}
