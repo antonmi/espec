@@ -29,7 +29,7 @@ defmodule ESpec.Mixfile do
 
   defp package do
    [
-     files: ~w(lib spec mix.exs README.md),
+     files: ~w(lib mix.exs README.md),
      contributors: ["Anton Mishchuk"],
      licenses: ["MIT"],
      links: %{"github" => "https://github.com/antonmi/espec"}
