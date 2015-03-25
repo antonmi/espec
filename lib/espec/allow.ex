@@ -6,4 +6,8 @@ defmodule ESpec.Allow do
     {:receive, name, func}
   end
   
+  def receive_messages(list) do
+    {:receive_messages, list}
+  end
+
 end
