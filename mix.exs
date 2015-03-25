@@ -3,8 +3,11 @@ defmodule ESpec.Mixfile do
 
   def project do
     [app: :espec,
+     name: "Espec",
      version: "0.1.0",
      elixir: "~> 1.0",
+     description: description,
+     package: package,
      deps: deps]
   end
 
@@ -17,12 +20,14 @@ defmodule ESpec.Mixfile do
   end
 
   defp description do
-    "ESpec is RSpec for Elixir"
+    """
+      ESpec is RSpec for Elixir
+    """
   end
 
   defp package do
    [
-     files: ["lib", "spec"],
+     files: ["lib", "spec", "mix.exs, ""README.md"],
      contributors: ["Anton Mishchuk"],
      licenses: ["MIT"],
      links: %{"github" => "https://github.com/antonmi/espec"}
