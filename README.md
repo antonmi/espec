@@ -1,4 +1,4 @@
 ESpec
 =====
 
-**TODO: Add description**
+RSpec for Elixir.
