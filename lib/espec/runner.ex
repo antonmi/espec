@@ -50,6 +50,7 @@ defmodule ESpec.Runner do
         %ESpec.Example{example | success: false, error: error}
     after
       run_finallies(example, module, assigns)
+      unload_mocks
     end
   end
 
@@ -70,12 +71,15 @@ defmodule ESpec.Runner do
     end)
   end
 
+  @doc false
   def run_finallies(example, module, assigns) do
     res = extract_finallies(example.context)
     |> Enum.map(fn(finally) ->
       apply(module, finally.function, [assigns])
     end)
   end
+
+  defp unload_mocks, do: ESpec.Mock.unload
 
   defp extract_befores(context), do: extract(context, ESpec.Before)
   defp extract_lets(context), do: extract(context, ESpec.Let)

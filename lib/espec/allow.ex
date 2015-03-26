@@ -1,6 +1,6 @@
 defmodule ESpec.Allow do
   
-  def allow(value), do: {ESpec.AllowTo, value}
+  def allow(module), do: {ESpec.AllowTo, module}
 
   def receive(name, func) do
     {:receive, name, func}

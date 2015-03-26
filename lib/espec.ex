@@ -44,6 +44,7 @@ defmodule ESpec do
     {:ok, _} = Application.ensure_all_started(:espec)
     start_specs_agent
     ESpec.Let.start_agent
+    ESpec.Mock.start_agent
   end
 
   def start_specs_agent do
