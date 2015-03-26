@@ -32,7 +32,7 @@ defmodule ESpec.Runner do
   - evaluates 'befores' and fill the map for `__`;
   - runs 'lets' (`__` can be accessed inside 'lets');
   - runs 'example block';
-  - evaluate 'afters'
+  - evaluate 'finally's'
   The struct has fields `[success: true, result: result]` or `[success: false, error: error]`
   The `result` is the value returned by example block.
   `error` is a `%ESpec.AssertionError{}` struct.
@@ -48,16 +48,18 @@ defmodule ESpec.Runner do
       error in [ESpec.AssertionError] ->
         IO.write("\e[31;1mF\e[0m")
         %ESpec.Example{example | success: false, error: error}
+    after
+      run_finallies(example, module, assigns)
     end
   end
 
   @doc false
   def run_befores(example, module) do
-    res = extract_befores(example.context)
-    |> Enum.map(fn(before) ->
-      apply(module, before.function, [])
+    extract_befores(example.context)
+    |> Enum.reduce(%{}, fn(before, map) ->
+      returned = apply(module, before.function, [map])
+      fill_dict(map, returned)
     end)
-    fill_dict(%{}, res)
   end
 
   @doc false
@@ -68,9 +70,16 @@ defmodule ESpec.Runner do
     end)
   end
 
-  defp extract_befores(context), do: extract(context, ESpec.Before)
+  def run_finallies(example, module, assigns) do
+    res = extract_finallies(example.context)
+    |> Enum.map(fn(finally) ->
+      apply(module, finally.function, [assigns])
+    end)
+  end
 
+  defp extract_befores(context), do: extract(context, ESpec.Before)
   defp extract_lets(context), do: extract(context, ESpec.Let)
+  defp extract_finallies(context), do: extract(context, ESpec.Finally)
 
   defp extract(context, module) do
     context |>
@@ -79,13 +88,12 @@ defmodule ESpec.Runner do
     end)
   end
 
-  defp fill_dict(dict, res) do
-    Enum.reduce(res, dict, fn(el, acc) ->
-      case el do
-        {:ok, list} when is_list(list)-> Enum.reduce(list, acc, fn({k,v}, a) -> Dict.put(a, k, v) end)
-        _ -> acc
-      end
-    end)
+  defp fill_dict(map, res) do
+    case res do
+      {:ok, list} when is_list(list) -> 
+        Enum.reduce(list, map, fn({k,v}, a) -> Dict.put(a, k, v) end)
+      _ -> map
+    end
   end
 
   defp filter(examples, opts) do

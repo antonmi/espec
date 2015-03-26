@@ -32,7 +32,7 @@ defmodule BeforESpec do
 
   end
 
-  context "function in double_underscore" do
+  context "function in __" do
     before do
       { :ok, a: fn(a) -> a*2 end }
     end
@@ -43,11 +43,14 @@ defmodule BeforESpec do
   end
 
   context "before block does not return :ok" do
-    before do
-      :smth
-    end
-
+    before do: :smth
     it do: expect(__[:a]).to eq("top before")
+  end
+
+  context "__ is available in next befores" do
+    before do: { :ok, a: 1 }
+    before do: { :ok, b: __[:a] + 1 }
+    it do: expect(__[:b]).to eq(2)
   end
 
   context "many before blocks" do

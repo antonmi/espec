@@ -19,7 +19,7 @@ defmodule ESpec.Before do
     quote do
       tail = @context
       head =  %ESpec.Before{function: unquote(function)}
-      def unquote(function)(), do: unquote(block)
+      def unquote(function)(var!(__)), do: unquote(block)
       @context [head | tail]
     end
   end

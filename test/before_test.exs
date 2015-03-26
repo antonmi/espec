@@ -17,13 +17,19 @@ defmodule BeforeTest do
         it do: "__[:b] is a function"
       end
     end
+
+    context "__ is available" do
+      before do: {:ok, b: __[:a] + 1 }
+      it do: "b = #{__[:b]}"
+    end
   end
 
   setup_all do
     {:ok,
       ex1: Enum.at(SomeSpec.examples, 0),
       ex2: Enum.at(SomeSpec.examples, 1),
-      ex3: Enum.at(SomeSpec.examples, 2)
+      ex3: Enum.at(SomeSpec.examples, 2),
+      ex4: Enum.at(SomeSpec.examples, 3)
     }
   end
 
@@ -51,6 +57,11 @@ defmodule BeforeTest do
   test "check map in ex3", context do
     map = ESpec.Runner.run_befores(context[:ex3], SomeSpec)
     assert(map[:b].(10) == 20)
+  end
+
+  test "run ex4", context do
+    example = ESpec.Runner.run_example(context[:ex4], SomeSpec)
+    assert(example.result == "b = 2")
   end
 
 end

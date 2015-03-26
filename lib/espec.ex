@@ -22,6 +22,7 @@ defmodule ESpec do
       import ESpec.Allow
 
       import ESpec.Before
+      import ESpec.Finally
       import ESpec.Let
 
     end
