@@ -1,4 +1,4 @@
-ESpec
+ESpec <img src='https://secure.travis-ci.org/antonmi/espec.png'>
 =====
 
 RSpec for Elixir.
