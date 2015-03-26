@@ -20,7 +20,7 @@ defmodule ESpec.Formatter do
   defp print_fail({example, index}) do
     IO.puts("\n")
     to_print = [
-      "\t\e[37;1m#{index + 1}) #{example.description}\e[m",
+      "\t\e[37;1m#{index + 1}) #{ESpec.Example.full_description(example)}\e[m",
       "\t\e[36;1m#{example.file}:#{example.line}\e[0m",
       "\t\e[31;1m#{example.error.message}\e[0m",
     ] |> Enum.join("\n")

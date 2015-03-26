@@ -56,9 +56,13 @@ defmodule ESpec.Example do
     end
   end
 
-  @doc false
-  defp random_atom(arg) do
-    String.to_atom("example_#{ESpec.Support.word_chars(arg)}_#{ESpec.Support.random_string}")
+  @doc "Description with contexts."
+  def full_description(%ESpec.Example{context: context, description: description, function: function}) do
+    context_description = context
+    |> Enum.filter(fn(struct) -> struct.__struct__ == ESpec.Context end)
+    |> Enum.map(&(&1.description))
+    context_description ++ [description]
+    |> Enum.join(" ")
   end
 
   @doc "Filters success examples"
@@ -71,5 +75,8 @@ defmodule ESpec.Example do
     results |> Enum.filter(&(!&1.success))
   end
 
+  defp random_atom(arg) do
+    String.to_atom("example_#{ESpec.Support.word_chars(arg)}_#{ESpec.Support.random_string}")
+  end
 
 end
