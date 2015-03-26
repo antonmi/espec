@@ -22,14 +22,21 @@ defmodule ESpec.Let do
   """
   defmacro let(var, do: block) do
     function = random_let_name
+    bb = Macro.escape(block)
     quote do
       tail = @context
       head =  %ESpec.Let{var: unquote(var), function: unquote(function)}
-      def unquote(function)(), do: unquote(block)
+
+      def unquote(function)(), do: unquote(bb)
 
       @context [head | tail]
+
       unless let_agent_get({__MODULE__, "already_defined_#{unquote(var)}"}) do
-        def unquote(var)(), do: let_agent_get({__MODULE__, unquote(var)})
+        def unquote(var)() do 
+          tree = let_agent_get({__MODULE__, unquote(var)})
+          {res, _} = Code.eval_quoted(tree)
+          res
+        end  
         let_agent_put({__MODULE__, "already_defined_#{unquote(var)}"}, true)
       end
     end

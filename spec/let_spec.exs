@@ -22,4 +22,20 @@ defmodule LetSpec do
     end
   end
 
+  context "" do
+    before do: IO.puts("Before") 
+
+    let :fff do
+      a = 1+1
+      b = 2+2
+      IO.puts("Let")
+      a + b
+    end
+
+    it do
+      IO.puts("It")
+     expect(fff).to eq(6)
+   end
+  end
+
 end
