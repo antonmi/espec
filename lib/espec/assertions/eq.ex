@@ -8,7 +8,6 @@ defmodule ESpec.Assertions.Eq do
     end
   end
 
-
   defp success?(act, exp, positive) do
     if positive, do: match(act, exp), else: !match(act, exp)
   end

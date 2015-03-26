@@ -14,6 +14,7 @@ defmodule ESpec.To do
       {:be_close, value, delta} -> ESpec.Assertions.BeCloseTo.assert(lhs, [value, delta], positive)
       {:match, value} -> ESpec.Assertions.Match.assert(lhs, value, positive)
       {:raise_exception, value} -> ESpec.Assertions.RaiseException.assert(lhs, value, positive)
+      {:throw_term, value} -> ESpec.Assertions.ThrowTerm.assert(lhs, value, positive)
     end
   end
 

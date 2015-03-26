@@ -56,7 +56,7 @@ defmodule ESpec.Assertions.RaiseException do
     if positive do
       "Expected #{inspect func} to raise exception, but nothing was raised"
     else
-      "Expected #{inspect func} to not raise exception, but exception was raised"
+      "Expected #{inspect func} to not raise exception, but an exception was raised"
     end
   end
 
@@ -64,7 +64,7 @@ defmodule ESpec.Assertions.RaiseException do
     if positive do
       "Expected #{inspect func} to raise exception `#{module}`, but nothing was raised"
     else
-      "Expected #{inspect func} to not raise exception `#{module}`, but exception was raised"
+      "Expected #{inspect func} to not raise exception `#{module}`, but the exception was raised"
     end
   end
 
@@ -74,11 +74,11 @@ defmodule ESpec.Assertions.RaiseException do
   end
 
   defp error_message(func, [module], err_module, positive) do
-    "Expected #{inspect func} to raise exception `#{module}`, but was raised `#{err_module}`"
+    "Expected #{inspect func} to raise exception `#{module}`, but `#{err_module}` was raised"
   end
 
   defp error_message(func, [module, message], err_module, err_message, positive) do
-    "Expected #{inspect func} to raise exception `#{module}` with message `#{message}`, but was raised `#{err_module}` with message `#{err_message}`"
+    "Expected #{inspect func} to raise exception `#{module}` with message `#{message}`, but `#{err_module}` was raised with the message `#{err_message}`"
   end
 
 end
