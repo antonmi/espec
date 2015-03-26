@@ -1,7 +1,7 @@
 defmodule ESpec.Mixfile do
   use Mix.Project
 
-  @version "0.1.0"
+  @version "0.2.0"
 
   def project do
     [app: :espec,
@@ -31,7 +31,7 @@ defmodule ESpec.Mixfile do
 
   defp description do
     """
-      Behaviour Driven Development for Elixir.
+       BDD test framework for Elixir inspired by RSpec.
     """
   end
 
