@@ -31,8 +31,8 @@ defmodule RunnerTest do
   end
 
   test "set_lets", context do
-    ESpec.Runner.set_lets(context[:ex2], SomeSpec)
-    val = ESpec.Let.let_agent_get({SomeSpec, :a})
+    ESpec.Runner.set_lets(context[:ex2], SomeSpec, %{})
+    {val, true, map} = ESpec.Let.agent_get({SomeSpec, :a})
     assert(val == 20)
   end
 

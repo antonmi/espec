@@ -1,41 +1,53 @@
 defmodule LetSpec do
   use ESpec
 
-  let :top, do: 10
-
-  it do: expect(top).to eq(10)
-
-  context "Inner" do
-    let :inner do
-      55
+  describe "let!" do
+    let!(:f) do
+      fn(x) -> x*2 end
     end
 
-    let :top, do: 100500
+    it do: expect(f.(2)).to eq(4)
 
-    it "check top", do: expect(top).to eq(100500)
+    context "redefine" do
+      let! :f, do: 5
+      it do: expect(f).to eq(5)
+    end
 
-    it "checks inner", do: expect(inner).to eq(55)
+    context "use __" do
+      before do: {:ok, a: 1}
+      let! :a, do: __[:a] + 1
+      it do: expect(a).to eq(2)
+    end
 
-    context "More inner" do
-      let :top, do: 500100
-      it do: expect(top).to eq(500100)
+    context "let! runs after befores" do
+      let! :b, do: __[:b]
+      before do: {:ok, b: 1}
+      it do: expect(b).to eq(1)
     end
   end
 
-  context "" do
-    before do: IO.puts("Before") 
-
-    let :fff do
-      a = 1+1
-      b = 2+2
-      IO.puts("Let")
-      a + b
+  describe "let" do
+    let(:f) do
+      fn(x) -> x*2 end
     end
 
-    it do
-      IO.puts("It")
-     expect(fff).to eq(6)
-   end
+    it do: expect(f.(2)).to eq(4)
+
+    context "redefine" do
+      let :f, do: 5
+      it do: expect(f).to eq(5)
+    end
+
+    context "use __" do
+      before do: {:ok, a: 1}
+      let :a, do: __[:a] + 1
+      it do: expect(a).to eq(2)
+    end
+
+    context "let runs only when called" do
+      let :b, do: IO.puts("You will not see it")
+      it do: expect(1).to eq(1)
+    end
   end
 
 end

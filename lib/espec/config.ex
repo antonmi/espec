@@ -1,6 +1,5 @@
 defmodule ESpec.Configuration do
-
-
+  
   def add(opts) do
     opts |> Enum.each fn {key, val} ->
       Application.put_env(:espec, key, val)

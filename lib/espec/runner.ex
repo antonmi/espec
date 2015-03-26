@@ -1,13 +1,13 @@
 defmodule ESpec.Runner do
   @moduledoc """
-    Defines functions which runs the examples.
+  Defines functions which runs the examples.
   """
 
   @doc """
-    Runs all examples.
-    Uses `filter/2` to select examples to run.
-    The options are:
-    TODO
+  Runs all examples.
+  Uses `filter/2` to select examples to run.
+  The options are:
+  TODO
   """
   def run(opts) do
     ESpec.specs |> Enum.reverse
@@ -27,14 +27,19 @@ defmodule ESpec.Runner do
   end
 
   @doc """
-    Runs one specific example and returns an `%ESpec.Example{}` struct.
-    The struct has fields `[success: true, result: result]` or `[success: false, error: error]`
-    The `result` is the value returned by example block.
-    `error` is a `%ESpec.AssertionError{}` struct.
+  Runs one specific example and returns an `%ESpec.Example{}` struct.
+  The sequence in the following:
+  - evaluates 'befores' and fill the map for `__`;
+  - runs 'lets' (`__` can be accessed inside 'lets');
+  - runs 'example block';
+  - evaluate 'afters'
+  The struct has fields `[success: true, result: result]` or `[success: false, error: error]`
+  The `result` is the value returned by example block.
+  `error` is a `%ESpec.AssertionError{}` struct.
   """
   def run_example(example, module) do
     assigns = run_befores(example, module)
-    set_lets(example, module)
+    set_lets(example, module, assigns)
     try do
       result = apply(module, example.function, [assigns])
       IO.write("\e[32;1m.\e[0m")
@@ -56,10 +61,10 @@ defmodule ESpec.Runner do
   end
 
   @doc false
-  def set_lets(example, module) do
+  def set_lets(example, module, assigns) do
     extract_lets(example.context)
     |> Enum.each(fn(let) ->
-      ESpec.Let.let_agent_put({module, let.var}, apply(module, let.function, []))
+      ESpec.Let.agent_put({module, let.var}, apply(module, let.function, [assigns, let.keep_quoted]))
     end)
   end
 

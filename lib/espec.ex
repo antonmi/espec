@@ -42,7 +42,7 @@ defmodule ESpec do
   def start do
     {:ok, _} = Application.ensure_all_started(:espec)
     start_specs_agent
-    ESpec.Let.start_let_agent
+    ESpec.Let.start_agent
   end
 
   def start_specs_agent do

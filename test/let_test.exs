@@ -15,19 +15,26 @@ defmodule LetTest do
       it do: "a = #{a}"
       it do: "f.(2) = #{f.(2)}"
     end
+
+    context "Use __" do
+      before do: {:ok, x: 1}
+      let :y, do: __[:x] + 1
+      it do: "y = #{y}"
+    end
   end
 
   setup_all do
     {:ok,
       ex1: Enum.at(SomeSpec.examples, 0),
       ex2: Enum.at(SomeSpec.examples, 1),
-      ex3: Enum.at(SomeSpec.examples, 2)
+      ex3: Enum.at(SomeSpec.examples, 2),
+      ex4: Enum.at(SomeSpec.examples, 3)
     }
   end
 
   test "check let value in ex1", context do
-    ESpec.Runner.set_lets(context[:ex1], SomeSpec)
-    val = ESpec.Let.let_agent_get({SomeSpec, :a})
+    ESpec.Runner.set_lets(context[:ex1], SomeSpec, %{b: 1})
+    {val, quoted, map} = ESpec.Let.agent_get({SomeSpec, :a})
     assert(val == 10)
   end
 
@@ -44,6 +51,11 @@ defmodule LetTest do
   test "run ex3", context do
     example = ESpec.Runner.run_example(context[:ex3], SomeSpec)
     assert(example.result == "f.(2) = 4")
+  end
+
+   test "run ex5", context do
+    example = ESpec.Runner.run_example(context[:ex4], SomeSpec)
+    assert(example.result == "y = 2")
   end
 
 end
