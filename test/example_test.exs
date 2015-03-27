@@ -10,8 +10,8 @@ defmodule ExampleTest do
       expect(true).to be(false)
     end
 
-    it do: "it example"
-    it "is named example" do
+    it [a: 1, b: 2], do: "it example with opts"
+    it "is named example with opts", c: 3 do
       "it is with name"
     end
 
@@ -20,7 +20,9 @@ defmodule ExampleTest do
   setup_all do
     {:ok,
       ex1: Enum.at(SomeSpec.examples, 0),
-      ex2: Enum.at(SomeSpec.examples, 1)
+      ex2: Enum.at(SomeSpec.examples, 1),
+      ex3: Enum.at(SomeSpec.examples, 2),
+      ex4: Enum.at(SomeSpec.examples, 3)
     }
   end
 
@@ -53,4 +55,11 @@ defmodule ExampleTest do
     assert(example.error.exp == false)
   end
 
+  test "ex3 opts", context do
+    assert(context[:ex3].opts == [a: 1, b: 2])
+  end
+
+  test "ex4 opts", context do
+    assert(context[:ex4].opts == [c: 3])
+  end
 end

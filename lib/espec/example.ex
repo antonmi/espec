@@ -9,6 +9,7 @@ defmodule ESpec.Example do
   Expampe struct.
   description - the description of example,
   function - random function name,
+  opts - options,
   file - spec file path,
   line - the line where example is defined,
   context - example context. Accumulator for 'contexts' and 'lets',
@@ -16,7 +17,7 @@ defmodule ESpec.Example do
   result - the value returned by example block
   error - store an error
   """
-  defstruct description: "", function: "",
+  defstruct description: "", function: "", opts: [],
             file: nil, line: nil, context: [],
             success: nil, result: nil, error: %ESpec.AssertionError{}
 
@@ -24,36 +25,45 @@ defmodule ESpec.Example do
   Adds example to @examples and defines function to wrap the spec.
   Sends 'double underscore `__`' variable to the example block.
   """
-  defmacro example(description, do: block) do
+  defmacro example(description, opts, do: block) do
     function = (random_atom(description))
     quote do
       context = Enum.reverse(@context)
 
-      @examples %ESpec.Example{ description: unquote(description), function: unquote(function),
+      @examples %ESpec.Example{ description: unquote(description), function: unquote(function), opts: unquote(opts),
                                 file: __ENV__.file, line: __ENV__.line, context: context }
       def unquote(function)(var!(__)), do: unquote(block)
     end
   end
 
-  @doc "Defines example without description"
+  @doc "Example with description only"
+  defmacro example(description, do: block) when is_binary(description) do
+    quote do: unquote(__MODULE__).example(unquote(description), [], do: unquote(block))
+  end
+
+  @doc "Example options only"
+  defmacro example(opts, do: block) when is_list(opts) do
+    quote do: unquote(__MODULE__).example("", unquote(opts), do: unquote(block))
+  end
+
+  @doc "Defines the simplest example"
   defmacro example(do: block) do
-    quote do
-      unquote(__MODULE__).example("", do: unquote(block))
-    end
+    quote do: unquote(__MODULE__).example("", [], do: unquote(block))
+  end
+
+  @doc "Alias for `example/3`"
+  defmacro it(description, opts, do: block) do
+    quote do: unquote(__MODULE__).example(unquote(description), unquote(opts), do: unquote(block))
   end
 
   @doc "Alias for `example/2`"
-  defmacro it(description, do: block) do
-    quote do
-      unquote(__MODULE__).example(unquote(description), do: unquote(block))
-    end
+  defmacro it(description_or_opts, do: block) do
+    quote do: unquote(__MODULE__).example(unquote(description_or_opts), do: unquote(block))
   end
 
   @doc "Alias for `example/1`"
   defmacro it(do: block) do
-    quote do
-      unquote(__MODULE__).example("", do: unquote(block))
-    end
+    quote do: unquote(__MODULE__).example(do: unquote(block))
   end
 
   @doc "Description with contexts."
