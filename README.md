@@ -1,11 +1,11 @@
 # ESpec [![Build Status](https://travis-ci.org/antonmi/espec.svg?branch=master)](https://travis-ci.org/antonmi/espec)
 
-ESpec BDD test framework for Elixir.
-Inspired by RSpec. Take a look at [spec](https://github.com/antonmi/espec/tree/master/spec) folder.
+ESpec is a BDD test framework for Elixir.
+Inspired by RSpec. Take a look at the [spec](https://github.com/antonmi/espec/tree/master/spec) folder.
 
 ## Features
 
-The main idea is to be close to RSpec phylosophy.
+The main idea is to be close to the RSpec phylosophy.
 
   * Test organization with `describe`, `context`, `it`, and etc blocks
   * Familiar matchers: `eq`, `be_close_to`, `raise_execption`, etc
@@ -16,7 +16,7 @@ The main idea is to be close to RSpec phylosophy.
 
 ## Installation
 
-Add `espec` to your `mix.exs` dependencies:
+Add `espec` to dependencies in the `mix.exs` file:
 
 ```elixir
 def deps do
@@ -26,7 +26,7 @@ def deps do
 end
 ```
 
-Set `preferred_cli_env` for `espec` in `mix.exs`:
+Set `preferred_cli_env` for `espec` in the `mix.exs` file:
 
 ```elixir
 def project do
@@ -38,7 +38,7 @@ end
 
 Or run with `MIX_ENV=test`.
 
-Create spec folder and add `spec_helper.exs` with `ESpec.start`.
+Create a spec folder and add `spec_helper.exs` with `ESpec.start`.
 
 Place your spec files into `spec` folder.
 
@@ -54,19 +54,24 @@ mix espec spec/some_spec.exs:25
 
 ## Context blocks
 
+TODO
 
 ## Exampes
 
+TODO
+
 ## `before` and `finally`
+
+TODO
 
 ## `let`, `let!`, and `subject`
 
+TODO
+
 ## Matchers
+
+TODO
 
 ## Mocks
 
-
-
-
-
-
+TODO
