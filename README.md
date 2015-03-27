@@ -39,7 +39,9 @@ end
 ```
 
 Or run with `MIX_ENV=test`.
+
 Create spec folder and add `spec_helper.exs` with `ESpec.start`.
+
 Place your spec files into `spec` folder.
 
 ### Run specs
