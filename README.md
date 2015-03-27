@@ -1,12 +1,13 @@
+[![Build Status](https://travis-ci.org/antonmi/espec.svg?branch=master)](https://travis-ci.org/antonmi/espec)
+
 ## ESpec
 =====
-[![Build Status](https://travis-ci.org/antonmi/espec.svg?branch=master)](https://travis-ci.org/antonmi/espec)
 
 ESpec BDD test framework for Elixir.
 Inspired by RSpec.
 
 ### Features
------------
+-------------
 The main idea is to be close to RSpec phylosophy.
 
   * Test organization with `describe`, `context`, `it`, and etc blocks
@@ -17,7 +18,7 @@ The main idea is to be close to RSpec phylosophy.
   * Mocks and stubs. (uses [Meck](https://github.com/eproxus/meck))
 
 ### Installation
-
+----------------
 Add `espec` to your `mix.exs` dependencies:
 
 ```elixir
@@ -45,6 +46,8 @@ Create spec folder and add `spec_helper.exs` with `ESpec.start`.
 Place your spec files into `spec` folder.
 
 ### Run specs
+-------------
+
 ```sh
 mix espec
 ```
