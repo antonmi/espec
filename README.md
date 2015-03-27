@@ -1,5 +1,4 @@
-# ESpec
-[![Build Status](https://travis-ci.org/antonmi/espec.svg?branch=master)](https://travis-ci.org/antonmi/espec)
+# ESpec [![Build Status](https://travis-ci.org/antonmi/espec.svg?branch=master)](https://travis-ci.org/antonmi/espec)
 
 ESpec BDD test framework for Elixir.
 Inspired by RSpec. Take a look at [spec](https://github.com/antonmi/espec/tree/master/spec) folder.
