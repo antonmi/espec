@@ -25,13 +25,13 @@ defmodule BeBetweenTest do
 
   test "Success", context do
     Enum.each(context[:success], fn(ex) ->
-      assert(ex.success == true)
+      assert(ex.status == :success)
     end)
   end
 
   test "Errors", context do
     Enum.each(context[:errors], fn(ex) ->
-      assert(ex.success == false)
+      assert(ex.status == :failure)
     end)
   end
 

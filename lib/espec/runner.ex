@@ -39,7 +39,7 @@ defmodule ESpec.Runner do
   - runs 'lets' (`__` can be accessed inside 'lets');
   - runs 'example block';
   - evaluate 'finally's'
-  The struct has fields `[success: true, result: result]` or `[success: false, error: error]`
+  The struct has fields `[status: :success, result: result]` or `[status: failed, error: error]`
   The `result` is the value returned by example block.
   `error` is a `%ESpec.AssertionError{}` struct.
   """
@@ -51,11 +51,11 @@ defmodule ESpec.Runner do
     try do
       result = apply(module, example.function, [assigns])
       ESpec.Formatter.success(example)
-      %ESpec.Example{example | success: true, result: result}
+      %ESpec.Example{example | status: :success, result: result}
     rescue
       error in [ESpec.AssertionError] ->
         ESpec.Formatter.failed(example)
-        %ESpec.Example{example | success: false, error: error}
+        %ESpec.Example{example | status: :failure, error: error}
     after
       run_finallies(assigns, example, module)
       |> run_config_finally(example, module)

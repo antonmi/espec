@@ -42,12 +42,12 @@ defmodule SubjectTest do
 
   test "run ex3", context do
     example = ESpec.Runner.run_example(context[:ex3], SomeSpec)
-    assert(example.success == true)
+    assert(example.status == :success)
   end
 
   test "run ex4", context do
     example = ESpec.Runner.run_example(context[:ex4], SomeSpec)
-    assert(example.success == true)
+    assert(example.status == :success)
   end
 
 end

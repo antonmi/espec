@@ -15,13 +15,13 @@ defmodule ESpec.Example do
   file - spec file path,
   line - the line where example is defined,
   context - example context. Accumulator for 'contexts' and 'lets',
-  success - store example result,
+  status - example status (:new, :success, :failure, :skipped, :pending),
   result - the value returned by example block
   error - store an error
   """
   defstruct description: "", function: "", opts: [],
             file: nil, line: nil, context: [],
-            success: nil, result: nil, error: %ESpec.AssertionError{}
+            status: :new, result: nil, error: %ESpec.AssertionError{}
 
   @doc """
   Adds example to @examples and defines function to wrap the spec.
@@ -98,12 +98,12 @@ defmodule ESpec.Example do
 
   @doc "Filters success examples"
   def success(results) do
-    results |> Enum.filter(&(&1.success === true))
+    results |> Enum.filter(&(&1.status == :success))
   end
 
   @doc "Filters failed examples"
   def failed(results) do
-    results |> Enum.filter(&(&1.success === false))
+    results |> Enum.filter(&(&1.status === :failure))
   end
 
   defp random_atom(arg) do
