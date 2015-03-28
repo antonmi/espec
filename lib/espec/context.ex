@@ -3,6 +3,7 @@ defmodule ESpec.Context do
     Defines macros 'context' and 'describe'.
   """
 
+  @skipped ~w(xcontext xdescribe)a
   @doc "Context has description."
   defstruct description: "", opts: []
 
@@ -48,5 +49,25 @@ defmodule ESpec.Context do
   defmacro describe(do: block) do
     quote do: unquote(__MODULE__).context(do: unquote(block))
   end
+
+  @doc "Macros for skipped contexts"
+  Enum.each @skipped, fn(func) ->
+    defmacro unquote(func)(description, opts, do: block) do
+      quote do: unquote(__MODULE__).context(unquote(description), Keyword.put(unquote(opts), :skip, true), do: unquote(block))
+    end
+
+    defmacro unquote(func)(description, do: block) when is_binary(description) do
+      quote do: unquote(__MODULE__).context(unquote(description), [skip: true], do: unquote(block))
+    end
+
+    defmacro unquote(func)(opts, do: block) when is_list(opts) do
+      quote do: unquote(__MODULE__).context(Keyword.put(unquote(opts), :skip, true), do: unquote(block))
+    end
+
+    defmacro unquote(func)(do: block) do
+      quote do: unquote(__MODULE__).context([skip: true], do: unquote(block))
+    end
+  end
+
 
 end

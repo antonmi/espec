@@ -145,7 +145,7 @@ defmodule ESpec.Runner do
 
   defp filter_skipped(examples) do
     Enum.filter(examples, fn(example) ->
-      !example.opts[:skip]
+      !(example.opts[:skip] || Enum.any?(example.context, &(&1.opts[:skip] == true)))
     end)
   end
 
