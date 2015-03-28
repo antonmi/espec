@@ -4,10 +4,12 @@ defmodule XcontextTest do
 
   defmodule SomeSpec do
     use ESpec
+    let :a, do: 1
 
     it do: "Example"
 
     context "skipped", [skip: true] do
+
       it do: "skipped"
     end
 

@@ -103,6 +103,7 @@ defmodule ESpec.Runner do
   defp extract_befores(context), do: extract(context, ESpec.Before)
   defp extract_lets(context), do: extract(context, ESpec.Let)
   defp extract_finallies(context), do: extract(context, ESpec.Finally)
+  defp extract_contexts(context), do: extract(context, ESpec.Context)
 
   defp extract(context, module) do
     context |>
@@ -145,7 +146,8 @@ defmodule ESpec.Runner do
 
   defp filter_skipped(examples) do
     Enum.filter(examples, fn(example) ->
-      !(example.opts[:skip] || Enum.any?(example.context, &(&1.opts[:skip] == true)))
+      contexts = extract_contexts(example.context)
+      !(example.opts[:skip] || Enum.any?(contexts, &(&1.opts[:skip] == true)))
     end)
   end
 

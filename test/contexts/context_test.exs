@@ -22,6 +22,14 @@ defmodule ContextTest do
     context c: 3 do
       it do: "in context without description bu with opts"
     end
+
+    describe "is alias" do
+      it do: "some example"
+    end
+
+    example_group "is alias" do
+      it do: "some example"
+    end
   end
 
   setup_all do

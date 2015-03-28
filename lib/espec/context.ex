@@ -2,8 +2,8 @@ defmodule ESpec.Context do
   @moduledoc """
     Defines macros 'context' and 'describe'.
   """
-
-  @skipped ~w(xcontext xdescribe)a
+  @aliases ~w(describe example_group)a
+  @skipped ~w(xcontext xdescribe xexample_group)a
   @doc "Context has description."
   defstruct description: "", opts: []
 
@@ -35,19 +35,19 @@ defmodule ESpec.Context do
     quote do: unquote(__MODULE__).context("", [], do: unquote(block))
   end
 
-  @doc "Alias for `context/3`."
-  defmacro describe(description, opts, do: block) do
-    quote do: unquote(__MODULE__).context(unquote(description), unquote(opts), do: unquote(block))
-  end
+  @doc "Aliases for `context`."
+  Enum.each @aliases, fn(func) ->
+    defmacro unquote(func)(description, opts, do: block) do
+      quote do: unquote(__MODULE__).context(unquote(description), unquote(opts), do: unquote(block))
+    end
 
-  @doc "Alias for `context/2`."
-  defmacro describe(description_or_opts, do: block) do
-    quote do: unquote(__MODULE__).context(unquote(description_or_opts), do: unquote(block))
-  end
+    defmacro unquote(func)(description_or_opts, do: block) do
+      quote do: unquote(__MODULE__).context(unquote(description_or_opts), do: unquote(block))
+    end
 
-  @doc "Alias for `context/1`."
-  defmacro describe(do: block) do
-    quote do: unquote(__MODULE__).context(do: unquote(block))
+    defmacro unquote(func)(do: block) do
+      quote do: unquote(__MODULE__).context(do: unquote(block))
+    end
   end
 
   @doc "Macros for skipped contexts"
