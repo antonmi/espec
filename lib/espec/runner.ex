@@ -51,7 +51,8 @@ defmodule ESpec.Runner do
         IO.write("\e[31;1mF\e[0m")
         %ESpec.Example{example | success: false, error: error}
     after
-      run_finallies(example, module, assigns)
+      run_finallies(assigns, example, module)
+      |> run_config_finally(example, module)
       unload_mocks
     end
   end
@@ -62,11 +63,13 @@ defmodule ESpec.Runner do
     def run_befores(assigns, example, module), do: do_run_befores(assigns, example, module)
     def set_lets(assigns, example, module), do: do_set_lets(assigns, example, module)
     def run_finallies(example, module, assigns), do: do_run_finallies(example, module, assigns)
+    def run_config_finally(assigns, example, module), do: do_run_config_finally(assigns, example, module)
   else
     defp run_config_before(assigns, _example, _module), do: do_run_config_before(assigns, _example, _module)
     defp run_befores(assigns, example, module), do: do_run_befores(assigns, example, module)
     defp set_lets(assigns, example, module), do: do_set_lets(assigns, example, module)
     defp run_finallies(example, module, assigns), do: do_run_finallies(example, module, assigns)
+    defp run_config_finally(assigns, example, module), do: do_run_config_finally(assigns, example, module)
   end
 
   defp do_run_config_before(assigns, _example, _module) do
@@ -89,11 +92,19 @@ defmodule ESpec.Runner do
     end)
   end
 
-  defp do_run_finallies(example, module, assigns) do
+  defp do_run_finallies(assigns, example, module) do
     res = extract_finallies(example.context)
-    |> Enum.map(fn(finally) ->
-      apply(module, finally.function, [assigns])
+    |> Enum.reduce(assigns, fn(finally, map) ->
+      returned =  apply(module, finally.function, [map])
+      fill_dict(map, returned)
     end)
+  end
+
+  defp do_run_config_finally(assigns, example, module) do
+    func = ESpec.Configuration.get(:finally)
+    if func do
+      if is_function(func, 1), do: func.(assigns), else: func.()
+    end
   end
 
   defp unload_mocks, do: ESpec.Mock.unload
