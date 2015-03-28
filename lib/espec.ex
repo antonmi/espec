@@ -31,7 +31,6 @@ defmodule ESpec do
   defmacro __before_compile__(_env) do
     quote do
       def examples, do: Enum.reverse(@examples)
-      def run, do: ESpec.Runner.run_examples(@examples, __MODULE__)
     end
   end
 
@@ -40,7 +39,7 @@ defmodule ESpec do
   def run(opts) do
     examples = ESpec.Runner.run(opts)
     ESpec.Formatter.print_result(examples)
-    !Enum.any?(ESpec.Example.failed(examples))
+    !Enum.any?(ESpec.Example.failure(examples))
   end
 
   def start do

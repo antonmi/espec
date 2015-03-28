@@ -102,8 +102,13 @@ defmodule ESpec.Example do
   end
 
   @doc "Filters failed examples"
-  def failed(results) do
+  def failure(results) do
     results |> Enum.filter(&(&1.status === :failure))
+  end
+
+  @doc "Filters skipped examples"
+  def skipped(results) do
+    results |> Enum.filter(&(&1.status === :skipped))
   end
 
   defp random_atom(arg) do

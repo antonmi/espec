@@ -22,10 +22,10 @@ defmodule ESpec.Runner do
   def run_examples(examples, module) do
     examples
     |> Enum.map(fn(example) ->
+      contexts = extract_contexts(example.context)
       cond do
-        example.opts[:skip] ->
-          IO.puts example.success
-          example
+        example.opts[:skip] || Enum.any?(contexts, &(&1.opts[:skip] == true)) ->
+          run_skipped(example)
         true ->
           run_example(example, module)
       end
@@ -54,7 +54,7 @@ defmodule ESpec.Runner do
       %ESpec.Example{example | status: :success, result: result}
     rescue
       error in [ESpec.AssertionError] ->
-        ESpec.Formatter.failed(example)
+        ESpec.Formatter.failure(example)
         %ESpec.Example{example | status: :failure, error: error}
     after
       run_finallies(assigns, example, module)
@@ -62,6 +62,8 @@ defmodule ESpec.Runner do
       unload_mocks
     end
   end
+
+  def run_skipped(example), do: %ESpec.Example{example | status: :skipped}
 
   defp run_config_before(assigns, _example, _module) do
     func = ESpec.Configuration.get(:before)
@@ -126,7 +128,6 @@ defmodule ESpec.Runner do
       examples = file_opts_filter(examples, file_opts)
     end
     examples
-    |> filter_skipped
   end
 
   defp file_opts_filter(examples, file_opts) do
@@ -142,13 +143,6 @@ defmodule ESpec.Runner do
       {_file, opts} -> opts
       nil -> []
     end
-  end
-
-  defp filter_skipped(examples) do
-    Enum.filter(examples, fn(example) ->
-      contexts = extract_contexts(example.context)
-      !(example.opts[:skip] || Enum.any?(contexts, &(&1.opts[:skip] == true)))
-    end)
   end
 
 end
