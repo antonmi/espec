@@ -11,7 +11,7 @@ defmodule ESpec.Assertions.BeCloseToSpec do
       it do: expect(2).to_not be_close_to(5, 1)
     end
 
-    context "Errors" do
+    xcontext "Errors" do
       it do: expect(2).to be_close_to(1, 0.9)
       it do: expect(3).to_not be_close_to(3, 0)
     end

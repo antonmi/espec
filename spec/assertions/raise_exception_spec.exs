@@ -21,7 +21,7 @@ defmodule ESpec.Assertions.RaiseExceptionSpec do
       it do: expect(func3).to_not raise_exception(FunctionClauseError, "no such message")
     end
 
-    context "Errors" do
+    xcontext "Errors" do
       it do: expect(func2).to raise_exception
       it do: expect(func2).to raise_exception(ArithmeticError)
       it do: expect(func2).to raise_exception(ArithmeticError, "bad argument in arithmetic expression")

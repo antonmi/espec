@@ -8,7 +8,7 @@ defmodule ESpec.Assertions.EqSpec do
       it do: expect(1+1).to_not eq(3)
     end
 
-    context "Errors" do
+    xcontext "Errors" do
       it do: expect(1+1).to eq(3.0)
       it do: expect(1+1).to_not eq(2)
     end
@@ -23,7 +23,7 @@ defmodule ESpec.Assertions.EqSpec do
       it do: expect(1+1).to be 2
     end
 
-    context "Errors" do
+    xcontext "Errors" do
       it do: expect(1+1 == 1).to be true
       it do: expect(1+1 == 1).to_not be false
     end
