@@ -35,6 +35,8 @@ defmodule ESpec do
     end
   end
 
+  def configure(func), do: ESpec.Configuration.configure(func)
+
   def run(opts) do
     ESpec.Runner.run(opts)
     |> ESpec.Formatter.print_result

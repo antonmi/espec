@@ -10,6 +10,7 @@ defmodule ESpec.Runner do
   TODO
   """
   def run(opts) do
+    IO.puts(ESpec.Configuration.get(:hello))
     ESpec.specs |> Enum.reverse
     |> Enum.map(fn(module) ->
       filter(module.examples, opts)
