@@ -26,12 +26,12 @@ defmodule RunnerTest do
   end
 
   test "run_befores", context do
-    map = ESpec.Runner.run_befores(context[:ex1], SomeSpec)
+    map = ESpec.Runner.run_befores(%{}, context[:ex1], SomeSpec)
     assert(map[:a] == 10)
   end
 
   test "set_lets", context do
-    ESpec.Runner.set_lets(context[:ex2], SomeSpec, %{})
+    ESpec.Runner.set_lets(%{}, context[:ex2], SomeSpec)
     {val, true, map} = ESpec.Let.agent_get({SomeSpec, :a})
     assert(val == 20)
   end

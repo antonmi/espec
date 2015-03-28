@@ -10,7 +10,6 @@ defmodule ESpec.Runner do
   TODO
   """
   def run(opts) do
-    IO.puts(ESpec.Configuration.get(:hello))
     ESpec.specs |> Enum.reverse
     |> Enum.map(fn(module) ->
       filter(module.examples, opts)
@@ -39,8 +38,10 @@ defmodule ESpec.Runner do
   `error` is a `%ESpec.AssertionError{}` struct.
   """
   def run_example(example, module) do
-    assigns = run_befores(example, module)
-    set_lets(example, module, assigns)
+    assigns = %{} 
+    |> run_config_before(example, module)
+    |> run_befores(example, module)
+    set_lets(assigns, example, module)
     try do
       result = apply(module, example.function, [assigns])
       IO.write("\e[32;1m.\e[0m")
@@ -56,16 +57,22 @@ defmodule ESpec.Runner do
   end
 
   @doc false
-  def run_befores(example, module) do
+  def run_config_before(assigns, _example, _module) do
+    func = ESpec.Configuration.get(:before)
+    if func, do: fill_dict(assigns, func.()), else: assigns
+  end
+
+  @doc false
+  def run_befores(assigns, example, module) do
     extract_befores(example.context)
-    |> Enum.reduce(%{}, fn(before, map) ->
+    |> Enum.reduce(assigns, fn(before, map) ->
       returned = apply(module, before.function, [map])
       fill_dict(map, returned)
     end)
   end
 
   @doc false
-  def set_lets(example, module, assigns) do
+  def set_lets(assigns, example, module) do
     extract_lets(example.context)
     |> Enum.each(fn(let) ->
       ESpec.Let.agent_put({module, let.var}, apply(module, let.function, [assigns, let.keep_quoted]))

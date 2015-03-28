@@ -40,7 +40,7 @@ defmodule MockTest do
   end 
 
   test "Agent data", context do
-  	ESpec.Runner.run_befores(context[:ex1], SomeSpec)
+  	ESpec.Runner.run_befores(%{}, context[:ex1], SomeSpec)
 		assert(Set.to_list(Agent.get(:espec_mock_agent, &(&1))) == [ESpec.SomeModule])
 		ESpec.Runner.run_example(context[:ex1], SomeSpec)
 		assert(Set.to_list(Agent.get(:espec_mock_agent, &(&1))) == [])

@@ -21,7 +21,7 @@ defmodule FinallyTest do
   end
 
   test "finallies", context do
-    assigns = ESpec.Runner.run_befores(context[:ex1], SomeSpec)
+    assigns = ESpec.Runner.run_befores(%{}, context[:ex1], SomeSpec)
     result = ESpec.Runner.run_finallies(context[:ex1], SomeSpec, assigns)
     assert(result == ["a = 1", "another finally"])
   end

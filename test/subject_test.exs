@@ -30,7 +30,7 @@ defmodule SubjectTest do
   end
 
   test "check let value in ex1", context do
-    ESpec.Runner.set_lets(context[:ex1], SomeSpec, %{a: 1})
+    ESpec.Runner.set_lets(%{a: 1}, context[:ex1], SomeSpec)
     {val, true, map} = ESpec.Let.agent_get({SomeSpec, :subject})
     assert(val == 10)
   end

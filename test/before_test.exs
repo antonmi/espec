@@ -34,7 +34,7 @@ defmodule BeforeTest do
   end
 
   test "check map in ex1", context do
-    map = ESpec.Runner.run_befores(context[:ex1], SomeSpec)
+    map = ESpec.Runner.run_befores(%{}, context[:ex1], SomeSpec)
     assert(map[:a] == 1)
   end
 
@@ -44,7 +44,7 @@ defmodule BeforeTest do
   end
 
   test "check map in ex2", context do
-    map = ESpec.Runner.run_befores(context[:ex2], SomeSpec)
+    map = ESpec.Runner.run_befores(%{}, context[:ex2], SomeSpec)
     assert(map[:a] == 10)
     assert(map[:b] == 2)
   end
@@ -55,7 +55,7 @@ defmodule BeforeTest do
   end
 
   test "check map in ex3", context do
-    map = ESpec.Runner.run_befores(context[:ex3], SomeSpec)
+    map = ESpec.Runner.run_befores(%{}, context[:ex3], SomeSpec)
     assert(map[:b].(10) == 20)
   end
 

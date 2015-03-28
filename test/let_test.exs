@@ -33,7 +33,7 @@ defmodule LetTest do
   end
 
   test "check let value in ex1", context do
-    ESpec.Runner.set_lets(context[:ex1], SomeSpec, %{b: 1})
+    ESpec.Runner.set_lets(%{b: 1}, context[:ex1], SomeSpec)
     {val, quoted, map} = ESpec.Let.agent_get({SomeSpec, :a})
     assert(val == 10)
   end
