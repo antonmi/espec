@@ -56,14 +56,25 @@ defmodule ESpec.Runner do
     end
   end
 
-  @doc false
-  def run_config_before(assigns, _example, _module) do
-    func = ESpec.Configuration.get(:before)
-    if func, do: fill_dict(assigns, func.()), else: assigns
+  @doc "defines public functions for testing purpose"
+  if Mix.env == :test do
+    def run_config_before(assigns, _example, _module), do: do_run_config_before(assigns, _example, _module)
+    def run_befores(assigns, example, module), do: do_run_befores(assigns, example, module)
+    def set_lets(assigns, example, module), do: do_set_lets(assigns, example, module)
+    def run_finallies(example, module, assigns), do: do_run_finallies(example, module, assigns)
+  else
+    defp run_config_before(assigns, _example, _module), do: do_run_config_before(assigns, _example, _module)
+    defp run_befores(assigns, example, module), do: do_run_befores(assigns, example, module)
+    defp set_lets(assigns, example, module), do: do_set_lets(assigns, example, module)
+    defp run_finallies(example, module, assigns), do: do_run_finallies(example, module, assigns)
   end
 
-  @doc false
-  def run_befores(assigns, example, module) do
+  defp do_run_config_before(assigns, _example, _module) do
+    func = ESpec.Configuration.get(:before)
+    if func, do: fill_dict(assigns, func.()), else: assigns
+  end 
+
+  defp do_run_befores(assigns, example, module) do
     extract_befores(example.context)
     |> Enum.reduce(assigns, fn(before, map) ->
       returned = apply(module, before.function, [map])
@@ -71,16 +82,14 @@ defmodule ESpec.Runner do
     end)
   end
 
-  @doc false
-  def set_lets(assigns, example, module) do
+  defp do_set_lets(assigns, example, module) do
     extract_lets(example.context)
     |> Enum.each(fn(let) ->
       ESpec.Let.agent_put({module, let.var}, apply(module, let.function, [assigns, let.keep_quoted]))
     end)
   end
 
-  @doc false
-  def run_finallies(example, module, assigns) do
+  defp do_run_finallies(example, module, assigns) do
     res = extract_finallies(example.context)
     |> Enum.map(fn(finally) ->
       apply(module, finally.function, [assigns])
