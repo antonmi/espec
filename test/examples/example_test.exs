@@ -15,6 +15,9 @@ defmodule ExampleTest do
       "it is with name"
     end
 
+    specify do: "another example"
+    specify "name", do: "another example"
+    specify "name", [], do: "another example"
   end
 
   setup_all do
@@ -26,8 +29,8 @@ defmodule ExampleTest do
     }
   end
 
-  test "check SomeSpec.examples length", context do
-    assert(length(SomeSpec.examples) == 4)
+  test "check SomeSpec.examples length" do
+    assert(length(SomeSpec.examples) == 7)
   end
 
   test "check ex1", context do

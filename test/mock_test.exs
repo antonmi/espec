@@ -15,7 +15,12 @@ defmodule MockTest do
 			it do: ESpec.SomeModule.q
 		
 			it "ESpec.SomeModule.m is undefined" do
-				ESpec.SomeModule.m
+        try do
+			   	ESpec.SomeModule.m
+        rescue
+          UndefinedFunctionError ->
+            "rescued"
+        end    
 			end
 		end
 
@@ -45,7 +50,7 @@ defmodule MockTest do
   end 
 
   test "run ex3", context do
-    assert_raise(UndefinedFunctionError, fn -> ESpec.Runner.run_example(context[:ex3], SomeSpec) end)
+    assert(ESpec.Runner.run_example(context[:ex3], SomeSpec).result == "rescued")
   end 
 
   test "run ex4", context do

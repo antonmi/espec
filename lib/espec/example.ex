@@ -4,6 +4,8 @@ defmodule ESpec.Example do
   These macros defines function with random name which will be called when example runs.
   Example structs %ESpec.Example are accumulated in @examples attribute
   """
+  @aliases ~w(it specify)a
+  @skipped ~w(xit xexample xspecify)a
 
   @doc """
   Expampe struct.
@@ -51,23 +53,23 @@ defmodule ESpec.Example do
     quote do: unquote(__MODULE__).example("", [], do: unquote(block))
   end
 
-  @doc "Alias for `example/3`"
-  defmacro it(description, opts, do: block) do
-    quote do: unquote(__MODULE__).example(unquote(description), unquote(opts), do: unquote(block))
-  end
+  @doc "Aliases for `example`"
+  Enum.each @aliases, fn(func) ->
+    defmacro unquote(func)(description, opts, do: block) do
+      quote do: unquote(__MODULE__).example(unquote(description), unquote(opts), do: unquote(block))
+    end
 
-  @doc "Alias for `example/2`"
-  defmacro it(description_or_opts, do: block) do
-    quote do: unquote(__MODULE__).example(unquote(description_or_opts), do: unquote(block))
-  end
+    defmacro unquote(func)(description_or_opts, do: block) do
+      quote do: unquote(__MODULE__).example(unquote(description_or_opts), do: unquote(block))
+    end
 
-  @doc "Alias for `example/1`"
-  defmacro it(do: block) do
-    quote do: unquote(__MODULE__).example(do: unquote(block))
+    defmacro unquote(func)(do: block) do
+      quote do: unquote(__MODULE__).example(do: unquote(block))
+    end
   end
 
   @doc "Macros for skipped examples"
-  Enum.each [:xit, :xexample], fn(func) ->
+  Enum.each @skipped, fn(func) ->
     defmacro unquote(func)(description, opts, do: block) do
       quote do: unquote(__MODULE__).example(unquote(description), Keyword.put(unquote(opts), :skip, true), do: unquote(block))
     end

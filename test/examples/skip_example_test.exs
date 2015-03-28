@@ -15,6 +15,10 @@ defmodule SkipExampleTest do
     xexample do: "skipped"
     xexample "skipped", do: "skipped"
     xexample "skipped", [some: :option], do: "skipped"
+
+    xspecify do: "skipped"
+    xspecify "skipped", do: "skipped"
+    xspecify "skipped", [some: :option], do: "skipped"
   end
 
   setup_all do
@@ -25,7 +29,7 @@ defmodule SkipExampleTest do
   end
 
   test "runs only 1" do
-    [example] = ESpec.Runner.run
-    assert(example.result == "Example")
+    results = ESpec.Runner.run |> Enum.map(&(&1.result))
+    refute(Enum.any?(results, fn(r) -> r == "skipped" end))
   end
 end

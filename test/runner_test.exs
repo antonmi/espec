@@ -30,7 +30,7 @@ defmodule RunnerTest do
     assert(example.success == true)
   end
 
-  test "run_examples", context do
+  test "run_examples" do
     examples = ESpec.Runner.run_examples(SomeSpec.examples, SomeSpec)
     assert(List.first(examples).success == true)
     assert(List.first(examples).success == true)
