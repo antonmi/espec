@@ -84,14 +84,14 @@ defmodule ESpec.Runner do
   end
 
   defp run_finallies(assigns, example, module) do
-    res = extract_finallies(example.context)
+    extract_finallies(example.context)
     |> Enum.reduce(assigns, fn(finally, map) ->
       returned =  apply(module, finally.function, [map])
       fill_dict(map, returned)
     end)
   end
 
-  defp run_config_finally(assigns, example, module) do
+  defp run_config_finally(assigns, _example, _module) do
     func = ESpec.Configuration.get(:finally)
     if func do
       if is_function(func, 1), do: func.(assigns), else: func.()

@@ -19,11 +19,11 @@ defmodule ESpec.Formatter do
     end
   end
 
-  def success(example) do
+  def success(_example) do
     unless silent?, do: IO.write("#{@green}.#{@reset}") 
   end
 
-  def failed(example) do
+  def failed(_example) do
     unless silent?, do: IO.write("#{@red}F#{@reset}")
   end
 

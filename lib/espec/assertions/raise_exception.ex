@@ -23,7 +23,7 @@ defmodule ESpec.Assertions.RaiseException do
       func.()
       {:false, []}
     rescue
-      error ->
+      _error ->
         true
     end
   end
@@ -73,11 +73,11 @@ defmodule ESpec.Assertions.RaiseException do
     "Expected #{inspect func} #{to} raise exception `#{module}` with message `#{message}`, but nothing was raised"
   end
 
-  defp error_message(func, [module], err_module, positive) do
+  defp error_message(func, [module], err_module, _positive) do
     "Expected #{inspect func} to raise exception `#{module}`, but `#{err_module}` was raised"
   end
 
-  defp error_message(func, [module, message], err_module, err_message, positive) do
+  defp error_message(func, [module, message], err_module, err_message, _positive) do
     "Expected #{inspect func} to raise exception `#{module}` with message `#{message}`, but `#{err_module}` was raised with the message `#{err_message}`"
   end
 

@@ -21,7 +21,7 @@ defmodule ESpec.Assertions.ThrowTerm do
       func.()
       {:false, []}
     catch
-      term ->
+      _term ->
         true
     end
   end
@@ -53,7 +53,7 @@ defmodule ESpec.Assertions.ThrowTerm do
     end
   end
 
-  defp error_message(func, [exp_term], term, positive) do
+  defp error_message(func, [exp_term], term, _positive) do
     "Expected #{inspect func} to throw `#{exp_term}`, but the `#{term}` term was thrown"
   end
 

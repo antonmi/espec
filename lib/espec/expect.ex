@@ -14,11 +14,11 @@ defmodule ESpec.Expect do
     end
   end
 
-  @doc "Wrapper for `ESpec.To`."
-  def expect(value), do: {ESpec.To, value}
-
   @doc "Wrapper for `ESpec.To`. Passes the value returned by the block."
   def expect(do: value), do: {ESpec.To, value}
+
+  @doc "Wrapper for `ESpec.To`."
+  def expect(value), do: {ESpec.To, value}
 
   @doc "Returns `ESpec.To` argument to call `ESpec.Assertions.Eq` asserion."
   def eq(value), do: {:eq, value}

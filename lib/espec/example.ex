@@ -88,7 +88,7 @@ defmodule ESpec.Example do
   end
 
   @doc "Description with contexts."
-  def full_description(%ESpec.Example{context: context, description: description, function: function}) do
+  def full_description(%ESpec.Example{context: context, description: description, function: _function}) do
     context_description = context
     |> Enum.filter(fn(struct) -> struct.__struct__ == ESpec.Context end)
     |> Enum.map(&(&1.description))
