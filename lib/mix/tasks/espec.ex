@@ -43,7 +43,11 @@ defmodule Mix.Tasks.Espec do
 
     Kernel.ParallelRequire.files(spec_files)
 
-    ESpec.run(%{file_opts: files_with_opts})
+    success = ESpec.run(%{file_opts: files_with_opts})
+
+    System.at_exit fn _ ->
+      unless success, do: exit({:shutdown, 1})
+    end
   end
 
 

@@ -38,8 +38,9 @@ defmodule ESpec do
   def configure(func), do: ESpec.Configuration.configure(func)
 
   def run(opts) do
-    ESpec.Runner.run(opts)
-    |> ESpec.Formatter.print_result
+    examples = ESpec.Runner.run(opts)
+    ESpec.Formatter.print_result(examples)
+    !Enum.any?(ESpec.Example.failed(examples))
   end
 
   def start do
