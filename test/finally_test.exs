@@ -6,13 +6,11 @@ defmodule FinallyTest do
     use ESpec
 
     before do: {:ok, a: 1}
-
-    finally do: "do smth"
-    finally do: {:ok, b: __[:a] + 1}
+    finally do: Application.put_env(:espec, :finally_a, 1)
+    finally do: Application.put_env(:espec, :finally_b, 2)
 
     it do: "some test"
-
-    finally do: "it will not be evaluated"
+    finally do: Application.put_env(:espec, :finally_c, 3)
   end
 
   setup_all do
@@ -21,11 +19,13 @@ defmodule FinallyTest do
     }
   end
 
-  test "finallies", context do
-    assigns = ESpec.Runner.run_befores(%{}, context[:ex1], SomeSpec)
-    result = ESpec.Runner.run_finallies(assigns, context[:ex1], SomeSpec)
-    assert(result[:a] == 1)
-    assert(result[:b] == 2)
+  test "run ex1", context do
+    ESpec.Runner.run_example(context[:ex1], SomeSpec)
+    assert(Application.get_env(:espec, :finally_a) == 1)
+    assert(Application.get_env(:espec, :finally_b) == 2)
+    assert(Application.get_env(:espec, :finally_c) == nil)
   end
+
+
 
 end

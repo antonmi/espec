@@ -14,7 +14,7 @@ defmodule BeforeTest do
 
       describe "Describe" do
         before do: {:ok, b: fn(a) -> a*2 end}
-        it do: "__[:b] is a function"
+        it do: "#{__[:b].(10)} == 20"
       end
     end
 
@@ -33,20 +33,9 @@ defmodule BeforeTest do
     }
   end
 
-  test "check map in ex1", context do
-    map = ESpec.Runner.run_befores(%{}, context[:ex1], SomeSpec)
-    assert(map[:a] == 1)
-  end
-
   test "run ex1", context do
     example = ESpec.Runner.run_example(context[:ex1], SomeSpec)
     assert(example.result == "1 is defined")
-  end
-
-  test "check map in ex2", context do
-    map = ESpec.Runner.run_befores(%{}, context[:ex2], SomeSpec)
-    assert(map[:a] == 10)
-    assert(map[:b] == 2)
   end
 
   test "run ex2", context do
@@ -54,9 +43,9 @@ defmodule BeforeTest do
     assert(example.result == "10 and 2 is defined")
   end
 
-  test "check map in ex3", context do
-    map = ESpec.Runner.run_befores(%{}, context[:ex3], SomeSpec)
-    assert(map[:b].(10) == 20)
+  test "run ex3", context do
+    example = ESpec.Runner.run_example(context[:ex3], SomeSpec)
+    assert(example.result == "20 == 20")
   end
 
   test "run ex4", context do

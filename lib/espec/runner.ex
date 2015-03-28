@@ -57,27 +57,12 @@ defmodule ESpec.Runner do
     end
   end
 
-  @doc "defines public functions for testing purpose"
-  if Mix.env == :test do
-    def run_config_before(assigns, _example, _module), do: do_run_config_before(assigns, _example, _module)
-    def run_befores(assigns, example, module), do: do_run_befores(assigns, example, module)
-    def set_lets(assigns, example, module), do: do_set_lets(assigns, example, module)
-    def run_finallies(example, module, assigns), do: do_run_finallies(example, module, assigns)
-    def run_config_finally(assigns, example, module), do: do_run_config_finally(assigns, example, module)
-  else
-    defp run_config_before(assigns, _example, _module), do: do_run_config_before(assigns, _example, _module)
-    defp run_befores(assigns, example, module), do: do_run_befores(assigns, example, module)
-    defp set_lets(assigns, example, module), do: do_set_lets(assigns, example, module)
-    defp run_finallies(example, module, assigns), do: do_run_finallies(example, module, assigns)
-    defp run_config_finally(assigns, example, module), do: do_run_config_finally(assigns, example, module)
-  end
-
-  defp do_run_config_before(assigns, _example, _module) do
+  defp run_config_before(assigns, _example, _module) do
     func = ESpec.Configuration.get(:before)
     if func, do: fill_dict(assigns, func.()), else: assigns
   end 
 
-  defp do_run_befores(assigns, example, module) do
+  defp run_befores(assigns, example, module) do
     extract_befores(example.context)
     |> Enum.reduce(assigns, fn(before, map) ->
       returned = apply(module, before.function, [map])
@@ -85,14 +70,14 @@ defmodule ESpec.Runner do
     end)
   end
 
-  defp do_set_lets(assigns, example, module) do
+  defp set_lets(assigns, example, module) do
     extract_lets(example.context)
     |> Enum.each(fn(let) ->
       ESpec.Let.agent_put({module, let.var}, apply(module, let.function, [assigns, let.keep_quoted]))
     end)
   end
 
-  defp do_run_finallies(assigns, example, module) do
+  defp run_finallies(assigns, example, module) do
     res = extract_finallies(example.context)
     |> Enum.reduce(assigns, fn(finally, map) ->
       returned =  apply(module, finally.function, [map])
@@ -100,7 +85,7 @@ defmodule ESpec.Runner do
     end)
   end
 
-  defp do_run_config_finally(assigns, example, module) do
+  defp run_config_finally(assigns, example, module) do
     func = ESpec.Configuration.get(:finally)
     if func do
       if is_function(func, 1), do: func.(assigns), else: func.()
