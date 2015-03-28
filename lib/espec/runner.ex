@@ -9,7 +9,7 @@ defmodule ESpec.Runner do
   The options are:
   TODO
   """
-  def run(opts) do
+  def run(opts \\ []) do
     ESpec.specs |> Enum.reverse
     |> Enum.map(fn(module) ->
       filter(module.examples, opts)
@@ -22,7 +22,13 @@ defmodule ESpec.Runner do
   def run_examples(examples, module) do
     examples
     |> Enum.map(fn(example) ->
-      run_example(example, module)
+      cond do
+        example.opts[:skip] ->
+          IO.puts example.success
+          example
+        true ->
+          run_example(example, module)
+      end
     end)
   end
 
@@ -114,16 +120,20 @@ defmodule ESpec.Runner do
   end
 
   defp filter(examples, opts) do
-    file_opts = opts[:file_opts]
-    if file_opts do
-      examples |> Enum.filter(fn(example) ->
-        opts = opts_for_file(example.file, file_opts)
-        line = Keyword.get(opts, :line)
-        if line, do: example.line == line, else: true
-      end)
-    else
-      examples
+    file_opts = opts[:file_opts] || []
+    if Enum.any?(file_opts) do
+      examples = file_opts_filter(examples, file_opts)
     end
+    examples
+    |> filter_skipped
+  end
+
+  defp file_opts_filter(examples, file_opts) do
+    Enum.filter(examples, fn(example) ->
+      opts = opts_for_file(example.file, file_opts)
+      line = Keyword.get(opts, :line)
+      if line, do: example.line == line, else: true
+    end)
   end
 
   defp opts_for_file(file, opts_list) do
@@ -131,6 +141,12 @@ defmodule ESpec.Runner do
       {_file, opts} -> opts
       nil -> []
     end
+  end
+
+  defp filter_skipped(examples) do
+    Enum.filter(examples, fn(example) ->
+      !example.opts[:skip]
+    end)
   end
 
 end

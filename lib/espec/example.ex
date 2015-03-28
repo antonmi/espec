@@ -66,6 +66,25 @@ defmodule ESpec.Example do
     quote do: unquote(__MODULE__).example(do: unquote(block))
   end
 
+  @doc "Macros for skipped examples"
+  Enum.each [:xit, :xexample], fn(func) ->
+    defmacro unquote(func)(description, opts, do: block) do
+      quote do: unquote(__MODULE__).example(unquote(description), Keyword.put(unquote(opts), :skip, true), do: unquote(block))
+    end
+
+    defmacro unquote(func)(description, do: block) when is_binary(description) do
+      quote do: unquote(__MODULE__).example(unquote(description), [skip: true], do: unquote(block))
+    end
+
+    defmacro unquote(func)(opts, do: block) when is_list(opts) do
+      quote do: unquote(__MODULE__).example(Keyword.put(unquote(opts), :skip, true), do: unquote(block))
+    end
+
+    defmacro unquote(func)(do: block) do
+      quote do: unquote(__MODULE__).example([skip: true], do: unquote(block))
+    end
+  end
+
   @doc "Description with contexts."
   def full_description(%ESpec.Example{context: context, description: description, function: function}) do
     context_description = context
@@ -77,12 +96,12 @@ defmodule ESpec.Example do
 
   @doc "Filters success examples"
   def success(results) do
-    results |> Enum.filter(&(&1.success))
+    results |> Enum.filter(&(&1.success === true))
   end
 
   @doc "Filters failed examples"
   def failed(results) do
-    results |> Enum.filter(&(!&1.success))
+    results |> Enum.filter(&(&1.success === false))
   end
 
   defp random_atom(arg) do

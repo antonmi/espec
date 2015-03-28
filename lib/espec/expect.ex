@@ -9,7 +9,7 @@ defmodule ESpec.Expect do
     quote do
       @doc "The same as `expect(subject)`"
       def is_expected do
-        {ESpec.To, __MODULE__.subject}
+        {ESpec.To, apply(__MODULE__, :subject, [])}
       end
     end
   end

@@ -3,6 +3,11 @@ defmodule ESpec.Formatter do
     Functions to print espec results
   """
 
+  @green IO.ANSI.green
+  @red IO.ANSI.red
+  @cyan IO.ANSI.cyan
+  @reset IO.ANSI.reset
+
   @doc """
     Prints results
   """
@@ -15,11 +20,11 @@ defmodule ESpec.Formatter do
   end
 
   def success(example) do
-    unless silent?, do: IO.write("\e[32;1m.\e[0m") 
+    unless silent?, do: IO.write("#{@green}.#{@reset}") 
   end
 
   def failed(example) do
-    unless silent?, do: IO.write("\e[31;1mF\e[0m")
+    unless silent?, do: IO.write("#{@red}F#{@reset}")
   end
 
   defp print_failed(failed) do
@@ -30,17 +35,17 @@ defmodule ESpec.Formatter do
   defp print_fail({example, index}) do
     IO.puts("\n")
     to_print = [
-      "\t\e[37;1m#{index + 1}) #{ESpec.Example.full_description(example)}\e[m",
-      "\t\e[36;1m#{example.file}:#{example.line}\e[0m",
-      "\t\e[31;1m#{example.error.message}\e[0m",
+      "\t#{index + 1}) #{ESpec.Example.full_description(example)}",
+      "\t#{@cyan}#{example.file}:#{example.line}#{@reset}",
+      "\t#{@red}#{example.error.message}#{@reset}",
     ] |> Enum.join("\n")
     IO.puts(to_print)
   end
 
   defp print_footer(examples, failed) do
     IO.puts "\n"
-    color = if Enum.any?(failed), do: "\e[31;1m", else: "\e[37;1m"
-    IO.puts "\t#{color}#{Enum.count(examples)} examples, #{Enum.count(failed)} failures\e[0m"
+    color = if Enum.any?(failed), do: @red, else: @green
+    IO.puts "\t#{color}#{Enum.count(examples)} examples, #{Enum.count(failed)} failures#{@reset}"
     IO.puts "\n"
   end
 
