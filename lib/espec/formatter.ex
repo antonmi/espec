@@ -12,6 +12,14 @@ defmodule ESpec.Formatter do
     print_footer(examples, failed)
   end
 
+  def success(example) do
+    unless silent?, do: IO.write("\e[32;1m.\e[0m") 
+  end
+
+  def failed(example) do
+    unless silent?, do: IO.write("\e[31;1mF\e[0m")
+  end
+
   defp print_failed(failed) do
     failed |> Enum.with_index
     |> Enum.each(&print_fail(&1))
@@ -33,5 +41,7 @@ defmodule ESpec.Formatter do
     IO.puts "\t#{color}#{Enum.count(examples)} examples, #{Enum.count(failed)} failures\e[0m"
     IO.puts "\n"
   end
+
+  defp silent?, do: ESpec.Configuration.get(:silent)
 
 end

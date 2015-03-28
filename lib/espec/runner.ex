@@ -44,11 +44,11 @@ defmodule ESpec.Runner do
     set_lets(assigns, example, module)
     try do
       result = apply(module, example.function, [assigns])
-      IO.write("\e[32;1m.\e[0m")
+      ESpec.Formatter.success(example)
       %ESpec.Example{example | success: true, result: result}
     rescue
       error in [ESpec.AssertionError] ->
-        IO.write("\e[31;1mF\e[0m")
+        ESpec.Formatter.failed(example)
         %ESpec.Example{example | success: false, error: error}
     after
       run_finallies(assigns, example, module)

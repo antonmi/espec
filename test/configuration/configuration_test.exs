@@ -2,17 +2,6 @@ defmodule ConfigurationTest do
 
 	use ExUnit.Case
 
-	setup_all do
-		opts = [a: 1, b: 2]
-		ESpec.Configuration.add(opts)
-		{:ok, opts}
-	end
-
-	test "check configurations", context do
-		assert(ESpec.Configuration.get(:a) == context[:a])
-		assert(ESpec.Configuration.get(:b) == context[:b])
-	end
-
 	test "configure function" do
 		ESpec.configure(fn(c) ->
 			c.hello :world

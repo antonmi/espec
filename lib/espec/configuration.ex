@@ -1,10 +1,12 @@
 defmodule ESpec.Configuration do
   
-  @whitelist ~w(hello before finally)a
+  @whitelist ~w(hello before finally silent)a
 
   def add(opts) do
     opts |> Enum.each fn {key, val} ->
-      Application.put_env(:espec, key, val)
+      if Enum.member?(@whitelist, key) do
+        Application.put_env(:espec, key, val)
+      end
     end
   end
 
