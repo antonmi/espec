@@ -10,7 +10,7 @@ defmodule ConfigFinallyTest do
 	setup_all do
     ESpec.configure fn(c) ->
       c.finally fn -> 
-        ESpec.configure fn(c) -> c.hello :world end
+        ESpec.configure fn(c) -> c.test :ok end
       end
     end
     {:ok,
@@ -20,6 +20,6 @@ defmodule ConfigFinallyTest do
 
   test "run ex1", context do
   	ESpec.Runner.run_example(context[:ex1], SomeSpec)
-    assert(ESpec.Configuration.get(:hello) == :world)
+    assert(ESpec.Configuration.get(:test) == :ok)
   end
 end

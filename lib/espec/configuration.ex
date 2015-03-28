@@ -1,10 +1,16 @@
 defmodule ESpec.Configuration do
   
-  @whitelist ~w(hello before finally silent)a
+  @list [
+    hello: "Description",
+    before: "Defines before hook",
+    finally: "Defines finally hook",
+    silent: "No output",
+    test: "For test purpose"
+  ]
 
   def add(opts) do
     opts |> Enum.each fn {key, val} ->
-      if Enum.member?(@whitelist, key) do
+      if Enum.member?(Keyword.keys(@list), key) do
         Application.put_env(:espec, key, val)
       end
     end
@@ -22,7 +28,7 @@ defmodule ESpec.Configuration do
     func.({ESpec.Configuration})
   end
 
-  @whitelist |> Enum.each fn(func) ->
+  Keyword.keys(@list) |> Enum.each fn(func) ->
     def unquote(func)(value, {ESpec.Configuration}) do
       ESpec.Configuration.add([{unquote(func), value}])
     end

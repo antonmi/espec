@@ -13,7 +13,7 @@ defmodule ConfigFinallyTest2 do
   setup_all do
     ESpec.configure fn(c) ->
       c.finally fn(assigns) -> 
-        ESpec.configure fn(c) -> c.hello assigns[:a] end
+        ESpec.configure fn(c) -> c.test assigns[:a] end
       end
     end
     {:ok,
@@ -23,6 +23,6 @@ defmodule ConfigFinallyTest2 do
 
   test "run ex1", context do
     ESpec.Runner.run_example(context[:ex1], SomeSpec)
-    assert(ESpec.Configuration.get(:hello) == 2)
+    assert(ESpec.Configuration.get(:test) == 2)
   end
 end

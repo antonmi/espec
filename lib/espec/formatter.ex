@@ -7,9 +7,11 @@ defmodule ESpec.Formatter do
     Prints results
   """
   def print_result(examples) do
-    failed = ESpec.Example.failed(examples)
-    print_failed(failed)
-    print_footer(examples, failed)
+    unless silent? do
+      failed = ESpec.Example.failed(examples)
+      print_failed(failed)
+      print_footer(examples, failed)
+    end
   end
 
   def success(example) do
