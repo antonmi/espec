@@ -5,7 +5,7 @@ Inspired by RSpec. Take a look at the [spec](https://github.com/antonmi/espec/tr
 
 ## Features
 
-The main idea is to be close to the RSpec phylosophy.
+The main idea is to be close to the RSpec DSL.
 
   * Test organization with `describe`, `context`, `it`, and etc blocks
   * Familiar matchers: `eq`, `be_close_to`, `raise_execption`, etc
@@ -109,12 +109,39 @@ end
 ```
 
 ## `before` and `finally`
+`before` blocks are evaluated before the example and `finally` runs after the example.
 
-TODO
+The blocks can return `{:ok, key: value, ...}`, so the keyword list will be saved in the ditionary and can be accessed in other `before` blocks, in the example, and in `finaly` blocks through 'double-undescore' `__`:
+```elixir
+defmodule SomeSpec do
+  use ESpec
+  before do: {:ok, a: 1}
+  context "Context" do
+    before do: {:ok, b: __[:a] + 1}
+    finally do: "#{__[:b]} == 2"
+    it do: expect(__[:a]).to eq(1)
+    it do: expect(__[:b]).to eq(2)
+    finally do: "This finally will not be run. Define 'finally' before the example"
+  end
+end  
+```
+Note, that `finally` blocks must be defined before the example.
+
+
+## 'Double-underscore' `__` 
+`__` is used to share data between spec blocks. You can access data by `__.some_key` or `__[:some_key]`.
+`__.some_key` will raise exception if the key 'some_key' does not exist, while `__[:some_key]` will return `nil`.
+
+The `__` variable appears in your `before`, `finally` and `example` blocks.
+
+`before` and `finally` blocks modify the dictionay when return `{:ok, key: value}`
+
 
 ## `let`, `let!`, and `subject`
 
 TODO
+
+
 
 ## Matchers
 
