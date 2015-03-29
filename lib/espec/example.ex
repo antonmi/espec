@@ -6,6 +6,7 @@ defmodule ESpec.Example do
   """
   @aliases ~w(it specify)a
   @skipped ~w(xit xexample xspecify)a
+  @focused ~w(fit fexample fspecify focus)a
 
   @doc """
   Expampe struct.
@@ -88,6 +89,25 @@ defmodule ESpec.Example do
     defmacro unquote(func)(do: block) do
       reason = "`#{unquote(func)}`"
       quote do: unquote(__MODULE__).example([skip: unquote(reason)], do: unquote(block))
+    end
+  end
+
+  @doc "Macros for focused examples"
+  Enum.each @focused, fn(func) ->
+    defmacro unquote(func)(description, opts, do: block) do
+      quote do: unquote(__MODULE__).example(unquote(description), Keyword.put(unquote(opts), :focus, true), do: unquote(block))
+    end
+
+    defmacro unquote(func)(description, do: block) when is_binary(description) do
+      quote do: unquote(__MODULE__).example(unquote(description), [focus: true], do: unquote(block))
+    end
+
+    defmacro unquote(func)(opts, do: block) when is_list(opts) do
+      quote do: unquote(__MODULE__).example(Keyword.put(unquote(opts), :focus, true), do: unquote(block))
+    end
+
+    defmacro unquote(func)(do: block) do
+      quote do: unquote(__MODULE__).example([focus: true], do: unquote(block))
     end
   end
 

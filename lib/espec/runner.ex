@@ -9,7 +9,8 @@ defmodule ESpec.Runner do
   The options are:
   TODO
   """
-  def run(opts \\ []) do
+  def run do
+    opts = ESpec.Configuration.all
     ESpec.specs |> Enum.reverse
     |> Enum.map(fn(module) ->
       filter(module.examples, opts)
@@ -137,6 +138,9 @@ defmodule ESpec.Runner do
     if Enum.any?(file_opts) do
       examples = file_opts_filter(examples, file_opts)
     end
+    if opts[:focus] do
+      examples = filter_focus(examples)
+    end
     examples
   end
 
@@ -153,6 +157,13 @@ defmodule ESpec.Runner do
       {_file, opts} -> opts
       nil -> []
     end
+  end
+
+  defp filter_focus(examples) do
+    Enum.filter(examples, fn(example) ->
+      contexts = extract_contexts(example.context)
+      example.opts[:focus] || Enum.any?(contexts, &(&1.opts[:focus]))
+    end)
   end
 
 end

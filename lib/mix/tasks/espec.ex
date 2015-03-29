@@ -33,7 +33,6 @@ defmodule Mix.Tasks.Espec do
     files_with_opts = []
 
     if Enum.any?(files) do
-
       files_with_opts = parse_files(files)
       spec_files = files_with_opts |> Enum.map(fn {f,_} -> f end)
       spec_files = Mix.Utils.extract_files(spec_files, spec_pattern)
@@ -42,8 +41,9 @@ defmodule Mix.Tasks.Espec do
     end
 
     Kernel.ParallelRequire.files(spec_files)
-
-    success = ESpec.run(%{file_opts: files_with_opts})
+    
+    ESpec.Configuration.add([file_opts: files_with_opts])
+    success = ESpec.run
 
     System.at_exit fn _ ->
       unless success, do: exit({:shutdown, 1})

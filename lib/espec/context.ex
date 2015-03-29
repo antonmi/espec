@@ -4,6 +4,8 @@ defmodule ESpec.Context do
   """
   @aliases ~w(describe example_group)a
   @skipped ~w(xcontext xdescribe xexample_group)a
+  @focused ~w(fcontext fdescribe fexample_group)a
+
   @doc "Context has description."
   defstruct description: "", opts: []
 
@@ -70,6 +72,25 @@ defmodule ESpec.Context do
     defmacro unquote(func)(do: block) do
       reason = "`#{unquote(func)}`"
       quote do: unquote(__MODULE__).context([skip: unquote(reason)], do: unquote(block))
+    end
+  end
+
+  @doc "Macros for focused contexts"
+  Enum.each @focused, fn(func) ->
+    defmacro unquote(func)(description, opts, do: block) do
+      quote do: unquote(__MODULE__).context(unquote(description), Keyword.put(unquote(opts), :focus, true), do: unquote(block))
+    end
+
+    defmacro unquote(func)(description, do: block) when is_binary(description) do
+      quote do: unquote(__MODULE__).context(unquote(description), [focus: true], do: unquote(block))
+    end
+
+    defmacro unquote(func)(opts, do: block) when is_list(opts) do
+      quote do: unquote(__MODULE__).context(Keyword.put(unquote(opts), :focus, true), do: unquote(block))
+    end
+
+    defmacro unquote(func)(do: block) do
+      quote do: unquote(__MODULE__).context([focus: true], do: unquote(block))
     end
   end
 

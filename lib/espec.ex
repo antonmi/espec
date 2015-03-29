@@ -36,8 +36,8 @@ defmodule ESpec do
 
   def configure(func), do: ESpec.Configuration.configure(func)
 
-  def run(opts) do
-    examples = ESpec.Runner.run(opts)
+  def run do
+    examples = ESpec.Runner.run
     ESpec.Formatter.print_result(examples)
     !Enum.any?(ESpec.Example.failure(examples))
   end

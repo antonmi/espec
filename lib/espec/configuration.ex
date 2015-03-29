@@ -5,6 +5,8 @@ defmodule ESpec.Configuration do
     before: "Defines before hook",
     finally: "Defines finally hook",
     silent: "No output",
+    file_opts: "Run the specific file or spec in the file",
+    focus: "Run only examples with [focus: true]",
     test: "For test purpose"
   ]
 
