@@ -6,8 +6,13 @@ defmodule FinallyTest do
     use ESpec
 
     before do: {:ok, a: 1}
-    finally do: Application.put_env(:espec, :finally_a, 1)
-    finally do: Application.put_env(:espec, :finally_b, 2)
+    finally do
+      Application.put_env(:espec, :finally_a, 1)
+      {:ok, b: __[:a] + 1}
+    end 
+
+    finally do: Application.put_env(:espec, :finally_b, __[:b])
+
 
     it do: "some test"
     finally do: Application.put_env(:espec, :finally_c, 3)

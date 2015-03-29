@@ -27,7 +27,7 @@ defmodule ESpec.Example do
 
   @doc """
   Adds example to @examples and defines function to wrap the spec.
-  Sends 'double underscore `__`' variable to the example block.
+  Sends 'double-underscore `__`' variable to the example block.
   """
   defmacro example(description, opts, do: block) do
     function = (random_atom(description))
