@@ -132,8 +132,7 @@ end
 ```
 Note, that `finally` blocks must be defined before the example.
 
-
-## 'Double-underscore' `__` 
+## 'Double-underscore'
 `__` is used to share data between spec blocks. You can access data by `__.some_key` or `__[:some_key]`.
 `__.some_key` will raise exception if the key 'some_key' does not exist, while `__[:some_key]` will return `nil`.
 
@@ -149,8 +148,40 @@ TODO
 
 
 ## Matchers
+### Equality
+```elixir
+expect(actual).to eq(expected)  # passes if actual == expected
+expect(actual).to eql(expected) # passes if actual === expected
+```
+### Comparisons
+Can be used with `:>`, `:<`, `:>=`, `:<=`, and etc. 
+```elixir
+expect(actual).to be operator, value 
+```
+Passes if `apply(Kernel, operator, [actual, value]) == true`
+### Regular expressions
+```elixir
+expect(actual).to match(~r/expression/)
+expect(actual).to match("string")
+```
+### Exceptions
+```elixir
+expect(function).to raise_exception
+expect(function).to raise_exception(ErrorModule)
+expect(function).to raise_exception(ErrorModule, "message")
+```
+### Throws
+```elixir
+expect(function).to throw_term
+expect(function).to throw_term(term)
+```
+### Change state
+Test if call of function1 change the function2 returned value to smth or from to smth
+```elexir
+expect(function1).to change(function2, to)
+expect(function1).to change(function2, from, to) 
+```
 
-TODO
 
 ## Mocks
 
@@ -159,8 +190,8 @@ You can mock the module with 'allow accept':
 ```elixir
 defmodule SomeSpec do
   use ESpec
-	 before do: allow(SomeModule).to accept(:func, fn(a,b) -> a+b end)
-	 it do: expect(SomeModule.func(1, 2)).to eq(3)
+  before do: allow(SomeModule).to accept(:func, fn(a,b) -> a+b end)
+  it do: expect(SomeModule.func(1, 2)).to eq(3)
 end
 ```
 Note, when you mock some function in module `meck` create absolutely new module.
@@ -173,9 +204,9 @@ There is also an expectation to check if module accepted function call:
 ```elixir
 defmodule SomeSpec do
   use ESpec
-	 before do: allow(SomeModule).to accept(:func, fn(a,b) -> a+b end)
-	 before do: SomeModule.func(1, 2)
-	 it do: expect(SomeModule).to accepted(:func, [1,2])
+  before do: allow(SomeModule).to accept(:func, fn(a,b) -> a+b end)
+  before do: SomeModule.func(1, 2)
+  it do: expect(SomeModule).to accepted(:func, [1,2])
 end
 ```
 `expect(SomeModule).to accepted(:func, [1,2])` just check `meck.history(SomeModule)`.
