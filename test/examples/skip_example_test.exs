@@ -22,7 +22,7 @@ defmodule SkipExampleTest do
   end
 
   test "runs only 1" do
-    results = ESpec.Runner.run_examples(SomeSpec.examples, SomeSpec)
+    results = ESpec.Runner.run_examples(SomeSpec.examples)
     assert(length(Enum.filter(results, &(&1.status == :success))) == 1)
     assert(length(Enum.filter(results, &(&1.status == :pending))) == 10)
   end

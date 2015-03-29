@@ -14,13 +14,13 @@ defmodule ESpec.Runner do
     ESpec.specs |> Enum.reverse
     |> Enum.map(fn(module) ->
       filter(module.examples, opts)
-      |> run_examples(module)
+      |> run_examples
     end)
     |> List.flatten
   end
 
   @doc "Runs example for specific 'spec  module'."
-  def run_examples(examples, module) do
+  def run_examples(examples) do
     examples
     |> Enum.map(fn(example) ->
       contexts = extract_contexts(example.context)
@@ -30,7 +30,7 @@ defmodule ESpec.Runner do
         example.opts[:pending] ->
           run_pending(example, contexts)  
         true ->
-          run_example(example, module)
+          run_example(example)
       end
     end)
   end
@@ -46,13 +46,13 @@ defmodule ESpec.Runner do
   The `result` is the value returned by example block.
   `error` is a `%ESpec.AssertionError{}` struct.
   """
-  def run_example(example, module) do
+  def run_example(example) do
     assigns = %{} 
-    |> run_config_before(example, module)
-    |> run_befores(example, module)
-    set_lets(assigns, example, module)
+    |> run_config_before(example)
+    |> run_befores(example)
+    set_lets(assigns, example)
     try do
-      result = apply(module, example.function, [assigns])
+      result = apply(example.module, example.function, [assigns])
       ESpec.Formatter.success(example)
       %ESpec.Example{example | status: :success, result: result}
     rescue
@@ -60,8 +60,8 @@ defmodule ESpec.Runner do
         ESpec.Formatter.failure(example)
         %ESpec.Example{example | status: :failure, error: error}
     after
-      run_finallies(assigns, example, module)
-      |> run_config_finally(example, module)
+      run_finallies(assigns, example)
+      |> run_config_finally(example)
       unload_mocks
     end
   end
@@ -76,35 +76,35 @@ defmodule ESpec.Runner do
     %ESpec.Example{example | status: :pending, result: ESpec.Example.pending_message(example, contexts)}
   end
 
-  defp run_config_before(assigns, _example, _module) do
+  defp run_config_before(assigns, _example) do
     func = ESpec.Configuration.get(:before)
     if func, do: fill_dict(assigns, func.()), else: assigns
   end 
 
-  defp run_befores(assigns, example, module) do
+  defp run_befores(assigns, example) do
     extract_befores(example.context)
     |> Enum.reduce(assigns, fn(before, map) ->
-      returned = apply(module, before.function, [map])
+      returned = apply(example.module, before.function, [map])
       fill_dict(map, returned)
     end)
   end
 
-  defp set_lets(assigns, example, module) do
+  defp set_lets(assigns, example) do
     extract_lets(example.context)
     |> Enum.each(fn(let) ->
-      ESpec.Let.agent_put({module, let.var}, apply(module, let.function, [assigns, let.keep_quoted]))
+      ESpec.Let.agent_put({example.module, let.var}, apply(example.module, let.function, [assigns, let.keep_quoted]))
     end)
   end
 
-  defp run_finallies(assigns, example, module) do
+  defp run_finallies(assigns, example) do
     extract_finallies(example.context)
     |> Enum.reduce(assigns, fn(finally, map) ->
-      returned =  apply(module, finally.function, [map])
+      returned =  apply(example.module, finally.function, [map])
       fill_dict(map, returned)
     end)
   end
 
-  defp run_config_finally(assigns, _example, _module) do
+  defp run_config_finally(assigns, _example) do
     func = ESpec.Configuration.get(:finally)
     if func do
       if is_function(func, 1), do: func.(assigns), else: func.()

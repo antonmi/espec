@@ -40,21 +40,21 @@ defmodule MockTest do
   end
 
   test "run ex1", context do
-    example = ESpec.Runner.run_example(context[:ex1], SomeSpec)
+    example = ESpec.Runner.run_example(context[:ex1])
     assert(example.result == "mock! 1")
   end 
 
   test "run ex2", context do
-    example = ESpec.Runner.run_example(context[:ex2], SomeSpec)
+    example = ESpec.Runner.run_example(context[:ex2])
     assert(example.result == :w)
   end 
 
   test "run ex3", context do
-    assert(ESpec.Runner.run_example(context[:ex3], SomeSpec).result == "rescued")
+    assert(ESpec.Runner.run_example(context[:ex3]).result == "rescued")
   end 
 
   test "run ex4", context do
-    example = ESpec.Runner.run_example(context[:ex4], SomeSpec)
+    example = ESpec.Runner.run_example(context[:ex4])
     assert(example.result == :f)
   end
 

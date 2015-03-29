@@ -34,7 +34,7 @@ defmodule EqTest do
   end
 
   setup_all do
-    examples = ESpec.Runner.run_examples(SomeSpec.examples, SomeSpec)
+    examples = ESpec.Runner.run_examples(SomeSpec.examples)
     { :ok,
       success: Enum.slice(examples, 0, 6),
       errors: Enum.slice(examples, 7, 11)

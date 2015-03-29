@@ -19,7 +19,7 @@ defmodule ConfigFinallyTest do
   end
 
   test "run ex1", context do
-  	ESpec.Runner.run_example(context[:ex1], SomeSpec)
+  	ESpec.Runner.run_example(context[:ex1])
     assert(ESpec.Configuration.get(:test) == :ok)
   end
 end

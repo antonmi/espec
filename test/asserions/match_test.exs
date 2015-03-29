@@ -20,7 +20,7 @@ defmodule MatchTest do
   end
 
   setup_all do
-    examples = ESpec.Runner.run_examples(SomeSpec.examples, SomeSpec)
+    examples = ESpec.Runner.run_examples(SomeSpec.examples)
     { :ok,
       success: Enum.slice(examples, 0, 3),
       errors: Enum.slice(examples, 4, 7)

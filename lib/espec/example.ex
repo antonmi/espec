@@ -11,6 +11,7 @@ defmodule ESpec.Example do
   @doc """
   Expampe struct.
   description - the description of example,
+  module - spec module,
   function - random function name,
   opts - options,
   file - spec file path,
@@ -20,7 +21,7 @@ defmodule ESpec.Example do
   result - the value returned by example block or the pending message
   error - store an error
   """
-  defstruct description: "", function: "", opts: [],
+  defstruct description: "", module: nil, function: nil, opts: [],
             file: nil, line: nil, context: [],
             status: :new, result: nil, error: %ESpec.AssertionError{}
 
@@ -33,8 +34,8 @@ defmodule ESpec.Example do
     quote do
       context = Enum.reverse(@context)
 
-      @examples %ESpec.Example{ description: unquote(description), function: unquote(function), opts: unquote(opts),
-                                file: __ENV__.file, line: __ENV__.line, context: context }
+      @examples %ESpec.Example{ description: unquote(description), module: __MODULE__, function: unquote(function),
+                                opts: unquote(opts), file: __ENV__.file, line: __ENV__.line, context: context }
       def unquote(function)(var!(__)), do: unquote(block)
     end
   end

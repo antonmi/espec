@@ -34,22 +34,22 @@ defmodule BeforeTest do
   end
 
   test "run ex1", context do
-    example = ESpec.Runner.run_example(context[:ex1], SomeSpec)
+    example = ESpec.Runner.run_example(context[:ex1])
     assert(example.result == "1 is defined")
   end
 
   test "run ex2", context do
-    example = ESpec.Runner.run_example(context[:ex2], SomeSpec)
+    example = ESpec.Runner.run_example(context[:ex2])
     assert(example.result == "10 and 2 is defined")
   end
 
   test "run ex3", context do
-    example = ESpec.Runner.run_example(context[:ex3], SomeSpec)
+    example = ESpec.Runner.run_example(context[:ex3])
     assert(example.result == "20 == 20")
   end
 
   test "run ex4", context do
-    example = ESpec.Runner.run_example(context[:ex4], SomeSpec)
+    example = ESpec.Runner.run_example(context[:ex4])
     assert(example.result == "b = 2")
   end
 
