@@ -11,7 +11,7 @@ The main idea is to be close to the RSpec DSL.
   * RSpec expectation syntax: `expect(smth1).to eq(smth2)` or `is_expected.to_not be_between(10, 20)`
   * `before` and `finally` blocks (like RSpec `before` and `after`)
   * `let`, `let!` and `subject`
-  * Mocks with [Meck](https://github.com/eproxus/meck))
+  * Mocks with [Meck](https://github.com/eproxus/meck)
 
 ## Installation
 
@@ -74,7 +74,7 @@ defmodule SomeSpec do
       it do: expect(true).to be true
     end
     describe "Some another context with opts", focus: true do
-     it do: expect(1+1).to eq(2)
+      it do: expect(1+1).to eq(2)
     end
   end
 end
@@ -88,7 +88,7 @@ And `fcontext`, `fdescribe`, `fexample_group` for focused groups.
 
 ## Examples
 
-`example`, `it`, and `specify` macros define the spec example.
+`example`, `it`, and `specify` macros define the 'spec example'.
 ```elixir
 defmodule SomeSpec do
   example do: expect(true).to be true
@@ -120,12 +120,16 @@ The blocks can return `{:ok, key: value, ...}`, so the keyword list will be save
 ```elixir
 defmodule SomeSpec do
   use ESpec
+  
   before do: {:ok, a: 1}
+  
   context "Context" do
     before do: {:ok, b: __[:a] + 1}
     finally do: "#{__[:b]} == 2"
+    
     it do: expect(__[:a]).to eq(1)
     it do: expect(__[:b]).to eq(2)
+    
     finally do: "This finally will not be run. Define 'finally' before the example"
   end
 end  
@@ -136,10 +140,9 @@ Note, that `finally` blocks must be defined before the example.
 `__` is used to share data between spec blocks. You can access data by `__.some_key` or `__[:some_key]`.
 `__.some_key` will raise exception if the key 'some_key' does not exist, while `__[:some_key]` will return `nil`.
 
-The `__` variable appears in your `before`, `finally` and `example` blocks.
+The `__` variable appears in your `before`, `finally`, `let` and `example` blocks.
 
-`before` and `finally` blocks modify the dictionay when return `{:ok, key: value}`
-
+`before` and `finally` blocks modify the dictionay when return `{:ok, key: value}`.
 
 ## `let`, `let!`, and `subject`
 `let` and `let!` have the same behaviour as in RSpec. Both defines memoizable functions in 'spec module'.
@@ -208,7 +211,6 @@ expect(function1).to change(function2, from, to)
 ```
 
 ## Mocks
-
 ESpec uses [Meck](https://github.com/eproxus/meck) to mock functions.
 You can mock the module with 'allow accept':
 ```elixir
@@ -218,13 +220,13 @@ defmodule SomeSpec do
   it do: expect(SomeModule.func(1, 2)).to eq(3)
 end
 ```
-Note, when you mock some function in module `meck` create absolutely new module.
+Note, when you mock some function in module, `meck` creates an absolutely new module.
 
-You can also pass list of atom-function pairs to `accept` function:
+You can also pass a list of atom-function pairs to the `accept` function:
 ```elixir
 allow(SomeModule).to accept(f1: fn -> :f1 end, f2: fn -> :f2 end)
 ```
-There is also an expectation to check if module accepted function call:
+There is also an expectation to check if the module accepted a function call:
 ```elixir
 defmodule SomeSpec do
   use ESpec
@@ -233,7 +235,7 @@ defmodule SomeSpec do
   it do: expect(SomeModule).to accepted(:func, [1,2])
 end
 ```
-`expect(SomeModule).to accepted(:func, [1,2])` just check `meck.history(SomeModule)`.
+`expect(SomeModule).to accepted(:func, [1,2])` just checks `meck.history(SomeModule)`.
 
 ## Configuration
 TODO
