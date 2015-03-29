@@ -45,8 +45,6 @@ end
 
 Or run with `MIX_ENV=test`.
 
-Create a spec folder and add `spec_helper.exs` with `ESpec.start`.
-
 Place your `_spec.exs` files into `spec` folder. `use ESpec` in the 'spec module'.
 ```elixir
 defmodule SomeSpec do
