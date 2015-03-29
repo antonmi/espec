@@ -71,10 +71,10 @@ defmodule SomeSpec do
   use ESpec
   example_group do
     context "Some context" do
-      it do: "example"
+      it do: expect(true).to be true
     end
     describe "Some another context with opts", focus: true do
-     it do: "example"
+     it do: expect(1+1).to eq(2)
     end
   end
 end
