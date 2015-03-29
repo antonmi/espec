@@ -24,6 +24,14 @@ def deps do
   ...
 end
 ```
+```sh
+mix deps.get
+```
+Then run:
+```sh
+mix espec.init
+```
+The task creates `spec/spec_helper.exs` and `spec/example_spec.exs`.
 
 Set `preferred_cli_env` for `espec` in the `mix.exs` file:
 
