@@ -24,8 +24,10 @@ defmodule ESpec.Runner do
     |> Enum.map(fn(example) ->
       contexts = extract_contexts(example.context)
       cond do
-        example.opts[:skip] || Enum.any?(contexts, &(&1.opts[:skip] == true)) ->
-          run_skipped(example)
+        example.opts[:skip] || Enum.any?(contexts, &(&1.opts[:skip])) ->
+          run_skipped(example, contexts)
+        example.opts[:pending] ->
+          run_pending(example, contexts)  
         true ->
           run_example(example, module)
       end
@@ -63,7 +65,15 @@ defmodule ESpec.Runner do
     end
   end
 
-  def run_skipped(example), do: %ESpec.Example{example | status: :skipped}
+  defp run_skipped(example, contexts) do
+    ESpec.Formatter.pending(example)
+    %ESpec.Example{example | status: :pending, result: ESpec.Example.skip_message(example, contexts)}
+  end
+
+  defp run_pending(example, contexts) do 
+    ESpec.Formatter.pending(example)
+    %ESpec.Example{example | status: :pending, result: ESpec.Example.pending_message(example, contexts)}
+  end
 
   defp run_config_before(assigns, _example, _module) do
     func = ESpec.Configuration.get(:before)

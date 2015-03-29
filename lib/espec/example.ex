@@ -15,8 +15,8 @@ defmodule ESpec.Example do
   file - spec file path,
   line - the line where example is defined,
   context - example context. Accumulator for 'contexts' and 'lets',
-  status - example status (:new, :success, :failure, :skipped, :pending),
-  result - the value returned by example block
+  status - example status (:new, :success, :failure, :pending),
+  result - the value returned by example block or the pending message
   error - store an error
   """
   defstruct description: "", function: "", opts: [],
@@ -71,21 +71,33 @@ defmodule ESpec.Example do
   @doc "Macros for skipped examples"
   Enum.each @skipped, fn(func) ->
     defmacro unquote(func)(description, opts, do: block) do
-      quote do: unquote(__MODULE__).example(unquote(description), Keyword.put(unquote(opts), :skip, true), do: unquote(block))
+      reason = "`#{unquote(func)}`"
+      quote do: unquote(__MODULE__).example(unquote(description), Keyword.put(unquote(opts), :skip, unquote(reason)), do: unquote(block))
     end
 
     defmacro unquote(func)(description, do: block) when is_binary(description) do
-      quote do: unquote(__MODULE__).example(unquote(description), [skip: true], do: unquote(block))
+      reason = "`#{unquote(func)}`"
+      quote do: unquote(__MODULE__).example(unquote(description), [skip: unquote(reason)], do: unquote(block))
     end
 
     defmacro unquote(func)(opts, do: block) when is_list(opts) do
-      quote do: unquote(__MODULE__).example(Keyword.put(unquote(opts), :skip, true), do: unquote(block))
+      reason = "`#{unquote(func)}`"
+      quote do: unquote(__MODULE__).example(Keyword.put(unquote(opts), :skip, unquote(reason)), do: unquote(block))
     end
 
     defmacro unquote(func)(do: block) do
-      quote do: unquote(__MODULE__).example([skip: true], do: unquote(block))
+      reason = "`#{unquote(func)}`"
+      quote do: unquote(__MODULE__).example([skip: unquote(reason)], do: unquote(block))
     end
   end
+
+  @doc "Macros for pending exaples"
+  Enum.each [:example, :pending] ++ @aliases, fn(func) ->
+    defmacro unquote(func)(description) when is_binary(description) do
+      quote do: unquote(__MODULE__).example("", [pending: unquote(description)], do: nil)
+    end
+  end
+  
 
   @doc "Description with contexts."
   def full_description(%ESpec.Example{context: context, description: description, function: _function}) do
@@ -106,9 +118,30 @@ defmodule ESpec.Example do
     results |> Enum.filter(&(&1.status === :failure))
   end
 
-  @doc "Filters skipped examples"
-  def skipped(results) do
-    results |> Enum.filter(&(&1.status === :skipped))
+  @doc "Filters pending examples"
+  def pendings(results) do
+    results |> Enum.filter(&(&1.status === :pending))
+  end
+
+  def skip_message(example, contexts) do
+    skipper = Enum.find(contexts, &(&1.opts[:skip])) || example
+    if skipper.opts[:skip] === true do
+      "Temporarily skipped without a reason."
+    else
+      "Temporarily skipped with: #{skipper.opts[:skip]}."
+    end
+  end
+
+  def pending_message(example, _contexts) do
+    if example.opts[:pending] === true do
+      "Pending example."
+    else
+      "Pending with message: #{example.opts[:pending]}."
+    end
+  end
+
+  def pending_message(example) do
+    "TODO"
   end
 
   defp random_atom(arg) do

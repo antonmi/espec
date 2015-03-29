@@ -21,11 +21,9 @@ defmodule SkipExampleTest do
     xspecify "skipped", [some: :option], do: "skipped"
   end
 
-
-
   test "runs only 1" do
     results = ESpec.Runner.run_examples(SomeSpec.examples, SomeSpec)
     assert(length(Enum.filter(results, &(&1.status == :success))) == 1)
-    assert(length(Enum.filter(results, &(&1.status == :skipped))) == 10)
+    assert(length(Enum.filter(results, &(&1.status == :pending))) == 10)
   end
 end
