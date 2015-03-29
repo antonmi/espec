@@ -14,8 +14,7 @@ defmodule ESpec.Assertions.Be do
 
   defp match(act, exp) do
     [op, val] = exp
-    {res, _} = Code.eval_string("act #{op} val", [act: act, val: val], file: __ENV__.file, line: __ENV__.line)
-    res
+    apply(Kernel, op, [act, val])
   end
 
   def error_message(act, exp, positive) do

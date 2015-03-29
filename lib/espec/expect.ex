@@ -29,10 +29,7 @@ defmodule ESpec.Expect do
   @doc "Alias for `eq/1`"
   def be(value), do: {:eq, value}
 
-  @doc """
-  Returns `ESpec.To` argument to call `ESpec.Assertions.Be` asserion.
-  Can be used with `w(> < >= <= == != === !== <> =~)a`.
-  """
+  @doc "Returns `ESpec.To` argument to call `ESpec.Assertions.Be` asserion."
   def be(operator, value), do: {:be, operator,  value}
 
   @doc "Returns `ESpec.To` argument to call `ESpec.Assertions.BeBetween` asserion."
