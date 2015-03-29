@@ -93,7 +93,20 @@ defmodule SomeSpec do
   specify "Test with options", [pending: true], do: "pending"
 end
 ```
-
+You can use `skip`, `pending` or `focus` options to control evaluation.
+There are also macros:
+* `xit`, `xexample`, `xspecify` - to skip;
+* `fit`, `fexample`, `fspecify`, `focus` - to focus;
+* `pending/1`, `example/1`, `it/1`, `specify/1` - for pending examples.
+```elixir
+defmodule SomeSpec do
+  use ESpec
+  xit "skip", do: "skipped"
+  focus "Focused", do: "Focused example"
+  it "pending example"
+  pending "it is also pending example"
+end
+```
 
 ## `before` and `finally`
 
