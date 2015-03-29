@@ -154,4 +154,38 @@ TODO
 
 ## Mocks
 
-TODO
+ESpec uses [Meck](https://github.com/eproxus/meck) to mock functions.
+You can mock the module with 'allow accept':
+```elixir
+defmodule SomeSpec do
+  use ESpec
+	 before do: allow(SomeModule).to accept(:func, fn(a,b) -> a+b end)
+	 it do: expect(SomeModule.func(1, 2)).to eq(3)
+end
+```
+Note, when you mock some function in module `meck` create absolutely new module.
+
+You can also pass list of atom-function pairs to `accept` function:
+```elixir
+allow(SomeModule).to accept(f1: fn -> :f1 end, f2: fn -> :f2" end)
+```
+There is also an expectation to check if module accepted function call:
+```elixir
+defmodule SomeSpec do
+  use ESpec
+	 before do: allow(SomeModule).to accept(:func, fn(a,b) -> a+b end)
+	 before do: SomeModule.func(1, 2)
+	 it do: expect(SomeModule).to accepted(:func, [1,2])
+end
+```
+`expect(SomeModule).to accepted(:func, [1,2])` just check `meck.history(SomeModule)`.
+
+
+
+
+
+
+
+
+
+
