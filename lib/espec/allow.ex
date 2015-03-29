@@ -2,12 +2,12 @@ defmodule ESpec.Allow do
   
   def allow(module), do: {ESpec.AllowTo, module}
 
-  def receive(name, func) do
-    {:receive, name, func}
+  def accept(name, func) do
+    {:accept, name, func}
   end
   
-  def receive_messages(list) do
-    {:receive_messages, list}
+  def accept(list) do
+    {:accept, list}
   end
 
 end

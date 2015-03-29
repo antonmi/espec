@@ -4,8 +4,8 @@ defmodule ESpec.AllowTo do
 
   def to(mock, {ESpec.AllowTo, module}) do
     case mock do
-      {:receive, name, function} -> ESpec.Mock.expect(module, name, function)
-      {:receive_messages, list} -> 
+      {:accept, name, function} -> ESpec.Mock.expect(module, name, function)
+      {:accept, list} -> 
         Enum.each(list, fn({name, function}) -> 
           ESpec.Mock.expect(module, name, function)
         end)

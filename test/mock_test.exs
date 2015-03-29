@@ -7,8 +7,8 @@ defmodule MockTest do
 
 		context "with mock" do
 			before do
-				allow(ESpec.SomeModule).to receive(:f, fn(a) -> "mock! #{a}" end)
-				allow(ESpec.SomeModule).to receive_messages(x: fn -> :y end, q: fn -> :w end)
+				allow(ESpec.SomeModule).to accept(:f, fn(a) -> "mock! #{a}" end)
+				allow(ESpec.SomeModule).to accept(x: fn -> :y end, q: fn -> :w end)
 			end
 
 			it do: ESpec.SomeModule.f(1)
@@ -22,6 +22,12 @@ defmodule MockTest do
             "rescued"
         end    
 			end
+
+      context "expect accepted" do
+        it do: expect(ESpec.SomeModule).to_not accepted(:f, [1])
+        before do: ESpec.SomeModule.f(1)
+        it do: expect(ESpec.SomeModule).to accepted(:f, [1])
+      end
 		end
 
 		context "without mock" do
@@ -35,7 +41,9 @@ defmodule MockTest do
       ex1: Enum.at(SomeSpec.examples, 0),
       ex2: Enum.at(SomeSpec.examples, 1),
       ex3: Enum.at(SomeSpec.examples, 2),
-      ex4: Enum.at(SomeSpec.examples, 3)
+      ex4: Enum.at(SomeSpec.examples, 3),
+      ex5: Enum.at(SomeSpec.examples, 4),
+      ex6: Enum.at(SomeSpec.examples, 5)
     }
   end
 
@@ -55,7 +63,16 @@ defmodule MockTest do
 
   test "run ex4", context do
     example = ESpec.Runner.run_example(context[:ex4])
-    assert(example.result == :f)
+    assert(example.status == :success)
   end
 
+  test "run ex5", context do
+    example = ESpec.Runner.run_example(context[:ex5])
+    assert(example.status == :success)
+  end
+
+  test "run ex6", context do
+    example = ESpec.Runner.run_example(context[:ex6])
+    assert(example.result == :f)
+  end
 end

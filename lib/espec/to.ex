@@ -15,6 +15,7 @@ defmodule ESpec.To do
       {:match, value} -> ESpec.Assertions.Match.assert(lhs, value, positive)
       {:raise_exception, value} -> ESpec.Assertions.RaiseException.assert(lhs, value, positive)
       {:throw_term, value} -> ESpec.Assertions.ThrowTerm.assert(lhs, value, positive)
+      {:accepted, func, args} -> ESpec.Assertions.Accepted.assert(lhs, [func, args], positive)
     end
   end
 

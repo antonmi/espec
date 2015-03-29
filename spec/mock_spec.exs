@@ -5,8 +5,8 @@ defmodule MockSpec do
 
   context "with mock" do
     before do
-      allow(ESpec.SomeModule).to receive(:f, fn(a) -> "mock! #{a}" end)
-      allow(ESpec.SomeModule).to receive_messages(x: fn -> :y end, q: fn -> :w end)
+      allow(ESpec.SomeModule).to accept(:f, fn(a) -> "mock! #{a}" end)
+      allow(ESpec.SomeModule).to accept(x: fn -> :y end, q: fn -> :w end)
     end
 
     it do: expect(ESpec.SomeModule.f(1)).to eq("mock! 1")

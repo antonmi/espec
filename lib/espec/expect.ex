@@ -52,4 +52,7 @@ defmodule ESpec.Expect do
   @doc "Returns `ESpec.To` argument to call `ESpec.Assertions.ThrowTerm` asserion."
   def throw_term(term), do: {:throw_term, [term]}
   def throw_term(), do: {:throw_term, []}
+
+  @doc "Returns `ESpec.To` argument to call `ESpec.Assertions.ThrowTerm` assertion"
+  def accepted(func, args \\ []), do: {:accepted, func, args}
 end

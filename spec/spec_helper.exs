@@ -1,5 +1,5 @@
 ESpec.start()
 
-ESpec.configure fn(config) ->
+ESpec.configure fn(_config) ->
 
 end
