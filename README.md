@@ -11,7 +11,7 @@ The main idea is to be close to the RSpec DSL.
   * RSpec expectation syntax: `expect(smth1).to eq(smth2)` or `is_expected.to_not be_between(10, 20)`
   * `before` and `finally` blocks (like RSpec `before` and `after`)
   * `let`, `let!` and `subject`
-  * Mocks and stubs. (uses [Meck](https://github.com/eproxus/meck))
+  * Mocks with [Meck](https://github.com/eproxus/meck))
 
 ## Installation
 
@@ -142,46 +142,70 @@ The `__` variable appears in your `before`, `finally` and `example` blocks.
 
 
 ## `let`, `let!`, and `subject`
+`let` and `let!` have the same behaviour as in RSpec. Both defines memoizable functions in 'spec module'.
+`let` evaluates when accessing the function while `let!` called in 'before' chain.
+The `__` is available in 'lets' but neither `let` nor `let!` can modify the dictionary.
+```elixir
+defmodule SomeSpec do
+  use ESpec
+  
+  before do: {:ok, a: 1}
+  let! :a, do: __.a
+  let :b, do: __.a + 1
+  
+  it do: expect(a).to eq(1)
+  it do: expect(b).to eq(2)
+end  
+```
+`subject` is just an alias for `let(:subject)`. You can use `is_expected` macro when `subject is defined.
+```elixir
+defmodule SomeSpec do
+  use ESpec
+  
+  subject(1+1)
+  it do: is_expected.to eq(2)
 
-TODO
-
-
+  context "with block" do
+    subject do: 2+2
+    it do: is_expected.to eq(4)
+  end
+end 
+```
 
 ## Matchers
-### Equality
+#### Equality
 ```elixir
 expect(actual).to eq(expected)  # passes if actual == expected
 expect(actual).to eql(expected) # passes if actual === expected
 ```
-### Comparisons
+#### Comparisons
 Can be used with `:>`, `:<`, `:>=`, `:<=`, and etc. 
 ```elixir
 expect(actual).to be operator, value 
 ```
 Passes if `apply(Kernel, operator, [actual, value]) == true`
-### Regular expressions
+#### Regular expressions
 ```elixir
 expect(actual).to match(~r/expression/)
 expect(actual).to match("string")
 ```
-### Exceptions
+#### Exceptions
 ```elixir
 expect(function).to raise_exception
 expect(function).to raise_exception(ErrorModule)
 expect(function).to raise_exception(ErrorModule, "message")
 ```
-### Throws
+#### Throws
 ```elixir
 expect(function).to throw_term
 expect(function).to throw_term(term)
 ```
-### Change state
+#### Change state
 Test if call of function1 change the function2 returned value to smth or from to smth
 ```elexir
 expect(function1).to change(function2, to)
 expect(function1).to change(function2, from, to) 
 ```
-
 
 ## Mocks
 
@@ -198,7 +222,7 @@ Note, when you mock some function in module `meck` create absolutely new module.
 
 You can also pass list of atom-function pairs to `accept` function:
 ```elixir
-allow(SomeModule).to accept(f1: fn -> :f1 end, f2: fn -> :f2" end)
+allow(SomeModule).to accept(f1: fn -> :f1 end, f2: fn -> :f2 end)
 ```
 There is also an expectation to check if module accepted function call:
 ```elixir
@@ -211,8 +235,8 @@ end
 ```
 `expect(SomeModule).to accepted(:func, [1,2])` just check `meck.history(SomeModule)`.
 
-
-
+## Configuration
+TODO
 
 
 
