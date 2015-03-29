@@ -67,9 +67,13 @@ defmodule ESpec.Formatter do
 
   defp print_footer(examples, failed, pending) do
     IO.puts "\n"
-    color = if Enum.any?(failed), do: @red, else: @green
+    color = if Enum.any?(failed) do
+      @red
+    else
+      if Enum.any?(pending), do: @yellow, else: @green
+    end
     parts = ["#{Enum.count(examples)} examples", "#{Enum.count(failed)} failures"]
-    if Enum.any?(pending), do: parts = parts ++ ["#{Enum.count(pending)} skipped examples"]
+    if Enum.any?(pending), do: parts = parts ++ ["#{Enum.count(pending)} pending"]
     IO.puts "\t#{color}#{Enum.join(parts, ", ")}#{@reset}"
     IO.puts "\n"
   end
