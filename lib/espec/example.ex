@@ -115,7 +115,7 @@ defmodule ESpec.Example do
   @doc "Macros for pending exaples"
   Enum.each [:example, :pending] ++ @aliases, fn(func) ->
     defmacro unquote(func)(description) when is_binary(description) do
-      quote do: unquote(__MODULE__).example("", [pending: unquote(description)], do: nil)
+      quote do: unquote(__MODULE__).example(unquote(description), [pending: unquote(description)], do: nil)
     end
   end
   
@@ -159,10 +159,6 @@ defmodule ESpec.Example do
     else
       "Pending with message: #{example.opts[:pending]}."
     end
-  end
-
-  def pending_message(example) do
-    "TODO"
   end
 
   defp random_atom(arg) do
