@@ -25,6 +25,8 @@ defmodule ESpec.To do
       {:be_empty} -> ESpec.Assertions.Enum.BeEmpty.assert(lhs, [], positive)
       {:have_max, value} -> ESpec.Assertions.Enum.HaveMax.assert(lhs, value, positive)
       {:have_max_by, func, value} -> ESpec.Assertions.Enum.HaveMaxBy.assert(lhs, [func, value], positive)
+      {:have_min, value} -> ESpec.Assertions.Enum.HaveMin.assert(lhs, value, positive)
+      {:have_min_by, func, value} -> ESpec.Assertions.Enum.HaveMinBy.assert(lhs, [func, value], positive)
       {:accepted, func, args} -> ESpec.Assertions.Accepted.assert(lhs, [func, args], positive)
     end
   end

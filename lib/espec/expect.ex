@@ -83,6 +83,12 @@ defmodule ESpec.Expect do
   @doc "Returns `ESpec.To` argument to call `ESpec.Assertions.Enum.HaveMaxBy` assertion"
   def have_max_by(func, value), do: {:have_max_by, func, value}
 
+  @doc "Returns `ESpec.To` argument to call `ESpec.Assertions.Enum.HaveMin` assertion"
+  def have_min(value), do: {:have_min, value}
+
+  @doc "Returns `ESpec.To` argument to call `ESpec.Assertions.Enum.HaveMinBy` assertion"
+  def have_min_by(func, value), do: {:have_min_by, func, value}
+
 
   @doc "Returns `ESpec.To` argument to call `ESpec.Assertions.ThrowTerm` assertion"
   def accepted(func, args \\ []), do: {:accepted, func, args}

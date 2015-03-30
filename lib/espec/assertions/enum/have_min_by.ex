@@ -1,4 +1,4 @@
-defmodule ESpec.Assertions.Enum.HaveMaxBy do
+defmodule ESpec.Assertions.Enum.HaveMinBy do
 
   @behaviour ESpec.Assertion
 
@@ -13,14 +13,14 @@ defmodule ESpec.Assertions.Enum.HaveMaxBy do
   end
 
   defp match(enum, func, val) do
-    act = Enum.max_by(enum, func)
+    act = Enum.min_by(enum, func)
     res = act == val
     {res, act}
   end
 
   def error_message(enum, func, val, act, positive) do
     to = if positive, do: "to be", else: "not to be"
-    "Expected maximum value of `#{inspect enum}` using `#{inspect func}` #{to} `#{val}` but maximum is `#{act}`."
+    "Expected minimum value of `#{inspect enum}` using `#{inspect func}` #{to} `#{val}` but minimum is `#{act}`."
   end
 
 end
