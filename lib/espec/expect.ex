@@ -58,8 +58,12 @@ defmodule ESpec.Expect do
 
   @doc "Returns `ESpec.To` argument to call `ESpec.Assertions.Enum.HaveAll` assertion"
   def have_all(func), do: {:have_all, func, []}
+  
   @doc "Returns `ESpec.To` argument to call `ESpec.Assertions.Enum.HaveAll` assertion"
   def have_any(func), do: {:have_any, func, []}
+  
+  @doc "Returns `ESpec.To` argument to call `ESpec.Assertions.Enum.HaveAll` assertion"
+  def have_at(pos, val), do: {:have_at, pos, val}
 
   @doc "Returns `ESpec.To` argument to call `ESpec.Assertions.ThrowTerm` assertion"
   def accepted(func, args \\ []), do: {:accepted, func, args}

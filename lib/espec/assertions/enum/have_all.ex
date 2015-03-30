@@ -18,7 +18,7 @@ defmodule ESpec.Assertions.Enum.HaveAll do
 
   def error_message(enum, func, positive) do
     to = if positive, do: "to", else: "to"
-    "Expected #{inspect func} #{to} return true for all elements in #{inspect enum}"
+    "Expected `#{inspect func}` #{to} return true for all elements in `#{inspect enum}`"
   end
 
 
