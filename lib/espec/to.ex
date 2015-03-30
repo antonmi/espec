@@ -22,6 +22,7 @@ defmodule ESpec.To do
       {:have_count, val, []} -> ESpec.Assertions.Enum.HaveCount.assert(lhs, val, positive)
       {:have_count_by, func, val} -> ESpec.Assertions.Enum.HaveCountBy.assert(lhs, [func, val], positive)
       {:have, val, []} -> ESpec.Assertions.Enum.Have.assert(lhs, val, positive)
+      {:be_empty, [], []} -> ESpec.Assertions.Enum.BeEmpty.assert(lhs, [], positive)
       {:accepted, func, args} -> ESpec.Assertions.Accepted.assert(lhs, [func, args], positive)
     end
   end

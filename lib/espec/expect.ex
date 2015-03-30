@@ -74,6 +74,10 @@ defmodule ESpec.Expect do
   @doc "Returns `ESpec.To` argument to call `ESpec.Assertions.Enum.Have` assertion"
   def have(val), do: {:have, val, []}
 
+  @doc "Returns `ESpec.To` argument to call `ESpec.Assertions.Enum.BeEmpty` assertion"
+  def be_empty, do: {:be_empty, [], []}
+
+
   @doc "Returns `ESpec.To` argument to call `ESpec.Assertions.ThrowTerm` assertion"
   def accepted(func, args \\ []), do: {:accepted, func, args}
 end
