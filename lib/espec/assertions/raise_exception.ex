@@ -12,7 +12,7 @@ defmodule ESpec.Assertions.RaiseException do
         raise ESpec.AssertionError, act: func, exp: exp, message: error_message(func, exp, err_module, err_message, positive)
       {false, _} -> nil
       true when positive ->
-        nil
+        :ok
       true ->
         raise ESpec.AssertionError, act: func, exp: exp, message: error_message(func, exp, positive)
     end

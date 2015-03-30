@@ -17,7 +17,7 @@ defmodule ESpec.Assertions.Enum.HaveAllSpec do
     it do: expect(range).to_not have_all(negative)
   end
 
-  context "Error" do
+  xcontext "Error" do
     it do: expect(range).to_not have_all(positive)
     it do: expect(range).to have_all(negative)
   end

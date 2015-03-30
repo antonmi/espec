@@ -3,22 +3,23 @@ defmodule ESpec.Assertions.Enum.HaveAll do
   @behaviour ESpec.Assertion
 
   def assert(enum, func, positive \\ true) do
-    unless success?(enum, func, positive) do
-      raise ESpec.AssertionError, act: enum, exp: func, message: error_message(enum, func, positive)
+    case match(enum, func) do
+      {false, act} when positive ->
+        raise ESpec.AssertionError, act: act, exp: true, message: error_message(enum, func, act, positive)
+      {true, act} when not positive ->        
+        raise ESpec.AssertionError, act: act, exp: false, message: error_message(enum, func, act, positive)
+      _ -> :ok
     end
   end
 
-  defp success?(enum, func, positive) do
-    if positive, do: match(enum, func), else: !match(enum, func)
-  end
-
   defp match(enum, func) do
-    Enum.all?(enum, func)
+    res = Enum.all?(enum, func)
+    {res, res}
   end
 
-  def error_message(enum, func, positive) do
-    to = if positive, do: "to", else: "to"
-    "Expected `#{inspect func}` #{to} return true for all elements in `#{inspect enum}`"
+  def error_message(enum, func, act, positive) do
+    to = if positive, do: "to", else: "to not"
+    "Expected `#{inspect func}` #{to} return true for all elements in `#{inspect enum}`, but returts `#{act}` for some."
   end
 
 
