@@ -57,25 +57,31 @@ defmodule ESpec.Expect do
   def change(func, before, value), do: {:change_from_to, func, [before, value]}
 
   @doc "Returns `ESpec.To` argument to call `ESpec.Assertions.Enum.HaveAll` assertion"
-  def have_all(func), do: {:have_all, func, []}
+  def have_all(func), do: {:have_all, func}
   
   @doc "Returns `ESpec.To` argument to call `ESpec.Assertions.Enum.HaveAll` assertion"
-  def have_any(func), do: {:have_any, func, []}
+  def have_any(func), do: {:have_any, func}
   
   @doc "Returns `ESpec.To` argument to call `ESpec.Assertions.Enum.HaveAt` assertion"
   def have_at(pos, val), do: {:have_at, pos, val}
 
   @doc "Returns `ESpec.To` argument to call `ESpec.Assertions.Enum.HaveCount` assertion"
-  def have_count(val), do: {:have_count, val, []}
+  def have_count(val), do: {:have_count, val}
 
   @doc "Returns `ESpec.To` argument to call `ESpec.Assertions.Enum.HaveCountBy` assertion"
   def have_count_by(func, val), do: {:have_count_by, func, val}
 
   @doc "Returns `ESpec.To` argument to call `ESpec.Assertions.Enum.Have` assertion"
-  def have(val), do: {:have, val, []}
+  def have(val), do: {:have, val}
 
   @doc "Returns `ESpec.To` argument to call `ESpec.Assertions.Enum.BeEmpty` assertion"
-  def be_empty, do: {:be_empty, [], []}
+  def be_empty, do: {:be_empty}
+
+  @doc "Returns `ESpec.To` argument to call `ESpec.Assertions.Enum.HaveMax` assertion"
+  def have_max(value), do: {:have_max, value}
+
+  @doc "Returns `ESpec.To` argument to call `ESpec.Assertions.Enum.HaveMaxBy` assertion"
+  def have_max_by(func, value), do: {:have_max_by, func, value}
 
 
   @doc "Returns `ESpec.To` argument to call `ESpec.Assertions.ThrowTerm` assertion"
