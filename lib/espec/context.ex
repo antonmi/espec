@@ -1,7 +1,7 @@
 defmodule ESpec.Context do
   @moduledoc """
-    Defines macros 'context', 'describe', and 'example_group'.
-    Defines macros for 'skip' and 'focus' example groups
+  Defines macros 'context', 'describe', and 'example_group'.
+  Defines macros for 'skip' and 'focus' example groups
   """
 
   @aliases ~w(describe example_group)a
@@ -9,10 +9,10 @@ defmodule ESpec.Context do
   @focused ~w(fcontext fdescribe fexample_group)a
 
   @doc """
-    Context has description and options.
-    Available options are:
-    - [skip: true] or [skip: "Reason"] - skips examples in the context;
-    - [focus: true] - sets focus to run with `--focus ` option.
+  Context has description and options.
+  Available options are:
+  - [skip: true] or [skip: "Reason"] - skips examples in the context;
+  - [focus: true] - sets focus to run with `--focus ` option.
   """
   defstruct description: "", opts: []
 
