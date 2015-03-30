@@ -1,6 +1,6 @@
 defmodule ESpec.Assertions.RaiseException do
 
-  use ESpec
+  use ESpec.Assertion
 
   defp match(subject, []) do
     try do
@@ -13,7 +13,7 @@ defmodule ESpec.Assertions.RaiseException do
 
   defp match(subject, [module]) do
     try do
-      func.()
+      subject.()
       {false, false}
     rescue
       error ->
@@ -27,7 +27,7 @@ defmodule ESpec.Assertions.RaiseException do
 
   defp match(subject, [module, mes]) do
     try do
-      func.()
+      subject.()
       {false, false}
     rescue
       error ->
