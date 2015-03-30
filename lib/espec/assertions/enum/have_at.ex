@@ -20,8 +20,7 @@ defmodule ESpec.Assertions.Enum.HaveAt do
 
   def error_message(enum, pos, val, act, positive) do
     to = if positive, do: "to", else: "to not"
-    "Expected `#{inspect enum}` #{to} have `#{inspect val}` on `#{inspect pos}` position, but has `#{act}`."
+    "Expected `#{inspect enum}` #{to} have `#{inspect val}` on `#{inspect pos}` position, but it has `#{act}`."
   end
-
 
 end

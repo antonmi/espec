@@ -71,6 +71,9 @@ defmodule ESpec.Expect do
   @doc "Returns `ESpec.To` argument to call `ESpec.Assertions.Enum.HaveCountBy` assertion"
   def have_count_by(func, val), do: {:have_count_by, func, val}
 
+  @doc "Returns `ESpec.To` argument to call `ESpec.Assertions.Enum.Have` assertion"
+  def have(val), do: {:have, val, []}
+
   @doc "Returns `ESpec.To` argument to call `ESpec.Assertions.ThrowTerm` assertion"
   def accepted(func, args \\ []), do: {:accepted, func, args}
 end

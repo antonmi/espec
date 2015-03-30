@@ -20,7 +20,7 @@ defmodule ESpec.Assertions.Enum.HaveCountBy do
 
   def error_message(enum, func, val, act, positive) do
     to = if positive, do: "to", else: "to not"
-    "Expected `#{inspect enum}` #{to} have count_by `#{inspect func}` be equal to `#{val}` but has `#{act}`."
+    "Expected `#{inspect enum}` #{to} have count_by `#{inspect func}` be equal to `#{val}` but it has `#{act}` elements."
   end
 
 

@@ -1,4 +1,4 @@
-defmodule ESpec.Assertions.Enum.HaveCount do
+defmodule ESpec.Assertions.Enum.Have do
 
   @behaviour ESpec.Assertion
 
@@ -13,14 +13,14 @@ defmodule ESpec.Assertions.Enum.HaveCount do
   end
 
   defp match(enum, val) do
-    act = Enum.count(enum)
-    res = act == val
-    {res, act}
+    res = Enum.member?(enum, val) 
+    {res, res}
   end
 
   def error_message(enum, val, act, positive) do
     to = if positive, do: "to", else: "to not"
-    "Expected `#{inspect enum}` #{to} have count `#{val}` but it has `#{act}` elements."
+    has = if act, do: "has", else: "has not"
+    "Expected `#{inspect enum}` #{to} have `#{inspect val}`, but it #{has}."
   end
 
 end
