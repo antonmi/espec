@@ -19,7 +19,7 @@ defmodule ESpec.Assertions.Be do
 
   def error_message(act, exp, positive) do
     [op, val] = exp
-    "Expected `#{act} #{op} #{val}` to be #{positive} but got #{!positive}"
+    "Expected `#{inspect act} #{op} #{inspect val}` to be #{positive} but got #{!positive}"
   end
 
 end

@@ -24,7 +24,7 @@ defmodule ESpec.Assertions.Accepted do
 
   def error_message(module, func, args, positive) do
     to = if positive, do: "to", else: "not to"
-    "Expected `#{module}` #{to} accept `#{func}` with `#{inspect args}`"
+    "Expected `#{module}` #{to} accept `#{inspect func}` with `#{inspect args}`"
   end
 
 end

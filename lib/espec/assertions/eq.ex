@@ -18,7 +18,7 @@ defmodule ESpec.Assertions.Eq do
 
   def error_message(act, exp, positive) do
     to = if positive, do: "to", else: "not to"
-    "Expected `#{inspect act}` #{to} equals (==) `#{exp}`"
+    "Expected `#{inspect act}` #{to} equals (==) `#{inspect exp}`"
   end
 
 

@@ -21,7 +21,7 @@ defmodule ESpec.Assertions.ChangeTo do
 
   def error_message(f1, f2, value, positive) do
     to = if positive, do: "to", else: "not to"
-    "Expected `#{inspect f1}` #{to} change the value of `#{inspect f2}` to `#{value}`"
+    "Expected `#{inspect f1}` #{to} change the value of `#{inspect f2}` to `#{inspect value}`"
   end
 
 end

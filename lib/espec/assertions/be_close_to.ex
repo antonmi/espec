@@ -20,7 +20,7 @@ defmodule ESpec.Assertions.BeCloseTo do
   def error_message(act, exp, positive) do
     to = if positive, do: "to", else: "not to"
     [value, delta] = exp
-    "Expected `#{act}` #{to} be close to `#{value}` with delta `#{delta}`"
+    "Expected `#{inspect act}` #{to} be close to `#{inspect value}` with delta `#{inspect delta}`"
   end
 
 end
