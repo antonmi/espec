@@ -10,6 +10,7 @@ defmodule ChangeSpec do
 
   let :f1, do: fn -> ChangeSpec.add(:value) end
   let :f2, do: &ChangeSpec.count/0 
+  let :f3, do: fn -> :nothing end
 
   context "Success" do
     it "change_to", do: expect(f1).to change(f2, 1)    
@@ -18,7 +19,12 @@ defmodule ChangeSpec do
 
   xcontext "Error" do
     it "change_to", do: expect(f1).to change(f2, 2)    
+    it "change_to", do: expect(f3).to change(f2, 2)    
+    it "change_to", do: expect(f3).to change(f2, 0)    
+    
     it "change_from_to", do: expect(f1).to change(f2, 0, 2)    
+    it "change_from_to", do: expect(f1).to change(f2, 1, 2)    
+    it "change_from_to", do: expect(f3).to change(f2, 0, 2)    
   end
 
 end 

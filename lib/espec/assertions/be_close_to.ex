@@ -1,26 +1,18 @@
 defmodule ESpec.Assertions.BeCloseTo do
 
-  @behaviour ESpec.Assertion
+  use ESpec.Assertion
 
-  def assert(act, exp, positive \\ true) do
-    unless success?(act, exp, positive) do
-      raise ESpec.AssertionError, act: act, exp: exp, message: error_message(act, exp, positive)
-    end
+  defp match(subject, data) do
+    [value, delta] = data
+    result = abs(subject-value) <= delta
+    {result, result}
   end
 
-  defp success?(act, exp, positive) do
-    if positive, do: match(act, exp), else: !match(act, exp)
-  end
-
-  defp match(act, exp) do
-    [value, delta] = exp
-    abs(act-value) <= delta
-  end
-
-  def error_message(act, exp, positive) do
+  defp error_message(subject, data, result, positive) do
     to = if positive, do: "to", else: "not to"
-    [value, delta] = exp
-    "Expected `#{inspect act}` #{to} be close to `#{inspect value}` with delta `#{inspect delta}`"
+    but = if result, do: "it is", else: "it is not"
+    [value, delta] = data
+    "Expected `#{inspect subject}` #{to} be close to `#{inspect value}` with delta `#{inspect delta}`, but #{but}."
   end
-
+ 
 end

@@ -1,26 +1,16 @@
 defmodule ESpec.Assertions.BeBetween do
 
-  @behaviour ESpec.Assertion
+  use ESpec.Assertion
 
-  def assert(act, exp, positive \\ true) do
-    unless success?(act, exp, positive) do
-      raise ESpec.AssertionError, act: act, exp: exp, message: error_message(act, exp, positive)
-    end
+  defp match(subject, [l, r]) do
+    result = subject >= l && subject <= r
+    {result, result}
   end
 
-  defp success?(act, exp, positive) do
-    if positive, do: match(act, exp), else: !match(act, exp)
-  end
-
-  defp match(act, exp) do
-    [l, r] = exp
-    act >= l && act <= r
-  end
-
-  def error_message(act, exp, positive) do
+  defp error_message(subject, [l, r], result, positive) do
     to = if positive, do: "to", else: "not to"
-    [l, r] = exp
-    "Expected `#{inspect act}` #{to} be between `#{inspect l}` and `#{inspect r}`"
+    but = if result, do: "it is", else: "it is not"
+    "Expected `#{inspect subject}` #{to} be between `#{inspect l}` and `#{inspect r}`, but #{but}."
   end
 
 end

@@ -1,27 +1,23 @@
 defmodule ESpec.Assertions.ChangeFromTo do
 
-  @behaviour ESpec.Assertion
+  use ESpec.Assertion
 
-  def assert(f1, [f2, before, value], positive \\ true) do
-    unless success?(f1, f2, before, value, positive) do
-      raise ESpec.AssertionError, act: f1, exp: [f2, value], message: error_message(f1, f2, before, value, positive)
-    end
+  defp match(subject, [func, before, value]) do
+    initial = func.() 
+    subject.() 
+    then = func.()
+    result = (initial == before && then == value)
+    {result, {then, initial, initial == before, then == value}}
   end
 
-  defp success?(f1, f2, before, value, positive) do
-    if positive, do: match(f1, f2, before, value), else: !match(f1, f2, before, value)
-  end
-
-  defp match(f1, f2, before, value) do
-    initial = f2.() 
-    f1.() 
-    then = f2.()
-    initial == before && then == value
-  end
-
-  def error_message(f1, f2, before, value, positive) do
+  defp error_message(subject, [func, before, value], {then, initial, true, false}, positive) do
     to = if positive, do: "to", else: "not to"
-    "Expected `#{inspect f1}` #{to} change the value of `#{inspect f2}` from `#{inspect before}` to `#{inspect value}`"
+    "Expected `#{inspect subject}` #{to} change the value of `#{inspect func}` from `#{inspect before}` to `#{inspect value}`, but the value is `#{then}`."
+  end
+
+  defp error_message(subject, [func, before, value], {then, initial, false, _}, positive) do
+    to = if positive, do: "to", else: "not to"
+    "Expected `#{inspect subject}` #{to} change the value of `#{inspect func}` from `#{inspect before}` to `#{inspect value}`, but the initial value is `#{initial}`."
   end
 
 end
