@@ -17,6 +17,7 @@ defmodule ESpec.To do
       {:change_to, func, value} -> ESpec.Assertions.ChangeTo.assert(lhs, [func, value], positive)
       {:change_from_to, func, [before, value]} -> ESpec.Assertions.ChangeFromTo.assert(lhs, [func, before, value], positive)
       {:have_all, func, []} -> ESpec.Assertions.Enum.HaveAll.assert(lhs, func, positive)
+      {:have_any, func, []} -> ESpec.Assertions.Enum.HaveAny.assert(lhs, func, positive)
       {:accepted, func, args} -> ESpec.Assertions.Accepted.assert(lhs, [func, args], positive)
     end
   end

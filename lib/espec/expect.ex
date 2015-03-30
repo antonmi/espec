@@ -56,7 +56,10 @@ defmodule ESpec.Expect do
   @doc "Returns `ESpec.To` argument to call `ESpec.Assertions.ChangeFromTo` assertion"
   def change(func, before, value), do: {:change_from_to, func, [before, value]}
 
+  @doc "Returns `ESpec.To` argument to call `ESpec.Assertions.Enum.HaveAll` assertion"
   def have_all(func), do: {:have_all, func, []}
+  @doc "Returns `ESpec.To` argument to call `ESpec.Assertions.Enum.HaveAll` assertion"
+  def have_any(func), do: {:have_any, func, []}
 
   @doc "Returns `ESpec.To` argument to call `ESpec.Assertions.ThrowTerm` assertion"
   def accepted(func, args \\ []), do: {:accepted, func, args}
