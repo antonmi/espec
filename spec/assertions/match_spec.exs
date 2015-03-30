@@ -11,7 +11,7 @@ defmodule ESpec.Assertions.MatchSpec do
       it do: expect("abcd").to_not match("ad")
     end
 
-    xcontext "Errors" do
+    context "Errors" do
       it do: expect("abcd").to_not match(~r/c(d)/)
       it do: expect("abcd").to_not match("bc")
       it do: expect("abcd").to match(~r/e/)

@@ -1,84 +1,71 @@
 defmodule ESpec.Assertions.RaiseException do
 
-  @behaviour ESpec.Assertion
+  use ESpec
 
-  def assert(func, exp, positive \\ true) do
-    case match(func, exp) do
-      {false, []} when positive ->
-        raise ESpec.AssertionError, act: func, exp: exp, message: error_message(func, exp, positive)
-      {false, [err_module]} when positive ->
-        raise ESpec.AssertionError, act: func, exp: exp, message: error_message(func, exp, err_module, positive)
-      {false, [err_module, err_message]} when positive ->
-        raise ESpec.AssertionError, act: func, exp: exp, message: error_message(func, exp, err_module, err_message, positive)
-      {false, _} -> nil
-      true when positive ->
-        :ok
-      true ->
-        raise ESpec.AssertionError, act: func, exp: exp, message: error_message(func, exp, positive)
-    end
-  end
-
-  defp match(func, []) do
+  defp match(subject, []) do
     try do
-      func.()
-      {:false, []}
+      subject.()
+      {false, false}
     rescue
-      _error ->
-        true
+      _error -> {true, true}
     end
   end
 
-  defp match(func, [module]) do
+  defp match(subject, [module]) do
     try do
       func.()
-      {:false, []}
+      {false, false}
     rescue
       error ->
-        if error.__struct__ == module, do: true, else: {:false, [error.__struct__]}
-    end
-  end
-
-  defp match(func, [module, mes]) do
-    try do
-      func.()
-      {:false, []}
-    rescue
-      error ->
-        if error.__struct__ == module && Exception.message(error) == mes do
-          true
+        if error.__struct__ == module do
+          {true, module}
         else
-          {:false, [error.__struct__, Exception.message(error)]}
+          {false, [error.__struct__]}
         end
     end
   end
 
-  defp error_message(func, [], positive) do
-    if positive do
-      "Expected #{inspect func} to raise exception, but nothing was raised"
-    else
-      "Expected #{inspect func} to not raise exception, but an exception was raised"
+  defp match(subject, [module, mes]) do
+    try do
+      func.()
+      {false, false}
+    rescue
+      error ->
+        if error.__struct__ == module && Exception.message(error) == mes do
+          {true, true}
+        else
+          {false, [error.__struct__, Exception.message(error)]}
+        end
     end
   end
 
-  defp error_message(func, [module], positive) do
+  defp error_message(subject, [], false, positive) do
     if positive do
-      "Expected #{inspect func} to raise exception `#{module}`, but nothing was raised"
+      "Expected #{inspect subject} to raise exception, but nothing was raised"
     else
-      "Expected #{inspect func} to not raise exception `#{module}`, but the exception was raised"
+      "Expected #{inspect subject} to not raise exception, but an exception was raised"
     end
   end
 
-  defp error_message(func, [module, message], positive) do
+  defp error_message(subject, [module], false, positive) do
+    if positive do
+      "Expected #{inspect subject} to raise exception `#{module}`, but nothing was raised"
+    else
+      "Expected #{inspect subject} to not raise exception `#{module}`, but the exception was raised"
+    end
+  end
+
+  defp error_message(subject, [module, message], false, positive) do
     to = if positive, do: "to", else: "not to"
-    "Expected #{inspect func} #{to} raise exception `#{module}` with message `#{message}`, but nothing was raised"
+    "Expected #{inspect subject} #{to} raise exception `#{module}` with message `#{message}`, but nothing was raised"
   end
 
-  defp error_message(func, [module], err_module, _positive) do
-    "Expected #{inspect func} to raise exception `#{module}`, but `#{err_module}` was raised"
+  defp error_message(subject, [module], [err_module], _positive) do
+    "Expected #{inspect subject} to raise exception `#{module}`, but `#{err_module}` was raised"
   end
 
-  defp error_message(func, [module, message], err_module, err_message, _positive) do
-    "Expected #{inspect func} to raise exception `#{module}` with message `#{message}`, but `#{err_module}` was raised with the message `#{err_message}`"
+  defp error_message(subject, [module, message], [err_module, err_message], _positive) do
+    "Expected #{inspect subject} to raise exception `#{module}` with message `#{message}`, but `#{err_module}` was raised with the message `#{err_message}`"
   end
 
 end

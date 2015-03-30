@@ -14,7 +14,7 @@ defmodule ESpec.Assertions.ThrowTermSpec do
       it do: expect(func1).not_to throw_term(:another_term)
     end
 
-    xcontext "Errors" do
+    context "Errors" do
       it do: expect(func2).to throw_term
       it do: expect(func2).to throw_term(:some_term)
 

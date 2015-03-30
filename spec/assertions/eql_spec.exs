@@ -9,7 +9,7 @@ defmodule ESpec.Assertions.EqlSpec do
       it do: expect(1+1).to_not eql(2.0)
     end
 
-    xcontext "Errors" do
+    context "Errors" do
       it do: expect(1+1).to eql(2.0)
       it do: expect(1+1).to_not eql(2)
     end

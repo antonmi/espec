@@ -1,6 +1,5 @@
 defmodule ESpec.Assertions.Be do
 
-  @behaviour ESpec.Assertion
   use ESpec.Assertion
 
   defp match(subject, [op, val]) do

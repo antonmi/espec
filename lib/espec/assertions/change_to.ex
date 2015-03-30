@@ -1,5 +1,4 @@
 defmodule ESpec.Assertions.ChangeTo do
-
   use ESpec.Assertion
 
   defp match(subject, [func, value]) do

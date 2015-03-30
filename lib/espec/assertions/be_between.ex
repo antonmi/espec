@@ -9,7 +9,7 @@ defmodule ESpec.Assertions.BeBetween do
 
   defp error_message(subject, [l, r], result, positive) do
     to = if positive, do: "to", else: "not to"
-    but = if result, do: "it is", else: "it is not"
+    but = if result, do: "it does", else: "it doesn't"
     "Expected `#{inspect subject}` #{to} be between `#{inspect l}` and `#{inspect r}`, but #{but}."
   end
 

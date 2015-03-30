@@ -1,25 +1,14 @@
 defmodule ESpec.Assertions.Match do
+  use ESpec.Assertion
 
-  @behaviour ESpec.Assertion
-
-  def assert(act, exp, positive \\ true) do
-    unless success?(act, exp, positive) do
-      raise ESpec.AssertionError, act: act, exp: exp, message: error_message(act, exp, positive)
-    end
+  defp match(subject, value) do
+    result = subject =~ value
+    {result, result}
   end
 
-  defp success?(act, exp, positive) do
-    if positive, do: match(act, exp), else: !match(act, exp)
-  end
-
-  defp match(act, exp) do
-    act =~ exp
-  end
-
-  def error_message(act, exp, positive) do
+  defp error_message(subject, data, _result, positive) do
     to = if positive, do: "to", else: "not to"
-    "Expected `#{inspect act}` #{to} match (=~) `#{inspect exp}`"
+    but = if positive, do: "doesn't", else: "does"
+    "Expected `#{inspect subject}` #{to} match (=~) `#{inspect data}`, but it #{but}."
   end
-
-
 end
