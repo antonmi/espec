@@ -13,6 +13,9 @@ The main idea is to be close to the RSpec DSL.
   * `let`, `let!` and `subject`
   * Mocks with [Meck](https://github.com/eproxus/meck)
 
+## Contents
+TODO
+
 ## Installation
 
 Add `espec` to dependencies in the `mix.exs` file:
@@ -69,10 +72,12 @@ Context can have description and options.
 ```elixir
 defmodule SomeSpec do
   use ESpec
+  
   example_group do
     context "Some context" do
       it do: expect(true).to be true
     end
+    
     describe "Some another context with opts", focus: true do
       it do: expect(1+1).to eq(2)
     end
@@ -91,10 +96,13 @@ And `fcontext`, `fdescribe`, `fexample_group` for focused groups.
 `example`, `it`, and `specify` macros define the 'spec example'.
 ```elixir
 defmodule SomeSpec do
+
   example do: expect(true).to be true
+  
   it "Test with description" do
     expect(false).to_not be true
   end
+  
   specify "Test with options", [pending: true], do: "pending"
 end
 ```
@@ -106,8 +114,10 @@ There are also macros:
 ```elixir
 defmodule SomeSpec do
   use ESpec
+  
   xit "skip", do: "skipped"
   focus "Focused", do: "Focused example"
+  
   it "pending example"
   pending "it is also pending example"
 end
@@ -207,7 +217,6 @@ expect(collection).to have_max_by(fun, value)    #Enum.max_by(collection, fun) =
 expect(collection).to have_min(value)            #Enum.min(collection) == value
 expect(collection).to have_min_by(fun, value)    #Enum.min_by(collection, fun) == value
 ```
-
 
 #### Exceptions
 ```elixir
