@@ -192,6 +192,23 @@ Passes if `apply(Kernel, operator, [actual, value]) == true`
 expect(actual).to match(~r/expression/)
 expect(actual).to match("string")
 ```
+#### Enumerable
+There are many helpers to test enumerable collections:
+```elixir
+expect(collection).to be_empty                   #Enum.count(collection) == 0
+expect(collection).to have(value)                #Enum.member?(collection, value)
+expect(collection).to have_all(fun)              #Enum.all?(collection, func)
+expect(collection).to have_any(fun)              #Enum.any?(collection, func)
+expect(collection).to have_at(position, value)   #Enum.at?(collection, position) == value
+expect(collection).to have_count(value)          #Enum.count(collection) == value
+expect(collection).to have_count_by(fun, value)  #Enum.count(collection, func) == value
+expect(collection).to have_max(value)            #Enum.max(collection) == value
+expect(collection).to have_max_by(fun, value)    #Enum.max_by(collection, fun) == value
+expect(collection).to have_min(value)            #Enum.min(collection) == value
+expect(collection).to have_min_by(fun, value)    #Enum.min_by(collection, fun) == value
+```
+
+
 #### Exceptions
 ```elixir
 expect(function).to raise_exception
