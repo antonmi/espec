@@ -1,10 +1,10 @@
-defmodule ESpec.To do
+defmodule ESpec.ExpectTo do
   @moduledoc """
     Defines `to` and `to_not` functions which call specific 'assertion'
   """
 
   @doc "Calls specific asserion."
-  def to(rhs, {ESpec.To, lhs}, positive \\ true) do
+  def to(rhs, {ESpec.ExpectTo, lhs}, positive \\ true) do
     case rhs do
       {:eq, value} -> ESpec.Assertions.Eq.assert(lhs, value, positive)
       {:eql, value} -> ESpec.Assertions.Eql.assert(lhs, value, positive)
@@ -32,10 +32,10 @@ defmodule ESpec.To do
   end
 
   @doc "Just `to` with `positive = false`."
-  def to_not(rhs, {ESpec.To, lhs}), do: to(rhs, {ESpec.To, lhs}, false)
+  def to_not(rhs, {ESpec.ExpectTo, lhs}), do: to(rhs, {ESpec.ExpectTo, lhs}, false)
 
   @doc "Alias fo `to_not`."
-  def not_to(rhs, {ESpec.To, lhs}), do: to(rhs, {ESpec.To, lhs}, false)
+  def not_to(rhs, {ESpec.ExpectTo, lhs}), do: to(rhs, {ESpec.ExpectTo, lhs}, false)
 end
 
 
