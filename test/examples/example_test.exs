@@ -54,8 +54,10 @@ defmodule ExampleTest do
   test "run ex2", context do
     example = ESpec.Runner.run_example(context[:ex2])
     assert(example.status == :failure)
-    assert(example.error.act == true)
-    assert(example.error.exp == false)
+    assert(example.error.subject == true)
+    assert(example.error.data == false)
+    assert(example.error.result == false)
+    assert(example.error.asserion == ESpec.Assertions.Eq)
   end
 
   test "ex3 opts", context do

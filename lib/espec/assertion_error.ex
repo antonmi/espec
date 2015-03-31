@@ -1,5 +1,5 @@
 defmodule ESpec.AssertionError do
 
-  defexception act: nil, exp: nil, subject: nil, data: [], result: nil, asserion: nil, message: nil
+  defexception subject: nil, data: nil, result: nil, asserion: nil, message: nil
 
 end

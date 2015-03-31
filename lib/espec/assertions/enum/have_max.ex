@@ -1,26 +1,15 @@
 defmodule ESpec.Assertions.Enum.HaveMax do
 
-  @behaviour ESpec.Assertion
-
-  def assert(enum, val, positive \\ true) do
-    case match(enum, val) do
-      {false, act} when positive ->
-        raise ESpec.AssertionError, act: act, exp: val, message: error_message(enum, val, act, positive)
-      {true, act} when not positive ->        
-        raise ESpec.AssertionError, act: act, exp: val, message: error_message(enum, val, act, positive)
-      _ -> :ok
-    end
-  end
+  use ESpec.Assertion
 
   defp match(enum, val) do
-    act = Enum.max(enum)
-    res = act == val
-    {res, act}
+    result = Enum.max(enum)
+    {result == val, result}
   end
 
-  def error_message(enum, val, act, positive) do
+  def error_message(enum, val, result, positive) do
     to = if positive, do: "to be", else: "not to be"
-    "Expected maximum value of `#{inspect enum}` #{to} `#{val}` but maximum is `#{act}`."
+    "Expected maximum value of `#{inspect enum}` #{to} `#{val}` but maximum is `#{result}`."
   end
 
 end

@@ -1,26 +1,15 @@
 defmodule ESpec.Assertions.Enum.HaveMaxBy do
 
-  @behaviour ESpec.Assertion
+  use ESpec.Assertion
 
-  def assert(enum, [func, val], positive \\ true) do
-    case match(enum, func, val) do
-      {false, act} when positive ->
-        raise ESpec.AssertionError, act: act, exp: [func, val], message: error_message(enum, func, val, act, positive)
-      {true, act} when not positive ->        
-        raise ESpec.AssertionError, act: act, exp: [func, val], message: error_message(enum, func, val, act, positive)
-      _ -> :ok
-    end
+  defp match(enum, [func, val]) do
+    result = Enum.max_by(enum, func)
+    {result == val, result}
   end
 
-  defp match(enum, func, val) do
-    act = Enum.max_by(enum, func)
-    res = act == val
-    {res, act}
-  end
-
-  def error_message(enum, func, val, act, positive) do
+  def error_message(enum, [func, val], result, positive) do
     to = if positive, do: "to be", else: "not to be"
-    "Expected maximum value of `#{inspect enum}` using `#{inspect func}` #{to} `#{val}` but maximum is `#{act}`."
+    "Expected maximum value of `#{inspect enum}` using `#{inspect func}` #{to} `#{val}` but maximum is `#{result}`."
   end
 
 end

@@ -1,30 +1,25 @@
 defmodule ESpec.Assertions.Accepted do
 
-  @behaviour ESpec.Assertion
+  use ESpec.Assertion
 
-  def assert(module, [func, args], positive \\ true) do
-    unless success?(module, func, args, positive) do
-      raise ESpec.AssertionError, act: func, exp: module, message: error_message(module, func, args, positive)
+  defp match(subject, [func, args]) do
+    pid = self()
+    if Enum.any?(:meck.history(subject), fn(el) ->
+        case el do
+          {^pid, {^subject, ^func, ^args}, _return} -> true
+          _ -> false
+        end
+      end) do
+      {true, true}
+    else
+      {false, false}
     end
   end
 
-  defp success?(module, func, args, positive) do
-    if positive, do: match(module, func, args), else: !match(module, func, args)
-  end
-
-  defp match(module, func, args) do
-    pid = self()
-    Enum.any?(:meck.history(module), fn(el) ->
-      case el do
-        {^pid, {^module, ^func, ^args}, _return} -> true
-        _ -> false
-      end
-    end)
-  end
-
-  def error_message(module, func, args, positive) do
-    to = if positive, do: "to", else: "not to"
-    "Expected `#{module}` #{to} accept `#{inspect func}` with `#{inspect args}`"
+  def error_message(subject, [func, args], result, positive) do
+    to = if positive, do: "to", else: "to not"
+    but = if positive, do: "didn't", else: "did"
+    "Expected `#{subject}` #{to} accept `#{inspect func}` with `#{inspect args}`, but it #{but}."
   end
 
 end

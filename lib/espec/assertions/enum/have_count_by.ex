@@ -1,26 +1,15 @@
 defmodule ESpec.Assertions.Enum.HaveCountBy do
 
-  @behaviour ESpec.Assertion
+  use ESpec.Assertion
 
-  def assert(enum, [func, val], positive \\ true) do
-    case match(enum, func, val) do
-      {false, act} when positive ->
-        raise ESpec.AssertionError, act: act, exp: val, message: error_message(enum, func, val, act, positive)
-      {true, act} when not positive ->        
-        raise ESpec.AssertionError, act: act, exp: val, message: error_message(enum, func, val, act, positive)
-      _ -> :ok
-    end
+  defp match(enum, [func, val]) do
+    result = Enum.count(enum, func)
+    {result == val, result}
   end
 
-  defp match(enum, func, val) do
-    act = Enum.count(enum, func)
-    res = act == val
-    {res, act}
-  end
-
-  def error_message(enum, func, val, act, positive) do
+  def error_message(enum, [func, val], result, positive) do
     to = if positive, do: "to", else: "to not"
-    "Expected `#{inspect enum}` #{to} have count_by `#{inspect func}` be equal to `#{val}` but it has `#{act}` elements."
+    "Expected `#{inspect enum}` #{to} have count_by `#{inspect func}` be equal to `#{val}` but it has `#{result}` elements."
   end
 
 

@@ -14,7 +14,7 @@ defmodule ESpec.Assertion do
 
       defp raise_error(subject, data, result, positive) do
         raise ESpec.AssertionError, subject: subject, data: data, result: result,
-        message: error_message(subject, data, result, positive)
+        asserion: __MODULE__, message: error_message(subject, data, result, positive)
       end
     end
   end
