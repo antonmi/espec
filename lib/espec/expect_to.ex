@@ -12,10 +12,12 @@ defmodule ESpec.ExpectTo do
       {:be_between, min, max} -> ESpec.Assertions.BeBetween.assert(lhs, [min, max], positive)
       {:be_close, value, delta} -> ESpec.Assertions.BeCloseTo.assert(lhs, [value, delta], positive)
       {:match, value} -> ESpec.Assertions.Match.assert(lhs, value, positive)
+      
       {:raise_exception, value} -> ESpec.Assertions.RaiseException.assert(lhs, value, positive)
       {:throw_term, value} -> ESpec.Assertions.ThrowTerm.assert(lhs, value, positive)
       {:change_to, func, value} -> ESpec.Assertions.ChangeTo.assert(lhs, [func, value], positive)
       {:change_from_to, func, [before, value]} -> ESpec.Assertions.ChangeFromTo.assert(lhs, [func, before, value], positive)
+      
       {:have_all, func} -> ESpec.Assertions.Enum.HaveAll.assert(lhs, func, positive)
       {:have_any, func} -> ESpec.Assertions.Enum.HaveAny.assert(lhs, func, positive)
       {:have_at, pos, val} -> ESpec.Assertions.Enum.HaveAt.assert(lhs, [pos, val], positive)
@@ -27,6 +29,12 @@ defmodule ESpec.ExpectTo do
       {:have_max_by, func, value} -> ESpec.Assertions.Enum.HaveMaxBy.assert(lhs, [func, value], positive)
       {:have_min, value} -> ESpec.Assertions.Enum.HaveMin.assert(lhs, value, positive)
       {:have_min_by, func, value} -> ESpec.Assertions.Enum.HaveMinBy.assert(lhs, [func, value], positive)
+      
+      {:have_first, value} -> ESpec.Assertions.List.HaveFirst.assert(lhs, value, positive)
+      {:have_last, value} -> ESpec.Assertions.List.HaveLast.assert(lhs, value, positive)
+      {:have_hd, value} -> ESpec.Assertions.List.HaveHd.assert(lhs, value, positive)
+      {:have_tl, value} -> ESpec.Assertions.List.HaveTl.assert(lhs, value, positive)
+      
       {:accepted, func, args} -> ESpec.Assertions.Accepted.assert(lhs, [func, args], positive)
     end
   end

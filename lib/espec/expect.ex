@@ -89,10 +89,19 @@ defmodule ESpec.Expect do
   @doc "Returns `ESpec.ExpectTo` argument to call `ESpec.Assertions.Enum.HaveMinBy` assertion"
   def have_min_by(func, value), do: {:have_min_by, func, value}
 
+  @doc "Returns `ESpec.ExpectTo` argument to call `ESpec.Assertions.List.HaveFirst` assertion"
+  def have_first(value), do: {:have_first, value}
+
+  @doc "Returns `ESpec.ExpectTo` argument to call `ESpec.Assertions.List.HaveLast` assertion"
+  def have_last(value), do: {:have_last, value}
+
+  @doc "Returns `ESpec.ExpectTo` argument to call `ESpec.Assertions.List.HaveHd` assertion"
+  def have_hd(value), do: {:have_hd, value}
+
+  @doc "Returns `ESpec.ExpectTo` argument to call `ESpec.Assertions.List.HaveHTl` assertion"
+  def have_tl(value), do: {:have_tl, value}
+
   @doc "Returns `ESpec.ExpectTo` argument to call `ESpec.Assertions.ThrowTerm` assertion"
   def accepted(func, args \\ []), do: {:accepted, func, args}
-
-
-  
 
 end
