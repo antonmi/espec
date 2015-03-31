@@ -16,8 +16,9 @@ It is inspired by RSpec and the main idea is to be close to the RSpec DSL.
   * Mocks with [Meck](https://github.com/eproxus/meck)
 
 ## Contents
-TODO
-
+- [Installation](#installation)
+- [Run specs](#Run specs)
+- 
 ## Installation
 
 Add `espec` to dependencies in the `mix.exs` file:
@@ -210,19 +211,37 @@ expect(actual).to match("string")
 #### Enumerable
 There are many helpers to test enumerable collections:
 ```elixir
-expect(collection).to be_empty                   #Enum.count(collection) == 0
-expect(collection).to have(value)                #Enum.member?(collection, value)
-expect(collection).to have_all(fun)              #Enum.all?(collection, func)
-expect(collection).to have_any(fun)              #Enum.any?(collection, func)
-expect(collection).to have_at(position, value)   #Enum.at?(collection, position) == value
-expect(collection).to have_count(value)          #Enum.count(collection) == value
-expect(collection).to have_count_by(fun, value)  #Enum.count(collection, func) == value
-expect(collection).to have_max(value)            #Enum.max(collection) == value
-expect(collection).to have_max_by(fun, value)    #Enum.max_by(collection, fun) == value
-expect(collection).to have_min(value)            #Enum.min(collection) == value
-expect(collection).to have_min_by(fun, value)    #Enum.min_by(collection, fun) == value
+expect(collection).to be_empty #Enum.count(collection) == 0
+... have(value)                #Enum.member?(collection, value)
+... have_all(fun)              #Enum.all?(collection, func)
+... have_any(fun)              #Enum.any?(collection, func)
+... have_at(position, value)   #Enum.at?(collection, position) == value
+... have_count(value)          #Enum.count(collection) == value
+... have_count_by(fun, value)  #Enum.count(collection, func) == value
+... have_max(value)            #Enum.max(collection) == value
+... have_max_by(fun, value)    #Enum.max_by(collection, fun) == value
+... have_min(value)            #Enum.min(collection) == value
+... have_min_by(fun, value)    #Enum.min_by(collection, fun) == value
 ```
-
+### List specific
+```elixir
+expect(list).to have_first(value) #List.first(list) == value
+... have_last(value)              #List.last(list) == value
+... have_hd                       #hd(list) == value
+... have_tl                       #tl(list) == value
+```
+### Type checking
+``` elixir
+expect(:espec).to be_atom  #is_atom(:espec) == true
+... be_binary
+... be_bitstring
+... be_boolean
+... ...
+... ...
+... should be_tuple
+... be_function
+... be_function(arity)
+```
 #### Exceptions
 ```elixir
 expect(function).to raise_exception
