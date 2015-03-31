@@ -13,9 +13,6 @@ defmodule ESpec.Expect do
       def is_expected do
         {ESpec.ExpectTo, apply(__MODULE__, :subject, [])}
       end
-
-     
-
     end
   end
 
@@ -103,18 +100,15 @@ defmodule ESpec.Expect do
   @doc "Returns `ESpec.ExpectTo` argument to call `ESpec.Assertions.List.HaveHd` assertion"
   def have_hd(value), do: {:have_hd, value}
 
-  @doc "Returns `ESpec.ExpectTo` argument to call `ESpec.Assertions.List.HaveHTl` assertion"
+  @doc "Returns `ESpec.ExpectTo` argument to call `ESpec.Assertions.List.HaveTl` assertion"
   def have_tl(value), do: {:have_tl, value}
 
-  # def be_atom, do: {:be_type, :atom}
-  # def be_binary, do: {:be_type, :binary}
-
+  @doc "Returns `ESpec.ExpectTo` argument to call `ESpec.Assertions.ByType` assertion"
   Enum.each @elixir_types, fn(type) -> 
     def unquote(String.to_atom("be_#{type}"))() do
       {:be_type, unquote(Macro.escape(type))}
     end
   end
-
   def be_nil, do: {:be_type, :null}
   def be_function(arity), do: {:be_type, [:function, arity]}
 
