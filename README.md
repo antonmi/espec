@@ -1,9 +1,9 @@
 # ESpec [![Build Status](https://travis-ci.org/antonmi/espec.svg?branch=master)](https://travis-ci.org/antonmi/espec)
 
-##### ESpec is a BDD test framework for Elixir inspired by RSpec.
-It is NOT a wrapper around ExUnit but the independent test framework.
+##### ESpec is a BDD test framework for Elixir.
+It is NOT a wrapper around ExUnit but the independent test framework written from scratch.
 
-The main idea is to be close to the RSpec DSL.
+It is inspired by RSpec and the main idea is to be close to the RSpec DSL.
 
 ## Features
   * Test organization with `describe`, `context`, `it`, and etc blocks
