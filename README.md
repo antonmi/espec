@@ -21,7 +21,7 @@ It is inspired by RSpec and the main idea is to be close to the RSpec DSL.
 - [Context blocks](#context-blocks)
 - [Examples](#examples)
 - ['before' and `'finally'](#before-and-finally)
-- ['Double-underscore'](#double-underscore)
+- ['double-underscore'](#double-underscore)
 - [Matchers](#matchers)
 - [Mocks](#mocks)
 - [Configuration](#configuration)
@@ -157,7 +157,7 @@ end
 ```
 Note, that `finally` blocks must be defined before the example.
 
-## 'Double-underscore'
+## 'double-underscore'
 `__` is used to share data between spec blocks. You can access data by `__.some_key` or `__[:some_key]`.
 `__.some_key` will raise exception if the key 'some_key' does not exist, while `__[:some_key]` will return `nil`.
 
