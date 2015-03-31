@@ -4,7 +4,13 @@ defmodule SubjectSpec do
   subject(1+1)
 
   it do: expect(subject).to eq(2)
+
   it do: is_expected.to eq(2)
+  it do: should eq(2)
+
+  it do: is_expected.to_not eq(1)
+  it do: should_not eq(1)
+
 
   context "without name" do
     subject(5+5)
@@ -16,6 +22,7 @@ defmodule SubjectSpec do
       subject(List.last([1, 20]))
 
       it do: is_expected.to eq(20)
+      it do: should eq(20)
 
     end
 
@@ -31,6 +38,8 @@ defmodule SubjectSpec do
     context "redefine" do
       subject :subj, do: 3+5
       it do: expect(subj).to eq(8)
+      it do: subj |> should eq(8)
+      it do: subj |> should_not eq(10)
     end
   end
 

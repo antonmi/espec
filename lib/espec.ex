@@ -18,6 +18,8 @@ defmodule ESpec do
 
       import ESpec.Expect
       use ESpec.Expect
+      import ESpec.Should
+      use ESpec.Should
 
       import ESpec.Allow
 
