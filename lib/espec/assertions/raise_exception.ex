@@ -7,20 +7,20 @@ defmodule ESpec.Assertions.RaiseException do
       subject.()
       {false, false}
     rescue
-      _error -> {true, true}
+      _error -> {true, false}
     end
   end
 
   defp match(subject, [module]) do
     try do
       subject.()
-      {false, false}
+      {false, {false, nil}}
     rescue
       error ->
         if error.__struct__ == module do
-          {true, module}
+          {true, {false, error.__struct__}}
         else
-          {false, [error.__struct__]}
+          {false, {false, error.__struct__}}
         end
     end
   end
@@ -47,11 +47,11 @@ defmodule ESpec.Assertions.RaiseException do
     end
   end
 
-  defp error_message(subject, [module], false, positive) do
+  defp error_message(subject, [module], {false, err_module}, positive) do
     if positive do
       "Expected #{inspect subject} to raise exception `#{module}`, but nothing was raised"
     else
-      "Expected #{inspect subject} to not raise exception `#{module}`, but the exception was raised"
+      "Expected #{inspect subject} to not raise exception `#{module}`, but the exception `#{err_module}` was raised"
     end
   end
 
