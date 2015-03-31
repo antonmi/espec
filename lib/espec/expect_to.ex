@@ -35,6 +35,8 @@ defmodule ESpec.ExpectTo do
       {:have_hd, value} -> ESpec.Assertions.List.HaveHd.assert(lhs, value, positive)
       {:have_tl, value} -> ESpec.Assertions.List.HaveTl.assert(lhs, value, positive)
       
+      {:be_type, type} -> ESpec.Assertions.BeType.assert(lhs, type, positive)
+
       {:accepted, func, args} -> ESpec.Assertions.Accepted.assert(lhs, [func, args], positive)
     end
   end

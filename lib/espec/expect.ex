@@ -4,6 +4,8 @@ defmodule ESpec.Expect do
   These fucntions wraps arguments for ESpec.ExpectTo module.
   """
 
+  @elixir_types ~w(atom binary bitstring boolean float function integer list map number pid port reference tuple)a
+ 
   @doc false
   defmacro __using__(_arg) do
     quote do
@@ -11,6 +13,9 @@ defmodule ESpec.Expect do
       def is_expected do
         {ESpec.ExpectTo, apply(__MODULE__, :subject, [])}
       end
+
+     
+
     end
   end
 
@@ -100,6 +105,18 @@ defmodule ESpec.Expect do
 
   @doc "Returns `ESpec.ExpectTo` argument to call `ESpec.Assertions.List.HaveHTl` assertion"
   def have_tl(value), do: {:have_tl, value}
+
+  # def be_atom, do: {:be_type, :atom}
+  # def be_binary, do: {:be_type, :binary}
+
+  Enum.each @elixir_types, fn(type) -> 
+    def unquote(String.to_atom("be_#{type}"))() do
+      {:be_type, unquote(Macro.escape(type))}
+    end
+  end
+
+  def be_nil, do: {:be_type, :null}
+  def be_function(arity), do: {:be_type, [:function, arity]}
 
   @doc "Returns `ESpec.ExpectTo` argument to call `ESpec.Assertions.ThrowTerm` assertion"
   def accepted(func, args \\ []), do: {:accepted, func, args}
