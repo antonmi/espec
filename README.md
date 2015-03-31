@@ -8,7 +8,9 @@ It is inspired by RSpec and the main idea is to be close to the RSpec DSL.
 ## Features
   * Test organization with `describe`, `context`, `it`, and etc blocks
   * Familiar matchers: `eq`, `be_close_to`, `raise_exception`, etc
-  * RSpec expectation syntax: `expect(smth1).to eq(smth2)` or `is_expected.to_not be_between(10, 20)`
+  * RSpec expectation syntax: 
+    - With `expect` helper: `expect(smth1).to eq(smth2)` or `is_expected.to eq(smth)` when `subject` is defined;
+    - With old-style `should`: `smth1 |> should eq smth2` or `should eq smth` when `subject` is defined.
   * `before` and `finally` blocks (like RSpec `before` and `after`)
   * `let`, `let!` and `subject`
   * Mocks with [Meck](https://github.com/eproxus/meck)
@@ -53,6 +55,7 @@ Place your `_spec.exs` files into `spec` folder. `use ESpec` in the 'spec module
 defmodule SomeSpec do
   use ESpec
   it do: expect(1+1).to eq(2)
+  it do: (1..3) |> should have 2
 end
 ```
 
@@ -75,11 +78,11 @@ defmodule SomeSpec do
   
   example_group do
     context "Some context" do
-      it do: expect(true).to be true
+      it do: expect("abc").to match(~r/b/)
     end
     
     describe "Some another context with opts", focus: true do
-      it do: expect(1+1).to eq(2)
+      it do: 5 |> should be_between(4,6)
     end
   end
 end
@@ -97,10 +100,10 @@ And `fcontext`, `fdescribe`, `fexample_group` for focused groups.
 ```elixir
 defmodule SomeSpec do
 
-  example do: expect(true).to be true
+  example do: expect([1,2,3]).to have_max(3)
   
   it "Test with description" do
-    expect(false).to_not be true
+    4.2 |> should be_close_to(4, 0.5)
   end
   
   specify "Test with options", [pending: true], do: "pending"
@@ -137,8 +140,8 @@ defmodule SomeSpec do
     before do: {:ok, b: __[:a] + 1}
     finally do: "#{__[:b]} == 2"
     
-    it do: expect(__[:a]).to eq(1)
-    it do: expect(__[:b]).to eq(2)
+    it do: __.a |> should eq 1
+    it do: __.b |> should eq 2
     
     finally do: "This finally will not be run. Define 'finally' before the example"
   end
@@ -177,10 +180,12 @@ defmodule SomeSpec do
   
   subject(1+1)
   it do: is_expected.to eq(2)
+  it do: should eq 2
 
   context "with block" do
     subject do: 2+2
-    it do: is_expected.to eq(4)
+    it do: is_expected.to_not eq(2)
+    it do: should_not eq 2
   end
 end 
 ```
