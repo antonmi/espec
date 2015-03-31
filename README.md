@@ -17,8 +17,15 @@ It is inspired by RSpec and the main idea is to be close to the RSpec DSL.
 
 ## Contents
 - [Installation](#installation)
-- [Run specs](#Run specs)
-- 
+- [Run specs](#run-specs)
+- [Context blocks](#context-blocks)
+- [Examples](#examples)
+- ['before' and `'finally'](#before-and-finally)
+- ['Double-underscore'](#double-underscore)
+- [Matchers](#matchers)
+- [Mocks](#mocks)
+- [Configuration](#configuration)
+
 ## Installation
 
 Add `espec` to dependencies in the `mix.exs` file:
@@ -223,14 +230,14 @@ expect(collection).to be_empty #Enum.count(collection) == 0
 ... have_min(value)            #Enum.min(collection) == value
 ... have_min_by(fun, value)    #Enum.min_by(collection, fun) == value
 ```
-### List specific
+#### List specific
 ```elixir
 expect(list).to have_first(value) #List.first(list) == value
 ... have_last(value)              #List.last(list) == value
 ... have_hd                       #hd(list) == value
 ... have_tl                       #tl(list) == value
 ```
-### Type checking
+#### Type checking
 ``` elixir
 expect(:espec).to be_atom  #is_atom(:espec) == true
 ... be_binary
