@@ -15,10 +15,10 @@ defmodule ESpec.Formatter do
   """
   def print_result(examples) do
     unless silent? do
-      failed = ESpec.Example.failure(examples)
-      if Enum.any?(failed), do: print_failed(failed)
       pending = ESpec.Example.pendings(examples)
       if Enum.any?(pending), do: print_pending(pending)
+      failed = ESpec.Example.failure(examples)
+      if Enum.any?(failed), do: print_failed(failed)
       print_footer(examples, failed, pending)
     end
   end

@@ -21,7 +21,7 @@ defmodule ESpec.Assertions.RaiseExceptionSpec do
       it do: expect(func3).to_not raise_exception(FunctionClauseError, "no such message")
     end
 
-    context "Errors" do
+    xcontext "Errors" do
       it do: expect(func2).to raise_exception
       it do: expect(func2).to raise_exception(ArithmeticError)
       it do: expect(func2).to raise_exception(ArithmeticError, "bad argument in arithmetic expression")
@@ -29,6 +29,8 @@ defmodule ESpec.Assertions.RaiseExceptionSpec do
       it do: expect(func1).to_not raise_exception
       it do: expect(func1).to_not raise_exception(ArithmeticError)
       it do: expect(func1).to_not raise_exception(ArithmeticError, "bad argument in arithmetic expression")
+      it do: expect(func1).to raise_exception(AnotherError, "bad argument in arithmetic expression")
+      it do: expect(func1).to raise_exception(ArithmeticError, "another message")
 
       it do: expect(func3).to_not raise_exception(FunctionClauseError)
       it do: expect(func3).to_not raise_exception(FunctionClauseError, "no function clause matching in List.first/1")
