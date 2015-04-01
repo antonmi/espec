@@ -19,8 +19,13 @@ defmodule Mix.Tasks.Espec.Init do
   ESpec.start
   	
   ESpec.configure fn(config) ->
-  	#config.before fn -> IO.puts "Begin!" end
-  	#config.finally fn -> IO.puts "Done!" end
+  	config.before fn ->
+  		{:ok, hello: :world}
+  	end
+  	
+  	config.finally fn(__) -> 
+  		__.hello
+  	end
 	end
   """
 
