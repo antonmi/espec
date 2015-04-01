@@ -7,7 +7,7 @@ defmodule ESpec.Assertions.Enum.HaveMinBy do
     {result == val, result}
   end
 
-  def error_message(enum, [func, val], result, positive) do
+  defp error_message(enum, [func, val], result, positive) do
     to = if positive, do: "to be", else: "not to be"
     "Expected minimum value of `#{inspect enum}` using `#{inspect func}` #{to} `#{val}` but minimum is `#{result}`."
   end

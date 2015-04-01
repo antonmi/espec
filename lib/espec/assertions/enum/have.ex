@@ -7,7 +7,7 @@ defmodule ESpec.Assertions.Enum.Have do
     {result, result}
   end
 
-  def error_message(enum, val, result, positive) do
+  defp error_message(enum, val, result, positive) do
     to = if positive, do: "to", else: "to not"
     has = if result, do: "has", else: "has not"
     "Expected `#{inspect enum}` #{to} have `#{inspect val}`, but it #{has}."

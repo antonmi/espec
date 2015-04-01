@@ -7,7 +7,7 @@ defmodule ESpec.Assertions.Enum.HaveCount do
     {result == val, result}
   end
 
-  def error_message(enum, val, result, positive) do
+  defp error_message(enum, val, result, positive) do
     to = if positive, do: "to", else: "to not"
     "Expected `#{inspect enum}` #{to} have count `#{val}` but it has `#{result}` elements."
   end

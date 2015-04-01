@@ -7,7 +7,7 @@ defmodule ESpec.Assertions.Enum.HaveAt do
     {result == val, result}
   end
 
-  def error_message(enum, [pos, val], result, positive) do
+  defp error_message(enum, [pos, val], result, positive) do
     to = if positive, do: "to", else: "to not"
     "Expected `#{inspect enum}` #{to} have `#{inspect val}` on `#{inspect pos}` position, but it has `#{result}`."
   end
