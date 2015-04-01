@@ -43,7 +43,7 @@ mix deps.get
 ```
 Then run:
 ```sh
-mix espec.init
+MIX_ENV=test mix espec.init
 ```
 The task creates `spec/spec_helper.exs` and `spec/example_spec.exs`.
 
