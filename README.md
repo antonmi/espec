@@ -76,6 +76,10 @@ Run specific spec:
 ```sh
 mix espec spec/some_spec.exs:25
 ```
+Read the help:
+```sh
+MIX_ENV=test mix help espec
+```
 
 ## Context blocks
 There are three macros with the same functionality: `context`, `describe`, and `example_group`.
