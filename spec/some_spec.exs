@@ -15,7 +15,7 @@ defmodule SomeSpec do
 
       subject do: 5
 
-      it do: should eq 4
+      it do: should eq 5
       it "Pending"
     end
   end
