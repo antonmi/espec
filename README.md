@@ -3,7 +3,7 @@
 ##### ESpec is a BDD test framework for Elixir.
 It is NOT a wrapper around ExUnit but the independent test framework written from scratch.
 
-It is inspired by RSpec and the main idea is to be close to the RSpec DSL.
+ESpec is inspired by RSpec and the main idea is to be close to its perfect DSL.
 
 ## Features
   * Test organization with `describe`, `context`, `it`, and etc blocks
@@ -33,7 +33,8 @@ Add `espec` to dependencies in the `mix.exs` file:
 ```elixir
 def deps do
   ...
-  {:espec, "~> 0.2.0", only: :test}
+  {:espec, "~> 0.3.0", only: :test}
+  #{:espec, github: "antonmi/espec", only: :test} to get the latest version
   ...
 end
 ```
@@ -156,14 +157,52 @@ defmodule SomeSpec do
 end  
 ```
 Note, that `finally` blocks must be defined before the example.
+You can configure 'global' `before` and `finally` in `spec_helper.exs`:
+```elixir
+ESpec.start
+
+ESpec.configure fn(config) ->
+	config.before fn ->	{:ok, answer: 42} end  #can assign values in dictionary
+	config.finally fn(__) -> __.answer	end     #can access assigns
+end
+```
+These functions will be called before and after each example which ESpec runs.
 
 ## 'double-underscore'
 `__` is used to share data between spec blocks. You can access data by `__.some_key` or `__[:some_key]`.
 `__.some_key` will raise exception if the key 'some_key' does not exist, while `__[:some_key]` will return `nil`.
 
-The `__` variable appears in your `before`, `finally`, `let` and `example` blocks.
+The `__` variable appears in your `before`, `finally`, in `config.before` and `config.finally`, in `let` and `example` blocks.
 
-`before` and `finally` blocks modify the dictionay when return `{:ok, key: value}`.
+`before` and `finally` blocks (including 'global') can modify the dictionay when return `{:ok, key: value}`.
+The example bellow illustrate the life-cycle of `__`:
+
+`spec_helper.exs`
+```elixir
+ESpec.start
+
+ESpec.configure fn(config) ->
+  config.before fn ->	{:ok, answer: 42} end         # __ == %{anwser: 42}
+  config.finally fn(__) -> IO.puts __.answer	end    # it will print 46   
+end
+```
+`some_spec.exs`:
+```elixir
+defmodule SomeSpec do
+  use ESpec
+
+  before do: {:ok, answer: __.answer + 1}          # __ == %{anwser: 43}       
+  finally do: {:ok, answer: __.answer + 1}             # __ == %{anwser: 46} 
+
+  context do
+    before do: {:ok, answer: __.answer + 1}        # __ == %{anwser: 43} 
+    finally do: {:ok, answer: __.answer + 1}           # __ == %{anwser: 45} 
+    it do: __.answer |> should eq 44
+  end
+end 
+```
+So, 'config.finally' will print `46`.
+Pay attention to how `finally` blocks are defined and evaluated.
 
 ## `let`, `let!`, and `subject`
 `let` and `let!` have the same behaviour as in RSpec. Both defines memoizable functions in 'spec module'.
@@ -181,7 +220,7 @@ defmodule SomeSpec do
   it do: expect(b).to eq(2)
 end  
 ```
-`subject` is just an alias for `let(:subject)`. You can use `is_expected` macro when `subject is defined.
+`subject` is just an alias for `let(:subject)`. You can use `is_expected` macro when `subject` is defined.
 ```elixir
 defmodule SomeSpec do
   use ESpec
