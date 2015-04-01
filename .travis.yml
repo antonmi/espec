@@ -6,7 +6,7 @@ otp_release:
 sudo: false
 script:
   - mix test
-  - mix espec
+  - mix espec --silent
 notifications:
   recipients:
     - anton.mishchuk@gmail.com

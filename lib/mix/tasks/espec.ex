@@ -3,6 +3,25 @@ defmodule Mix.Tasks.Espec do
 
   @shortdoc "Runs specs"
 
+  @moduledoc """
+  Runs the specs.
+
+  This task starts the current application, loads up
+  `spec/spec_helper.exs` and then requires all files matching the
+  `spec/**/_spec.exs` pattern in parallel.
+
+  A list of files can be given after the task name in order to select
+  the files to compile:
+
+      mix spec test/some/particular/file_test.exs
+
+  ## Command line options
+
+    * `--trace`      - run spec with detailed reporting
+    * `--focus`      - run examples with `focus`
+    * `--silent`     - no output
+  """  
+
   def run(args) do
     {opts, files, _} = OptionParser.parse(args)
 
