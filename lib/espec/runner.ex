@@ -53,12 +53,14 @@ defmodule ESpec.Runner do
     set_lets(assigns, example)
     try do
       result = apply(example.module, example.function, [assigns])
-      ESpec.Formatter.success(example)
-      %ESpec.Example{example | status: :success, result: result}
+      example = %ESpec.Example{example | status: :success, result: result}
+      ESpec.Formatter.example_info(example)
+      example
     rescue
       error in [ESpec.AssertionError] ->
-        ESpec.Formatter.failure(example)
-        %ESpec.Example{example | status: :failure, error: error}
+        example = %ESpec.Example{example | status: :failure, error: error}
+        ESpec.Formatter.example_info(example)
+        example
     after
       run_finallies(assigns, example)
       |> run_config_finally(example)
@@ -67,13 +69,15 @@ defmodule ESpec.Runner do
   end
 
   defp run_skipped(example, contexts) do
-    ESpec.Formatter.pending(example)
-    %ESpec.Example{example | status: :pending, result: ESpec.Example.skip_message(example, contexts)}
+    example = %ESpec.Example{example | status: :pending, result: ESpec.Example.skip_message(example, contexts)}
+    ESpec.Formatter.example_info(example)
+    example
   end
 
   defp run_pending(example, contexts) do 
-    ESpec.Formatter.pending(example)
-    %ESpec.Example{example | status: :pending, result: ESpec.Example.pending_message(example, contexts)}
+    example = %ESpec.Example{example | status: :pending, result: ESpec.Example.pending_message(example, contexts)}
+    ESpec.Formatter.example_info(example)
+    example
   end
 
   defp run_config_before(assigns, _example) do

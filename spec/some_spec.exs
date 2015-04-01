@@ -1,12 +1,23 @@
 defmodule SomeSpec do
   use ESpec
 
-  before do: {:ok, answer: __.answer + 1}          # __ == %{anwser: 43}       
-  finally do: {:ok, answer: __.answer + 1}             # __ == %{anwser: 46} 
+  it "Top level example" do
 
-  context do
-    before do: {:ok, answer: __.answer + 1}        # __ == %{anwser: 43} 
-    finally do: {:ok, answer: __.answer + 1}           # __ == %{anwser: 45} 
-    it do: __.answer |> should eq 44
   end
+
+  context "Context 1" do
+
+    describe "Describe 1" do
+    
+      it  "Inner example" do
+        2 |> should eq 2
+      end
+
+      subject do: 5
+
+      it do: should eq 4
+      it "Pending"
+    end
+  end
+ 
 end 

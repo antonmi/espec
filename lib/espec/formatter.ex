@@ -10,6 +10,9 @@ defmodule ESpec.Formatter do
   @blue IO.ANSI.blue
   @reset IO.ANSI.reset
 
+  @status_colors [success: @green, failure: @red, pending: @yellow]
+  @status_symbols [success: ".", failure: "F", pending: "*"]
+
   @doc """
     Prints results
   """
@@ -22,45 +25,41 @@ defmodule ESpec.Formatter do
       print_footer(examples, failed, pending)
     end
   end
-
-  def success(_example) do
-    unless silent?, do: IO.write("#{@green}.#{@reset}") 
-  end
-
-  def failure(_example) do
-    unless silent?, do: IO.write("#{@red}F#{@reset}")
-  end
-
-  def pending(_example) do
-    unless silent?, do: IO.write("#{@yellow}*#{@reset}")
+  
+  def example_info(example) do
+    color = color_for_status(example.status)
+    symbol = symbol_for_status(example.status)
+    unless silent? do
+      if trace? do
+        IO.puts(trace_description(example))
+      else
+        IO.write("#{color}#{symbol}#{@reset}")
+      end
+    end
   end
 
   defp print_failed(failed) do
     failed |> Enum.with_index
-    |> Enum.each(&print_fail(&1))
+    |> Enum.each fn({example, index}) -> 
+      print_example(example, example.error.message, index)
+    end
   end
 
-  defp print_pending(failed) do
-    failed |> Enum.with_index
-    |> Enum.each(&print_pend(&1))
+  defp print_pending(pending) do
+    pending |> Enum.with_index
+    |> Enum.each fn({example, index}) -> 
+      print_example(example, example.result, index)
+    end
   end
 
-  defp print_fail({example, index}) do
+  defp print_example(example, info, index) do
+    color = color_for_status(example.status)
+    decription = one_line_description(example)
     IO.puts("\n")
     to_print = [
-      "\t#{index + 1}) #{ESpec.Example.full_description(example)}",
+      "\t#{index + 1}) #{decription}",
       "\t#{@cyan}#{example.file}:#{example.line}#{@reset}",
-      "\t#{@red}#{example.error.message}#{@reset}",
-    ] |> Enum.join("\n")
-    IO.puts(to_print)
-  end
-
-  defp print_pend({example, index}) do
-    IO.puts("\n")
-    to_print = [
-      "\t#{index + 1}) #{ESpec.Example.full_description(example)}",
-      "\t#{@cyan}#{example.file}:#{example.line}#{@reset}",
-      "\t#{@yellow}#{example.result}#{@reset}",
+      "\t#{color}#{info}#{@reset}",
     ] |> Enum.join("\n")
     IO.puts(to_print)
   end
@@ -78,6 +77,32 @@ defmodule ESpec.Formatter do
     IO.puts "\n"
   end
 
+  defp one_line_description(example) do
+    module = "#{example.module}" |> String.replace("Elixir.", "")
+    [ module | ESpec.Example.context_descriptions(example)] ++ [example.description]
+    |> Enum.join(" ")
+  end
+
+  defp trace_description(example) do
+    color = color_for_status(example.status)
+    module = "#{example.module}" |> String.replace("Elixir.", "")
+    ex_desc = if String.length(example.description) > 0 do 
+      "#{color}#{example.description}#{@reset}"
+    else
+      "#{color}#{example.status}#{@reset}"
+    end
+    array = [ module | ESpec.Example.context_descriptions(example)] ++ [ex_desc]
+    {result, _} = Enum.reduce(array, {"", ""}, fn(description, acc) ->
+      {d, w} = acc
+      {d <> w <> description <> "\n", w <> "  "}
+    end) 
+    result
+  end
+
+  defp color_for_status(status), do: Keyword.get(@status_colors, status)
+  defp symbol_for_status(status), do: Keyword.get(@status_symbols, status)
+
   defp silent?, do: ESpec.Configuration.get(:silent)
+  defp trace?, do: ESpec.Configuration.get(:trace)
 
 end
