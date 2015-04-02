@@ -1,3 +1,6 @@
+[{module, _ }] = Code.load_file("spec/support/some_module.ex")
+IO.inspect Code.ensure_compiled(module)
+
 defmodule MockTest do
 
 	use ExUnit.Case
@@ -30,11 +33,12 @@ defmodule MockTest do
       end
 		end
 
-		context "without mock" do
-			it do: ESpec.SomeModule.f
-		end
-
+    context "without mock" do
+      it do: ESpec.SomeModule.f
+    end
   end
+
+  
 
   setup_all do
     {:ok,
@@ -45,6 +49,11 @@ defmodule MockTest do
       ex5: Enum.at(SomeSpec.examples, 4),
       ex6: Enum.at(SomeSpec.examples, 5)
     }
+  end
+
+  test "check ESpec.SomeModule" do
+    assert(ESpec.SomeModule.f == :f)
+    assert(ESpec.SomeModule.m == :m)
   end
 
   test "run ex1", context do
