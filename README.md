@@ -320,8 +320,6 @@ defmodule SomeSpec do
   it do: expect(SomeModule.func(1, 2)).to eq(3)
 end
 ```
-Note, when you mock some function in module, `meck` creates an absolutely new module.
-
 You can also pass a list of atom-function pairs to the `accept` function:
 ```elixir
 allow(SomeModule).to accept(f1: fn -> :f1 end, f2: fn -> :f2 end)
