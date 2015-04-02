@@ -148,7 +148,13 @@ defmodule ESpec.Runner do
     Enum.filter(examples, fn(example) ->
       opts = opts_for_file(example.file, file_opts)
       line = Keyword.get(opts, :line)
-      if line, do: example.line == line, else: true
+      if line do
+        lines = extract_contexts(example.context)
+        |> Enum.map(&(&1.line))
+        Enum.member?([example.line | lines], line)
+      else
+        true
+      end
     end)
   end
 
