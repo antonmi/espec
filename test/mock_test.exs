@@ -1,5 +1,6 @@
-[{module, _ }] = Code.load_file("spec/support/some_module.ex")
-IO.inspect Code.ensure_compiled(module)
+# [{module, _ }] = Code.load_file("spec/support/some_module.ex")
+# IO.inspect Code.ensure_compiled(module)
+IO.inspect Kernel.ParallelCompiler.files(["spec/support/some_module.ex"])
 
 defmodule MockTest do
 

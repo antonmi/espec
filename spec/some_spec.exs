@@ -1,23 +1,23 @@
+# [{module, _ }] = Code.load_file("spec/support/some_module.ex")
+# IO.inspect Code.ensure_compiled(module)
+
+IO.inspect Kernel.ParallelCompiler.files(["spec/support/some_module.ex"])
+
 defmodule SomeSpec do
   use ESpec
 
-  it "Top level example" do
-
+  it do 
+    ESpec.SomeModule.f |> should eq(:f)
   end
 
-  context "Context 1" do
-
-    describe "Describe 1" do
-    
-      it  "Inner example" do
-        2 |> should eq 2
-      end
-
-      subject do: "a"
-
-      it do: should match "a"
-      it "Pending with"
-    end
+  it do
+    ESpec.SomeModule.m |> should eq(:m)
   end
+
+  before do
+    # allow(ESpec.SomeModule).to
+  end
+
+
  
 end 
