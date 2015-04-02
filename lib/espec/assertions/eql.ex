@@ -6,6 +6,11 @@ defmodule ESpec.Assertions.Eql do
     {result, result}
   end
 
+  defp success_message(subject, data, _result, positive) do
+    to = if positive, do: "equals", else: "doesn't equal"
+    "`#{inspect subject}` #{to} `#{inspect data}`."
+  end  
+
   defp error_message(subject, data, _result, positive) do
     to = if positive, do: "to", else: "not to"
     but = if positive, do: "doesn't", else: "does"

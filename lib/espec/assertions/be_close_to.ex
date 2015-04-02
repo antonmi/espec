@@ -8,10 +8,14 @@ defmodule ESpec.Assertions.BeCloseTo do
     {result, result}
   end
 
-  defp error_message(subject, data, result, positive) do
+  defp success_message(subject, [value, delta], _result, positive) do
+    to = if positive, do: "is", else: "is not"
+    "`#{inspect subject}` #{to} close to `#{inspect value}` with delta `#{inspect delta}`."
+  end 
+  
+  defp error_message(subject, [value, delta], result, positive) do
     to = if positive, do: "to", else: "not to"
     but = if result, do: "it is", else: "it isn't"
-    [value, delta] = data
     "Expected `#{inspect subject}` #{to} be close to `#{inspect value}` with delta `#{inspect delta}`, but #{but}."
   end
  

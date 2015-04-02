@@ -7,6 +7,11 @@ defmodule ESpec.Assertions.BeBetween do
     {result, result}
   end
 
+  defp success_message(subject, [l, r], _result, positive) do
+    to = if positive, do: "is", else: "is not"
+    "`#{inspect subject}` #{to} be between `#{inspect l}` and `#{inspect r}`."
+  end 
+
   defp error_message(subject, [l, r], result, positive) do
     to = if positive, do: "to", else: "not to"
     but = if result, do: "it is", else: "it isn't"

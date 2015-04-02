@@ -13,10 +13,10 @@ defmodule SomeSpec do
         2 |> should eq 2
       end
 
-      subject do: 5
+      subject do: "a"
 
-      it do: should eq 5
-      it "Pending"
+      it do: should match "a"
+      it "Pending with"
     end
   end
  

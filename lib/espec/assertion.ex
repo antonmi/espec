@@ -8,7 +8,8 @@ defmodule ESpec.Assertion do
         case match(subject, data) do
           {false, result} when positive -> raise_error(subject, data, result, positive)
           {true, result} when not positive -> raise_error(subject, data, result, positive)
-          _ -> :ok
+          {true, result} when positive -> success_message(subject, data, result, positive)
+          {false, result} when not positive -> success_message(subject, data, result, positive)
         end
       end
 

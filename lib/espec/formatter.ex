@@ -89,7 +89,11 @@ defmodule ESpec.Formatter do
     ex_desc = if String.length(example.description) > 0 do 
       "#{color}#{example.description}#{@reset}"
     else
-      "#{color}#{example.status}#{@reset}"
+      if example.status == :failure do
+        "#{color}#{example.error.message}#{@reset}"
+      else
+        "#{color}#{example.result}#{@reset}"
+      end
     end
     array = [ module | ESpec.Example.context_descriptions(example)] ++ [ex_desc]
     {result, _} = Enum.reduce(array, {"", ""}, fn(description, acc) ->

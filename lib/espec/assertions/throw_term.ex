@@ -7,34 +7,43 @@ defmodule ESpec.Assertions.ThrowTerm do
       subject.()
       {:false, :false}
     catch
-      _term -> {:true, :true}
+      term -> {:true, term}
     end
   end
 
   defp match(subject, [term]) do
     try do
       subject.()
-      {:false, :false}
+      {:false, {term, false}}
     catch
-      t -> if t == term, do: {true, term}, else: {:false, t}
+      t -> if t == term, do: {true, {t, false}}, else: {:false, {t, :true}}
     end
   end
 
-  defp error_message(subject, data, :false, positive) do
+  defp success_message(subject, [], result, positive) do
+    to = if positive, do: "throws", else: "doesn't throw"
+    "#{inspect subject} #{to} a term."
+  end
+
+  defp success_message(subject, [data], result, positive) do
+    to = if positive, do: "throws", else: "doesn't throw"
+    "#{inspect subject} #{to} the `#{data}` term."
+  end
+
+  defp error_message(subject, [], term, positive) do
     to = if positive, do: "to", else: "to not"
-    but = if positive, do: "nothing was thrown", else: "a term was thrown"
+    but = if positive, do: "nothing was thrown", else: "`#{term}` was thrown"
     "Expected `#{inspect subject}` #{to} throw term, but #{but}."
   end
 
-  defp error_message(subject, [exp_term], term, positive) do
+  defp error_message(subject, [data], {term, false}, positive) do
     to = if positive, do: "to", else: "to not"
     but = if positive, do: "nothing was thrown", else: "the `#{term}` was thrown"
-    "Expected `#{inspect subject}` to throw #{inspect exp_term}, but `#{but}`."
+    "Expected `#{inspect subject}` #{to} throw #{inspect data}, but #{but}."
   end
 
-  defp error_message(subject, [exp_term], term, _positive) do
-    "Expected `#{inspect subject}` to throw `#{inspect exp_term}`, but the `#{inspect term}` term was thrown."
+  defp error_message(subject, [data], {term, :true}, _positive) do
+    "Expected `#{inspect subject}`to throw #{inspect data}, but the `#{term}` was thrown."
   end
-
 
 end

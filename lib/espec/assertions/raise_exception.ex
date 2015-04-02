@@ -39,30 +39,45 @@ defmodule ESpec.Assertions.RaiseException do
     end
   end
 
+  defp success_message(subject, [], result, positive) do
+    to = if positive, do: "raises", else: "doesn't raise"
+    "#{inspect subject} #{to} an exception."
+  end
+
+  defp success_message(subject, [module], result, positive) do
+    to = if positive, do: "raises", else: "doesn't raise"
+    "#{inspect subject} #{to} the `#{module}` exception."
+  end
+
+  defp success_message(subject, [module, message], result, positive) do
+    to = if positive, do: "raises", else: "doesn't raise"
+    "#{inspect subject} #{to} the `#{module}` exception with the message `#{message}`."
+  end
+
   defp error_message(subject, [], false, positive) do
     if positive do
-      "Expected #{inspect subject} to raise exception, but nothing was raised."
+      "Expected #{inspect subject} to raise an exception, but nothing was raised."
     else
-      "Expected #{inspect subject} to not raise exception, but an exception was raised."
+      "Expected #{inspect subject} to not raise an exception, but an exception was raised."
     end
   end
 
   defp error_message(subject, [module], err_module, positive) do
     if positive do
-      "Expected #{inspect subject} to raise exception `#{module}`, but nothing was raised."
+      "Expected #{inspect subject} to raise the `#{module}` exception, but nothing was raised."
     else
-      "Expected #{inspect subject} to not raise exception `#{module}`, but the exception `#{err_module}` was raised."
+      "Expected #{inspect subject} to not raise the `#{module}` exception, but the `#{err_module}` exception was raised."
     end
   end
 
   defp error_message(subject, [module, message], false, positive) do
     to = if positive, do: "to", else: "not to"
-    "Expected #{inspect subject} #{to} raise exception `#{module}` with message `#{message}`, but nothing was raised."
+    "Expected #{inspect subject} #{to} raise the `#{module}` exception with the message `#{message}`, but nothing was raised."
   end
 
   defp error_message(subject, [module, message], [err_module, err_message], positive) do
     to = if positive, do: "to", else: "not to"
-    "Expected #{inspect subject} #{to} raise exception `#{module}` with message `#{message}`, but `#{err_module}` was raised with the message `#{err_message}`."
+    "Expected #{inspect subject} #{to} raise the `#{module}` exception with the message `#{message}`, but the `#{err_module}` exception was raised with the message `#{err_message}`."
   end
 
 end

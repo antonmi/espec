@@ -6,8 +6,6 @@ defmodule ESpec.Runner do
   @doc """
   Runs all examples.
   Uses `filter/2` to select examples to run.
-  The options are:
-  TODO
   """
   def run do
     opts = ESpec.Configuration.all

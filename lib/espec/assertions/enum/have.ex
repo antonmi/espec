@@ -6,6 +6,11 @@ defmodule ESpec.Assertions.Enum.Have do
     result = Enum.member?(enum, val) 
     {result, result}
   end
+  
+  defp success_message(enum, val, _result, positive) do
+    to = if positive, do: "has", else: "doesn't have"
+    "`#{inspect enum}` #{to} `#{val}`."
+  end
 
   defp error_message(enum, val, result, positive) do
     to = if positive, do: "to", else: "to not"

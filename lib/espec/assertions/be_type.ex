@@ -17,6 +17,21 @@ defmodule ESpec.Assertions.BeType do
     {result, result}
   end
 
+  defp success_message(subject, :null, _result, positive) do
+    to = if positive, do: "is", else: "is not"
+    "`#{inspect subject}` #{to} nil."
+  end 
+
+  defp success_message(subject, [:function, arity], _result, positive) do
+    to = if positive, do: "is", else: "is not"
+    "`#{inspect subject}` #{to} `function` with arity `#{arity}`."
+  end 
+
+  defp success_message(subject, type, _result, positive) do
+    to = if positive, do: "is", else: "is not"
+    "`#{inspect subject}` #{to} is `#{type}`."
+  end 
+
   defp error_message(subject, :null, result, positive) do
   	to = if positive, do: "to", else: "to not"
   	but = if positive, do: "isn't", else: "is"

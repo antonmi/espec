@@ -13,8 +13,8 @@ defmodule ChangeSpec do
   let :f3, do: fn -> :nothing end
 
   context "Success" do
-    it "change_to", do: expect(f1).to change(f2, 1)    
-    it "change_from_to", do: expect(f1).to change(f2, 0, 1)    
+    it do: expect(f1).to change(f2, 1)    
+    it do: expect(f1).to change(f2, 0, 1)    
   end
 
   xcontext "Error" do
