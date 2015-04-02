@@ -20,7 +20,7 @@ ESpec is inspired by RSpec and the main idea is to be close to its perfect DSL.
 - [Run specs](#run-specs)
 - [Context blocks](#context-blocks)
 - [Examples](#examples)
-- ['before' and `'finally'](#before-and-finally)
+- ['before' and 'finally'](#before-and-finally)
 - ['double-underscore'](#double-underscore)
 - [Matchers](#matchers)
 - [Mocks](#mocks)
