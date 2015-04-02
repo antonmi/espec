@@ -1,7 +1,7 @@
 defmodule ESpec.Mixfile do
   use Mix.Project
 
-  @version "0.3.5"
+  @version "0.3.7"
 
   def project do
     [app: :espec,
