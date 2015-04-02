@@ -36,8 +36,7 @@ defmodule ESpec.Runner do
   @doc """
   Runs one specific example and returns an `%ESpec.Example{}` struct.
   The sequence in the following:
-  - evaluates 'befores' and fill the map for `__`;
-  - runs 'lets' (`__` can be accessed inside 'lets');
+  - evaluates 'befores' and 'lets'. 'befores' fill the map for `__`, 'lets' can access `__` ;
   - runs 'example block';
   - evaluate 'finally's'
   The struct has fields `[status: :success, result: result]` or `[status: failed, error: error]`
@@ -47,8 +46,7 @@ defmodule ESpec.Runner do
   def run_example(example) do
     assigns = %{} 
     |> run_config_before(example)
-    |> run_befores(example)
-    set_lets(assigns, example)
+    |> run_befores_and_lets(example)
     try do
       result = apply(example.module, example.function, [assigns])
       example = %ESpec.Example{example | status: :success, result: result}
@@ -83,18 +81,19 @@ defmodule ESpec.Runner do
     if func, do: fill_dict(assigns, func.()), else: assigns
   end 
 
-  defp run_befores(assigns, example) do
-    extract_befores(example.context)
-    |> Enum.reduce(assigns, fn(before, map) ->
-      returned = apply(example.module, before.function, [map])
-      fill_dict(map, returned)
-    end)
-  end
-
-  defp set_lets(assigns, example) do
-    extract_lets(example.context)
-    |> Enum.each(fn(let) ->
-      ESpec.Let.agent_put({example.module, let.var}, apply(example.module, let.function, [assigns, let.keep_quoted]))
+  defp run_befores_and_lets(assigns, example) do
+    extract_befores_and_lets(example.context)
+    |> Enum.reduce(assigns, fn(before_or_let, map) ->
+      case before_or_let.__struct__ do
+        ESpec.Before ->
+          before = before_or_let
+          returned = apply(example.module, before.function, [map])
+          fill_dict(map, returned)
+        ESpec.Let ->
+          let = before_or_let
+          ESpec.Let.agent_put({example.module, let.var}, apply(example.module, let.function, [map, let.keep_quoted]))
+          map
+      end
     end)
   end
 
@@ -115,15 +114,14 @@ defmodule ESpec.Runner do
 
   defp unload_mocks, do: ESpec.Mock.unload
 
-  defp extract_befores(context), do: extract(context, ESpec.Before)
-  defp extract_lets(context), do: extract(context, ESpec.Let)
-  defp extract_finallies(context), do: extract(context, ESpec.Finally)
-  defp extract_contexts(context), do: extract(context, ESpec.Context)
+  defp extract_befores_and_lets(context), do: extract(context, [ESpec.Before, ESpec.Let])
+  defp extract_finallies(context), do: extract(context, [ESpec.Finally])
+  defp extract_contexts(context), do: extract(context, [ESpec.Context])
 
-  defp extract(context, module) do
+  defp extract(context, modules) do
     context |>
     Enum.filter(fn(struct) ->
-      struct.__struct__ == module
+      Enum.member?(modules, struct.__struct__)
     end)
   end
 

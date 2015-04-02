@@ -19,11 +19,6 @@ defmodule LetSpec do
       it do: expect(a).to eq(2)
     end
 
-    context "let! runs after befores" do
-      let! :b, do: __[:b]
-      before do: {:ok, b: 1}
-      it do: expect(b).to eq(1)
-    end
   end
 
   describe "let" do
