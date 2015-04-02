@@ -1,6 +1,5 @@
 # [{module, _ }] = Code.load_file("spec/support/some_module.ex")
 # IO.inspect Code.ensure_compiled(module)
-IO.inspect Kernel.ParallelCompiler.files(["spec/support/some_module.ex"])
 
 defmodule MockTest do
 
@@ -18,13 +17,8 @@ defmodule MockTest do
 			it do: ESpec.SomeModule.f(1)
 			it do: ESpec.SomeModule.q
 		
-			it "ESpec.SomeModule.m is undefined" do
-        try do
-			   	ESpec.SomeModule.m
-        rescue
-          UndefinedFunctionError ->
-            "rescued"
-        end    
+			it "ESpec.SomeModule.m is defined" do
+			  expect(ESpec.SomeModule.m).to eq(:m)
 			end
 
       context "expect accepted" do
@@ -39,7 +33,6 @@ defmodule MockTest do
     end
   end
 
-  
 
   setup_all do
     {:ok,
@@ -68,7 +61,8 @@ defmodule MockTest do
   end 
 
   test "run ex3", context do
-    assert(ESpec.Runner.run_example(context[:ex3]).result == "rescued")
+    example = ESpec.Runner.run_example(context[:ex3])
+    assert(example.status == :success)
   end 
 
   test "run ex4", context do
