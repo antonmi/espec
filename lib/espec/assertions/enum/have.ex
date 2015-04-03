@@ -1,6 +1,6 @@
 defmodule ESpec.Assertions.Enum.Have do
 
-  use ESpec.Assertion
+  use ESpec.Assertions.Interface
 
   defp match(enum, val) do
     result = Enum.member?(enum, val) 

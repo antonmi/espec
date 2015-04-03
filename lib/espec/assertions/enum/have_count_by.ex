@@ -1,6 +1,6 @@
 defmodule ESpec.Assertions.Enum.HaveCountBy do
 
-  use ESpec.Assertion
+  use ESpec.Assertions.Interface
 
   defp match(enum, [func, val]) do
     result = Enum.count(enum, func)

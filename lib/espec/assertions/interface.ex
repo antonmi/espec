@@ -1,8 +1,6 @@
-defmodule ESpec.Assertion do
+defmodule ESpec.Assertions.Interface do
 
-	use Behaviour
 	defmacro __using__(_opts) do
-
     quote do
       def assert(subject, data, positive \\ true) do
         case match(subject, data) do
@@ -19,6 +17,5 @@ defmodule ESpec.Assertion do
       end
     end
   end
- 	
 
 end

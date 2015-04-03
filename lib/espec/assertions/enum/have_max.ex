@@ -1,6 +1,6 @@
 defmodule ESpec.Assertions.Enum.HaveMax do
 
-  use ESpec.Assertion
+  use ESpec.Assertions.Interface
 
   defp match(enum, val) do
     result = Enum.max(enum)

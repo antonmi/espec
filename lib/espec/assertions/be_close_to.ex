@@ -1,6 +1,6 @@
 defmodule ESpec.Assertions.BeCloseTo do
 
-  use ESpec.Assertion
+  use ESpec.Assertions.Interface
 
   defp match(subject, data) do
     [value, delta] = data

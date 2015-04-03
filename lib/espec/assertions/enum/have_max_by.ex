@@ -1,6 +1,6 @@
 defmodule ESpec.Assertions.Enum.HaveMaxBy do
 
-  use ESpec.Assertion
+  use ESpec.Assertions.Interface
 
   defp match(enum, [func, val]) do
     result = Enum.max_by(enum, func)

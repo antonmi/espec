@@ -1,6 +1,6 @@
 defmodule ESpec.Assertions.Be do
 
-  use ESpec.Assertion
+  use ESpec.Assertions.Interface
 
   defp match(subject, [op, val]) do
     result = apply(Kernel, op, [subject, val])

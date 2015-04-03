@@ -1,6 +1,6 @@
 defmodule ESpec.Assertions.List.HaveFirst do
 
-  use ESpec.Assertion
+  use ESpec.Assertions.Interface
 
   defp match(list, val) do
     result = List.first(list)

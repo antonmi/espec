@@ -1,6 +1,3 @@
-# [{module, _ }] = Code.load_file("spec/support/some_module.ex")
-# IO.inspect Code.ensure_compiled(module)
-
 defmodule MockTest do
 
 	use ExUnit.Case

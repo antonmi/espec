@@ -1,6 +1,6 @@
 defmodule ESpec.Assertions.BeType do
 
-  use ESpec.Assertion
+  use ESpec.Assertions.Interface
 
   defp match(subject, :null) do
     result = is_nil(subject)

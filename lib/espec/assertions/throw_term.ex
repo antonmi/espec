@@ -1,6 +1,6 @@
 defmodule ESpec.Assertions.ThrowTerm do
   
-  use ESpec.Assertion
+  use ESpec.Assertions.Interface
 
   defp match(subject, []) do
     try do

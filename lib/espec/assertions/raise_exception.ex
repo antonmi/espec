@@ -1,6 +1,6 @@
 defmodule ESpec.Assertions.RaiseException do
 
-  use ESpec.Assertion
+  use ESpec.Assertions.Interface
 
   defp match(subject, []) do
     try do

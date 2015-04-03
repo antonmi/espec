@@ -1,6 +1,6 @@
 defmodule ESpec.Assertions.Enum.HaveAll do
 
-  use ESpec.Assertion
+  use ESpec.Assertions.Interface
 
   defp match(enum, func) do
     result = Enum.all?(enum, func)

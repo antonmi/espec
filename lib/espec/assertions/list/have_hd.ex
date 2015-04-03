@@ -1,6 +1,6 @@
 defmodule ESpec.Assertions.List.HaveHd do
 
-  use ESpec.Assertion
+  use ESpec.Assertions.Interface
 
   defp match(list, val) do
     result = hd(list)

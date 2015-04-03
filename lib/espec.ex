@@ -20,6 +20,8 @@ defmodule ESpec do
       use ESpec.Expect
       import ESpec.Should
       use ESpec.Should
+    
+      import ESpec.Assertions
 
       import ESpec.Allow
 
@@ -47,8 +49,13 @@ defmodule ESpec do
   def start do
     {:ok, _} = Application.ensure_all_started(:espec)
     start_specs_agent
+    ESpec.Assertions.init
     ESpec.Let.start_agent
     ESpec.Mock.start_agent
+  end
+
+  def register_assertions(assertions) do
+    ESpec.Assertions.register(assertions)
   end
 
   def start_specs_agent do

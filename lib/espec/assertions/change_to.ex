@@ -1,5 +1,5 @@
 defmodule ESpec.Assertions.ChangeTo do
-  use ESpec.Assertion
+  use ESpec.Assertions.Interface
 
   defp match(subject, [func, value]) do
     initial = func.() 

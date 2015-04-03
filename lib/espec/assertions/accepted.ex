@@ -1,6 +1,6 @@
 defmodule ESpec.Assertions.Accepted do
 
-  use ESpec.Assertion
+  use ESpec.Assertions.Interface
 
   defp match(subject, [func, args]) do
     pid = self()

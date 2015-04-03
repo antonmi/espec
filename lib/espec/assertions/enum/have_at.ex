@@ -1,6 +1,6 @@
 defmodule ESpec.Assertions.Enum.HaveAt do
 
-  use ESpec.Assertion
+  use ESpec.Assertions.Interface
 
   defp match(enum, [pos, val]) do
     result = Enum.at(enum, pos) 

@@ -1,5 +1,5 @@
 defmodule ESpec.Assertions.Eql do
-  use ESpec.Assertion
+  use ESpec.Assertions.Interface
 
   defp match(subject, value) do
     result = subject === value

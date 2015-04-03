@@ -1,6 +1,6 @@
 defmodule ESpec.Assertions.Enum.HaveMinBy do
 
-  use ESpec.Assertion
+  use ESpec.Assertions.Interface
 
   defp match(enum, [func, val]) do
     result = Enum.min_by(enum, func)

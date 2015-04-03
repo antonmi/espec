@@ -1,6 +1,6 @@
 defmodule ESpec.Assertions.Enum.BeEmpty do
 
-  use ESpec.Assertion
+  use ESpec.Assertions.Interface
 
   defp match(enum, data) do
     result = Enum.count(enum) 

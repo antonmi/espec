@@ -1,6 +1,6 @@
 defmodule ESpec.Assertions.BeBetween do
 
-  use ESpec.Assertion
+  use ESpec.Assertions.Interface
 
   defp match(subject, [l, r]) do
     result = subject >= l && subject <= r
