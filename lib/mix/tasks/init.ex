@@ -9,7 +9,7 @@ defmodule Mix.Tasks.Espec.Init do
 	@spec_helper "spec_helper.exs"
 	@example_spec "example_spec.exs"
 
-	def run(args) do
+	def run(_args) do
 		create_directory @spec_folder
 		create_file(Path.join(@spec_folder, @spec_helper), spec_helper_template(nil))
 		create_file(Path.join(@spec_folder, @example_spec), example_spec_template(nil))

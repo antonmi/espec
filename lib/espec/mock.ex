@@ -27,7 +27,7 @@ defmodule ESpec.Mock do
 	@doc "Unload modules at the end of examples"
 	def unload do
 		modules = agent_get(self) |> Enum.map(fn{m, _p} -> m end)
-		:meck.unload()
+		:meck.unload(modules)
 		agent_del(self)
 	end
 

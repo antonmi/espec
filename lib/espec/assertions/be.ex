@@ -13,7 +13,7 @@ defmodule ESpec.Assertions.Be do
   end  
 
 
-  defp error_message(subject, [op, val], result, positive) do
+  defp error_message(subject, [op, val], _result, positive) do
     "Expected `#{inspect subject} #{op} #{inspect val}` to be `#{positive}` but got `#{!positive}`."
   end
 

@@ -39,17 +39,17 @@ defmodule ESpec.Assertions.RaiseException do
     end
   end
 
-  defp success_message(subject, [], result, positive) do
+  defp success_message(subject, [], _result, positive) do
     to = if positive, do: "raises", else: "doesn't raise"
     "#{inspect subject} #{to} an exception."
   end
 
-  defp success_message(subject, [module], result, positive) do
+  defp success_message(subject, [module], _result, positive) do
     to = if positive, do: "raises", else: "doesn't raise"
     "#{inspect subject} #{to} the `#{module}` exception."
   end
 
-  defp success_message(subject, [module, message], result, positive) do
+  defp success_message(subject, [module, message], _result, positive) do
     to = if positive, do: "raises", else: "doesn't raise"
     "#{inspect subject} #{to} the `#{module}` exception with the message `#{message}`."
   end

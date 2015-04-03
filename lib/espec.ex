@@ -21,7 +21,7 @@ defmodule ESpec do
       import ESpec.Should
       use ESpec.Should
     
-      import ESpec.Assertions
+      import ESpec.AssertionHelpers
 
       import ESpec.Allow
 

@@ -20,12 +20,12 @@ defmodule ESpec.Assertions.ThrowTerm do
     end
   end
 
-  defp success_message(subject, [], result, positive) do
+  defp success_message(subject, [], _result, positive) do
     to = if positive, do: "throws", else: "doesn't throw"
     "#{inspect subject} #{to} a term."
   end
 
-  defp success_message(subject, [data], result, positive) do
+  defp success_message(subject, [data], _result, positive) do
     to = if positive, do: "throws", else: "doesn't throw"
     "#{inspect subject} #{to} the `#{data}` term."
   end

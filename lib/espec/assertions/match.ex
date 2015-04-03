@@ -6,7 +6,7 @@ defmodule ESpec.Assertions.Match do
     {result, result}
   end
 
-  defp success_message(subject, data, result, positive) do
+  defp success_message(subject, data, _result, positive) do
     to = if positive, do: "matches", else: "doesn't match"
     "`#{inspect subject}` #{to} (=~) `#{inspect data}`."
   end

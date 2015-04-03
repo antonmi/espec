@@ -32,22 +32,22 @@ defmodule ESpec.Assertions.BeType do
     "`#{inspect subject}` #{to} is `#{type}`."
   end 
 
-  defp error_message(subject, :null, result, positive) do
+  defp error_message(subject, :null, _result, positive) do
   	to = if positive, do: "to", else: "to not"
   	but = if positive, do: "isn't", else: "is"
     "Expected `#{inspect subject}` #{to} be nil but it #{but}."
   end
 
-	defp error_message(subject, [:function, arity], result, positive) do
+	defp error_message(subject, [:function, arity], _result, positive) do
 		to = if positive, do: "to", else: "to not"
   	but = if positive, do: "isn't", else: "is"
     "Expected `#{inspect subject}` #{to} be function with arity `#{arity}` but it #{but}."
   end
 
-  defp error_message(subject, type, result, positive) do
+  defp error_message(subject, type, _result, positive) do
   	to = if positive, do: "to", else: "to not"
   	but = if positive, do: "isn't", else: "is"
-    "Expected `#{inspect subject}` to be `#{type}` but it is not."
+    "Expected `#{inspect subject}` #{to} be `#{type}` but it #{but}."
   end
 
 end

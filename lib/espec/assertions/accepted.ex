@@ -21,7 +21,7 @@ defmodule ESpec.Assertions.Accepted do
     "`#{inspect subject}` #{to} `#{inspect func}` with `#{inspect args}`."
   end  
 
-  defp error_message(subject, [func, args], result, positive) do
+  defp error_message(subject, [func, args], _result, positive) do
     to = if positive, do: "to", else: "to not"
     but = if positive, do: "didn't", else: "did"
     "Expected `#{subject}` #{to} accept `#{inspect func}` with `#{inspect args}`, but it #{but}."
