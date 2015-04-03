@@ -8,7 +8,7 @@ defmodule ESpec.Let do
   """
 
   @doc "Struct keeps the name of variable and random function name."
-  defstruct var: nil, function: nil, keep_quoted: nil
+  defstruct var: nil, module: nil, function: nil, keep_quoted: nil
 
   @doc "The name of Agent to save state for lets and subject"
   @agent_name :espec_let_agent
@@ -24,7 +24,7 @@ defmodule ESpec.Let do
 
     quote do
       tail = @context
-      head =  %ESpec.Let{var: unquote(var), function: unquote(function), keep_quoted: unquote(keep_quoted)}
+      head =  %ESpec.Let{var: unquote(var), module: __MODULE__, function: unquote(function), keep_quoted: unquote(keep_quoted)}
 
       def unquote(function)(var!(__), keep_quoted), do: {unquote(block), keep_quoted, var!(__)}
 

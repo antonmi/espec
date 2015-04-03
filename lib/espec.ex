@@ -2,7 +2,7 @@ defmodule ESpec do
 
   @spec_agent_name :espec_specs_agent
 
-  defmacro __using__(_arg) do
+  defmacro __using__(args) do
     quote do
       unquote(__MODULE__).add_spec(__MODULE__)
 
@@ -10,7 +10,7 @@ defmodule ESpec do
 
       Module.register_attribute __MODULE__, :examples, accumulate: true
       @context []
-
+      @shared unquote(args)[:shared]
       @before_compile unquote(__MODULE__)
 
       import ESpec.Context

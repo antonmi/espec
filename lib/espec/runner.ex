@@ -87,11 +87,11 @@ defmodule ESpec.Runner do
       case before_or_let.__struct__ do
         ESpec.Before ->
           before = before_or_let
-          returned = apply(example.module, before.function, [map])
+          returned = apply(before.module, before.function, [map])
           fill_dict(map, returned)
         ESpec.Let ->
           let = before_or_let
-          ESpec.Let.agent_put({example.module, let.var}, apply(example.module, let.function, [map, let.keep_quoted]))
+          ESpec.Let.agent_put({let.module, let.var}, apply(example.module, let.function, [map, let.keep_quoted]))
           map
       end
     end)
@@ -135,6 +135,7 @@ defmodule ESpec.Runner do
 
   defp filter(examples, opts) do
     file_opts = opts[:file_opts] || []
+    examples = filter_shared(examples)
     if Enum.any?(file_opts) do
       examples = file_opts_filter(examples, file_opts)
     end
@@ -142,6 +143,10 @@ defmodule ESpec.Runner do
       examples = filter_focus(examples)
     end
     examples
+  end
+
+  defp filter_shared(examples) do
+    Enum.filter(examples, &(!&1.shared))
   end
 
   defp file_opts_filter(examples, file_opts) do

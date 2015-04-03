@@ -17,12 +17,13 @@ defmodule ESpec.Example do
   file - spec file path,
   line - the line where example is defined,
   context - example context. Accumulator for 'contexts' and 'lets',
+  shared - marks example as shared,  
   status - example status (:new, :success, :failure, :pending),
   result - the value returned by example block or the pending message
   error - store an error
   """
   defstruct description: "", module: nil, function: nil, opts: [],
-            file: nil, line: nil, context: [],
+            file: nil, line: nil, context: [], shared: false,
             status: :new, result: nil, error: %ESpec.AssertionError{}
 
   @doc """
@@ -33,9 +34,8 @@ defmodule ESpec.Example do
     function = (random_atom(description))
     quote do
       context = Enum.reverse(@context)
-
       @examples %ESpec.Example{ description: unquote(description), module: __MODULE__, function: unquote(function),
-                                opts: unquote(opts), file: __ENV__.file, line: __ENV__.line, context: context }
+                                opts: unquote(opts), file: __ENV__.file, line: __ENV__.line, context: context, shared: @shared }
       def unquote(function)(var!(__)), do: unquote(block)
     end
   end
@@ -119,6 +119,16 @@ defmodule ESpec.Example do
     end
   end
   
+  @doc "Defines examples using another module"
+  defmacro it_behaves_like(module) do
+    quote do
+      Enum.each unquote(module).examples, fn(example) ->
+        context = Enum.reverse(@context) ++ example.context
+        @examples %ESpec.Example{ description: example.description, module: example.module, function: example.function,
+                                  opts: example.opts, file: __ENV__.file, line: __ENV__.line, context: context, shared: false }
+      end
+    end
+  end
 
   @doc "Description with contexts."
   def context_descriptions(%ESpec.Example{context: context, description: _description, function: _function}) do

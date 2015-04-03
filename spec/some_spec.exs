@@ -1,7 +1,6 @@
 defmodule SomeSpec do
-  use ESpec
+	use ESpec
 
-
- 
+	
 end 
 

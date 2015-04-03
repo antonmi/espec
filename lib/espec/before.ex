@@ -8,7 +8,7 @@ defmodule ESpec.Before do
   """
 
   @doc "Struct has random fuction name."
-  defstruct function: ""
+  defstruct module: nil, function: nil
 
   @doc """
   Adds %ESpec.Before sutructs to the context and
@@ -18,7 +18,7 @@ defmodule ESpec.Before do
     function = random_before_name
     quote do
       tail = @context
-      head =  %ESpec.Before{function: unquote(function)}
+      head =  %ESpec.Before{module: __MODULE__, function: unquote(function)}
       def unquote(function)(var!(__)), do: unquote(block)
       @context [head | tail]
     end
