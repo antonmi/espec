@@ -352,10 +352,19 @@ defmodule SomeSpec do
   it do: expect(SomeModule.func(1, 2)).to eq(3)
 end
 ```
+Behind the scenes it makes the following:
+```elixir
+:meck.new(module, [:non_strict, :passthrough])
+:meck.expect(module, name, function)
+```
+Find the explanation aboute the `:non_strict` and `:passthrough` options [here](https://github.com/eproxus/meck/blob/master/src/meck.erl)
+All the mocked modules are unloaded whith `:meck.unload(modules)` after each example.
+
 You can also pass a list of atom-function pairs to the `accept` function:
 ```elixir
 allow(SomeModule).to accept(f1: fn -> :f1 end, f2: fn -> :f2 end)
 ```
+
 There is also an expectation to check if the module accepted a function call:
 ```elixir
 defmodule SomeSpec do
