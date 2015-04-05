@@ -4,11 +4,7 @@ defmodule BeDivisorOfAssertion do
 
   defp match(subject, number) do
     result = rem(number, subject)
-    if result == 0 do
-    	{true, result}
-  	else
-  		{false, result}
-  	end
+    {result == 0, result}
   end
 
 	defp success_message(subject, number, _result, positive) do

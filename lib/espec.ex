@@ -1,4 +1,8 @@
 defmodule ESpec do
+  @moduledoc """
+  The ESpec basic module. Imports a lot of ESpec components.
+  One should `use` the module in spec modules.
+  """
 
   @spec_agent_name :espec_specs_agent
 
@@ -40,25 +44,28 @@ defmodule ESpec do
 
   def configure(func), do: ESpec.Configuration.configure(func)
 
+  @doc "Runs the examples and prints results"
   def run do
     examples = ESpec.Runner.run
     ESpec.Formatter.print_result(examples)
     !Enum.any?(ESpec.Example.failure(examples))
   end
 
+  @doc "Starts ESpec. Starts agents to store specs, mocks, cache 'let' values, etc."
   def start do
     {:ok, _} = Application.ensure_all_started(:espec)
-    start_specs_agent
     ESpec.Assertions.init
+    start_specs_agent
     ESpec.Let.start_agent
     ESpec.Mock.start_agent
   end
 
+  @doc "Register custom assertions"
   def register_assertions(assertions) do
     ESpec.Assertions.register(assertions)
   end
 
-  def start_specs_agent do
+  defp start_specs_agent do
     Agent.start_link(fn -> [] end, name: @spec_agent_name)
   end
 

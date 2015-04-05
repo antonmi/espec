@@ -4,11 +4,7 @@ defmodule BeOddAssertion do
 
   defp match(subject, []) do
     result = rem(subject, 2)
-    if result == 1 do
-      {true, result}
-    else
-      {false, result}
-    end
+    {result == 1, result}
   end
 
   defp success_message(subject, [], _result, positive) do

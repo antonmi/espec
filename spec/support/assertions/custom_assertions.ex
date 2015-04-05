@@ -8,8 +8,8 @@ defmodule CustomAssertions do
   end	
 
 	ESpec.register_assertions([
-		{:be_divisor_of, BeDivisorOfAssertion},
-		{:be_odd, BeOddAssertion}
+		be_divisor_of: BeDivisorOfAssertion,
+		be_odd: BeOddAssertion
 	])
 
 end
