@@ -7,7 +7,9 @@ ESpec is inspired by RSpec and the main idea is to be close to its perfect DSL.
 
 ## Features
   * Test organization with `describe`, `context`, `it`, and etc blocks
+  * Shared examples.
   * Familiar matchers: `eq`, `be_close_to`, `raise_exception`, etc
+  * Possibility to add custom matchers
   * RSpec expectation syntax: 
     - With `expect` helper: `expect(smth1).to eq(smth2)` or `is_expected.to eq(smth)` when `subject` is defined;
     - With old-style `should`: `smth1 |> should eq smth2` or `should eq smth` when `subject` is defined.
@@ -22,6 +24,7 @@ ESpec is inspired by RSpec and the main idea is to be close to its perfect DSL.
 - [Examples](#examples)
 - ['before' and 'finally'](#before-and-finally)
 - ['double-underscore'](#double-underscore)
+- [Shared examples](#shared-examples)
 - [Matchers](#matchers)
 - [Mocks](#mocks)
 - [Configuration](#configuration)
@@ -242,6 +245,26 @@ defmodule SomeSpec do
   end
 end 
 ```
+##Shared Examples
+One can reuse the examples defined in spec module.
+```elixir
+defmodule SharedSpec do
+  use ESpec, shared: true
+  
+  subject __.hello
+  it do: should eq("world!")
+end
+```
+`shared: true` marks examples in the module as shared, so the examples will be skipped untile you reuse them.
+You can use the examples with `it_behaes_like` macro:
+```elixir
+defmodule UseSharedSpecSpec do
+  use ESpec
+  
+  before do: {:ok, hello: "world!"}
+  it_behaves_like(SharedSpec)
+end 
+```
 
 ## Matchers
 #### Equality
@@ -311,6 +334,12 @@ Test if call of function1 change the function2 returned value to smth or from to
 expect(function1).to change(function2, to)
 expect(function1).to change(function2, from, to) 
 ```
+
+##Custom matchers
+You can define your own matchers!
+The only functions you should implement is `match/2`, `success_message/4`, and `error_message`.
+There is an example [custom_assertion_spec.exs](https://github.com/antonmi/espec/blob/master/spec/assertions/custom_assertion_spec.ex).
+Or read the wiki page.
 
 ## Mocks
 ESpec uses [Meck](https://github.com/eproxus/meck) to mock functions.
