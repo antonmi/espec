@@ -1,6 +1,6 @@
 # ESpec
 [![Build Status](https://travis-ci.org/antonmi/espec.svg?branch=master)](https://travis-ci.org/antonmi/espec)
-[![Hex.pm](https://img.shields.io/hexpm/dt/espec.svg?style=flat-square)](https://hex.pm/packages/espec)
+[![Hex.pm](https://img.shields.io/hexpm/v/espec.svg?style=flat-square)](https://hex.pm/packages/espec)
 
 ##### ESpec is a BDD test framework for Elixir.
 It is NOT a wrapper around ExUnit but the independent test framework written from scratch.
