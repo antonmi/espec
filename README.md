@@ -26,6 +26,7 @@ ESpec is inspired by RSpec and the main idea is to be close to its perfect DSL.
 - ['double-underscore'](#double-underscore)
 - [Shared examples](#shared-examples)
 - [Matchers](#matchers)
+- [Custom matchers](#custom-matchers)
 - [Mocks](#mocks)
 - [Configuration](#configuration)
 
@@ -338,8 +339,8 @@ expect(function1).to change(function2, from, to)
 ##Custom matchers
 You can define your own matchers!
 The only functions you should implement is `match/2`, `success_message/4`, and `error_message`.
+Read the [wiki page](https://github.com/antonmi/espec/wiki/Custom-matchers) for detailed instructions.
 There is an example [custom_assertion_spec.exs](https://github.com/antonmi/espec/blob/master/spec/assertions/custom_assertion_spec.ex).
-Or read the wiki page.
 
 ## Mocks
 ESpec uses [Meck](https://github.com/eproxus/meck) to mock functions.
