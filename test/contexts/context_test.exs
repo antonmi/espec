@@ -30,6 +30,10 @@ defmodule ContextTest do
     example_group "is alias" do
       it do: "some example"
     end
+
+    context ESpec.Context do
+      it do: "context with atom as description"
+    end
   end
 
   setup_all do
@@ -38,7 +42,8 @@ defmodule ContextTest do
       ex2: Enum.at(SomeSpec.examples, 1),
       ex3: Enum.at(SomeSpec.examples, 2),
       ex4: Enum.at(SomeSpec.examples, 3),
-      ex5: Enum.at(SomeSpec.examples, 4)
+      ex5: Enum.at(SomeSpec.examples, 4),
+      ex8: Enum.at(SomeSpec.examples, 7)
     }
   end
 
@@ -71,5 +76,10 @@ defmodule ContextTest do
     opts = List.first(context[:ex5].context).opts
     assert(desc == "")
     assert(opts == [c: 3])
+  end
+
+  test "check ex6 context", context do
+    desc = List.first(context[:ex8].context).description
+    assert(desc == ESpec.Context)
   end
 end

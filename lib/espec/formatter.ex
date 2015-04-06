@@ -98,7 +98,7 @@ defmodule ESpec.Formatter do
     array = [ module | ESpec.Example.context_descriptions(example)] ++ [ex_desc]
     {result, _} = Enum.reduce(array, {"", ""}, fn(description, acc) ->
       {d, w} = acc
-      {d <> w <> description <> "\n", w <> "  "}
+      {d <> w <> "#{description}" <> "\n", w <> "  "}
     end) 
     result
   end

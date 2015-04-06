@@ -27,16 +27,16 @@ defmodule ESpec.Context do
     end
   end
 
-  @doc "context with description only"
-  defmacro context(description, do: block) when is_binary(description) do
-    quote do
-      unquote(__MODULE__).context(unquote(description), [], do: unquote(block))
-    end
-  end
-
   @doc "context with opts only"
   defmacro context(opts, do: block) when is_list(opts) do
     quote do: unquote(__MODULE__).context("", unquote(opts), do: unquote(block))
+  end
+
+  @doc "context with description only"
+  defmacro context(description, do: block) do
+    quote do
+      unquote(__MODULE__).context(unquote(description), [], do: unquote(block))
+    end
   end
 
   @doc "Add empty context."
@@ -66,14 +66,14 @@ defmodule ESpec.Context do
       quote do: unquote(__MODULE__).context(unquote(description), Keyword.put(unquote(opts), :skip, unquote(reason)), do: unquote(block))
     end
 
-    defmacro unquote(func)(description, do: block) when is_binary(description) do
-      reason = "`#{unquote(func)}`"
-      quote do: unquote(__MODULE__).context(unquote(description), [skip: unquote(reason)], do: unquote(block))
-    end
-
     defmacro unquote(func)(opts, do: block) when is_list(opts) do
       reason = "`#{unquote(func)}`"
       quote do: unquote(__MODULE__).context(Keyword.put(unquote(opts), :skip, unquote(reason)), do: unquote(block))
+    end
+
+    defmacro unquote(func)(description, do: block) do
+      reason = "`#{unquote(func)}`"
+      quote do: unquote(__MODULE__).context(unquote(description), [skip: unquote(reason)], do: unquote(block))
     end
 
     defmacro unquote(func)(do: block) do
@@ -88,14 +88,14 @@ defmodule ESpec.Context do
       quote do: unquote(__MODULE__).context(unquote(description), Keyword.put(unquote(opts), :focus, true), do: unquote(block))
     end
 
-    defmacro unquote(func)(description, do: block) when is_binary(description) do
-      quote do: unquote(__MODULE__).context(unquote(description), [focus: true], do: unquote(block))
-    end
-
     defmacro unquote(func)(opts, do: block) when is_list(opts) do
       quote do: unquote(__MODULE__).context(Keyword.put(unquote(opts), :focus, true), do: unquote(block))
     end
 
+    defmacro unquote(func)(description, do: block) do
+      quote do: unquote(__MODULE__).context(unquote(description), [focus: true], do: unquote(block))
+    end
+    
     defmacro unquote(func)(do: block) do
       quote do: unquote(__MODULE__).context([focus: true], do: unquote(block))
     end

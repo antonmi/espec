@@ -43,6 +43,4 @@ defmodule SubjectSpec do
     end
   end
 
-
-
 end
