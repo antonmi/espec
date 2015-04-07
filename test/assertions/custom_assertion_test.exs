@@ -8,7 +8,7 @@ defmodule CustonAssertionTest do
 
   defmodule SomeSpec do
     use ESpec
-    use CustomAssertions
+    import CustomAssertions
 
     context "Success" do
       subject 3

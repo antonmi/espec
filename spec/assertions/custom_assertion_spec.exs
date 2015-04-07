@@ -4,7 +4,7 @@ Code.require_file("spec/support/assertions/custom_assertions.ex")
 
 defmodule CustomAssertionSpec do
 	use ESpec
-	use CustomAssertions
+	import CustomAssertions
 
   context "Success" do
     subject 3
