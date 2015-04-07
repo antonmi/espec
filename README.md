@@ -218,8 +218,8 @@ So, 'config.finally' will print `46`.
 Pay attention to how `finally` blocks are defined and evaluated.
 
 ## `let` and `subject`
-`let` and `let!` have the same behaviour as in RSpec. Both defines memoizable functions in 'spec module'.
-`let` evaluates when accessing the function while `let!` called in 'before' chain.
+`let` and `let!` have the same behaviour as in RSpec. Both defines memoizable functions in 'spec module'. The value will be cached across multiple calls in the same example but not across examples. `let` is not evaluated until the first time the function it defines is invoked. Use `let!` to force the  invocation before each example.
+
 The `__` is available in 'lets' but neither `let` nor `let!` can modify the dictionary.
 ```elixir
 defmodule SomeSpec do
@@ -233,7 +233,7 @@ defmodule SomeSpec do
   it do: expect(b).to eq(2)
 end  
 ```
-`subject` and `subject!` are just aliases for `let :subject, do: smth` and `let! :subject, do: smth`. You can use `is_expected` macro when `subject` is defined or a simple `should`.
+`subject` and `subject!` are just aliases for `let :subject, do: smth` and `let! :subject, do: smth`. You can use `is_expected` macro (or a simple `should` expression) when `subject` is defined.
 ```elixir
 defmodule SomeSpec do
   use ESpec
