@@ -94,6 +94,16 @@ defmodule ESpec.Let do
     end
   end
 
+  @doc """
+  Defines 'subject!' with name.
+  It is just an alias for 'let!'.
+  """
+  defmacro subject!(var, do: block) do
+    quote do
+      unquote(__MODULE__).let!(unquote(var), do: unquote(block))
+    end
+  end
+
   @doc "Starts Agent to save state of 'lets'."
   def start_agent do
     Agent.start_link(fn -> HashDict.new end, name: @agent_name)
