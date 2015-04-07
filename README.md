@@ -26,6 +26,7 @@ ESpec is inspired by RSpec and the main idea is to be close to its perfect DSL.
 - [Examples](#examples)
 - ['before' and 'finally'](#before-and-finally)
 - ['double-underscore'](#double-underscore)
+- ['let' and 'subject'](#let-and-subject)
 - [Shared examples](#shared-examples)
 - [Matchers](#matchers)
 - [Custom matchers](#custom-matchers)
@@ -216,7 +217,7 @@ end
 So, 'config.finally' will print `46`.
 Pay attention to how `finally` blocks are defined and evaluated.
 
-## `let`, `let!`, and `subject`
+## `let` and `subject`
 `let` and `let!` have the same behaviour as in RSpec. Both defines memoizable functions in 'spec module'.
 `let` evaluates when accessing the function while `let!` called in 'before' chain.
 The `__` is available in 'lets' but neither `let` nor `let!` can modify the dictionary.
@@ -232,7 +233,7 @@ defmodule SomeSpec do
   it do: expect(b).to eq(2)
 end  
 ```
-`subject` is just an alias for `let(:subject)`. You can use `is_expected` macro when `subject` is defined.
+`subject` and `subject!` are just aliases for `let :subject, do: smth` and `let! :subject, do: smth`. You can use `is_expected` macro when `subject` is defined or a simple `should`.
 ```elixir
 defmodule SomeSpec do
   use ESpec
