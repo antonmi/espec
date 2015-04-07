@@ -2,8 +2,8 @@ defmodule SomeSpec do
 	use ESpec
 
 	let :a, do: 1
-	subject! do: SomeSpec.a + 1
+	let :b, do: SomeSpec.a + 1
 
-	it do: should eq 2
+	it do: b |> should eq 2
 end 
 

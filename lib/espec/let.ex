@@ -35,7 +35,7 @@ defmodule ESpec.Let do
         def unquote(var)() do 
           {result, keep_quoted, assigns} = agent_get({__MODULE__, unquote(var)})
           if keep_quoted do
-            {result, _assigns} = Code.eval_quoted(result, __: assigns)
+            {result, _assigns} = Code.eval_quoted(result, [__: assigns], __ENV__)
             agent_put({__MODULE__, unquote(var)}, {result, false, assigns})
             result
           else
