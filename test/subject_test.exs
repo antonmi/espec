@@ -9,7 +9,7 @@ defmodule SubjectTest do
     it do: "subject = #{subject}"
 
     context "Redefine" do
-      subject do: 10 + 10
+      subject! do: 10 + 10
       it do: "subject = #{subject}"
     end
 

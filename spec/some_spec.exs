@@ -1,12 +1,9 @@
 defmodule SomeSpec do
 	use ESpec
 
-	context ESpec do
-		it do: 1 |> should eq 1
-	end
+	let :a, do: 1
+	subject! do: SomeSpec.a + 1
 
-	describe ESpec.Context do
-		it  do: 1 |> should eq 1
-	end
+	it do: should eq 2
 end 
 

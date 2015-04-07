@@ -13,7 +13,7 @@ defmodule SubjectSpec do
 
 
   context "without name" do
-    subject(5+5)
+    subject!(5+5)
 
     it do: is_expected.to eq(10)
 
