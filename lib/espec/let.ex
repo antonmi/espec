@@ -64,7 +64,7 @@ defmodule ESpec.Let do
   end
 
   @doc "Defines 'subject'."
-  defmacro subject!(var) do
+  defmacro subject(var) do
     quote do
       unquote(__MODULE__).let(:subject, do: unquote(var))
     end
