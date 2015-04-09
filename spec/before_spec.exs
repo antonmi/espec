@@ -30,6 +30,16 @@ defmodule BeforESpec do
       it do: expect(__.c).to eq("D2 before")
     end
 
+    describe "Not valid" do
+      before do
+        {:ok, 
+          [%{a: 1, b: 2}]
+        }
+      end  
+      it do: expect(__.a).to eq("top before")
+      it do: expect(__.b).to eq("D1 before")
+    end
+
   end
 
   context "function in __" do

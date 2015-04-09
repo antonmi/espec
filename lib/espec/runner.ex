@@ -128,7 +128,11 @@ defmodule ESpec.Runner do
   defp fill_dict(map, res) do
     case res do
       {:ok, list} when is_list(list) -> 
-        Enum.reduce(list, map, fn({k,v}, a) -> Dict.put(a, k, v) end)
+        if Keyword.keyword?(list) do
+          Enum.reduce(list, map, fn({k,v}, a) -> Dict.put(a, k, v) end)
+        else
+          map
+        end  
       _ -> map
     end
   end

@@ -1,9 +1,10 @@
 defmodule SomeSpec do
 	use ESpec
 
-	let :a, do: 1
-	let :b, do: SomeSpec.a + 1
+	before do
+		{:ok, [%{data: "some_data", id: 100500}]}
+	end
 
-	it do: b |> should eq 2
+	it do: ""
 end 
 
