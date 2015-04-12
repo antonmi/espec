@@ -51,6 +51,6 @@ defmodule ESpec.AssertionHelpers do
   def be_nil, do: {:be_type, :null}
   def be_function(arity), do: {:be_type, [:function, arity]}
 
-  def accepted(func, args \\ [], pid \\ self), do: {:accepted, [func, args, pid]}
+  def accepted(func, args \\ :any, opts \\ [pid: :any, count: :any]), do: {:accepted, [func, args, opts]}
 
 end

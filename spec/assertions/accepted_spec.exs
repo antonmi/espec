@@ -19,7 +19,30 @@ defmodule AcceptedSpec do
 		end
 	end
 
-	describe "function call in another process" do
+	describe "any args" do
+		before do
+			allow(ESpec.SomeModule).to accept(:func, fn(a, b) -> a+b end)
+			ESpec.SomeModule.func(1, 2)
+			ESpec.SomeModule.func(1, 2)
+		end
+
+		it do: expect(ESpec.SomeModule).to accepted(:func)
+		it do: expect(ESpec.SomeModule).to accepted(:func, :any)
+		it do: expect(ESpec.SomeModule).to_not accepted(:func, [2, 3])
+	end
+
+	describe "count option" do
+		before do
+			allow(ESpec.SomeModule).to accept(:func, fn(a, b) -> a+b end)
+			ESpec.SomeModule.func(1, 2)
+			ESpec.SomeModule.func(1, 2)
+		end
+
+		it do: expect(ESpec.SomeModule).to accepted(:func, [1, 2], count: 2)
+		it do: expect(ESpec.SomeModule).to_not accepted(:func, [1, 2], count: 1)
+	end
+
+	describe "pid option" do
 		defmodule Server do
 			def call(a, b) do
 				ESpec.SomeModule.func(a, b)
@@ -34,16 +57,27 @@ defmodule AcceptedSpec do
 		end
 
 		it "accepted with pid" do
-			expect(ESpec.SomeModule).to accepted(:func, [10, 20], __.pid)
+			expect(ESpec.SomeModule).to accepted(:func, [10, 20], pid: __.pid)
 		end
 
 		it "not accepted with another pid" do
-			expect(ESpec.SomeModule).to_not accepted(:func, [10, 20], self)
+			expect(ESpec.SomeModule).to_not accepted(:func, [10, 20], pid: self)
 		end
 
 		it "accepted with :any" do
-			expect(ESpec.SomeModule).to accepted(:func, [10, 20], :any)
+			expect(ESpec.SomeModule).to accepted(:func, [10, 20], pid: :any)
+		end
+
+		context "with count" do
+			before do
+				allow(ESpec.SomeModule).to accept(:func, fn(a, b) -> a+b end)
+				ESpec.SomeModule.func(10, 20)
+			end
+
+			it do: expect(ESpec.SomeModule).to accepted(:func, [10, 20], pid: :any, count: 2)
 		end
 	end
+
+
 
 end
