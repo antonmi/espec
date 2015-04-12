@@ -1,8 +1,3 @@
-# defmodule ESpec.SomeModule do
-#   def f, do: :f
-#   def m, do: :m
-# end
-
 defmodule MockSpec do
   use ESpec
 
@@ -31,7 +26,7 @@ defmodule MockSpec do
       spawn fn -> allow(ESpec.SomeModule).to accept(:f, fn(a) -> "mock! #{a}" end) end
     end
 
-    it do: expect(ESpec.SomeModule.f).to eq(:f)
+    # it do: expect(ESpec.SomeModule.f).to eq(:f)
   end
  
 
