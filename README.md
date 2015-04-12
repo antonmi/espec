@@ -406,7 +406,7 @@ defmodule SomeSpec do
   end
 end
 ```
-`accepted` assertion checks `:meck.history(SomeModule)`. See `meck` documentation.
+`accepted` assertion checks `:meck.history(SomeModule)`. See [meck](https://github.com/eproxus/meck) documentation.
 
 ## Configuration
 TODO
