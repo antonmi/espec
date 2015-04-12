@@ -370,6 +370,12 @@ allow(SomeModule).to accept(f1: fn -> :f1 end, f2: fn -> :f2 end)
 
 There is also an expectation to check if the module accepted a function call:
 ```elixir
+accepted(func, args \\ [], pid \\ self)
+```
+The last argument is the `pid` of a process, which call the function. It equals `self` by default.
+You can also pass `:any` option.
+
+```elixir
 defmodule SomeSpec do
   use ESpec
   before do: allow(SomeModule).to accept(:func, fn(a,b) -> a+b end)
