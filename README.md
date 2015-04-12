@@ -370,20 +370,43 @@ allow(SomeModule).to accept(f1: fn -> :f1 end, f2: fn -> :f2 end)
 
 There is also an expectation to check if the module accepted a function call:
 ```elixir
-accepted(func, args \\ [], pid \\ self)
+accepted(func, args \\ :any, opts \\ [pid: :any, count: :any])
 ```
-The last argument is the `pid` of a process, which call the function. It equals `self` by default.
-You can also pass `:any` option.
+So, the options are:
+- test if the function is called with some particular arguments of with `any`;
+- specify the `pid` of the process which called the function;
+- test the count of function calls.
 
 ```elixir
 defmodule SomeSpec do
   use ESpec
-  before do: allow(SomeModule).to accept(:func, fn(a,b) -> a+b end)
-  before do: SomeModule.func(1, 2)
+  before do
+    allow(SomeModule).to accept(:func, fn(a,b) -> a+b end)
+    SomeModule.func(1, 2)
+  end  
+ 
+  it do: expect(SomeModule).to accepted(:func)
   it do: expect(SomeModule).to accepted(:func, [1,2])
+
+  describe "with options" do
+    defmodule Server do
+      def call(a, b) do
+	ESpec.SomeModule.func(a, b)
+	ESpec.SomeModule.func(a, b)
+      end
+    end
+
+    before do
+      pid = spawn(Server, :call, [1, 2])
+      :timer.sleep(100)
+      {:ok, pid: pid}
+    end
+
+    it do: expect(ESpec.SomeModule).to accepted(:func, [1,2], pid: __.pid, count: 2)
+  end
 end
 ```
-`expect(SomeModule).to accepted(:func, [1,2])` just checks `meck.history(SomeModule)`.
+`accepted` assertion checks `:meck.history(SomeModule)`. See `meck` documentation.
 
 ## Configuration
 TODO
