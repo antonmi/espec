@@ -13,6 +13,14 @@ defmodule SharedSpec do
 		it do: expect(c).to eq(3)
 		it do: expect(d).to eq(4)
 	end
+
+
+  describe "let use let" do
+    let :a, do: __.a
+    let :b, do: a + 1
+
+    it do: b |> should eq 2
+  end
 end
 
 defmodule UseSharedSpecSpec do

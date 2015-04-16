@@ -45,4 +45,12 @@ defmodule LetSpec do
     end
   end
 
+  describe "let use let" do
+    let :a, do: 1
+    let :b, do: a + 1
+
+    it do: b |> should eq 2
+  end
+
+
 end

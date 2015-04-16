@@ -35,7 +35,11 @@ defmodule ESpec.Let do
         def unquote(var)() do 
           {result, keep_quoted, assigns} = agent_get({__MODULE__, unquote(var)})
           if keep_quoted do
-            {result, _assigns} = Code.eval_quoted(result, [__: assigns], __ENV__)
+            #TODO This __ENV__ hack is annoying 
+            functions = [{__MODULE__, __MODULE__.__info__(:functions)} | __ENV__.functions]
+            env = %{__ENV__ | functions: functions}
+            
+            {result, _assigns} = Code.eval_quoted(result, [__: assigns], env)
             agent_put({__MODULE__, unquote(var)}, {result, false, assigns})
             result
           else
