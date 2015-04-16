@@ -54,15 +54,9 @@ defmodule ESpec do
   @doc "Starts ESpec. Starts agents to store specs, mocks, cache 'let' values, etc."
   def start do
     {:ok, _} = Application.ensure_all_started(:espec)
-    ESpec.Assertions.init
     start_specs_agent
     ESpec.Let.start_agent
     ESpec.Mock.start_agent
-  end
-
-  @doc "Register custom assertions"
-  def register_assertions(assertions) do
-    ESpec.Assertions.register(assertions)
   end
 
   defp start_specs_agent do

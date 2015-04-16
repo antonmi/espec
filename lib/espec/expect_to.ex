@@ -5,8 +5,7 @@ defmodule ESpec.ExpectTo do
   @agent_name :espec_expect_to_agent
 
   @doc "Calls specific asserion."
-  def to({key, data}, {ESpec.ExpectTo, subject}, positive \\ true) do
-    module = ESpec.Assertions.agent_get(key)
+  def to({module, data}, {ESpec.ExpectTo, subject}, positive \\ true) do
     apply(module, :assert, [subject, data, positive])
   end
 

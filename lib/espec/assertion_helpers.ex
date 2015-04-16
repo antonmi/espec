@@ -7,50 +7,50 @@ defmodule ESpec.AssertionHelpers do
 
   @elixir_types ~w(atom binary bitstring boolean float function integer list map number pid port reference tuple)a
 
-  def eq(value), do: {:eq, value}
-  def eql(value), do: {:eql, value}
-  def be(value), do: {:eq, value}
-  def be(operator, value), do: {:be, [operator,  value]}
-  def be_between(min, max), do: {:be_between, [min, max]}
-  def be_close_to(value, delta), do: {:be_close, [value, delta]}
-  def match(value), do: {:match, value}
+  def eq(value), do: {ESpec.Assertions.Eq, value}
+  def eql(value), do: {ESpec.Assertions.Eql, value}
+  def be(value), do: {ESpec.Assertions.Eq, value}
+  def be(operator, value), do: {ESpec.Assertions.Be, [operator,  value]}
+  def be_between(min, max), do: {ESpec.Assertions.BeBetween, [min, max]}
+  def be_close_to(value, delta), do: {ESpec.Assertions.BeCloseTo, [value, delta]}
+  def match(value), do: {ESpec.Assertions.Match, value}
   
-  def raise_exception(exception, message), do: {:raise_exception, [exception, message]}
-  def raise_exception(exception), do: {:raise_exception, [exception]}
-  def raise_exception(), do: {:raise_exception, []}
+  def raise_exception(exception, message), do: {ESpec.Assertions.RaiseException, [exception, message]}
+  def raise_exception(exception), do: {ESpec.Assertions.RaiseException, [exception]}
+  def raise_exception(), do: {ESpec.Assertions.RaiseException, []}
 
-  def throw_term(term), do: {:throw_term, [term]}
-  def throw_term(), do: {:throw_term, []}
+  def throw_term(term), do: {ESpec.Assertions.ThrowTerm, [term]}
+  def throw_term(), do: {ESpec.Assertions.ThrowTerm, []}
 
-  def change(func, value), do: {:change_to, [func, value]}
-  def change(func, before, value), do: {:change_from_to, [func, before, value]}
+  def change(func, value), do: {ESpec.Assertions.ChangeTo, [func, value]}
+  def change(func, before, value), do: {ESpec.Assertions.ChangeFromTo, [func, before, value]}
 
-  def have_all(func), do: {:have_all, func}
-  def have_any(func), do: {:have_any, func}
-  def have_at(pos, val), do: {:have_at, [pos, val]}
-  def have_count(val), do: {:have_count, val}
-  def have_count_by(func, val), do: {:have_count_by, [func, val]}
-  def have(val), do: {:have, val}
-  def be_empty, do: {:be_empty, []}
-  def have_max(value), do: {:have_max, value}
-  def have_max_by(func, value), do: {:have_max_by, [func, value]}
-  def have_min(value), do: {:have_min, value}
-  def have_min_by(func, value), do: {:have_min_by, [func, value]}
+  def have_all(func), do: {ESpec.Assertions.Enum.HaveAll, func}
+  def have_any(func), do: {ESpec.Assertions.Enum.HaveAny, func}
+  def have_at(pos, val), do: {ESpec.Assertions.Enum.HaveAt, [pos, val]}
+  def have_count(val), do: {ESpec.Assertions.Enum.HaveCount, val}
+  def have_count_by(func, val), do: {ESpec.Assertions.Enum.HaveCountBy, [func, val]}
+  def have(val), do: {ESpec.Assertions.Enum.Have, val}
+  def be_empty, do: {ESpec.Assertions.Enum.BeEmpty, []}
+  def have_max(value), do: {ESpec.Assertions.Enum.HaveMax, value}
+  def have_max_by(func, value), do: {ESpec.Assertions.Enum.HaveMaxBy, [func, value]}
+  def have_min(value), do: {ESpec.Assertions.Enum.HaveMin, value}
+  def have_min_by(func, value), do: {ESpec.Assertions.Enum.HaveMinBy, [func, value]}
 
-  def have_first(value), do: {:have_first, value}
-  def have_last(value), do: {:have_last, value}
-  def have_hd(value), do: {:have_hd, value}
-  def have_tl(value), do: {:have_tl, value}
+  def have_first(value), do: {ESpec.Assertions.List.HaveFirst, value}
+  def have_last(value), do: {ESpec.Assertions.List.HaveLast, value}
+  def have_hd(value), do: {ESpec.Assertions.List.HaveHd, value}
+  def have_tl(value), do: {ESpec.Assertions.List.HaveTl, value}
 
   
   Enum.each @elixir_types, fn(type) -> 
     def unquote(String.to_atom("be_#{type}"))() do
-      {:be_type, unquote(Macro.escape(type))}
+      {ESpec.Assertions.BeType, unquote(Macro.escape(type))}
     end
   end
-  def be_nil, do: {:be_type, :null}
-  def be_function(arity), do: {:be_type, [:function, arity]}
+  def be_nil, do: {ESpec.Assertions.BeType, :null}
+  def be_function(arity), do: {ESpec.Assertions.BeType, [:function, arity]}
 
-  def accepted(func, args \\ :any, opts \\ [pid: :any, count: :any]), do: {:accepted, [func, args, opts]}
+  def accepted(func, args \\ :any, opts \\ [pid: :any, count: :any]), do: {ESpec.Assertions.Accepted, [func, args, opts]}
 
 end
