@@ -2,139 +2,79 @@ defmodule ESpec.Runner do
   @moduledoc """
   Defines functions which runs the examples.
   """
+  use GenServer
+
+  def start do
+    GenServer.start_link(__MODULE__, [], name: __MODULE__)
+  end
+
+  def init(_args) do
+    state = %{specs: ESpec.specs, opts: ESpec.Configuration.all}
+    {:ok, state}
+  end
 
   @doc """
   Runs all examples.
-  Uses `filter/2` to select examples to run.
   """
-  def run do
-    opts = ESpec.Configuration.all
-    ESpec.specs |> Enum.reverse
+  def run, do: GenServer.call(__MODULE__, :run, :infinity)
+
+  def handle_call(:run, _pid, state) do
+    result = do_run(state[:specs], state[:opts])
+    {:reply, result, state}
+  end
+
+  defp do_run(specs, opts) do
+    if ESpec.Configuration.get(:order) do
+      examples = run_in_order(specs, opts)
+    else
+      examples = run_in_random(specs, opts)
+    end
+
+    ESpec.Formatter.print_result(examples)
+    !Enum.any?(ESpec.Example.failure(examples))
+  end
+
+  defp run_in_order(specs, opts) do
+    examples = specs |> Enum.reverse
     |> Enum.map(fn(module) ->
       filter(module.examples, opts)
       |> run_examples
     end)
     |> List.flatten
+  end    
+
+  defp run_in_random(specs, opts) do
+    examples = Enum.map(specs, fn(module) -> 
+      filter(module.examples, opts)
+    end) |> List.flatten |> Enum.shuffle
+
+    run_examples(examples)
   end
 
-  @doc "Runs example for specific 'spec  module'."
+  @doc "Runs examples."
   def run_examples(examples) do
+    {async, sync} = Enum.partition(examples, &(&1.async))
+    run_async(async) ++ run_sync(sync)
+  end
+
+  defp run_async(examples) do
+    IO.inspect "-----------"
     examples
     |> Enum.map(fn(example) ->
-      contexts = extract_contexts(example.context)
-      cond do
-        example.opts[:skip] || Enum.any?(contexts, &(&1.opts[:skip])) ->
-          run_skipped(example, contexts)
-        example.opts[:pending] ->
-          run_pending(example, contexts)  
-        true ->
-          run_example(example)
-      end
+       IO.inspect "Async"
+      Task.async(fn -> ESpec.ExampleRunner.run(example) end)
+    end)
+    |> Enum.map(fn(task) ->
+      Task.await(task, :infinity)
     end)
   end
 
-  @doc """
-  Runs one specific example and returns an `%ESpec.Example{}` struct.
-  The sequence in the following:
-  - evaluates 'befores' and 'lets'. 'befores' fill the map for `__`, 'lets' can access `__` ;
-  - runs 'example block';
-  - evaluate 'finally's'
-  The struct has fields `[status: :success, result: result]` or `[status: failed, error: error]`
-  The `result` is the value returned by example block.
-  `error` is a `%ESpec.AssertionError{}` struct.
-  """
-  def run_example(example) do
-    assigns = %{} 
-    |> run_config_before(example)
-    |> run_befores_and_lets(example)
-    try do
-      result = apply(example.module, example.function, [assigns])
-      example = %ESpec.Example{example | status: :success, result: result}
-      ESpec.Formatter.example_info(example)
-      example
-    rescue
-      error in [ESpec.AssertionError] ->
-        example = %ESpec.Example{example | status: :failure, error: error}
-        ESpec.Formatter.example_info(example)
-        example
-    after
-      run_finallies(assigns, example)
-      |> run_config_finally(example)
-      unload_mocks
-    end
-  end
-
-  defp run_skipped(example, contexts) do
-    example = %ESpec.Example{example | status: :pending, result: ESpec.Example.skip_message(example, contexts)}
-    ESpec.Formatter.example_info(example)
-    example
-  end
-
-  defp run_pending(example, contexts) do 
-    example = %ESpec.Example{example | status: :pending, result: ESpec.Example.pending_message(example, contexts)}
-    ESpec.Formatter.example_info(example)
-    example
-  end
-
-  defp run_config_before(assigns, _example) do
-    func = ESpec.Configuration.get(:before)
-    if func, do: fill_dict(assigns, func.()), else: assigns
-  end 
-
-  defp run_befores_and_lets(assigns, example) do
-    extract_befores_and_lets(example.context)
-    |> Enum.reduce(assigns, fn(before_or_let, map) ->
-      case before_or_let.__struct__ do
-        ESpec.Before ->
-          before = before_or_let
-          returned = apply(before.module, before.function, [map])
-          fill_dict(map, returned)
-        ESpec.Let ->
-          let = before_or_let
-          ESpec.Let.agent_put({let.module, let.var}, apply(example.module, let.function, [map, let.keep_quoted]))
-          map
-      end
+  defp run_sync(examples) do
+    IO.inspect "==========="
+    Enum.map(examples, fn(example) ->
+      IO.inspect "Sync"
+      ESpec.ExampleRunner.run(example) 
     end)
-  end
-
-  defp run_finallies(assigns, example) do
-    extract_finallies(example.context)
-    |> Enum.reduce(assigns, fn(finally, map) ->
-      returned =  apply(example.module, finally.function, [map])
-      fill_dict(map, returned)
-    end)
-  end
-
-  defp run_config_finally(assigns, _example) do
-    func = ESpec.Configuration.get(:finally)
-    if func do
-      if is_function(func, 1), do: func.(assigns), else: func.()
-    end
-  end
-
-  defp unload_mocks, do: ESpec.Mock.unload
-
-  defp extract_befores_and_lets(context), do: extract(context, [ESpec.Before, ESpec.Let])
-  defp extract_finallies(context), do: extract(context, [ESpec.Finally])
-  defp extract_contexts(context), do: extract(context, [ESpec.Context])
-
-  defp extract(context, modules) do
-    context |>
-    Enum.filter(fn(struct) ->
-      Enum.member?(modules, struct.__struct__)
-    end)
-  end
-
-  defp fill_dict(map, res) do
-    case res do
-      {:ok, list} when is_list(list) -> 
-        if Keyword.keyword?(list) do
-          Enum.reduce(list, map, fn({k,v}, a) -> Dict.put(a, k, v) end)
-        else
-          map
-        end  
-      _ -> map
-    end
   end
 
   defp filter(examples, opts) do
@@ -158,7 +98,7 @@ defmodule ESpec.Runner do
       opts = opts_for_file(example.file, file_opts)
       line = Keyword.get(opts, :line)
       if line do
-        lines = extract_contexts(example.context)
+        lines = ESpec.Example.extract_contexts(example)
         |> Enum.map(&(&1.line))
         Enum.member?([example.line | lines], line)
       else
@@ -176,7 +116,7 @@ defmodule ESpec.Runner do
 
   defp filter_focus(examples) do
     Enum.filter(examples, fn(example) ->
-      contexts = extract_contexts(example.context)
+      contexts = ESpec.Example.extract_contexts(example)
       example.opts[:focus] || Enum.any?(contexts, &(&1.opts[:focus]))
     end)
   end

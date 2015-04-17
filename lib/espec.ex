@@ -14,7 +14,8 @@ defmodule ESpec do
 
       Module.register_attribute __MODULE__, :examples, accumulate: true
       @context []
-      @shared unquote(args)[:shared]
+      @shared unquote(args)[:shared] || false
+      @async unquote(args)[:async] || false
       @before_compile unquote(__MODULE__)
 
       import ESpec.Context
@@ -46,9 +47,9 @@ defmodule ESpec do
 
   @doc "Runs the examples and prints results"
   def run do
-    examples = ESpec.Runner.run
-    ESpec.Formatter.print_result(examples)
-    !Enum.any?(ESpec.Example.failure(examples))
+    ESpec.Runner.start
+    success = ESpec.Runner.run
+    success
   end
 
   @doc "Starts ESpec. Starts agents to store specs, mocks, cache 'let' values, etc."

@@ -37,26 +37,26 @@ defmodule SubjectTest do
 
 
   test "run ex1", context do
-    example = ESpec.Runner.run_example(context[:ex1])
+    example = ESpec.ExampleRunner.run(context[:ex1])
     assert(example.result == "subject = 10")
   end
 
   test "run ex2", context do
-    example = ESpec.Runner.run_example(context[:ex2])
+    example = ESpec.ExampleRunner.run(context[:ex2])
     assert(example.result == "subject = 20")
   end
 
   test "run ex3 an ex4", context do
-    example = ESpec.Runner.run_example(context[:ex3])
+    example = ESpec.ExampleRunner.run(context[:ex3])
     assert(example.status == :success)
-    example = ESpec.Runner.run_example(context[:ex4])
+    example = ESpec.ExampleRunner.run(context[:ex4])
     assert(example.status == :success)
   end
 
   test "run ex5 and ex6", context do
-    example = ESpec.Runner.run_example(context[:ex5])
+    example = ESpec.ExampleRunner.run(context[:ex5])
     assert(example.status == :success)
-    example = ESpec.Runner.run_example(context[:ex6])
+    example = ESpec.ExampleRunner.run(context[:ex6])
     assert(example.status == :success)
   end
 

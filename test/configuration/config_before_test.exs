@@ -32,12 +32,12 @@ defmodule ConfigBeforeTest do
   end
 
   test "run ex1", context do
-  	example = ESpec.Runner.run_example(context[:ex1])
+  	example = ESpec.ExampleRunner.run(context[:ex1])
     assert(example.result == "answer is 42")
   end
 
   test "run ex2", context do
-  	example = ESpec.Runner.run_example(context[:ex2])
+  	example = ESpec.ExampleRunner.run(context[:ex2])
     assert(example.result == "answer is 44")
   end
 

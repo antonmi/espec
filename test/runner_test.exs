@@ -26,7 +26,7 @@ defmodule RunnerTest do
   end
 
   test "run example", context do
-    example = ESpec.Runner.run_example(context[:ex1])
+    example = ESpec.ExampleRunner.run(context[:ex1])
     assert(example.status == :success)
   end
 

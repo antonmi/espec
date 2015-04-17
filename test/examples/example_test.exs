@@ -40,7 +40,7 @@ defmodule ExampleTest do
   end
 
   test "run ex1", context do
-    example = ESpec.Runner.run_example(context[:ex1])
+    example = ESpec.ExampleRunner.run(context[:ex1])
     assert(example.status == :success)
     assert(example.result == "some example")
   end
@@ -52,7 +52,7 @@ defmodule ExampleTest do
   end
 
   test "run ex2", context do
-    example = ESpec.Runner.run_example(context[:ex2])
+    example = ESpec.ExampleRunner.run(context[:ex2])
     assert(example.status == :failure)
     assert(example.error.subject == true)
     assert(example.error.data == false)

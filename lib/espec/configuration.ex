@@ -7,6 +7,7 @@ defmodule ESpec.Configuration do
     silent: "No output",
     file_opts: "Run the specific file or spec in the file",
     focus: "Run only examples with [focus: true]",
+    order: "Run specs in the order in which they are declared",
     trace: "Run with detailed reporting",
     test: "For test purpose"
   ]
