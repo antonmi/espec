@@ -1,6 +1,6 @@
 defmodule ESpec.Assertions.ThrowTermSpec do
 
-  use ESpec
+  use ESpec, async: true
 
   describe "ESpec.Assertions.RaiseException" do
 

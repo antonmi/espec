@@ -1,6 +1,6 @@
 defmodule ESpec.Assertions.List.HaveFirstSpec do
 
-  use ESpec
+  use ESpec, async: true
 
   subject [1,2,3]
   

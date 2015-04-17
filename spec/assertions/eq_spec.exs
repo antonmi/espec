@@ -1,6 +1,6 @@
 defmodule ESpec.Assertions.EqSpec do
 
-  use ESpec
+  use ESpec, async: true
 
   describe "ESpec.Assertions.Eq" do
     context "Success" do

@@ -1,6 +1,6 @@
 defmodule ESpec.Assertions.Enum.BeEmptySpec do
 
-  use ESpec
+  use ESpec, async: true
 
   context "Success" do
     it do: expect([]).to be_empty

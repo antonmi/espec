@@ -1,6 +1,6 @@
 defmodule ESpec.Assertions.Enum.HaveAllSpec do
 
-  use ESpec
+  use ESpec, async: true
 
   let :range, do: (1..3)
   let :list, do: [1,2,3]

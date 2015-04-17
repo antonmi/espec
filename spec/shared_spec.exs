@@ -1,5 +1,5 @@
 defmodule SharedSpec do
-	use ESpec, shared: true
+	use ESpec, shared: true#, async: true
 
 	before do: {:ok, c: __.b + 1}
 

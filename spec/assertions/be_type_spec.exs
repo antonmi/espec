@@ -1,6 +1,6 @@
 defmodule ESpec.Assertions.BeTypeSpec do
 
-  use ESpec
+  use ESpec, async: true
 
 	context "Success" do
 	  it do: :atom |> should be_atom

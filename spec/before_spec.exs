@@ -1,6 +1,6 @@
 defmodule BeforESpec do
 
-  use ESpec
+  use ESpec, async: true
 
   before do
     { :ok, a: "top before" }

@@ -1,6 +1,6 @@
 defmodule ESpec.Assertions.EqlSpec do
 
-  use ESpec
+  use ESpec, async: true
 
   describe "ESpec.Assertions.Eql" do
 

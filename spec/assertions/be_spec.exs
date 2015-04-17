@@ -1,6 +1,6 @@
 defmodule ESpec.Assertions.BeSpec do
 
-  use ESpec
+  use ESpec, async: true
 
   describe "ESpec.Assertions.Be" do
 

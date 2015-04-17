@@ -1,6 +1,6 @@
 defmodule ESpec.Assertions.BeCloseToSpec do
 
-  use ESpec
+  use ESpec, async: true
 
   describe "ESpec.Assertions.Between" do
 

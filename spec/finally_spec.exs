@@ -1,6 +1,6 @@
 defmodule FinallySpec do
 
-	use ESpec
+	use ESpec, async: true
 
 	before do: {:ok, a: 1}
 

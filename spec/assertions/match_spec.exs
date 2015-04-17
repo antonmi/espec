@@ -1,6 +1,6 @@
 defmodule ESpec.Assertions.MatchSpec do
 
-  use ESpec
+  use ESpec, async: true
 
   describe "ESpec.Assertions.Match" do
 

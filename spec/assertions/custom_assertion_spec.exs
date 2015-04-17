@@ -3,7 +3,7 @@ Code.require_file("spec/support/assertions/be_odd_assertion.ex")
 Code.require_file("spec/support/assertions/custom_assertions.ex")
 
 defmodule CustomAssertionSpec do
-	use ESpec
+	use ESpec, async: true
 	import CustomAssertions
 
   context "Success" do

@@ -1,6 +1,6 @@
 defmodule ESpec.Assertions.Enum.HaveCountBySpec do
 
-  use ESpec
+  use ESpec, async: true
 
   let :range, do: (1..3)
   let :func, do: fn(el) -> el > 1 end

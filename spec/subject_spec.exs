@@ -1,5 +1,5 @@
 defmodule SubjectSpec do
-  use ESpec
+  use ESpec, async: true
 
   subject(1+1)
 
