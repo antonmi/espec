@@ -48,9 +48,7 @@ defmodule ESpec do
   @doc "Runs the examples and prints results"
   def run do
     ESpec.Runner.start
-    ESpec.Output.start
-    success = ESpec.Runner.run
-    success
+    ESpec.Runner.run
   end
 
   @doc "Starts ESpec. Starts agents to store specs, mocks, cache 'let' values, etc."
@@ -59,6 +57,7 @@ defmodule ESpec do
     start_specs_agent
     ESpec.Let.start_agent
     ESpec.Mock.start_agent
+    ESpec.Output.start
   end
 
   defp start_specs_agent do
