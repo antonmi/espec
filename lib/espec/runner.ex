@@ -30,7 +30,7 @@ defmodule ESpec.Runner do
       examples = run_in_random(specs, opts)
     end
 
-    ESpec.Formatter.print_result(examples)
+    ESpec.Output.print_result(examples)
     !Enum.any?(ESpec.Example.failure(examples))
   end
 
@@ -58,10 +58,8 @@ defmodule ESpec.Runner do
   end
 
   defp run_async(examples) do
-    IO.inspect "-----------"
     examples
     |> Enum.map(fn(example) ->
-       IO.inspect "Async"
       Task.async(fn -> ESpec.ExampleRunner.run(example) end)
     end)
     |> Enum.map(fn(task) ->
@@ -70,9 +68,7 @@ defmodule ESpec.Runner do
   end
 
   defp run_sync(examples) do
-    IO.inspect "==========="
     Enum.map(examples, fn(example) ->
-      IO.inspect "Sync"
       ESpec.ExampleRunner.run(example) 
     end)
   end

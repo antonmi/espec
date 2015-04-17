@@ -48,6 +48,7 @@ defmodule ESpec do
   @doc "Runs the examples and prints results"
   def run do
     ESpec.Runner.start
+    ESpec.Output.start
     success = ESpec.Runner.run
     success
   end

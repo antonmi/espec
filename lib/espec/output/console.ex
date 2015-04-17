@@ -1,5 +1,6 @@
-defmodule ESpec.Formatter do
-  @moduledoc """
+defmodule ESpec.Output.Console do
+
+	@moduledoc """
     Functions to print espec results
   """
 

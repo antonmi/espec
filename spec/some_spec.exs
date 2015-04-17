@@ -8,10 +8,4 @@ defmodule SomeSpec do
   it do: b |> should eq 2
   it do: b |> should eq 2
   it do: b |> should eq 2
-  it do: b |> should eq 2
-  it do: b |> should eq 2
-  it do: b |> should eq 2
-  it do: b |> should eq 2
-  it do: b |> should eq 2
-  it do: b |> should eq 2
 end

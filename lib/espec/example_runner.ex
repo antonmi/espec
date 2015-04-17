@@ -29,12 +29,12 @@ defmodule ESpec.ExampleRunner do
     try do
       result = apply(example.module, example.function, [assigns])
       example = %ESpec.Example{example | status: :success, result: result}
-      ESpec.Formatter.example_info(example)
+      ESpec.Output.example_info(example)
       example
     rescue
       error in [ESpec.AssertionError] ->
         example = %ESpec.Example{example | status: :failure, error: error}
-        ESpec.Formatter.example_info(example)
+        ESpec.Output.example_info(example)
         example
     after
       run_finallies(assigns, example)
@@ -46,14 +46,14 @@ defmodule ESpec.ExampleRunner do
   def run_skipped(example) do
     contexts = ESpec.Example.extract_contexts(example)
     example = %ESpec.Example{example | status: :pending, result: ESpec.Example.skip_message(example, contexts)}
-    ESpec.Formatter.example_info(example)
+    ESpec.Output.example_info(example)
     example
   end
 
   def run_pending(example) do 
     contexts = ESpec.Example.extract_contexts(example)
     example = %ESpec.Example{example | status: :pending, result: ESpec.Example.pending_message(example, contexts)}
-    ESpec.Formatter.example_info(example)
+    ESpec.Output.example_info(example)
     example
   end
 
