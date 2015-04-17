@@ -1,8 +1,4 @@
-defmodule ESpec.Output.Console do
-
-	@moduledoc """
-    Functions to print espec results
-  """
+defmodule ESpec.Output.Docs do
 
   @green IO.ANSI.green
   @red IO.ANSI.red
@@ -14,59 +10,54 @@ defmodule ESpec.Output.Console do
   @status_colors [success: @green, failure: @red, pending: @yellow]
   @status_symbols [success: ".", failure: "F", pending: "*"]
 
-  @doc """
-    Prints results
-  """
-  def print_result(examples) do
-    unless silent? do
-      pending = ESpec.Example.pendings(examples)
-      if Enum.any?(pending), do: print_pending(pending)
-      failed = ESpec.Example.failure(examples)
-      if Enum.any?(failed), do: print_failed(failed)
-      print_footer(examples, failed, pending)
-    end
+  def format_result(examples, opts) do
+    pending = ESpec.Example.pendings(examples)
+    string = ""
+    if Enum.any?(pending), do: string = string <> format_pending(pending)
+    failed = ESpec.Example.failure(examples)
+    if Enum.any?(failed), do: string = string <> format_failed(failed)
+    string <> format_footer(examples, failed, pending)
   end
   
-  def example_info(example) do
+  def format_example(example, opts) do
     color = color_for_status(example.status)
     symbol = symbol_for_status(example.status)
-    unless silent? do
-      if trace? do
-        IO.puts(trace_description(example))
-      else
-        IO.write("#{color}#{symbol}#{@reset}")
-      end
+    if opts[:details] do
+      trace_description(example)
+    else
+      "#{color}#{symbol}#{@reset}"
     end
   end
 
-  defp print_failed(failed) do
-    failed |> Enum.with_index
-    |> Enum.each fn({example, index}) -> 
-      print_example(example, example.error.message, index)
+  defp format_failed(failed) do
+    res = failed |> Enum.with_index
+    |> Enum.map fn({example, index}) -> 
+      format_example(example, example.error.message, index)
     end
+    Enum.join(res, "\n")
   end
 
-  defp print_pending(pending) do
-    pending |> Enum.with_index
-    |> Enum.each fn({example, index}) -> 
-      print_example(example, example.result, index)
+  defp format_pending(pending) do
+    res = pending |> Enum.with_index
+    |> Enum.map fn({example, index}) -> 
+      format_example(example, example.result, index)
     end
+    Enum.join(res, "\n")
   end
 
-  defp print_example(example, info, index) do
+  defp format_example(example, info, index) do
     color = color_for_status(example.status)
     decription = one_line_description(example)
-    IO.puts("\n")
-    to_print = [
+    [
+      "\n",
       "\t#{index + 1}) #{decription}",
       "\t#{@cyan}#{example.file}:#{example.line}#{@reset}",
       "\t#{color}#{info}#{@reset}",
-    ] |> Enum.join("\n")
-    IO.puts(to_print)
+    ]
+    |> Enum.join("\n")
   end
 
-  defp print_footer(examples, failed, pending) do
-    IO.puts "\n"
+  defp format_footer(examples, failed, pending) do
     color = if Enum.any?(failed) do
       @red
     else
@@ -74,8 +65,7 @@ defmodule ESpec.Output.Console do
     end
     parts = ["#{Enum.count(examples)} examples", "#{Enum.count(failed)} failures"]
     if Enum.any?(pending), do: parts = parts ++ ["#{Enum.count(pending)} pending"]
-    IO.puts "\t#{color}#{Enum.join(parts, ", ")}#{@reset}"
-    IO.puts "\n"
+    "\n\n\t#{color}#{Enum.join(parts, ", ")}#{@reset}\n\n"
   end
 
   defp one_line_description(example) do
@@ -106,8 +96,5 @@ defmodule ESpec.Output.Console do
 
   defp color_for_status(status), do: Keyword.get(@status_colors, status)
   defp symbol_for_status(status), do: Keyword.get(@status_symbols, status)
-
-  defp silent?, do: ESpec.Configuration.get(:silent)
-  defp trace?, do: ESpec.Configuration.get(:trace)
 
 end

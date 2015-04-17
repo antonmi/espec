@@ -3,11 +3,11 @@ defmodule ESpec.Output do
   use GenServer
 
   def start do
-    GenServer.start_link(__MODULE__, [], name: __MODULE__)
+    GenServer.start_link(__MODULE__, [formatter: formatter], name: __MODULE__)
   end
 
-  def init(_args) do
-    state = %{opts: ESpec.Configuration.all}
+  def init(args) do
+    state = %{opts: ESpec.Configuration.all, formatter: args[:formatter]}
     {:ok, state}
   end
 
@@ -15,23 +15,41 @@ defmodule ESpec.Output do
 	def print_result(examples), do: GenServer.call(__MODULE__, {:print_result, examples})
   
   def handle_cast({:example_info, example}, state) do
-		do_example_info(example)
+		do_example_info(example, state[:formatter])
 		{:noreply, state}
 	end
 
 	def handle_call({:print_result, examples}, _pid, state) do
-		
-		do_print_result(examples)
+		do_print_result(examples, state[:formatter])
 		{:reply, :ok, state}
 	end
 
-	def do_example_info(example) do
-   	ESpec.Output.Console.example_info(example)
+	def do_example_info(example, {formatter, opts}) do
+    unless silent? do
+   	  IO.write formatter.format_example(example, opts)
+    end
   end
 
-  def do_print_result(examples) do
-  	ESpec.Output.Console.print_result(examples)
+  def do_print_result(examples, {formatter, opts}) do
+    unless silent? do
+  	  IO.write formatter.format_result(examples, opts)
+    end
   end
 
+  defp silent?, do: ESpec.Configuration.get(:silent)
+
+  defp formatter do
+    format = ESpec.Configuration.get(:format)
+    cond do
+      format == "doc" ->
+        {ESpec.Output.Docs, %{details: true}}
+      true ->
+        {ESpec.Output.Docs, %{}}
+    end
+  end
+
+  def destination do
+    :console
+  end
 
 end

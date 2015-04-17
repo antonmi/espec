@@ -11,7 +11,6 @@ defmodule SubjectSpec do
   it do: is_expected.to_not eq(1)
   it do: should_not eq(1)
 
-
   context "without name" do
     subject!(5+5)
 

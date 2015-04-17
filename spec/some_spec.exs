@@ -4,7 +4,7 @@ defmodule SomeSpec do
   let :b, do: a + 1
 
   before do: ESpec.SomeModule.calc
-  # it do: b |> should eq 2
+  it do: b |> should eq 2
   # it do: b |> should eq 2
   # it do: b |> should eq 2
   # it do: b |> should eq 2

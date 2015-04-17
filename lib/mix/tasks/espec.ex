@@ -13,18 +13,19 @@ defmodule Mix.Tasks.Espec do
   A list of files can be given after the task name in order to select
   the files to compile:
 
-      mix spec test/some/particular/file_test.exs
+      mix espec spec/some/particular/file_spec.exs
 
   ## Command line options
 
-    * `--trace`      - run spec with detailed reporting
     * `--focus`      - run examples with `focus`
     * `--silent`     - no output
+    * `--order`      - run examples in the order in which they are declared
+    * `--format`     - choose formatter ('doc', 'html', 'json')
   """  
 
   def run(args) do
     {opts, files, _} = OptionParser.parse(args)
-
+IO.inspect opts
     unless System.get_env("MIX_ENV") || Mix.env == :test do
       Mix.raise "espec is running on environment #{Mix.env}.\n" <>
                 "It is recommended to run espec in test environment.\n" <>
