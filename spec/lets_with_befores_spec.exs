@@ -1,5 +1,5 @@
 defmodule LetsWithBeforesSpec do
-  use ESpec
+  use ESpec, async: true
 
   before do: {:ok, a: 1}
 	it do: __.a |> should eq(1)

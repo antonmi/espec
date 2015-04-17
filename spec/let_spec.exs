@@ -1,5 +1,5 @@
 defmodule LetSpec do
-  use ESpec
+  use ESpec, async: true
 
   describe "let!" do
     let!(:f) do
