@@ -25,7 +25,7 @@ defmodule FinallyTest do
   end
 
   test "run ex1", context do
-    ESpec.Runner.run_example(context[:ex1])
+    ESpec.ExampleRunner.run(context[:ex1])
     assert(Application.get_env(:espec, :finally_a) == 1)
     assert(Application.get_env(:espec, :finally_b) == 2)
     assert(Application.get_env(:espec, :finally_c) == nil)

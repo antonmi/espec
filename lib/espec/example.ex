@@ -17,13 +17,14 @@ defmodule ESpec.Example do
   file - spec file path,
   line - the line where example is defined,
   context - example context. Accumulator for 'contexts' and 'lets',
-  shared - marks example as shared,  
+  shared - marks example as shared,
+  async - mark example for async evaluation,
   status - example status (:new, :success, :failure, :pending),
   result - the value returned by example block or the pending message
   error - store an error
   """
   defstruct description: "", module: nil, function: nil, opts: [],
-            file: nil, line: nil, context: [], shared: false,
+            file: nil, line: nil, context: [], shared: false, async: false,
             status: :new, result: nil, error: %ESpec.AssertionError{}
 
   @doc """
@@ -35,7 +36,8 @@ defmodule ESpec.Example do
     quote do
       context = Enum.reverse(@context)
       @examples %ESpec.Example{ description: unquote(description), module: __MODULE__, function: unquote(function),
-                                opts: unquote(opts), file: __ENV__.file, line: __ENV__.line, context: context, shared: @shared }
+                                opts: unquote(opts), file: __ENV__.file, line: __ENV__.line, context: context,
+                                shared: @shared, async: @async }
       def unquote(function)(var!(__)), do: unquote(block)
     end
   end
@@ -150,6 +152,18 @@ defmodule ESpec.Example do
   @doc "Filters pending examples"
   def pendings(results) do
     results |> Enum.filter(&(&1.status === :pending))
+  end
+
+  @doc "Extracts specific structs from example context"
+  def extract_befores_and_lets(example), do: extract(example.context, [ESpec.Before, ESpec.Let])
+  def extract_finallies(example), do: extract(example.context, [ESpec.Finally])
+  def extract_contexts(example), do: extract(example.context, [ESpec.Context])
+
+  defp extract(context, modules) do
+    context |>
+    Enum.filter(fn(struct) ->
+      Enum.member?(modules, struct.__struct__)
+    end)
   end
 
   def skip_message(example, contexts) do

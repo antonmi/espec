@@ -33,22 +33,22 @@ defmodule LetTest do
   end
 
   test "run ex1", context do
-    example = ESpec.Runner.run_example(context[:ex1])
+    example = ESpec.ExampleRunner.run(context[:ex1])
     assert(example.result == "a = 10")
   end
 
   test "run ex2", context do
-    example = ESpec.Runner.run_example(context[:ex2])
+    example = ESpec.ExampleRunner.run(context[:ex2])
     assert(example.result == "a = 20")
   end
 
   test "run ex3", context do
-    example = ESpec.Runner.run_example(context[:ex3])
+    example = ESpec.ExampleRunner.run(context[:ex3])
     assert(example.result == "f.(2) = 4")
   end
 
    test "run ex5", context do
-    example = ESpec.Runner.run_example(context[:ex4])
+    example = ESpec.ExampleRunner.run(context[:ex4])
     assert(example.result == "y = 2")
   end
 
