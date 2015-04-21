@@ -44,15 +44,13 @@ defmodule ESpec.ExampleRunner do
   end
 
   def run_skipped(example) do
-    contexts = ESpec.Example.extract_contexts(example)
-    example = %ESpec.Example{example | status: :pending, result: ESpec.Example.skip_message(example, contexts)}
+    example = %ESpec.Example{example | status: :pending, result: ESpec.Example.skip_message(example)}
     ESpec.Output.example_info(example)
     example
   end
 
   def run_pending(example) do 
-    contexts = ESpec.Example.extract_contexts(example)
-    example = %ESpec.Example{example | status: :pending, result: ESpec.Example.pending_message(example, contexts)}
+    example = %ESpec.Example{example | status: :pending, result: ESpec.Example.pending_message(example)}
     ESpec.Output.example_info(example)
     example
   end

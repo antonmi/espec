@@ -7,7 +7,7 @@ defmodule ModuleAsTopContextTest do
     it do: "example"
   end  
 
-   setup_all do
+  setup_all do
     {:ok,
       ex1: Enum.at(SomeSpec.examples, 0), 
     }

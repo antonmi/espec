@@ -159,6 +159,18 @@ defmodule ESpec.Example do
   def extract_finallies(example), do: extract(example.context, [ESpec.Finally])
   def extract_contexts(example), do: extract(example.context, [ESpec.Context])
 
+  def extract_option(example, option) do
+    contexts = ESpec.Example.extract_contexts(example)
+    opts = List.flatten(example.opts ++ Enum.reverse(Enum.map(contexts, &(&1.opts))))
+    opt = Enum.find(opts, fn({k, _v}) -> k == option end)
+    if opt do
+     {^option, value} = opt
+      value
+    else
+      nil
+    end  
+  end
+
   defp extract(context, modules) do
     context |>
     Enum.filter(fn(struct) ->
@@ -166,16 +178,16 @@ defmodule ESpec.Example do
     end)
   end
 
-  def skip_message(example, contexts) do
-    skipper = Enum.find(contexts, &(&1.opts[:skip])) || example
-    if skipper.opts[:skip] === true do
+  def skip_message(example) do
+    skipper = extract_option(example, :skip)
+    if skipper === true do
       "Temporarily skipped without a reason."
     else
-      "Temporarily skipped with: #{skipper.opts[:skip]}."
+      "Temporarily skipped with: #{skipper}."
     end
   end
 
-  def pending_message(example, _contexts) do
+  def pending_message(example) do
     if example.opts[:pending] === true do
       "Pending example."
     else

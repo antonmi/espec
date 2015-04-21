@@ -10,7 +10,7 @@ defmodule ESpec.Output.Docs do
   @status_colors [success: @green, failure: @red, pending: @yellow]
   @status_symbols [success: ".", failure: "F", pending: "*"]
 
-  def format_result(examples, opts) do
+  def format_result(examples, _opts) do
     pending = ESpec.Example.pendings(examples)
     string = ""
     if Enum.any?(pending), do: string = string <> format_pending(pending)

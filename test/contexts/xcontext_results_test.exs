@@ -14,7 +14,7 @@ defmodule XcontextResultsTest do
     end
 
 		xcontext "Skip", [some: :option] do
-    	it [skip: "Some message"], do: "Example"
+    	it do: "Example"
     end
   end
 
@@ -42,7 +42,7 @@ defmodule XcontextResultsTest do
   end
 
   test "check ex4", context do
-    assert(context[:ex4].result == "Temporarily skipped without a reason.")
+    assert(context[:ex4].result == "Temporarily skipped with: Some message.")
   end
 
 	test "check ex5", context do

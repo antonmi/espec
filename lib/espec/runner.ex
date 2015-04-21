@@ -35,7 +35,7 @@ defmodule ESpec.Runner do
   end
 
   defp run_in_order(specs, opts) do
-    examples = specs |> Enum.reverse
+    specs |> Enum.reverse
     |> Enum.map(fn(module) ->
       filter(module.examples, opts)
       |> run_examples
