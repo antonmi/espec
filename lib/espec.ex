@@ -15,7 +15,6 @@ defmodule ESpec do
       Module.register_attribute __MODULE__, :examples, accumulate: true
       
       @shared unquote(args)[:shared] || false
-      @async unquote(args)[:async] || false
       @before_compile unquote(__MODULE__)
 
       import ESpec.Context

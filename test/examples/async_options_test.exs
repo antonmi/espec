@@ -9,26 +9,31 @@ defmodule AsyncOptionTest do
     it do: "async example 2"
   end
 
-  defmodule SomeSpecSync do
+  defmodule SomeSpecSyncAsync do
     use ESpec
 
-    it do: "async example 1"
-    it do: "async example 2"
+    it do: "sync example 1"
+    it do: "sync example 2"
+
+    context "async context", async: true do
+      it do: "async example 1"
+    end
+
+    it "async example 1", async: true do
+      "async"
+    end
   end
 
-  setup_all do
-    {:ok,
-      ex1: Enum.at(SomeSpecAsync.examples, 0),
-      ex2: Enum.at(SomeSpecAsync.examples, 1),
-      ex3: Enum.at(SomeSpecSync.examples, 0),
-      ex4: Enum.at(SomeSpecSync.examples, 1)
-    }
+  test "check async examples in SomeSpecAsync", context do
+    {async, sync} = ESpec.Runner.partition_async(SomeSpecAsync.examples)
+    assert length(async) == 2
+    assert length(sync) == 0
   end
 
-  test "check example", context do
-    assert context[:ex1].async == true
-    assert context[:ex2].async == true
-    assert context[:ex3].async == false
-    assert context[:ex4].async == false
+  test "check sync examples in SomeSpecSyncAsync", context do
+    {async, sync} = ESpec.Runner.partition_async(SomeSpecSyncAsync.examples)
+    assert length(async) == 2
+    assert length(sync) == 2
   end
+
 end

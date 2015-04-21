@@ -53,8 +53,14 @@ defmodule ESpec.Runner do
 
   @doc "Runs examples."
   def run_examples(examples) do
-    {async, sync} = Enum.partition(examples, &(&1.async))
+    {async, sync} = partition_async(examples)
     run_async(async) ++ run_sync(sync)
+  end
+
+  def partition_async(examples) do
+    Enum.partition(examples, fn(ex) -> 
+      ESpec.Example.extract_option(ex, :async) === true
+    end)
   end
 
   defp run_async(examples) do

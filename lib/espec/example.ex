@@ -18,7 +18,6 @@ defmodule ESpec.Example do
   line - the line where example is defined,
   context - example context. Accumulator for 'contexts' and 'lets',
   shared - marks example as shared,
-  async - mark example for async evaluation,
   status - example status (:new, :success, :failure, :pending),
   result - the value returned by example block or the pending message
   error - store an error
@@ -37,7 +36,7 @@ defmodule ESpec.Example do
       context = Enum.reverse(@context)
       @examples %ESpec.Example{ description: unquote(description), module: __MODULE__, function: unquote(function),
                                 opts: unquote(opts), file: __ENV__.file, line: __ENV__.line, context: context,
-                                shared: @shared, async: @async }
+                                shared: @shared}
       def unquote(function)(var!(__)), do: unquote(block)
     end
   end
