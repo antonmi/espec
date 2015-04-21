@@ -28,10 +28,11 @@ ESpec is inspired by RSpec and the main idea is to be close to its perfect DSL.
 - ['double-underscore'](#double-underscore)
 - ['let' and 'subject'](#let-and-subject)
 - [Shared examples](#shared-examples)
+- [Async examples](#async-examples)
 - [Matchers](#matchers)
 - [Custom matchers](#custom-matchers)
 - [Mocks](#mocks)
-- [Configuration](#configuration)
+- [Configuration and options](#configuration-and-options)
 
 ## Installation
 
@@ -116,6 +117,13 @@ Available options are:
 There are also `xcontext`, `xdescribe`, `xexample_group` macros to skip example groups.
 And `fcontext`, `fdescribe`, `fexample_group` for focused groups.
 
+'spec' module is also a context with module name as description. One can add options for this context after `yse ESpec:`
+```elixir
+defmodule SomeSpec do
+  use ESpec, skip: "Skip all examples in the module"
+  ...
+end 
+```
 ## Examples
 
 `example`, `it`, and `specify` macros define the 'spec example'.
@@ -262,13 +270,32 @@ end
 `shared: true` marks examples in the module as shared, so the examples will be skipped untile you reuse them.
 You can use the examples with `it_behaes_like` macro:
 ```elixir
-defmodule UseSharedSpecSpec do
+defmodule UseSharedSpec do
   use ESpec
   
   before do: {:ok, hello: "world!"}
   it_behaves_like(SharedSpec)
 end 
 ```
+## Async examples
+There is an `async: true` option you can set for the context or for the individual example:
+```elixir
+defmodule AsyncSpec do
+  use ESpec, async: true
+  it do: "async example"
+  
+  context "Sync", async: false do
+    it do: "sync example"
+    
+    it "async again", async: false do
+      "async"
+    end
+  end
+end
+```
+The examples will be partioned into two queries. Examples in asynchronous query will be executed in parallel in different processes.
+
+Don't use `async: true` if you change the global state in your specs!
 
 ## Matchers
 #### Equality
@@ -408,7 +435,9 @@ end
 ```
 `accepted` assertion checks `:meck.history(SomeModule)`. See [meck](https://github.com/eproxus/meck) documentation.
 
-## Configuration
+Don't use `async: true` when using mocks!
+
+## Configuration and options
 TODO
 
 
