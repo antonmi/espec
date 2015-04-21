@@ -76,7 +76,6 @@ defmodule ESpec.Output.Docs do
 
   defp trace_description(example) do
     color = color_for_status(example.status)
-    module = "#{example.module}" |> String.replace("Elixir.", "")
     ex_desc = if String.length(example.description) > 0 do 
       "#{color}#{example.description}#{@reset}"
     else
@@ -86,7 +85,7 @@ defmodule ESpec.Output.Docs do
         "#{color}#{example.result}#{@reset}"
       end
     end
-    array = [ module | ESpec.Example.context_descriptions(example)] ++ [ex_desc]
+    array = ESpec.Example.context_descriptions(example) ++ [ex_desc]
     {result, _} = Enum.reduce(array, {"", ""}, fn(description, acc) ->
       {d, w} = acc
       {d <> w <> "#{description}" <> "\n", w <> "  "}

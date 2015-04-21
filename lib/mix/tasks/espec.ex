@@ -25,7 +25,7 @@ defmodule Mix.Tasks.Espec do
 
   def run(args) do
     {opts, files, _} = OptionParser.parse(args)
-IO.inspect opts
+
     unless System.get_env("MIX_ENV") || Mix.env == :test do
       Mix.raise "espec is running on environment #{Mix.env}.\n" <>
                 "It is recommended to run espec in test environment.\n" <>

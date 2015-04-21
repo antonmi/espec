@@ -48,38 +48,40 @@ defmodule ContextTest do
   end
 
   test "check ex1", context do
-    assert(length(context[:ex1].context) == 0)
+    assert(length(context[:ex1].context) == 1)
+    desc = hd(context[:ex1].context).description
+    assert(desc == "ContextTest.SomeSpec")
   end
 
   test "check ex2", context do
     desc = Enum.map(context[:ex2].context, &(&1.description))
-    assert(desc == ["Context 1"])
+    assert(desc == ["ContextTest.SomeSpec", "Context 1"])
   end
 
   test "check ex2 context options", context do
-    opts = List.first(context[:ex2].context).opts
+    opts = List.last(context[:ex2].context).opts
     assert(opts == [a: 1, b: 2])
   end
 
   test "check ex3", context do
     desc = Enum.map(context[:ex3].context, &(&1.description))
-    assert(desc == ["Context 1", "Describe 1"])
+    assert(desc == ["ContextTest.SomeSpec", "Context 1", "Describe 1"])
   end
 
   test "check ex4 context", context do
-    desc = List.first(context[:ex4].context).description
+    desc = List.last(context[:ex4].context).description
     assert(desc == "")
   end
 
   test "check ex5 context", context do
-    desc = List.first(context[:ex5].context).description
-    opts = List.first(context[:ex5].context).opts
+    desc = List.last(context[:ex5].context).description
+    opts = List.last(context[:ex5].context).opts
     assert(desc == "")
     assert(opts == [c: 3])
   end
 
   test "check ex6 context", context do
-    desc = List.first(context[:ex8].context).description
+    desc = List.last(context[:ex8].context).description
     assert(desc == ESpec.Context)
   end
 end

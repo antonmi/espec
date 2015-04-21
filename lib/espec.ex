@@ -13,12 +13,14 @@ defmodule ESpec do
       import unquote(__MODULE__)
 
       Module.register_attribute __MODULE__, :examples, accumulate: true
-      @context []
+      
       @shared unquote(args)[:shared] || false
       @async unquote(args)[:async] || false
       @before_compile unquote(__MODULE__)
 
       import ESpec.Context
+      @context [%ESpec.Context{ description: inspect(__MODULE__), module: __MODULE__, line: __ENV__.line, opts: unquote(args) }]
+
       import ESpec.Example
 
       import ESpec.Expect
