@@ -24,13 +24,13 @@ defmodule AsyncOptionTest do
     end
   end
 
-  test "check async examples in SomeSpecAsync", context do
+  test "check async examples in SomeSpecAsync" do
     {async, sync} = ESpec.Runner.partition_async(SomeSpecAsync.examples)
     assert length(async) == 2
     assert length(sync) == 0
   end
 
-  test "check sync examples in SomeSpecSyncAsync", context do
+  test "check sync examples in SomeSpecSyncAsync" do
     {async, sync} = ESpec.Runner.partition_async(SomeSpecSyncAsync.examples)
     assert length(async) == 2
     assert length(sync) == 2
