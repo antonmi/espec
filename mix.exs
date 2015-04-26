@@ -5,7 +5,7 @@ defmodule ESpec.Mixfile do
 
   def project do
     [app: :espec,
-     name: "Espec",
+     name: "ESpec",
      version: @version,
      elixir: "~> 1.0",
      description: description,
