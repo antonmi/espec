@@ -1,6 +1,6 @@
 defmodule ModuleAsTopContextTest do
 
-	use ExUnit.Case
+	use ExUnit.Case, async: true
 
   defmodule SomeSpec do
     use ESpec, a: 1, b: 2

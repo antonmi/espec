@@ -1,6 +1,6 @@
 defmodule SharedSpecsTest do
 
-  use ExUnit.Case
+  use ExUnit.Case, async: true
 
   defmodule SharedSpec do
     use ESpec, shared: true

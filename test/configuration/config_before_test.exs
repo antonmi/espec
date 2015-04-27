@@ -1,6 +1,6 @@
 defmodule ConfigBeforeTest do
 
-	use ExUnit.Case
+	use ExUnit.Case, async: true
 
 	ESpec.configure fn(c) ->
 		c.before fn ->

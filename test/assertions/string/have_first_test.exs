@@ -1,6 +1,6 @@
 defmodule String.HaveFirstTest do
 
-  use ExUnit.Case
+  use ExUnit.Case, async: true
 
   defmodule SomeSpec do
     use ESpec

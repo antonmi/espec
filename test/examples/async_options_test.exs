@@ -1,6 +1,6 @@
 defmodule AsyncOptionTest do
 
-  use ExUnit.Case
+  use ExUnit.Case, async: true
 
   defmodule SomeSpecAsync do
     use ESpec, async: true
