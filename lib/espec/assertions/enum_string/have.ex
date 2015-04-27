@@ -1,6 +1,11 @@
-defmodule ESpec.Assertions.Enum.Have do
+defmodule ESpec.Assertions.EnumString.Have do
 
   use ESpec.Assertions.Interface
+
+  defp match(enum, val) when is_binary(enum) do
+    result = String.contains?(enum, val) 
+    {result, result}
+  end
 
   defp match(enum, val) do
     result = Enum.member?(enum, val) 

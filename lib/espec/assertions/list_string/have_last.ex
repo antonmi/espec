@@ -1,6 +1,11 @@
-defmodule ESpec.Assertions.List.HaveLast do
+defmodule ESpec.Assertions.ListString.HaveLast do
 
   use ESpec.Assertions.Interface
+
+  defp match(list, val) when is_binary(list) do
+    result = String.last(list)
+    {result == val, result}
+  end
 
   defp match(list, val) do
     result = List.last(list)

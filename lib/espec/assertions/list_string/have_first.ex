@@ -1,6 +1,11 @@
-defmodule ESpec.Assertions.List.HaveFirst do
+defmodule ESpec.Assertions.ListString.HaveFirst do
 
   use ESpec.Assertions.Interface
+
+  defp match(list, val) when is_binary(list) do
+    result = String.first(list)
+    {result == val, result}
+  end
 
   defp match(list, val) do
     result = List.first(list)
