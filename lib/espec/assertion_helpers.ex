@@ -44,6 +44,9 @@ defmodule ESpec.AssertionHelpers do
   def have_hd(value), do: {ESpec.Assertions.List.HaveHd, value}
   def have_tl(value), do: {ESpec.Assertions.List.HaveTl, value}
 
+  def start_with(value), do: {ESpec.Assertions.String.StartWith, value}
+  def end_with(value), do: {ESpec.Assertions.String.EndWith, value}
+
   
   Enum.each @elixir_types, fn(type) -> 
     def unquote(String.to_atom("be_#{type}"))() do
