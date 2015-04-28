@@ -287,7 +287,7 @@ defmodule AsyncSpec do
   context "Sync", async: false do
     it do: "sync example"
     
-    it "async again", async: false do
+    it "async again", async: true do
       "async"
     end
   end
