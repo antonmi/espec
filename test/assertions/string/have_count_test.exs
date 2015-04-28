@@ -1,33 +1,33 @@
-defmodule Enum.HaveCountTest do
+defmodule String.HaveCountTest do
 
   use ExUnit.Case, async: true
 
   defmodule SomeSpec do
     use ESpec
 
-    let :range, do: (1..3)
+    subject "qwerty"
   
     context "Success" do
-      it do: expect(range).to have_count(3)
-      it do: expect(range).to_not have_count(2)
+      it do: should have_count(6)
+      it do: should_not have_count(3)
     end
 
     context "aliases" do
-      it do: expect(range).to have_size(3)
-      it do: expect(range).to have_length(3)
+      it do: should have_size(3)
+      it do: should have_length(3)
     end
 
     context "Error" do
-      it do: expect(range).to_not have_count(3)
-      it do: expect(range).to have_count(2)
+      it do: should_not have_count(6)
+      it do: should have_count(3)
     end
   end
 
   setup_all do
     examples = ESpec.Runner.run_examples(SomeSpec.examples)
     { :ok,
-      success: Enum.slice(examples, 0, 3),
-      errors: Enum.slice(examples, 4, 5)
+      success: Enum.slice(examples, 0, 1),
+      errors: Enum.slice(examples, 2, 3)
     }
   end
 

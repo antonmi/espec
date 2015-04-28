@@ -27,7 +27,6 @@ defmodule ESpec.AssertionHelpers do
 
   def have_all(func), do: {ESpec.Assertions.Enum.HaveAll, func}
   def have_any(func), do: {ESpec.Assertions.Enum.HaveAny, func}
-  def have_count(val), do: {ESpec.Assertions.Enum.HaveCount, val}
   def have_count_by(func, val), do: {ESpec.Assertions.Enum.HaveCountBy, [func, val]}
   def be_empty, do: {ESpec.Assertions.Enum.BeEmpty, []}
   def have_max(value), do: {ESpec.Assertions.Enum.HaveMax, value}
@@ -40,6 +39,9 @@ defmodule ESpec.AssertionHelpers do
 
   def have_first(value), do: {ESpec.Assertions.ListString.HaveFirst, value}
   def have_last(value), do: {ESpec.Assertions.ListString.HaveLast, value}
+  def have_count(val), do: {ESpec.Assertions.EnumString.HaveCount, val}
+  def have_size(val), do: {ESpec.Assertions.EnumString.HaveCount, val}
+  def have_length(val), do: {ESpec.Assertions.EnumString.HaveCount, val}
 
   def have_hd(value), do: {ESpec.Assertions.List.HaveHd, value}
   def have_tl(value), do: {ESpec.Assertions.List.HaveTl, value}
