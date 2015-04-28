@@ -323,18 +323,34 @@ expect(collection).to be_empty #Enum.count(collection) == 0
 ... have_any(fun)              #Enum.any?(collection, func)
 ... have_at(position, value)   #Enum.at?(collection, position) == value
 ... have_count(value)          #Enum.count(collection) == value
+... have_size(value)           #alias
+... have_length(value)         #alias
 ... have_count_by(fun, value)  #Enum.count(collection, func) == value
 ... have_max(value)            #Enum.max(collection) == value
 ... have_max_by(fun, value)    #Enum.max_by(collection, fun) == value
 ... have_min(value)            #Enum.min(collection) == value
 ... have_min_by(fun, value)    #Enum.min_by(collection, fun) == value
 ```
-#### List specific
+#### List
 ```elixir
 expect(list).to have_first(value) #List.first(list) == value
 ... have_last(value)              #List.last(list) == value
 ... have_hd                       #hd(list) == value
 ... have_tl                       #tl(list) == value
+```
+#### String
+```elixir
+expect(string).to have_first(value)  #String.first(string) == value
+... have_last(value)                 #String.last(string) == value
+... start_with(value)                #String.starts_with?(string, value)
+... end_with(value)                  #String.end_with?(string, value)
+... have(value)                      #String.contains?(string, value)    
+... have_at(pos, value)              #String.at(string, pos) == value
+... have_length(value)               #Stirng.length(string) == value
+... have_size(value)                 #alias
+... have_count(value)                #alias
+... be_valid?                        #String.valid?(string)
+... be_printable?              	     #String.printable?(string)
 ```
 #### Type checking
 ``` elixir
