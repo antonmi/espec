@@ -82,7 +82,7 @@ defmodule ESpec.Output.Docs do
       if example.status == :failure do
         "#{color}#{example.error.message}#{@reset}"
       else
-        "#{color}#{example.result}#{@reset}"
+        "#{color}#{inspect example.result}#{@reset}"
       end
     end
     array = ESpec.Example.context_descriptions(example) ++ [ex_desc]
