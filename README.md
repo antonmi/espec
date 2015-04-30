@@ -183,8 +183,8 @@ You can configure 'global' `before` and `finally` in `spec_helper.exs`:
 ESpec.start
 
 ESpec.configure fn(config) ->
-	config.before fn ->	{:ok, answer: 42} end  #can assign values in dictionary
-	config.finally fn(__) -> __.answer	end     #can access assigns
+  config.before fn -> {:ok, answer: 42} end  #can assign values in dictionary
+  config.finally fn(__) -> __.answer  end     #can access assigns
 end
 ```
 These functions will be called before and after each example which ESpec runs.
@@ -203,8 +203,8 @@ The example bellow illustrate the life-cycle of `__`:
 ESpec.start
 
 ESpec.configure fn(config) ->
-  config.before fn ->	{:ok, answer: 42} end         # __ == %{anwser: 42}
-  config.finally fn(__) -> IO.puts __.answer	end    # it will print 46   
+  config.before fn -> {:ok, answer: 42} end         # __ == %{anwser: 42}
+  config.finally fn(__) -> IO.puts __.answer  end    # it will print 46   
 end
 ```
 `some_spec.exs`:
@@ -349,8 +349,8 @@ expect(string).to have_first(value)  #String.first(string) == value
 ... have_length(value)               #Stirng.length(string) == value
 ... have_size(value)                 #alias
 ... have_count(value)                #alias
-... be_valid?                        #String.valid?(string)
-... be_printable?              	     #String.printable?(string)
+... be_valid                         #String.valid?(string)
+... be_printable?                    #String.printable?(string)
 ```
 #### Type checking
 ``` elixir
@@ -434,8 +434,8 @@ defmodule SomeSpec do
   describe "with options" do
     defmodule Server do
       def call(a, b) do
-	ESpec.SomeModule.func(a, b)
-	ESpec.SomeModule.func(a, b)
+  ESpec.SomeModule.func(a, b)
+  ESpec.SomeModule.func(a, b)
       end
     end
 

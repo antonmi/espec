@@ -49,7 +49,7 @@ defmodule ESpec.AssertionHelpers do
   def start_with(value), do: {ESpec.Assertions.String.StartWith, value}
   def end_with(value), do: {ESpec.Assertions.String.EndWith, value}
   def be_printable(), do: {ESpec.Assertions.String.BePrintable, []}
-  def be_valid(), do: {ESpec.Assertions.String.BeValid, []}
+  def be_valid_string(), do: {ESpec.Assertions.String.BeValidString, []}
 
   
   Enum.each @elixir_types, fn(type) -> 

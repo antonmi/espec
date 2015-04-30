@@ -1,4 +1,4 @@
-defmodule ESpec.Assertions.String.BeValid do
+defmodule ESpec.Assertions.String.BeValidString do
 
   use ESpec.Assertions.Interface
 
