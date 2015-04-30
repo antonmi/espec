@@ -1,29 +1,29 @@
 defmodule MockTest do
 
-	use ExUnit.Case
+  use ExUnit.Case
 
   defmodule SomeSpec do
     use ESpec
 
-		context "with mock" do
-			before do
-				allow(ESpec.SomeModule).to accept(:f, fn(a) -> "mock! #{a}" end)
-				allow(ESpec.SomeModule).to accept(x: fn -> :y end, q: fn -> :w end)
-			end
+    context "with mock" do
+      before do
+        allow(ESpec.SomeModule).to accept(:f, fn(a) -> "mock! #{a}" end)
+        allow(ESpec.SomeModule).to accept(x: fn -> :y end, q: fn -> :w end)
+      end
 
-			it do: ESpec.SomeModule.f(1)
-			it do: ESpec.SomeModule.q
-		
-			it "ESpec.SomeModule.m is defined" do
-			  expect(ESpec.SomeModule.m).to eq(:m)
-			end
+      it do: ESpec.SomeModule.f(1)
+      it do: ESpec.SomeModule.q
+    
+      it "ESpec.SomeModule.m is defined" do
+        expect(ESpec.SomeModule.m).to eq(:m)
+      end
 
       context "expect accepted" do
         it do: expect(ESpec.SomeModule).to_not accepted(:f, [1])
         before do: ESpec.SomeModule.f(1)
         it do: expect(ESpec.SomeModule).to accepted(:f, [1])
       end
-		end
+    end
 
     context "without mock" do
       it do: ESpec.SomeModule.f

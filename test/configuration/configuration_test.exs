@@ -1,7 +1,6 @@
 defmodule ConfigurationTest do
-
 	use ExUnit.Case, async: true
-
+ 
 	test "configure function" do
 		ESpec.configure(fn(c) ->
 			c.test :ok

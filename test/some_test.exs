@@ -1,5 +1,5 @@
 defmodule SomeTest do
 
- 	use ExUnit.Case
+  use ExUnit.Case
 
 end

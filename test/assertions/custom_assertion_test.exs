@@ -4,7 +4,7 @@ Code.require_file("spec/support/assertions/custom_assertions.ex")
 
 defmodule CustonAssertionTest do
 
-	use ExUnit.Case, async: true
+  use ExUnit.Case, async: true
 
   defmodule SomeSpec do
     use ESpec

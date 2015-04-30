@@ -1,13 +1,13 @@
 defmodule ConfigFinallyTest do
 
-	use ExUnit.Case, async: true
-	
-	defmodule SomeSpec do
+  use ExUnit.Case, async: true
+  
+  defmodule SomeSpec do
     use ESpec
     it do: "some test"
   end
 
-	setup_all do
+  setup_all do
     ESpec.configure fn(c) ->
       c.finally fn -> 
         ESpec.configure fn(c) -> c.test :ok end
@@ -19,7 +19,7 @@ defmodule ConfigFinallyTest do
   end
 
   test "run ex1", context do
-  	ESpec.ExampleRunner.run(context[:ex1])
+    ESpec.ExampleRunner.run(context[:ex1])
     assert(ESpec.Configuration.get(:test) == :ok)
   end
 end
