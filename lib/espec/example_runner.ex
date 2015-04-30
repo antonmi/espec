@@ -10,9 +10,9 @@ defmodule ESpec.ExampleRunner do
   The `result` is the value returned by example block.
   `error` is a `%ESpec.AssertionError{}` struct.
   """
-	def run(example) do
-		contexts = ESpec.Example.extract_contexts(example)
-		cond do
+  def run(example) do
+    contexts = ESpec.Example.extract_contexts(example)
+    cond do
       example.opts[:skip] || Enum.any?(contexts, &(&1.opts[:skip])) ->
         run_skipped(example)
       example.opts[:pending] ->
@@ -20,7 +20,7 @@ defmodule ESpec.ExampleRunner do
       true ->
         run_example(example)
     end
-	end
+  end
 
   def run_example(example) do
     assigns = %{} 

@@ -14,11 +14,11 @@ defmodule ESpec.Assertions.String.EndWith do
     end
   end
 
-	defp success_message(string, val, _result, positive) do
+  defp success_message(string, val, _result, positive) do
     to = if positive, do: "ends", else: "doesn't end"
     "`#{inspect string}` #{to} with `#{inspect val}`."
   end
-	
+  
   defp error_message(string, val, result, positive) do
     to = if positive, do: "to", else: "to not"
     "Expected `#{inspect string}` #{to} end with `#{val}` but it ends with `#{result}`."

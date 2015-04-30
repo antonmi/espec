@@ -1,6 +1,6 @@
 defmodule ESpec.Assertions.Interface do
 
-	defmacro __using__(_opts) do
+  defmacro __using__(_opts) do
     quote do
       def assert(subject, data, positive \\ true) do
         case match(subject, data) do

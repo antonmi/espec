@@ -7,7 +7,7 @@ defmodule ESpec.Assertions.List.HaveTl do
     {result == val, result}
   end
 
-	defp success_message(list, val, _result, positive) do
+  defp success_message(list, val, _result, positive) do
     to = if positive, do: "has", else: "doesn't have"
     "`#{inspect list}` #{to} `tl` == `#{inspect val}`."
   end

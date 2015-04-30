@@ -11,28 +11,28 @@ defmodule ESpec.Output do
     {:ok, state}
   end
 
-	def example_info(example), do: GenServer.cast(__MODULE__, {:example_info, example})
-	def print_result(examples), do: GenServer.call(__MODULE__, {:print_result, examples})
+  def example_info(example), do: GenServer.cast(__MODULE__, {:example_info, example})
+  def print_result(examples), do: GenServer.call(__MODULE__, {:print_result, examples})
   
   def handle_cast({:example_info, example}, state) do
-		do_example_info(example, state[:formatter])
-		{:noreply, state}
-	end
+    do_example_info(example, state[:formatter])
+    {:noreply, state}
+  end
 
-	def handle_call({:print_result, examples}, _pid, state) do
-		do_print_result(examples, state[:formatter])
-		{:reply, :ok, state}
-	end
+  def handle_call({:print_result, examples}, _pid, state) do
+    do_print_result(examples, state[:formatter])
+    {:reply, :ok, state}
+  end
 
-	def do_example_info(example, {formatter, opts}) do
+  def do_example_info(example, {formatter, opts}) do
     unless silent? do
-   	  IO.write formatter.format_example(example, opts)
+      IO.write formatter.format_example(example, opts)
     end
   end
 
   def do_print_result(examples, {formatter, opts}) do
     unless silent? do
-  	  IO.write formatter.format_result(examples, opts)
+      IO.write formatter.format_result(examples, opts)
     end
   end
 

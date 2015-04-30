@@ -12,7 +12,7 @@ defmodule ESpec.Assertions.EnumString.HaveAt do
     {result == val, result}
   end
 
-	defp success_message(enum, [pos, val], _result, positive) do
+  defp success_message(enum, [pos, val], _result, positive) do
     to = if positive, do: "has", else: "doesn't have"
     "`#{inspect enum}` #{to} element `#{val}` at `#{inspect pos}` position."
   end

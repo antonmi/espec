@@ -14,11 +14,11 @@ defmodule ESpec.Assertions.String.StartWith do
     end
   end
 
-	defp success_message(string, val, _result, positive) do
+  defp success_message(string, val, _result, positive) do
     to = if positive, do: "starts", else: "doesn't start"
     "`#{inspect string}` #{to} with `#{inspect val}`."
   end
-	
+  
   defp error_message(string, val, result, positive) do
     to = if positive, do: "to", else: "to not"
     "Expected `#{inspect string}` #{to} start with `#{val}` but it starts with `#{result}`."

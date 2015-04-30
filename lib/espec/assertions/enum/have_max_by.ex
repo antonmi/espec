@@ -7,7 +7,7 @@ defmodule ESpec.Assertions.Enum.HaveMaxBy do
     {result == val, result}
   end
 
-	defp success_message(enum, [func, val], _result, positive) do
+  defp success_message(enum, [func, val], _result, positive) do
     to = if positive, do: "is", else: "is not"
     "The maximum value of `#{inspect enum}` using `#{inspect func}` #{to} `#{val}`."
   end

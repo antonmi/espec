@@ -55,16 +55,16 @@ defmodule AcceptedTest do
 	end
 
 	setup_all do
-    examples = ESpec.Runner.run_examples(SomeSpec.examples)
-    { :ok,
-      success: Enum.slice(examples, 0, 6)
-    }
-  end
+		examples = ESpec.Runner.run_examples(SomeSpec.examples)
+		{ :ok,
+			success: Enum.slice(examples, 0, 6)
+		}
+	end
 
-  test "Success", context do
-    Enum.each(context[:success], fn(ex) ->
-      assert(ex.status == :success)
-    end)
-  end
+	test "Success", context do
+		Enum.each(context[:success], fn(ex) ->
+			assert(ex.status == :success)
+		end)
+	end
 
 end

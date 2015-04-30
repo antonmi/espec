@@ -7,7 +7,7 @@ defmodule ESpec.Assertions.Enum.HaveMin do
     {result == val, result}
   end
 
-	defp success_message(enum, val, _result, positive) do
+  defp success_message(enum, val, _result, positive) do
     to = if positive, do: "is", else: "is not"
     "The minimum value of `#{inspect enum}` #{to} `#{val}`."
   end

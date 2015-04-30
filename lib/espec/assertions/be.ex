@@ -7,7 +7,7 @@ defmodule ESpec.Assertions.Be do
     {result, result}
   end
 
-	defp success_message(subject, [op, val], _result, positive) do
+  defp success_message(subject, [op, val], _result, positive) do
     to = if positive, do: "is true", else: "is false"
     "`#{inspect subject} #{op} #{inspect val}` #{to}."
   end  
