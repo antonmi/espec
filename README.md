@@ -349,8 +349,8 @@ expect(string).to have_first(value)  #String.first(string) == value
 ... have_length(value)               #Stirng.length(string) == value
 ... have_size(value)                 #alias
 ... have_count(value)                #alias
-... be_valid                         #String.valid?(string)
-... be_printable?                    #String.printable?(string)
+... be_valid_string                  #String.valid?(string)
+... be_printable                     #String.printable?(string)
 ```
 #### Type checking
 ``` elixir
