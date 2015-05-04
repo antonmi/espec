@@ -454,9 +454,28 @@ end
 Don't use `async: true` when using mocks!
 
 ## Configuration and options
-TODO
+```sh
+`MIX_ENV=test mix help espec`
+```
+#### Spec paths and pattern
+You can change (in `mix.exs` file) the folder where your specs are and the pattern to match the files.
+```elixir
+ def project do
+  ...
+  spec_paths: ["my_specs", "espec"],
+  spec_pattern: "*_espec.exs",
+  ...
+ end
+```
+#### Coverage
+One can run specs with coverage:
+```sh
+mix espec --cover
+```
+Find the results in `/cover` folder.
+ESpec, like ExUnit, uses very simple wrapper around OTP's cover. But you can override this.
 
-
+Take a look to [coverex](https://github.com/alfert/coverex) as a perfect example.
 
 
 
