@@ -55,37 +55,27 @@ defmodule ESpec.Let do
 
   @doc "let! evaluate block like `before`"
   defmacro let!(var, do: block) do
-    quote do
-      unquote(__MODULE__).let(unquote(var), false, do: unquote(block))
-    end
+    quote do: let(unquote(var), false, do: unquote(block))
   end
 
   @doc "Defines 'subject'."
   defmacro subject(do: block) do
-    quote do
-      unquote(__MODULE__).let(:subject, do: unquote(block))
-    end
+    quote do: let(:subject, do: unquote(block))
   end
 
   @doc "Defines 'subject'."
   defmacro subject(var) do
-    quote do
-      unquote(__MODULE__).let(:subject, do: unquote(var))
-    end
+    quote do: let(:subject, do: unquote(var))
   end
 
   @doc "Defines 'subject!'."
   defmacro subject!(do: block) do
-    quote do
-      unquote(__MODULE__).let!(:subject, do: unquote(block))
-    end
+    quote do: let!(:subject, do: unquote(block))
   end
 
   @doc "Defines 'subject!'."
   defmacro subject!(var) do
-    quote do
-      unquote(__MODULE__).let!(:subject, do: unquote(var))
-    end
+    quote do: let!(:subject, do: unquote(var))
   end
 
   @doc """
@@ -93,9 +83,7 @@ defmodule ESpec.Let do
   It is just an alias for 'let'.
   """
   defmacro subject(var, do: block) do
-    quote do
-      unquote(__MODULE__).let(unquote(var), do: unquote(block))
-    end
+    quote do: let(unquote(var), do: unquote(block))
   end
 
   @doc """
@@ -103,9 +91,7 @@ defmodule ESpec.Let do
   It is just an alias for 'let!'.
   """
   defmacro subject!(var, do: block) do
-    quote do
-      unquote(__MODULE__).let!(unquote(var), do: unquote(block))
-    end
+    quote do: let!(unquote(var), do: unquote(block))
   end
 
   @doc "Starts Agent to save state of 'lets'."

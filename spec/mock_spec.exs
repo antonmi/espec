@@ -33,7 +33,7 @@ defmodule MockSpec do
       spawn fn -> allow(SomeModule).to accept(:f, fn(a) -> "mock! #{a}" end) end
     end
 
-    it do: expect(SomeModule.f).to eq(:f)
+    # it do: expect(SomeModule.f).to eq(:f)
   end
  
 

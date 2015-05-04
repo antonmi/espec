@@ -43,31 +43,31 @@ defmodule ESpec.Example do
 
   @doc "Example with description only"
   defmacro example(description, do: block) when is_binary(description) do
-    quote do: unquote(__MODULE__).example(unquote(description), [], do: unquote(block))
+    quote do: example(unquote(description), [], do: unquote(block))
   end
 
   @doc "Example options only"
   defmacro example(opts, do: block) when is_list(opts) do
-    quote do: unquote(__MODULE__).example("", unquote(opts), do: unquote(block))
+    quote do: example("", unquote(opts), do: unquote(block))
   end
 
   @doc "Defines the simplest example"
   defmacro example(do: block) do
-    quote do: unquote(__MODULE__).example("", [], do: unquote(block))
+    quote do: example("", [], do: unquote(block))
   end
 
   @doc "Aliases for `example`"
   Enum.each @aliases, fn(func) ->
     defmacro unquote(func)(description, opts, do: block) do
-      quote do: unquote(__MODULE__).example(unquote(description), unquote(opts), do: unquote(block))
+      quote do: example(unquote(description), unquote(opts), do: unquote(block))
     end
 
     defmacro unquote(func)(description_or_opts, do: block) do
-      quote do: unquote(__MODULE__).example(unquote(description_or_opts), do: unquote(block))
+      quote do: example(unquote(description_or_opts), do: unquote(block))
     end
 
     defmacro unquote(func)(do: block) do
-      quote do: unquote(__MODULE__).example(do: unquote(block))
+      quote do: example(do: unquote(block))
     end
   end
 
@@ -75,48 +75,48 @@ defmodule ESpec.Example do
   Enum.each @skipped, fn(func) ->
     defmacro unquote(func)(description, opts, do: block) do
       reason = "`#{unquote(func)}`"
-      quote do: unquote(__MODULE__).example(unquote(description), Keyword.put(unquote(opts), :skip, unquote(reason)), do: unquote(block))
+      quote do: example(unquote(description), Keyword.put(unquote(opts), :skip, unquote(reason)), do: unquote(block))
     end
 
     defmacro unquote(func)(description, do: block) when is_binary(description) do
       reason = "`#{unquote(func)}`"
-      quote do: unquote(__MODULE__).example(unquote(description), [skip: unquote(reason)], do: unquote(block))
+      quote do: example(unquote(description), [skip: unquote(reason)], do: unquote(block))
     end
 
     defmacro unquote(func)(opts, do: block) when is_list(opts) do
       reason = "`#{unquote(func)}`"
-      quote do: unquote(__MODULE__).example(Keyword.put(unquote(opts), :skip, unquote(reason)), do: unquote(block))
+      quote do: example(Keyword.put(unquote(opts), :skip, unquote(reason)), do: unquote(block))
     end
 
     defmacro unquote(func)(do: block) do
       reason = "`#{unquote(func)}`"
-      quote do: unquote(__MODULE__).example([skip: unquote(reason)], do: unquote(block))
+      quote do: example([skip: unquote(reason)], do: unquote(block))
     end
   end
 
   @doc "Macros for focused examples"
   Enum.each @focused, fn(func) ->
     defmacro unquote(func)(description, opts, do: block) do
-      quote do: unquote(__MODULE__).example(unquote(description), Keyword.put(unquote(opts), :focus, true), do: unquote(block))
+      quote do: example(unquote(description), Keyword.put(unquote(opts), :focus, true), do: unquote(block))
     end
 
     defmacro unquote(func)(description, do: block) when is_binary(description) do
-      quote do: unquote(__MODULE__).example(unquote(description), [focus: true], do: unquote(block))
+      quote do: example(unquote(description), [focus: true], do: unquote(block))
     end
 
     defmacro unquote(func)(opts, do: block) when is_list(opts) do
-      quote do: unquote(__MODULE__).example(Keyword.put(unquote(opts), :focus, true), do: unquote(block))
+      quote do: example(Keyword.put(unquote(opts), :focus, true), do: unquote(block))
     end
 
     defmacro unquote(func)(do: block) do
-      quote do: unquote(__MODULE__).example([focus: true], do: unquote(block))
+      quote do: example([focus: true], do: unquote(block))
     end
   end
 
   @doc "Macros for pending exaples"
   Enum.each [:example, :pending] ++ @aliases, fn(func) ->
     defmacro unquote(func)(description) when is_binary(description) do
-      quote do: unquote(__MODULE__).example(unquote(description), [pending: unquote(description)], do: nil)
+      quote do: example(unquote(description), [pending: unquote(description)], do: nil)
     end
   end
   
