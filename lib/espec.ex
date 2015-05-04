@@ -35,6 +35,7 @@ defmodule ESpec do
       import ESpec.Finally
       import ESpec.Let
 
+      import ESpec.DocTest
     end
   end
 
