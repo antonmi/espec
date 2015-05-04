@@ -44,6 +44,11 @@ defmodule Mix.Tasks.Espec do
 
       mix espec spec/some/particular/file_spec.exs
 
+  In case a single file is being tested, it is possible pass a specific
+  line number:
+
+      mix espec spec/some/particular/file_spec.exs:42    
+
   ## Command line options
 
     * `--focus`      - run examples with `focus` only
