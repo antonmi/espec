@@ -2,31 +2,39 @@ defmodule MockTest do
 
   use ExUnit.Case
 
+  import ExUnit.TestHelpers
+
+  defmodule SomeModule do
+    def f, do: :f
+    def m, do: :m
+  end |> write_beam
+
+
   defmodule SomeSpec do
     use ESpec
 
     context "with mock" do
       before do
-        allow(ESpec.SomeModule).to accept(:f, fn(a) -> "mock! #{a}" end)
-        allow(ESpec.SomeModule).to accept(x: fn -> :y end, q: fn -> :w end)
+        allow(SomeModule).to accept(:f, fn(a) -> "mock! #{a}" end)
+        allow(SomeModule).to accept(x: fn -> :y end, q: fn -> :w end)
       end
 
-      it do: ESpec.SomeModule.f(1)
-      it do: ESpec.SomeModule.q
+      it do: SomeModule.f(1)
+      it do: SomeModule.q
     
-      it "ESpec.SomeModule.m is defined" do
-        expect(ESpec.SomeModule.m).to eq(:m)
+      it "SomeModule.m is defined" do
+        expect(SomeModule.m).to eq(:m)
       end
 
       context "expect accepted" do
-        it do: expect(ESpec.SomeModule).to_not accepted(:f, [1])
-        before do: ESpec.SomeModule.f(1)
-        it do: expect(ESpec.SomeModule).to accepted(:f, [1])
+        it do: expect(SomeModule).to_not accepted(:f, [1])
+        before do: SomeModule.f(1)
+        it do: expect(SomeModule).to accepted(:f, [1])
       end
     end
 
     context "without mock" do
-      it do: ESpec.SomeModule.f
+      it do: SomeModule.f
     end
   end
 
@@ -42,9 +50,9 @@ defmodule MockTest do
     }
   end
 
-  test "check ESpec.SomeModule" do
-    assert(ESpec.SomeModule.f == :f)
-    assert(ESpec.SomeModule.m == :m)
+  test "check SomeModule" do
+    assert(SomeModule.f == :f)
+    assert(SomeModule.m == :m)
   end
 
   test "run ex1", context do
