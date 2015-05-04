@@ -457,7 +457,16 @@ Don't use `async: true` when using mocks!
 ```sh
 `MIX_ENV=test mix help espec`
 ```
-
+#### Spec paths and pattern
+You can change (in `mix.exs` file) the folder where your specs are and the pattern to match the files.
+```elixir
+ def project do
+  ...
+  spec_paths: ["my_specs", "espec"],
+  spec_pattern: "*_espec.exs",
+  ...
+ end
+```
 #### Coverage
 One can run specs with coverage:
 ```sh
