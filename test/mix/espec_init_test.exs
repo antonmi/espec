@@ -1,12 +1,10 @@
 defmodule EspecInitTest do
 
+  use ExUnit.Case
+
 	@tmp_path Path.join(__DIR__, "tmp")
 
-	def clear do
-		File.rm_rf! @tmp_path
-	end
-
-  use ExUnit.Case
+	def clear, do: File.rm_rf! @tmp_path
 
   setup do
   	Mix.shell(Mix.Shell.Process) # Get Mix output sent to the current process to avoid polluting tests.
