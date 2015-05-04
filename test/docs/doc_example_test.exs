@@ -1,32 +1,45 @@
-# Code.require_file("test/docs/modules/mod1.ex")
-Code.ensure_compiled(ESpec.Test.Docs.Mod1)
-
-
 defmodule ESpec.DocExampleTest do
 
   use ExUnit.Case, async: true
 
   import ExUnit.TestHelpers
 
-  defmodule ESpec.Test.Docs.Mod1 do
+  defmodule Mod1 do
     @doc """
       iex> 1 + 1
       2
-    """
 
-    @doc """
       iex> 2 + 2
       5
     """
 
-    def m, do: :m
+    def f, do: :f
   end |> write_beam
 
   test "Mod1" do
-    # exs = ESpec.DocExample.extract(ESpec.Test.Docs.Mod1)
-    # IO.inspect Code.compiler_options
-    # IO.inspect Code.get_docs(ESpec.SomeModule, :all)
-    IO.inspect Code.get_docs(ESpec.Test.Docs.Mod1, :all)
+    examples = ESpec.DocExample.extract(Mod1)
+    assert length(examples) == 2
+
+    ex = hd(examples)
+    assert ex.lhs == "1 + 1"
+    assert ex.rhs == "2"
+    assert ex.fun_arity == {:f, 0}
+    assert ex.line == 20
+  end
+
+  defmodule Mod2 do
+    @doc """
+      iex> 1 + 1
+    2
+    """
+
+    def f, do: :f
+  end |> write_beam
+
+  test "Mod2" do
+    assert_raise ESpec.DocExample.Error, "indentation level mismatch: \"2\", should have been 2 spaces", fn ->
+      ESpec.DocExample.extract(Mod2)
+    end
   end
 
 
