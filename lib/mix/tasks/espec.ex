@@ -1,4 +1,33 @@
 defmodule Mix.Tasks.Espec do
+  defmodule Cover do
+    @moduledoc false
+
+    def start(compile_path, opts) do
+      Mix.shell.info "Cover compiling modules ... "
+      _ = :cover.start
+
+      case :cover.compile_beam_directory(compile_path |> to_char_list) do
+        results when is_list(results) ->
+          :ok
+        {:error, _} ->
+          Mix.raise "Failed to cover compile directory: " <> compile_path
+      end
+
+      output = opts[:output]
+
+      fn() ->
+        Mix.shell.info "\nGenerating cover results ... "
+        File.mkdir_p!(output)
+        Enum.each :cover.modules, fn(mod) ->
+          case :cover.analyse_to_file(mod, '#{output}/#{mod}.html', [:html]) do
+            {:ok, _} -> nil
+            {:error, error} -> Mix.shell.info "#{error} while generating cover results for #{mod}"
+          end
+        end
+      end
+    end
+  end
+
   use Mix.Task
 
   @shortdoc "Runs specs"
@@ -21,7 +50,32 @@ defmodule Mix.Tasks.Espec do
     * `--silent`     - no output
     * `--order`      - run examples in the order in which they are declared
     * `--format`     - choose formatter ('doc', 'html', 'json')
-  """  
+    * `--cover`      - enable code coverage
+
+  ## Configuration
+
+    * `:test_coverage` - a set of options to be passed down to the coverage
+      mechanism.
+
+  ## Coverage
+
+  The `:test_coverage` configuration accepts the following options:
+
+    * `:output` - the output for cover results, defaults to `"cover"`
+    * `:tool`   - the coverage tool
+
+  By default, a very simple wrapper around OTP's `cover` is used as a tool,
+  but it can be overridden as follows:
+
+      test_coverage: [tool: CoverModule]
+
+  `CoverModule` can be any module that exports `start/2`, receiving the
+  compilation path and the `test_coverage` options as arguments. It must
+  return an anonymous function of zero arity that will be run after the
+  test suite is done or `nil`.
+  """
+
+  @cover [output: "cover", tool: Cover]
 
   def run(args) do
     {opts, files, _} = OptionParser.parse(args)
@@ -34,6 +88,15 @@ defmodule Mix.Tasks.Espec do
     end
 
     Mix.Task.run "loadpaths", args
+
+    project = Mix.Project.config
+    cover   = Keyword.merge(@cover, project[:test_coverage] || [])
+
+    # Start cover after we load deps but before we start the app.
+    cover =
+      if opts[:cover] do
+        cover[:tool].start(Mix.Project.compile_path(project), cover)
+      end
 
     Mix.shell.print_app
     Mix.Task.run "app.start", args
@@ -61,9 +124,11 @@ defmodule Mix.Tasks.Espec do
     end
 
     Kernel.ParallelRequire.files(spec_files)
-    
+
     ESpec.Configuration.add([file_opts: files_with_opts])
     success = ESpec.run
+
+    if cover, do: cover.()
 
     System.at_exit fn _ ->
       unless success, do: exit({:shutdown, 1})
