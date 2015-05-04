@@ -46,16 +46,19 @@ defmodule Mix.Tasks.Espec do
 
   ## Command line options
 
-    * `--focus`      - run examples with `focus`
+    * `--focus`      - run examples with `focus` only
     * `--silent`     - no output
     * `--order`      - run examples in the order in which they are declared
     * `--format`     - choose formatter ('doc', 'html', 'json')
     * `--cover`      - enable code coverage
 
   ## Configuration
+    * `:spec_paths` - list of paths containing spec files, defaults to `["spec"]`.
+      It is expected all spec paths to contain a `spec_helper.exs` file.
 
-    * `:test_coverage` - a set of options to be passed down to the coverage
-      mechanism.
+    * `:spec_pattern` - a pattern to load spec files, defaults to `*_spec.exs`.
+
+    * `:test_coverage` - a set of options to be passed down to the coverage mechanism.
 
   ## Coverage
 
@@ -107,11 +110,11 @@ defmodule Mix.Tasks.Espec do
       {:error, {:already_loaded, :espec}} -> :ok
     end
 
-    spec_paths = ["spec"]
-    spec_pattern = "*_spec.exs"
+    spec_paths = project[:spec_paths] || ["spec"] 
+    spec_pattern =  project[:spec_pattern] || "*_spec.exs"
 
     ESpec.Configuration.add(opts)
-    Enum.each([spec_paths], &require_spec_helper(&1))
+    Enum.each(spec_paths, &require_spec_helper(&1))
 
     files_with_opts = []
 
