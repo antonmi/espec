@@ -24,7 +24,7 @@ defmodule ESpec.DocExampleTest do
     assert ex.lhs == "1 + 1"
     assert ex.rhs == "2"
     assert ex.fun_arity == {:f, 0}
-    assert ex.line == 20
+    assert ex.line == 16
   end
 
   defmodule Mod2 do
