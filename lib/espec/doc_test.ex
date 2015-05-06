@@ -5,12 +5,14 @@ defmodule ESpec.DocTest do
 
     quote do
       # IO.inspect unquote(module)
-      # ESpec.DocExample.extract(unquote(module))
-      Enum.each(1..3, fn(ex) -> 
+      ESpec.DocExample.extract(unquote(module))
+      |> Enum.each(fn(ex) -> 
       
-        a = 1
+        IO.inspect ex
+        {lhs, _} = Code.eval_string(ex.lhs)
+        {rhs, _} = Code.eval_string(ex.rhs)
         example do
-          IO.inspect a
+          expect(lhs).to eq(rhs)
         end
 
       end)

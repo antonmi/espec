@@ -41,6 +41,13 @@ defmodule ESpec.Example do
     end
   end
 
+  defmacro mac(do: block) do
+    quote do
+      # unquote(block)
+      def pppp(), do: unquote(Macro.escape(block))
+    end
+  end
+
   @doc "Example with description only"
   defmacro example(description, do: block) when is_binary(description) do
     quote do: unquote(__MODULE__).example(unquote(description), [], do: unquote(block))

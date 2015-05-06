@@ -35,9 +35,20 @@ defmodule Used do
   end
 end
 
-defmodule Main do
+defmodule ESpec.SomeModule do
   use Used
 
-  mac2 :mac2
+  # mac2 :mac2
+  
+  @doc """
+    iex> 1 + 1
+    2
+
+    iex> 2 + 2
+    5
+  """
+  def f, do: f
     
 end
+
+

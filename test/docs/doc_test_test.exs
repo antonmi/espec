@@ -15,7 +15,7 @@ defmodule ESpec.DocTestTest.SomeSpec do
   use ESpec
 
   doctest ESpec.DocTestTest.Mod1
-
+  
 end |> ExUnit.TestHelpers.write_beam
 
 
