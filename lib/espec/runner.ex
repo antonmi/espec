@@ -29,7 +29,7 @@ defmodule ESpec.Runner do
     else
       examples = run_in_random(specs, opts)
     end
-
+    
     ESpec.Output.print_result(examples)
     !Enum.any?(ESpec.Example.failure(examples))
   end

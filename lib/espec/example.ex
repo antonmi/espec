@@ -37,7 +37,17 @@ defmodule ESpec.Example do
       @examples %ESpec.Example{ description: unquote(description), module: __MODULE__, function: unquote(function),
                                 opts: unquote(opts), file: __ENV__.file, line: __ENV__.line, context: context,
                                 shared: @shared}
-      def unquote(function)(var!(__)), do: unquote(block)
+      def unquote(function)(var!(__)) do 
+        unquote(block)
+        
+      end  
+    end
+  end
+
+  defmacro mac(do: block) do
+    quote do
+      # unquote(block)
+      def pppp(), do: unquote(Macro.escape(block))
     end
   end
 
