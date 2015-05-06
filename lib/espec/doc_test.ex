@@ -23,13 +23,12 @@ defmodule ESpec.DocTest do
         IO.inspect "-----"
         IO.inspect length(@examples)
 
-        {lhs, _} = Code.eval_string(ex.lhs)
-        {rhs, _} = Code.eval_string(ex.rhs)
+       
 
 
         s = """
         def #{function}(__) do
-          expect(#{inspect lhs}).to eq(#{inspect rhs})
+          expect(#{inspect ex.lhs}).to eq(#{inspect ex.rhs})
         end  
         """
         Code.eval_string(s, [], __ENV__)
