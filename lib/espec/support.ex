@@ -4,5 +4,6 @@ defmodule ESpec.Support do
 
   def word_chars(string) do
     String.replace(string, ~r/[\W+\d+\s+]/, "_")
+    |> String.downcase
   end
 end

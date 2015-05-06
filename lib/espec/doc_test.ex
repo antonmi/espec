@@ -10,22 +10,29 @@ defmodule ESpec.DocTest do
       ESpec.DocExample.extract(unquote(module))
       |> Enum.with_index
       |> Enum.each(fn({ex, index}) -> 
-        
+
         context = Enum.reverse(@context)
-        @examples %ESpec.Example{ description: "description", module: __MODULE__, function: :"doc_#{index}",
+
+        {fun, arity} = ex.fun_arity
+        description = "Doctest for #{unquote(module)}.#{fun}/#{arity} (#{index})"
+        function = :"#{ESpec.Support.word_chars(description)}_#{index}"
+
+        @examples %ESpec.Example{ description: description, module: __MODULE__, function: function,
                                   opts: [], file: __ENV__.file, line: __ENV__.line, context: context,
                                   shared: @shared}
-        
+        IO.inspect "-----"
+        IO.inspect length(@examples)
+
         {lhs, _} = Code.eval_string(ex.lhs)
         {rhs, _} = Code.eval_string(ex.rhs)
-        
+
+
         s = """
-        def doc_#{index}(__) do 
-          expect(#{lhs}).to eq(#{rhs})
+        def #{function}(__) do
+          expect(#{inspect lhs}).to eq(#{inspect rhs})
         end  
         """
         Code.eval_string(s, [], __ENV__)
-        # IO.inspect __MODULE__.info(:functions)
       end)
     end
   end
