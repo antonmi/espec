@@ -48,7 +48,9 @@ defmodule ESpec.SomeModule do
     5
   """
   def f, do: f
-    
+  index = 1
+  s = "def doc_#{index}(__), do: __"
+  Code.eval_string(s, [], __ENV__)
 end
 
 

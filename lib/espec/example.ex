@@ -32,12 +32,17 @@ defmodule ESpec.Example do
   """
   defmacro example(description, opts, do: block) do
     function = (random_atom(description))
+    IO.inspect "----"
+    IO.inspect function
     quote do
       context = Enum.reverse(@context)
       @examples %ESpec.Example{ description: unquote(description), module: __MODULE__, function: unquote(function),
                                 opts: unquote(opts), file: __ENV__.file, line: __ENV__.line, context: context,
                                 shared: @shared}
-      def unquote(function)(var!(__)), do: unquote(block)
+      def unquote(function)(var!(__)) do 
+        unquote(block)
+        
+      end  
     end
   end
 
