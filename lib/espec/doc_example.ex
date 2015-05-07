@@ -1,6 +1,6 @@
 defmodule ESpec.DocExample do
 
-  defstruct lhs: nil, rhs: nil, fun_arity: nil, line: nil
+  defstruct lhs: nil, rhs: nil, fun_arity: nil, line: nil, error: false
 
   defmodule Error do
     defexception [:message]
@@ -24,9 +24,13 @@ defmodule ESpec.DocExample do
     Enum.map(moduledocs ++ docs, &to_struct/1)
   end
 
-  def to_struct(%{exprs: [{lhs, {:test, rhs}}], fun_arity: fun_arity, line: line}) do
-    %__MODULE__{lhs: String.strip(lhs), rhs: String.strip(rhs), fun_arity: fun_arity, line: line}
+  defp to_struct(%{exprs: [{lhs, {:test, rhs}}], fun_arity: fun_arity, line: line}) do
+    %__MODULE__{lhs: String.strip(lhs), rhs: String.strip(rhs), fun_arity: fun_arity, line: line, error: false}
   end
+
+  defp to_struct(%{exprs: [{lhs, {:error, error_module, error_message}}], fun_arity: fun_arity, line: line}) do
+    %__MODULE__{lhs: String.strip(lhs), rhs: {error_module, error_message}, fun_arity: fun_arity, line: line, error: true}
+  end  
 
   defp extract_from_moduledoc({_, doc}) when doc in [false, nil], do: []
 

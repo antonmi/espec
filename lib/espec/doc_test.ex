@@ -23,6 +23,7 @@ defmodule ESpec.DocTest do
   defmacro create_doc_examples(module, opts) do
     quote do
       examples = ESpec.DocExample.extract(unquote(module))
+
       if Keyword.get(unquote(opts), :only, :false) do
         examples = unquote(__MODULE__).filter_only(examples, unquote(opts)[:only])
       end
@@ -42,15 +43,24 @@ defmodule ESpec.DocTest do
         @examples %ESpec.Example{ description: description, module: __MODULE__, function: function,
                                   opts: [], file: __ENV__.file, line: __ENV__.line, context: context,
                                   shared: false}
+        if ex.error do
+          {error_module, error_message} = ex.rhs
+          lhs = ex.lhs
+          s = """
+          def #{function}(__) do
+            expect(fn -> Code.eval_string(#{lhs}) end).to raise_exception(#{error_module}, "#{error_message}")
+          end  
+          """
+        else
+          {lhs, _} = Code.eval_string(ex.lhs, [], __ENV__)
+          {rhs, _} = Code.eval_string(ex.rhs, [], __ENV__)
 
-        {lhs, _} = Code.eval_string(ex.lhs, [], __ENV__)
-        {rhs, _} = Code.eval_string(ex.rhs, [], __ENV__)
-
-        s = """
-        def #{function}(__) do
-          expect(#{inspect lhs}).to eq(#{inspect rhs})
-        end  
-        """
+          s = """
+          def #{function}(__) do
+            expect(#{inspect lhs}).to eq(#{inspect rhs})
+          end  
+          """
+        end
         Code.eval_string(s, [], __ENV__)
       end)
     end
