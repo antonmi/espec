@@ -20,7 +20,7 @@ defmodule ESpec do
       import ESpec.Context
       @context [%ESpec.Context{ description: inspect(__MODULE__), module: __MODULE__, line: __ENV__.line, opts: unquote(args) }]
 
-      import ESpec.Example
+      import ESpec.ExampleHelpers
       import ESpec.DocTest, only: [doctest: 1, doctest: 2]
       
       import ESpec.Expect
