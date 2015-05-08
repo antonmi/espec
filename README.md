@@ -487,6 +487,50 @@ end
 
 And `:import` to test a function defined in the module without referring to the module name.Default is `false`. Use this option with care because you can clash with another modules.
 
+There are three types of specs can be generated based on docs.
+
+- Examples where input and output can be evaluated. For example:
+```elixir
+@doc """
+iex> Enum.map [1, 2, 3], fn(x) ->
+...>   x * 2
+...> end
+[2,4,6]
+"""
+```  
+Such examples will be converted to:
+```elixir
+it "Example decsription" do
+  expect(input).to eq(output)
+end  
+```
+- Examples which return complex structure so Elixir prints it as #Name<...>.:
+```elixir
+@doc """
+iex> Enum.into([a: 10, b: 20], HashDict.new)
+#HashDict<[b: 20, a: 10]>
+"""
+```
+The examples will be converted to:
+```elixir
+it "Example decsription" do
+  expect(inspect input).to eq(output)
+end
+```
+- Examples with exceptions:
+```elixir
+@doc """
+iex(1)> String.to_atom((fn() -> 1 end).())
+** (ArgumentError) argument error
+"""
+```
+The examples will be tested as:
+```elixir
+it "Example decsription" do
+  expect(fn -> input end).to raise_exception(error_module, error_message)
+end
+```
+
 ## Configuration and options
 ```sh
 `MIX_ENV=test mix help espec`
