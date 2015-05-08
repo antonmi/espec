@@ -1,11 +1,25 @@
 defmodule ESpec.DocExample do
+  @moduledoc """
+  Defines the 'extract' method with parse module content and return %ESpec.DocExample{} structs.
+  The struct is used by 'ESpec.DocTest' module to build the specs.
+  """
 
-  defstruct lhs: nil, rhs: nil, fun_arity: nil, line: nil, error: false
+  @doc """
+  DocExample struct:
+  lhs - console input,
+  rhs - console output,
+  fun_arity - {fun, arity} tuple,
+  line - line where function is definde,
+  type - define the doc spec type (:test, :error to :insepct).
+  Read 'ESpec.DocTest' doc for more info.
+  """
+  defstruct lhs: nil, rhs: nil, fun_arity: nil, line: nil, type: :test
 
   defmodule Error do
     defexception [:message]
   end
 
+  @doc "Extract module docs and returns a list of %ESpec.DocExample{} structs"
   def extract(module) do
     all_docs = Code.get_docs(module, :all)
 
@@ -20,16 +34,20 @@ defmodule ESpec.DocExample do
     docs = for doc <- all_docs[:docs],
                doc <- extract_from_doc(doc),
                do: doc
-
+    
     Enum.map(moduledocs ++ docs, &to_struct/1)
   end
 
   defp to_struct(%{exprs: [{lhs, {:test, rhs}}], fun_arity: fun_arity, line: line}) do
-    %__MODULE__{lhs: String.strip(lhs), rhs: String.strip(rhs), fun_arity: fun_arity, line: line, error: false}
+    %__MODULE__{lhs: String.strip(lhs), rhs: String.strip(rhs), fun_arity: fun_arity, line: line, type: :test}
   end
 
   defp to_struct(%{exprs: [{lhs, {:error, error_module, error_message}}], fun_arity: fun_arity, line: line}) do
-    %__MODULE__{lhs: String.strip(lhs), rhs: {error_module, error_message}, fun_arity: fun_arity, line: line, error: true}
+    %__MODULE__{lhs: String.strip(lhs), rhs: {error_module, error_message}, fun_arity: fun_arity, line: line, type: :error}
+  end  
+
+  defp to_struct(%{exprs: [{lhs, {:inspect, string}}], fun_arity: fun_arity, line: line}) do
+    %__MODULE__{lhs: String.strip(lhs), rhs: string, fun_arity: fun_arity, line: line, type: :inspect}
   end  
 
   defp extract_from_moduledoc({_, doc}) when doc in [false, nil], do: []

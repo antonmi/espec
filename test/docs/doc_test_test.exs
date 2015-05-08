@@ -14,18 +14,18 @@ defmodule ESpec.DocTestTest.Mod1 do
   def f, do: :f
 end |> ExUnit.TestHelpers.write_beam
 
-defmodule ESpec.DocTestTest.SomeSpec do
+defmodule ESpec.DocTestTest.SomeDocSpec do
   use ESpec
   doctest ESpec.DocTestTest.Mod1
 end |> ExUnit.TestHelpers.write_beam
 
 
-defmodule ESpec.DocTestTest do
+defmodule ESpec.Docs.DocTestTest do
 
   use ExUnit.Case, async: true
 
   setup do
-    examples = ESpec.DocTestTest.SomeSpec.examples
+    examples = ESpec.DocTestTest.SomeDocSpec.examples
     {:ok,
       ex1: Enum.at(examples, 0),
       ex2: Enum.at(examples, 1),

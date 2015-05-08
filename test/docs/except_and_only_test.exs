@@ -40,7 +40,7 @@ defmodule ESpec.DocTest.ExceptWithOnlySpec do
 end |> ExUnit.TestHelpers.write_beam
 
 
-defmodule ESpec.DocTestTestExceptTest do
+defmodule ESpec.Docs.ExcepAndOnlyTest do
 
   use ExUnit.Case, async: true
 

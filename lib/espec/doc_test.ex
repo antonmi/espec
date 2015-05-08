@@ -1,25 +1,54 @@
 defmodule ESpec.DocTest do
+  @moduledoc """
+  Implements functionality similar to ExUnit.DocTest.
+  Provides doctest macro.
+  Read the ExUnit.DocTest documentation for more info.
 
+  There are three types of specs:
+  :test - simple examples where input and output can be evaluated:
+    iex> Enum.map [1, 2, 3], fn(x) ->
+    ...>   x * 2
+    ...> end
+    [2,4,6]
+    Such examples will be converted to: 'expect(input).to eq(output)' assertion.
+  
+  :inspect - examples with hidden internal stucture:
+    iex> Enum.into([a: 10, b: 20], HashDict.new)
+    #HashDict<[b: 20, a: 10]>
+    The examples will be converted to: 'expect(inspect input).to eq(output)'.
+
+  :error - examples with exceptions:
+    iex(1)> String.to_atom((fn() -> 1 end).())
+    ** (ArgumentError) argument error
+    The examples will be converted to: expect(fn -> input end).to raise_exception(error_module, error_message).
+  """
+
+  @doc """
+    Parses the module and builds 'specs'.
+  """
   defmacro doctest(module, opts \\ []) do
     do_import = Keyword.get(opts, :import, false)
     quote do
-      do_doctest(unquote(module), unquote(opts), unquote(do_import))
+      unquote(__MODULE__).do_doctest(unquote(module), unquote(opts), unquote(do_import))
     end
   end
 
+  @doc false
   defmacro do_doctest(module, opts, true) do
     quote do
       import unquote(module)
-      create_doc_examples(unquote(module), unquote(opts))
+      unquote(__MODULE__).create_doc_examples(unquote(module), unquote(opts))
     end
   end
 
+  @doc false
   defmacro do_doctest(module, opts, false) do
     quote do
-      create_doc_examples(unquote(module), unquote(opts))
+      unquote(__MODULE__).create_doc_examples(unquote(module), unquote(opts))
     end
   end
 
+  @doc false
   defmacro create_doc_examples(module, opts) do
     quote do
       examples = ESpec.DocExample.extract(unquote(module))
@@ -33,7 +62,6 @@ defmodule ESpec.DocTest do
 
       Enum.with_index(examples)
       |> Enum.each(fn({ex, index}) -> 
-
         context = Enum.reverse(@context)
         {fun, arity} = ex.fun_arity
 
@@ -43,35 +71,50 @@ defmodule ESpec.DocTest do
         @examples %ESpec.Example{ description: description, module: __MODULE__, function: function,
                                   opts: [], file: __ENV__.file, line: __ENV__.line, context: context,
                                   shared: false}
-        if ex.error do
-          {error_module, error_message} = ex.rhs
-          lhs = ex.lhs
-          s = """
-          def #{function}(__) do
-            expect(fn -> Code.eval_string(#{lhs}) end).to raise_exception(#{error_module}, "#{error_message}")
-          end  
-          """
-        else
-          {lhs, _} = Code.eval_string(ex.lhs, [], __ENV__)
-          {rhs, _} = Code.eval_string(ex.rhs, [], __ENV__)
 
-          s = """
-          def #{function}(__) do
-            expect(#{inspect lhs}).to eq(#{inspect rhs})
-          end  
-          """
+        cond do
+          ex.type == :test ->
+            {lhs, _} = Code.eval_string(ex.lhs, [], __ENV__)
+            {rhs, _} = Code.eval_string(ex.rhs, [], __ENV__)
+            s = """
+            def #{function}(__) do
+              expect(#{inspect lhs}).to eq(#{inspect rhs})
+            end  
+            """
+          ex.type == :error ->
+            {error_module, error_message} = ex.rhs
+            lhs = ex.lhs
+            s = """
+            def #{function}(__) do
+              expect(fn -> Code.eval_string(#{lhs}) end).to raise_exception(#{error_module}, "#{error_message}")
+            end  
+            """
+          ex.type == :inspect ->
+            {lhs, _} = Code.eval_string(ex.lhs, [], __ENV__)
+            {rhs, _} = Code.eval_string(ex.rhs, [], __ENV__)
+            lhs = inspect(lhs)
+            s = """
+            def #{function}(__) do
+              expect(#{inspect lhs}).to eq(#{inspect rhs})
+            end  
+            """
+          true ->
+            raise RuntimeError, message: "Wrong %ESpec.DocExample{} type!"  
         end
+
         Code.eval_string(s, [], __ENV__)
       end)
     end
   end
 
+  @doc false
   def filter_only(examples, list) do
     Enum.filter(examples, fn(ex) ->
       Enum.member?(list, ex.fun_arity)
     end)
   end
 
+  @doc false
   def filter_except(examples, list) do
     Enum.filter(examples, fn(ex) ->
       !Enum.member?(list, ex.fun_arity)

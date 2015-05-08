@@ -1,4 +1,4 @@
-defmodule ESpec.DocExampleTest do
+defmodule ESpec.Docs.DocExampleTest do
 
   use ExUnit.Case, async: true
 
@@ -12,8 +12,8 @@ defmodule ESpec.DocExampleTest do
       iex> 2 + 2
       5
     """
-
     def f, do: :f
+
   end |> write_beam
 
   test "Mod1" do
@@ -24,7 +24,7 @@ defmodule ESpec.DocExampleTest do
     assert ex.lhs == "1 + 1"
     assert ex.rhs == "2"
     assert ex.fun_arity == {:f, 0}
-    assert ex.line == 16
+    assert ex.line == 15
   end
 
   defmodule Mod2 do

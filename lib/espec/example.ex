@@ -20,7 +20,7 @@ defmodule ESpec.Example do
   shared - marks example as shared,
   status - example status (:new, :success, :failure, :pending),
   result - the value returned by example block or the pending message
-  error - store an error
+  error - store an error.
   """
   defstruct description: "", module: nil, function: nil, opts: [],
             file: nil, line: nil, context: [], shared: false, async: false,
@@ -44,14 +44,7 @@ defmodule ESpec.Example do
     end
   end
 
-  defmacro mac(do: block) do
-    quote do
-      # unquote(block)
-      def pppp(), do: unquote(Macro.escape(block))
-    end
-  end
-
-  @doc "Example with description only"
+  @doc "Example with description only."
   defmacro example(description, do: block) when is_binary(description) do
     quote do: example(unquote(description), [], do: unquote(block))
   end
@@ -61,7 +54,7 @@ defmodule ESpec.Example do
     quote do: example("", unquote(opts), do: unquote(block))
   end
 
-  @doc "Defines the simplest example"
+  @doc "Defines the simplest example."
   defmacro example(do: block) do
     quote do: example("", [], do: unquote(block))
   end
@@ -81,7 +74,7 @@ defmodule ESpec.Example do
     end
   end
 
-  @doc "Macros for skipped examples"
+  @doc "Macros for skipped examples."
   Enum.each @skipped, fn(func) ->
     defmacro unquote(func)(description, opts, do: block) do
       reason = "`#{unquote(func)}`"
@@ -104,7 +97,7 @@ defmodule ESpec.Example do
     end
   end
 
-  @doc "Macros for focused examples"
+  @doc "Macros for focused examples."
   Enum.each @focused, fn(func) ->
     defmacro unquote(func)(description, opts, do: block) do
       quote do: example(unquote(description), Keyword.put(unquote(opts), :focus, true), do: unquote(block))
@@ -123,14 +116,14 @@ defmodule ESpec.Example do
     end
   end
 
-  @doc "Macros for pending exaples"
+  @doc "Macros for pending exaples."
   Enum.each [:example, :pending] ++ @aliases, fn(func) ->
     defmacro unquote(func)(description) when is_binary(description) do
       quote do: example(unquote(description), [pending: unquote(description)], do: nil)
     end
   end
   
-  @doc "Defines examples using another module"
+  @doc "Defines examples using another module."
   defmacro it_behaves_like(module) do
     quote do
       Enum.each unquote(module).examples, fn(example) ->
@@ -148,26 +141,27 @@ defmodule ESpec.Example do
     |> Enum.map(&(&1.description))
   end
 
-  @doc "Filters success examples"
+  @doc "Filters success examples."
   def success(results) do
     results |> Enum.filter(&(&1.status == :success))
   end
 
-  @doc "Filters failed examples"
+  @doc "Filters failed examples."
   def failure(results) do
     results |> Enum.filter(&(&1.status === :failure))
   end
 
-  @doc "Filters pending examples"
+  @doc "Filters pending examples."
   def pendings(results) do
     results |> Enum.filter(&(&1.status === :pending))
   end
 
-  @doc "Extracts specific structs from example context"
+  @doc "Extracts specific structs from example context."
   def extract_befores_and_lets(example), do: extract(example.context, [ESpec.Before, ESpec.Let])
   def extract_finallies(example), do: extract(example.context, [ESpec.Finally])
   def extract_contexts(example), do: extract(example.context, [ESpec.Context])
 
+  @doc "Extracts example options."
   def extract_option(example, option) do
     contexts = ESpec.Example.extract_contexts(example)
     opts = List.flatten(example.opts ++ Enum.reverse(Enum.map(contexts, &(&1.opts))))
@@ -187,6 +181,7 @@ defmodule ESpec.Example do
     end)
   end
 
+  @doc "Message for skipped examples."
   def skip_message(example) do
     skipper = extract_option(example, :skip)
     if skipper === true do
@@ -196,6 +191,7 @@ defmodule ESpec.Example do
     end
   end
 
+  @doc "Message for pending examples."
   def pending_message(example) do
     if example.opts[:pending] === true do
       "Pending example."
@@ -204,6 +200,7 @@ defmodule ESpec.Example do
     end
   end
 
+  @doc false
   defp random_atom(arg) do
     String.to_atom("example_#{ESpec.Support.word_chars(arg)}_#{ESpec.Support.random_string}")
   end

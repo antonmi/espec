@@ -19,7 +19,7 @@ defmodule ESpec.DocTestTest.ImportSpec do
 end |> ExUnit.TestHelpers.write_beam
 
 
-defmodule ESpec.DocTestImportTest do
+defmodule ESpec.Docs.ImportOptionTest do
 
   use ExUnit.Case, async: true
 

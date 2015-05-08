@@ -21,7 +21,7 @@ defmodule ESpec do
       @context [%ESpec.Context{ description: inspect(__MODULE__), module: __MODULE__, line: __ENV__.line, opts: unquote(args) }]
 
       import ESpec.Example
-      import ESpec.DocTest
+      import ESpec.DocTest, only: [doctest: 1, doctest: 2]
       
       import ESpec.Expect
       use ESpec.Expect
@@ -35,9 +35,6 @@ defmodule ESpec do
       import ESpec.Before
       import ESpec.Finally
       import ESpec.Let
-
-      
-     
     end
   end
 
