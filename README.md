@@ -456,7 +456,7 @@ end
 Don't use `async: true` when using mocks!
 
 ## Doc specs
-ESpec has functionality similar to `ExUnit.DocTest`.
+ESpec has functionality similar to [`ExUnit.DocTest`](http://elixir-lang.org/docs/stable/ex_unit/).
 Read more about docs syntax [here](http://elixir-lang.org/docs/stable/ex_unit/)
 The functionality is implemented by two modules:
 `ESpec.DocExample` parses module documentation and `ESpec.DocTest` creates 'spec' examples for it.
@@ -468,7 +468,8 @@ defmodule SomeSpec do
   doctest MySuperModule
 end  
 ```
-There are three options (again similar to `ExUnit.DocTest`):
+There are three options (similar to `ExUnit.DocTest`):
+
 `:except` - generate specs for all functions except those listed (list of {function, arity} tuples).
 ```elixir
 defmodule SomeSpec do
@@ -478,7 +479,7 @@ end
 ```
 `:only` — generate specs only for functions listed (list of {function, arity} tuples).
 
-And `:import` to test a function defined in the module without referring to the module name. Default is `false`. Use this option with care because you can clash with another modules.
+And `:import` to test a function defined in the module without referring to the module name.Default is `false`. Use this option with care because you can clash with another modules.
 
 ## Configuration and options
 ```sh
