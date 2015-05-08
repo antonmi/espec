@@ -30,24 +30,24 @@ defmodule ESpec.Let do
 
       @context [head | tail]
 
-      unless agent_get({__MODULE__, "already_defined_#{unquote(var)}"}) do
+      unless ESpec.Let.agent_get({__MODULE__, "already_defined_#{unquote(var)}"}) do
           
         def unquote(var)() do 
-          {result, keep_quoted, assigns} = agent_get({self, __MODULE__, unquote(var)})
+          {result, keep_quoted, assigns} = ESpec.Let.agent_get({self, __MODULE__, unquote(var)})
           if keep_quoted do
             #TODO This __ENV__ hack is annoying 
             functions = [{__MODULE__, __MODULE__.__info__(:functions)} | __ENV__.functions]
             env = %{__ENV__ | functions: functions}
             
             {result, _assigns} = Code.eval_quoted(result, [__: assigns], env)
-            agent_put({self, __MODULE__, unquote(var)}, {result, false, assigns})
+            ESpec.Let.agent_put({self, __MODULE__, unquote(var)}, {result, false, assigns})
             result
           else
             result
           end
         end  
           
-        agent_put({__MODULE__, "already_defined_#{unquote(var)}"}, true)
+        ESpec.Let.agent_put({__MODULE__, "already_defined_#{unquote(var)}"}, true)
       end
 
     end
