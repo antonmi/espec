@@ -5,14 +5,14 @@ defmodule ESpec.DocTest do
   Read the ExUnit.DocTest documentation for more info.
 
   There are three types of specs:
-  :test - simple examples where input and output can be evaluated:
+  :test - examples where input and output can be evaluated:
     iex> Enum.map [1, 2, 3], fn(x) ->
     ...>   x * 2
     ...> end
     [2,4,6]
     Such examples will be converted to: 'expect(input).to eq(output)' assertion.
   
-  :inspect - examples with hidden internal stucture:
+  :inspect - examples which return complex structure so Elixir prints it as #Name<...>.
     iex> Enum.into([a: 10, b: 20], HashDict.new)
     #HashDict<[b: 20, a: 10]>
     The examples will be converted to: 'expect(inspect input).to eq(output)'.
