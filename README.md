@@ -354,6 +354,12 @@ expect(string).to have_first(value)  #String.first(string) == value
 ... be_valid_string                  #String.valid?(string)
 ... be_printable                     #String.printable?(string)
 ```
+#### Dict
+```elixir
+expect(dict).to have_key(value)     #Dict.has_key?(value)
+expect(dict).to have_value(value)   #Enum.member?(Dict.values(dict), value)
+```
+
 #### Type checking
 ``` elixir
 expect(:espec).to be_atom  #is_atom(:espec) == true
