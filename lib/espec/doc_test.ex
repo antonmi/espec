@@ -29,7 +29,7 @@ defmodule ESpec.DocTest do
   defmacro doctest(module, opts \\ []) do
     do_import = Keyword.get(opts, :import, false)
     quote do
-      unquote(__MODULE__).do_doctest(unquote(module), unquote(opts), unquote(do_import))
+      ESpec.DocTest.do_doctest(unquote(module), unquote(opts), unquote(do_import))
     end
   end
 
@@ -37,14 +37,14 @@ defmodule ESpec.DocTest do
   defmacro do_doctest(module, opts, true) do
     quote do
       import unquote(module)
-      unquote(__MODULE__).create_doc_examples(unquote(module), unquote(opts))
+      ESpec.DocTest.create_doc_examples(unquote(module), unquote(opts))
     end
   end
 
   @doc false
   defmacro do_doctest(module, opts, false) do
     quote do
-      unquote(__MODULE__).create_doc_examples(unquote(module), unquote(opts))
+      ESpec.DocTest.create_doc_examples(unquote(module), unquote(opts))
     end
   end
 
@@ -54,10 +54,10 @@ defmodule ESpec.DocTest do
       examples = ESpec.DocExample.extract(unquote(module))
 
       if Keyword.get(unquote(opts), :only, :false) do
-        examples = unquote(__MODULE__).filter_only(examples, unquote(opts)[:only])
+        examples = ESpec.DocTest.filter_only(examples, unquote(opts)[:only])
       end
       if Keyword.get(unquote(opts), :except, false) do
-        examples = unquote(__MODULE__).filter_except(examples, unquote(opts)[:except]) 
+        examples = ESpec.DocTest.filter_except(examples, unquote(opts)[:except]) 
       end 
 
       Enum.with_index(examples)

@@ -8,14 +8,12 @@ defmodule ESpec do
 
   defmacro __using__(args) do
     quote do
-      unquote(__MODULE__).add_spec(__MODULE__)
-
-      import unquote(__MODULE__)
+      ESpec.add_spec(__MODULE__)
 
       Module.register_attribute __MODULE__, :examples, accumulate: true
       
       @shared unquote(args)[:shared] || false
-      @before_compile unquote(__MODULE__)
+      @before_compile ESpec
 
       import ESpec.Context
       @context [%ESpec.Context{ description: inspect(__MODULE__), module: __MODULE__, line: __ENV__.line, opts: unquote(args) }]
