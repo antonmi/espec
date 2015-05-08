@@ -18,6 +18,7 @@ ESpec is inspired by RSpec and the main idea is to be close to its perfect DSL.
   * `before` and `finally` blocks (like RSpec `before` and `after`)
   * `let`, `let!` and `subject`
   * Mocks with [Meck](https://github.com/eproxus/meck)
+  * Doc specs
 
 ## Contents
 - [Installation](#installation)
@@ -32,6 +33,7 @@ ESpec is inspired by RSpec and the main idea is to be close to its perfect DSL.
 - [Matchers](#matchers)
 - [Custom matchers](#custom-matchers)
 - [Mocks](#mocks)
+- [Doc specs](#doc-specs)
 - [Configuration and options](#configuration-and-options)
 
 ## Installation
@@ -452,6 +454,31 @@ end
 `accepted` assertion checks `:meck.history(SomeModule)`. See [meck](https://github.com/eproxus/meck) documentation.
 
 Don't use `async: true` when using mocks!
+
+## Doc specs
+ESpec has functionality similar to `ExUnit.DocTest`.
+Read more about docs syntax [here](http://elixir-lang.org/docs/stable/ex_unit/)
+The functionality is implemented by two modules:
+`ESpec.DocExample` parses module documentation and `ESpec.DocTest` creates 'spec' examples for it.
+`ESpec.DocExample` functions is just copy-paste of `ExUnit.Doctest` parsing functionality.
+`ESpec.DocTest` implement `doctest` macro which identical to `ExUnit` analogue.
+```elixir
+defmodule SomeSpec do
+  use ESpec
+  doctest MySuperModule
+end  
+```
+There are three options (again similar to `ExUnit.DocTest`):
+`:except` - generate specs for all functions except those listed (list of {function, arity} tuples).
+```elixir
+defmodule SomeSpec do
+  use ESpec
+  doctest MySuperModule, except: [fun: 1, func: 2]
+end  
+```
+`:only` — generate specs only for functions listed (list of {function, arity} tuples).
+
+And `:import` to test a function defined in the module without referring to the module name. Default is `false`. Use this option with care because you can clash with another modules.
 
 ## Configuration and options
 ```sh
