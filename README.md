@@ -500,11 +500,11 @@ iex> Enum.map [1, 2, 3], fn(x) ->
 ```  
 Such examples will be converted to:
 ```elixir
-it "Example decsription" do
+it "Example description" do
   expect(input).to eq(output)
 end  
 ```
-- Examples which return complex structure so Elixir prints it as #Name<...>.:
+- Examples which return complex structure so Elixir prints it as `#Name<...>.`:
 ```elixir
 @doc """
 iex> Enum.into([a: 10, b: 20], HashDict.new)
@@ -513,7 +513,7 @@ iex> Enum.into([a: 10, b: 20], HashDict.new)
 ```
 The examples will be converted to:
 ```elixir
-it "Example decsription" do
+it "Example description" do
   expect(inspect input).to eq(output)
 end
 ```
@@ -526,7 +526,7 @@ iex(1)> String.to_atom((fn() -> 1 end).())
 ```
 The examples will be tested as:
 ```elixir
-it "Example decsription" do
+it "Example description" do
   expect(fn -> input end).to raise_exception(error_module, error_message)
 end
 ```
