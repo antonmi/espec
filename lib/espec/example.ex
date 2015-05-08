@@ -64,10 +64,7 @@ defmodule ESpec.Example do
   end
 
   defp extract(context, modules) do
-    context |>
-    Enum.filter(fn(struct) ->
-      Enum.member?(modules, struct.__struct__)
-    end)
+    Enum.filter(context, &Enum.member?(modules, &1.__struct__))
   end
 
   @doc "Message for skipped examples."

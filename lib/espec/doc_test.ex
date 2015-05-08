@@ -109,9 +109,7 @@ defmodule ESpec.DocTest do
 
   @doc false
   def filter_only(examples, list) do
-    Enum.filter(examples, fn(ex) ->
-      Enum.member?(list, ex.fun_arity)
-    end)
+    Enum.filter(examples, &Enum.member?(list, &1.fun_arity))
   end
 
   @doc false

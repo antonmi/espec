@@ -57,26 +57,19 @@ defmodule ESpec.Runner do
     run_async(async) ++ run_sync(sync)
   end
 
+  @doc false
   def partition_async(examples) do
-    Enum.partition(examples, fn(ex) -> 
-      ESpec.Example.extract_option(ex, :async) === true
-    end)
+    Enum.partition(examples, &ESpec.Example.extract_option(&1, :async) === true)
   end
 
   defp run_async(examples) do
     examples
-    |> Enum.map(fn(example) ->
-      Task.async(fn -> ESpec.ExampleRunner.run(example) end)
-    end)
-    |> Enum.map(fn(task) ->
-      Task.await(task, :infinity)
-    end)
+    |> Enum.map(&Task.async(fn -> ESpec.ExampleRunner.run(&1) end))
+    |> Enum.map(&Task.await(&1, :infinity))
   end
 
   defp run_sync(examples) do
-    Enum.map(examples, fn(example) ->
-      ESpec.ExampleRunner.run(example) 
-    end)
+    Enum.map(examples, &ESpec.ExampleRunner.run(&1))
   end
 
   defp filter(examples, opts) do
@@ -91,9 +84,7 @@ defmodule ESpec.Runner do
     examples
   end
 
-  defp filter_shared(examples) do
-    Enum.filter(examples, &(!&1.shared))
-  end
+  defp filter_shared(examples), do: Enum.filter(examples, &(!&1.shared))
 
   defp file_opts_filter(examples, file_opts) do
     Enum.filter(examples, fn(example) ->
