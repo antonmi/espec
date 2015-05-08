@@ -19,7 +19,7 @@ defmodule ESpec.Assertions.ListString.HaveLast do
   
   defp error_message(list, val, result, positive) do
     to = if positive, do: "to", else: "to not"
-    "Expected `#{inspect list}` #{to} have last element `#{val}` but it has `#{result}`."
+    "Expected `#{inspect list}` #{to} have last element `#{inspect val}` but it has `#{result}`."
   end
 
 end

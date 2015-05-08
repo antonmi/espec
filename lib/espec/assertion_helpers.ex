@@ -51,6 +51,9 @@ defmodule ESpec.AssertionHelpers do
   def be_printable(), do: {ESpec.Assertions.String.BePrintable, []}
   def be_valid_string(), do: {ESpec.Assertions.String.BeValidString, []}
 
+  def have_key(value), do: {ESpec.Assertions.Dict.HaveKey, value}
+  def have_value(value), do: {ESpec.Assertions.Dict.HaveValue, value}
+  def eq_dict(value), do: {ESpec.Assertions.Dict.EqDict, value}
   
   Enum.each @elixir_types, fn(type) -> 
     def unquote(String.to_atom("be_#{type}"))() do
