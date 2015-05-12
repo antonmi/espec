@@ -8,7 +8,6 @@ ESpec is inspired by RSpec and the main idea is to be close to its perfect DSL.
 
 ## Features
   * Test organization with `describe`, `context`, `it`, and etc blocks
-  * Shared examples.
   * Familiar matchers: `eq`, `be_close_to`, `raise_exception`, etc
   * Possibility to add custom matchers
   * RSpec expectation syntax: 
@@ -16,7 +15,8 @@ ESpec is inspired by RSpec and the main idea is to be close to its perfect DSL.
     - With old-style `should`: `smth1 |> should eq smth2` or `should eq smth` when `subject` is defined.
   * `before` and `finally` blocks (like RSpec `before` and `after`)
   * `let`, `let!` and `subject`
-  * Mocks with [Meck](https://github.com/eproxus/meck)
+  * Shared examples.
+  * Mocks with Meck.
   * Doc specs
 
 ## Contents
