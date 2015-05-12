@@ -3,7 +3,6 @@
 [![Hex.pm](https://img.shields.io/hexpm/v/espec.svg?style=flat-square)](https://hex.pm/packages/espec)
 
 ##### ESpec is a BDD test framework for Elixir.
-It is NOT a wrapper around ExUnit but the independent test framework written from scratch.
 
 ESpec is inspired by RSpec and the main idea is to be close to its perfect DSL.
 
