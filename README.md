@@ -367,7 +367,7 @@ expect(:espec).to be_atom  #is_atom(:espec) == true
 ... be_boolean
 ... ...
 ... ...
-... should be_tuple
+... be_tuple
 ... be_function
 ... be_function(arity)
 ```
