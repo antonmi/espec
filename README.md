@@ -258,7 +258,7 @@ defmodule SomeSpec do
   end
 end 
 ```
-##Shared Examples
+## Shared Examples
 One can reuse the examples defined in spec module.
 ```elixir
 defmodule SharedSpec do
