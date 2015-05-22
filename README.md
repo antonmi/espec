@@ -160,7 +160,7 @@ end
 ## `before` and `finally`
 `before` blocks are evaluated before the example and `finally` runs after the example.
 
-The blocks can return `{:ok, key: value, ...}`, so the keyword list will be saved in the ditionary and can be accessed in other `before` blocks, in the example, and in `finally` blocks through ['double-underscore' `__`](#double-underscore):
+The blocks can return `{:ok, key: value, ...}`, so the keyword list will be saved in the dictionary and can be accessed in other `before` blocks, in the example, and in `finally` blocks through ['double-underscore' `__`](#double-underscore):
 ```elixir
 defmodule SomeSpec do
   use ESpec
