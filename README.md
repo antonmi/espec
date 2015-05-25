@@ -410,14 +410,25 @@ Behind the scenes it makes the following:
 :meck.new(module, [:non_strict, :passthrough])
 :meck.expect(module, name, function)
 ```
-Find the explanation aboute the `:non_strict` and `:passthrough` options [here](https://github.com/eproxus/meck/blob/master/src/meck.erl)
+Find the explanation aboute the `:non_strict` and `:passthrough` options [here](https://github.com/eproxus/meck/blob/master/src/meck.erl).
 All the mocked modules are unloaded whith `:meck.unload(modules)` after each example.
 
 You can also pass a list of atom-function pairs to the `accept` function:
 ```elixir
 allow(SomeModule).to accept(f1: fn -> :f1 end, f2: fn -> :f2 end)
 ```
+One can use `:meck.passthrough/1` to call the original function:
+```elixir
+  before do
+    allow(SomeModule).to accept(:fun, fn 
+      :mocked -> "mock!"
+      _ -> :meck.passthrough([args])
+    end)
+  end
 
+  it do: expect(SomeModule.fun(:mocked)).to eq("mock!")
+  it do: expect(SomeModule.fun(2)).to eq(3)
+```
 There is also an expectation to check if the module accepted a function call:
 ```elixir
 accepted(func, args \\ :any, opts \\ [pid: :any, count: :any])
