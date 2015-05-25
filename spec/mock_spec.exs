@@ -6,6 +6,8 @@ defmodule MockSpec do
   defmodule SomeModule do
     def f, do: :f
     def m, do: :m
+
+    def f1(a), do: a
   end |> write_beam
 
   it do: expect(SomeModule.f).to eq(:f)
@@ -36,5 +38,16 @@ defmodule MockSpec do
     # it do: expect(SomeModule.f).to eq(:f)
   end
  
+  context ":meck.passthrough" do
+    before do
+      allow(SomeModule).to accept(:f1, fn 
+        AAA -> "mock! AAA"
+        _ -> :meck.passthrough([BBB])
+      end)
+    end
+
+    it do: expect(SomeModule.f1(AAA)).to eq("mock! AAA")
+    it do: expect(SomeModule.f1(BBB)).to eq(BBB)
+  end
 
 end

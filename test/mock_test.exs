@@ -7,6 +7,8 @@ defmodule MockTest do
   defmodule SomeModule do
     def f, do: :f
     def m, do: :m
+
+    def f1(a), do: a
   end |> write_beam
 
 
@@ -31,6 +33,18 @@ defmodule MockTest do
         before do: SomeModule.f(1)
         it do: expect(SomeModule).to accepted(:f, [1])
       end
+
+      context ":meck.passthrough" do
+        before do
+          allow(SomeModule).to accept(:f1, fn 
+            AAA -> "mock! AAA"
+            _ -> :meck.passthrough([BBB])
+          end)
+        end
+
+        it do: expect(SomeModule.f1(AAA)).to eq("mock! AAA")
+        it do: expect(SomeModule.f1(BBB)).to eq(BBB)
+      end
     end
 
     context "without mock" do
@@ -46,7 +60,9 @@ defmodule MockTest do
       ex3: Enum.at(SomeSpec.examples, 2),
       ex4: Enum.at(SomeSpec.examples, 3),
       ex5: Enum.at(SomeSpec.examples, 4),
-      ex6: Enum.at(SomeSpec.examples, 5)
+      ex6: Enum.at(SomeSpec.examples, 5),
+      ex7: Enum.at(SomeSpec.examples, 6),
+      ex8: Enum.at(SomeSpec.examples, 7)
     }
   end
 
@@ -82,6 +98,20 @@ defmodule MockTest do
 
   test "run ex6", context do
     example = ESpec.ExampleRunner.run(context[:ex6])
+    assert(example.result == "`\"mock! AAA\"` equals `\"mock! AAA\"`.")
+    assert(example.status == :success)
+  end
+
+  test "run ex7", context do
+    example = ESpec.ExampleRunner.run(context[:ex7])
+    assert(example.result == "`BBB` equals `BBB`.")
+    assert(example.status == :success)
+  end
+
+  test "run ex8", context do
+    example = ESpec.ExampleRunner.run(context[:ex8])
     assert(example.result == :f)
   end
+
+  
 end
