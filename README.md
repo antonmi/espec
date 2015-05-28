@@ -405,7 +405,17 @@ defmodule SomeSpec do
   it do: expect(SomeModule.func(1, 2)).to eq(3)
 end
 ```
-Behind the scenes it makes the following:
+If you don't specify the function to return espec creates two stubs for you:
+`fn -> end` and `fn(_) -> end`, which return `nil`
+```elixir
+defmodule SomeSpec do
+  use ESpec
+  before do: allow(SomeModule).to accept(:func)
+  it do: expect(SomeModule.func).to be_nil
+  it do: expect(SomeModule.func(42)).to be_nil
+end
+```
+Behind the scenes 'allow accept' makes the following:
 ```elixir
 :meck.new(module, [:non_strict, :passthrough])
 :meck.expect(module, name, function)
