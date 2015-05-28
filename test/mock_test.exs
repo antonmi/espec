@@ -54,7 +54,7 @@ defmodule MockTest do
       end 
 
       it do: expect(SomeModule.f).to be_nil
-      it do: expect(SomeModule.q).to be_nil
+      it do: expect(SomeModule.q(10)).to be_nil
     end
 
     context "without mock" do

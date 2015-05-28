@@ -12,8 +12,11 @@ defmodule ESpec.AllowTo do
           end)
         else
           Enum.each(list, &ESpec.Mock.expect(module, &1, fn -> end))
+          Enum.each(list, &ESpec.Mock.expect(module, &1, fn(_) -> end))
         end
-      {:accept, name} -> ESpec.Mock.expect(module, name, fn -> end)  
+      {:accept, name} -> 
+        ESpec.Mock.expect(module, name, fn -> end)  
+        ESpec.Mock.expect(module, name, fn(_) -> end)  
     end
   end
 
