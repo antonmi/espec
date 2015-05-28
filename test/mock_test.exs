@@ -47,6 +47,16 @@ defmodule MockTest do
       end
     end
 
+    context "stubs" do
+      before do
+        allow(SomeModule).to accept(:f)
+        allow(SomeModule).to accept([:x, :q])
+      end 
+
+      it do: expect(SomeModule.f).to be_nil
+      it do: expect(SomeModule.q).to be_nil
+    end
+
     context "without mock" do
       it do: SomeModule.f
     end
@@ -62,7 +72,9 @@ defmodule MockTest do
       ex5: Enum.at(SomeSpec.examples, 4),
       ex6: Enum.at(SomeSpec.examples, 5),
       ex7: Enum.at(SomeSpec.examples, 6),
-      ex8: Enum.at(SomeSpec.examples, 7)
+      ex8: Enum.at(SomeSpec.examples, 7),
+      ex9: Enum.at(SomeSpec.examples, 8),
+      ex10: Enum.at(SomeSpec.examples, 9)
     }
   end
 
@@ -110,6 +122,18 @@ defmodule MockTest do
 
   test "run ex8", context do
     example = ESpec.ExampleRunner.run(context[:ex8])
+    assert(example.result == "`nil` is nil.")
+    assert(example.status == :success)
+  end
+
+  test "run ex9", context do
+    example = ESpec.ExampleRunner.run(context[:ex9])
+    assert(example.result == "`nil` is nil.")
+    assert(example.status == :success)
+  end
+
+  test "run ex10", context do
+    example = ESpec.ExampleRunner.run(context[:ex10])
     assert(example.result == :f)
   end
 

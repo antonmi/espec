@@ -20,11 +20,24 @@ defmodule MockSpec do
     end
 
     it do: expect(SomeModule.f(1)).to eq("mock! 1")
+    it do: expect(SomeModule.x).to eq(:y)
     it do: expect(SomeModule.q).to eq(:w)
 
     it "SomeModule.m is not mocked" do
       expect(SomeModule.m).to eq(:m)
     end
+  end
+
+  context "stubs" do
+    before do
+      allow(SomeModule).to accept(:f)
+      allow(SomeModule).to accept([:x, :q])
+    end 
+
+    it do: expect(SomeModule.f).to be_nil
+    
+    it do: expect(SomeModule.x).to be_nil
+    it do: expect(SomeModule.q).to be_nil
   end
 
   context "without mock" do
