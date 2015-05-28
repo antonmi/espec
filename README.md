@@ -405,8 +405,8 @@ defmodule SomeSpec do
   it do: expect(SomeModule.func(1, 2)).to eq(3)
 end
 ```
-If you don't specify the function to return espec creates two stubs for you:
-`fn -> end` and `fn(_) -> end`, which return `nil`
+If you don't specify the function to return ESpec creates stubs with arity `0` and `1`:
+`fn -> end` and `fn(_) -> end`, which return `nil`.
 ```elixir
 defmodule SomeSpec do
   use ESpec
