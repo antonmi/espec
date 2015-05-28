@@ -8,6 +8,7 @@ defmodule MockSpec do
     def m, do: :m
 
     def f1(a), do: a
+    def f2(a, b), do: "#{a} and #{b}"
   end |> write_beam
 
   it do: expect(SomeModule.f).to eq(:f)
@@ -50,6 +51,11 @@ defmodule MockSpec do
         [AAA, BBB] -> "mock! AAA, BBB"
         _ -> :meck.passthrough([BBB])
       end)
+
+      allow(SomeModule).to accept(:f2, fn
+        AAA, BBB -> "mock! AAA BBB"
+        a, b -> :meck.passthrough([a, b])
+      end)
     end
 
     it do: expect(SomeModule.f(:a)).to eq("mock! :a")
@@ -58,6 +64,9 @@ defmodule MockSpec do
     it do: expect(SomeModule.f1(AAA)).to eq("mock! AAA")
     it do: expect(SomeModule.f1([AAA, BBB])).to eq("mock! AAA, BBB")
     it do: expect(SomeModule.f1(BBB)).to eq(BBB)
+
+    it do: expect(SomeModule.f2(AAA, BBB)).to eq("mock! AAA BBB")
+    it do: expect(SomeModule.f2(10, 20)).to eq("10 and 20")
   end
 
 end
