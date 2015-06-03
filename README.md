@@ -85,7 +85,6 @@ Run specific spec:
 ```sh
 mix espec spec/some_spec.exs:25
 ```
-You can specify the line number for example or context.
 
 Read the help:
 ```sh
