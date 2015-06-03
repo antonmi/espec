@@ -106,10 +106,10 @@ defmodule Mix.Tasks.Espec do
 
     ensure_espec_loaded!
     
-    spec_files = parse_spec_files(project, opts, files)
+    parse_spec_files(project, opts, files)
     
     success = ESpec.run()
-    
+
     if cover, do: cover.()
 
     System.at_exit(fn(_) -> unless success, do: exit({:shutdown, 1}) end)
@@ -174,10 +174,7 @@ defmodule Mix.Tasks.Espec do
 
     Kernel.ParallelRequire.files(spec_files)
     ESpec.Configuration.add(file_opts: files_with_opts)
-
     ESpec.Configuration.add(finish_loading_time: :os.timestamp)
-
-    spec_files
   end
 
 
