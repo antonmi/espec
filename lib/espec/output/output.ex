@@ -32,7 +32,7 @@ defmodule ESpec.Output do
 
   def do_print_result(examples, {formatter, opts}) do
     unless silent? do
-      IO.write formatter.format_result(examples, opts)
+      IO.write formatter.format_result(examples, get_times, opts)
     end
   end
 
@@ -49,8 +49,14 @@ defmodule ESpec.Output do
     end
   end
 
-  def destination do
-    :console
+  def destination, do: :console
+
+  defp get_times do
+    {
+      ESpec.Configuration.get(:start_loading_time),
+      ESpec.Configuration.get(:finish_loading_time),
+      ESpec.Configuration.get(:finish_specs_time)
+    }
   end
 
 end

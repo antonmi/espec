@@ -29,7 +29,7 @@ defmodule ESpec.Runner do
     else
       examples = run_in_random(specs, opts)
     end
-    
+    ESpec.Configuration.add([finish_specs_time: :os.timestamp])
     ESpec.Output.print_result(examples)
     !Enum.any?(ESpec.Example.failure(examples))
   end

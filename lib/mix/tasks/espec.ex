@@ -123,6 +123,8 @@ defmodule Mix.Tasks.Espec do
     Enum.each(spec_paths, &require_spec_helper(&1))
 
     files_with_opts = []
+  
+    ESpec.Configuration.add(start_loading_time: :os.timestamp)
 
     if Enum.any?(files) do
       files_with_opts = parse_files(files)
@@ -134,9 +136,11 @@ defmodule Mix.Tasks.Espec do
 
     Kernel.ParallelRequire.files(spec_files)
 
-    ESpec.Configuration.add([file_opts: files_with_opts])
-    success = ESpec.run
-
+    ESpec.Configuration.add(file_opts: files_with_opts)
+    ESpec.Configuration.add(finish_loading_time: :os.timestamp)
+    
+    success = ESpec.run()
+    
     if cover, do: cover.()
 
     System.at_exit fn _ ->

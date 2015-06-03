@@ -10,7 +10,10 @@ defmodule ESpec.Configuration do
     trace: "Alias for 'format=doc'",
     focus: "Run only examples with [focus: true]",
     order: "Run specs in the order in which they are declared",
-    test: "For test purpose"
+    test: "For test purpose",
+    start_loading_time: "Starts loading files",
+    finish_loading_time: "Finished loading",
+    finish_specs_time: "Finished specs"
   ]
 
   def add(opts) do

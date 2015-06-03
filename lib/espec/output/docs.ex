@@ -10,13 +10,14 @@ defmodule ESpec.Output.Docs do
   @status_colors [success: @green, failure: @red, pending: @yellow]
   @status_symbols [success: ".", failure: "F", pending: "*"]
 
-  def format_result(examples, _opts) do
+  def format_result(examples, times, _opts) do
     pending = ESpec.Example.pendings(examples)
     string = ""
     if Enum.any?(pending), do: string = string <> format_pending(pending)
     failed = ESpec.Example.failure(examples)
     if Enum.any?(failed), do: string = string <> format_failed(failed)
     string <> format_footer(examples, failed, pending)
+    string <> format_times(times, failed, pending)
   end
   
   def format_example(example, opts) do
@@ -58,14 +59,28 @@ defmodule ESpec.Output.Docs do
   end
 
   defp format_footer(examples, failed, pending) do
-    color = if Enum.any?(failed) do
+    color = get_color(failed, pending)
+    parts = ["#{Enum.count(examples)} examples", "#{Enum.count(failed)} failures"]
+    if Enum.any?(pending), do: parts = parts ++ ["#{Enum.count(pending)} pending"]
+    "\n\n\t#{color}#{Enum.join(parts, ", ")}#{@reset}\n\n"
+  end
+
+  defp format_times({start_loading_time, finish_loading_time, finish_specs_time}, failed, pending) do
+    color = get_color(failed, pending)
+    load_time = :timer.now_diff(finish_loading_time, start_loading_time)
+    spec_time = :timer.now_diff(finish_specs_time, finish_loading_time)
+    "\n\n\t#{color}Finished in #{us_to_sec(load_time + spec_time)} seconds"
+    <> " (#{us_to_sec(load_time)}s on load, #{us_to_sec(spec_time)}s on specs)#{@reset}\n\n"
+  end
+
+  defp us_to_sec(us), do: div(us, 10000) / 100
+
+  defp get_color(failed, pending) do
+    if Enum.any?(failed) do
       @red
     else
       if Enum.any?(pending), do: @yellow, else: @green
     end
-    parts = ["#{Enum.count(examples)} examples", "#{Enum.count(failed)} failures"]
-    if Enum.any?(pending), do: parts = parts ++ ["#{Enum.count(pending)} pending"]
-    "\n\n\t#{color}#{Enum.join(parts, ", ")}#{@reset}\n\n"
   end
 
   defp one_line_description(example) do
