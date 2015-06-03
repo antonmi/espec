@@ -10,4 +10,5 @@ defmodule ESpec.Allow do
     {:accept, list}
   end
 
+  def passthrough(args), do: :meck.passthrough(args)
 end

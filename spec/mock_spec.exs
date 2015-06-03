@@ -52,22 +52,22 @@ defmodule MockSpec do
     # it do: expect(SomeModule.f).to eq(:f)
   end
  
-  context ":meck.passthrough" do
+  context "passthrough" do
     before do
       allow(SomeModule).to accept(:f, fn 
         :a -> "mock! :a"
-        :b -> :meck.passthrough([])
+        :b -> passthrough([])
       end)
 
       allow(SomeModule).to accept(:f1, fn 
         AAA -> "mock! AAA"
         [AAA, BBB] -> "mock! AAA, BBB"
-        _ -> :meck.passthrough([BBB])
+        _ -> passthrough([BBB])
       end)
 
       allow(SomeModule).to accept(:f2, fn
         AAA, BBB -> "mock! AAA BBB"
-        a, b -> :meck.passthrough([a, b])
+        a, b -> passthrough([a, b])
       end)
     end
 

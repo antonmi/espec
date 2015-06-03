@@ -34,11 +34,11 @@ defmodule MockTest do
         it do: expect(SomeModule).to accepted(:f, [1])
       end
 
-      context ":meck.passthrough" do
+      context "passthrough" do
         before do
           allow(SomeModule).to accept(:f1, fn 
             AAA -> "mock! AAA"
-            _ -> :meck.passthrough([BBB])
+            _ -> passthrough([BBB])
           end)
         end
 
