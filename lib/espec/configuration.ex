@@ -7,6 +7,7 @@ defmodule ESpec.Configuration do
     silent: "No output",
     file_opts: "Run the specific file or spec in the file",
     format: "Specifies format: 'doc', 'html', 'json'",
+    trace: "Alias for 'format=doc'",
     focus: "Run only examples with [focus: true]",
     order: "Run specs in the order in which they are declared",
     test: "For test purpose"

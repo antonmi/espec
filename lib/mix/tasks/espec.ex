@@ -55,6 +55,7 @@ defmodule Mix.Tasks.Espec do
     * `--silent`     - no output
     * `--order`      - run examples in the order in which they are declared
     * `--format`     - choose formatter ('doc', 'html', 'json')
+    * `--trace`      - alias for `--format=doc`
     * `--cover`      - enable code coverage
 
   ## Configuration

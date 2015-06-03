@@ -40,6 +40,7 @@ defmodule ESpec.Output do
 
   defp formatter do
     format = ESpec.Configuration.get(:format)
+    if ESpec.Configuration.get(:trace), do: format = "doc"
     cond do
       format == "doc" ->
         {ESpec.Output.Docs, %{details: true}}
