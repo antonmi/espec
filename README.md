@@ -388,7 +388,7 @@ expect(function1).to change(function2, to)
 expect(function1).to change(function2, from, to) 
 ```
 
-##Custom matchers
+## Custom matchers
 You can define your own matchers!
 The only functions you should implement is `match/2`, `success_message/4`, and `error_message`.
 Read the [wiki page](https://github.com/antonmi/espec/wiki/Custom-matchers) for detailed instructions.
@@ -426,18 +426,20 @@ You can also pass a list of atom-function pairs to the `accept` function:
 ```elixir
 allow(SomeModule).to accept(f1: fn -> :f1 end, f2: fn -> :f2 end)
 ```
-One can use `:meck.passthrough/1` to call the original function:
+One can use `passthrough/1` function to call the original function:
 ```elixir
   before do
     allow(SomeModule).to accept(:fun, fn 
       :mocked -> "mock!"
-      _ -> :meck.passthrough([args])
+      _ -> passthrough([args])
     end)
   end
 
   it do: expect(SomeModule.fun(:mocked)).to eq("mock!")
   it do: expect(SomeModule.fun(2)).to eq(3)
 ```
+The `passthrough/1` just calls the `:meck.passthrough/1` from the `:meck` module.
+
 There is also an expectation to check if the module accepted a function call:
 ```elixir
 accepted(func, args \\ :any, opts \\ [pid: :any, count: :any])
