@@ -87,17 +87,28 @@ defmodule ESpec.Runner do
   defp filter_shared(examples), do: Enum.filter(examples, &(!&1.shared))
 
   defp file_opts_filter(examples, file_opts) do
-    Enum.filter(examples, fn(example) ->
-      opts = opts_for_file(example.file, file_opts)
+    grouped_by_file = Enum.group_by(examples, fn(example) -> example.file end)
+    filtered = Enum.reduce(grouped_by_file, [], fn({file, exs}, acc) ->
+      opts = opts_for_file(file, file_opts)
       line = Keyword.get(opts, :line)
       if line do
-        lines = ESpec.Example.extract_contexts(example)
-        |> Enum.map(&(&1.line))
-        Enum.member?([example.line | lines], line)
+        closest = get_closest(Enum.map(exs, &(&1.line)), line)
+        acc ++ Enum.filter(exs, &(&1.line == closest))
       else
-        true
+        acc ++ exs
       end
     end)
+    filtered
+  end
+
+  defp get_closest(arr, value) do
+    arr = Enum.sort(arr)
+    diff = abs(value - hd(arr))
+    {_d, el} = Enum.reduce(arr, {diff, hd(arr)}, fn(el, {d, e}) -> 
+      diff = abs(value - el)
+      if diff < d, do: {diff, el}, else: {d, e}
+    end)
+    el
   end
 
   defp opts_for_file(file, opts_list) do
