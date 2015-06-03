@@ -88,14 +88,8 @@ defmodule Mix.Tasks.Espec do
 
   def run(args) do
     {opts, files, _} = OptionParser.parse(args)
-
-    unless System.get_env("MIX_ENV") || Mix.env == :test do
-      Mix.raise "espec is running on environment #{Mix.env}.\n" <>
-                "It is recommended to run espec in test environment.\n" <>
-                "Please add `preferred_cli_env: [espec: :test]` to project configurations in mix.exs file.\n" <>
-                "Or set MIX_ENV explicitly (MIX_ENV=test mix espec)"
-    end
-
+    check_env!
+    
     Mix.Task.run "loadpaths", args
 
     project = Mix.Project.config
@@ -110,42 +104,15 @@ defmodule Mix.Tasks.Espec do
     Mix.shell.print_app
     Mix.Task.run "app.start", args
 
-    # Ensure espec is loaded.
-    case Application.load(:espec) do
-      :ok -> :ok
-      {:error, {:already_loaded, :espec}} -> :ok
-    end
-
-    spec_paths = project[:spec_paths] || ["spec"] 
-    spec_pattern =  project[:spec_pattern] || "*_spec.exs"
-
-    ESpec.Configuration.add(opts)
-    Enum.each(spec_paths, &require_spec_helper(&1))
-
-    files_with_opts = []
-  
-    ESpec.Configuration.add(start_loading_time: :os.timestamp)
-
-    if Enum.any?(files) do
-      files_with_opts = parse_files(files)
-      spec_files = files_with_opts |> Enum.map(fn {f,_} -> f end)
-      spec_files = Mix.Utils.extract_files(spec_files, spec_pattern)
-    else
-      spec_files = Mix.Utils.extract_files(spec_paths, spec_pattern)
-    end
-
-    Kernel.ParallelRequire.files(spec_files)
-
-    ESpec.Configuration.add(file_opts: files_with_opts)
-    ESpec.Configuration.add(finish_loading_time: :os.timestamp)
+    ensure_espec_loaded!
+    
+    spec_files = parse_spec_files(project, opts, files)
     
     success = ESpec.run()
     
     if cover, do: cover.()
 
-    System.at_exit fn _ ->
-      unless success, do: exit({:shutdown, 1})
-    end
+    System.at_exit(fn(_) -> unless success, do: exit({:shutdown, 1}) end)
   end
 
 
@@ -169,6 +136,48 @@ defmodule Mix.Tasks.Espec do
     else
       Mix.raise "Cannot run tests because spec helper file #{inspect file} does not exist"
     end
+  end
+
+  defp check_env! do
+    unless System.get_env("MIX_ENV") || Mix.env == :test do
+      Mix.raise "espec is running on environment #{Mix.env}.\n" <>
+                "It is recommended to run espec in test environment.\n" <>
+                "Please add `preferred_cli_env: [espec: :test]` to project configurations in mix.exs file.\n" <>
+                "Or set MIX_ENV explicitly (MIX_ENV=test mix espec)"
+    end
+  end
+ 
+  defp ensure_espec_loaded! do
+    case Application.load(:espec) do
+      :ok -> :ok
+      {:error, {:already_loaded, :espec}} -> :ok
+    end
+  end
+
+  defp parse_spec_files(project, opts, files) do
+    spec_paths = project[:spec_paths] || ["spec"] 
+    spec_pattern =  project[:spec_pattern] || "*_spec.exs"
+    
+    ESpec.Configuration.add(start_loading_time: :os.timestamp)
+    ESpec.Configuration.add(opts)
+    Enum.each(spec_paths, &require_spec_helper(&1))
+
+    files_with_opts = []
+
+    if Enum.any?(files) do
+      files_with_opts = parse_files(files)
+      spec_files = files_with_opts |> Enum.map(fn {f,_} -> f end)
+      spec_files = Mix.Utils.extract_files(spec_files, spec_pattern)
+    else
+      spec_files = Mix.Utils.extract_files(spec_paths, spec_pattern)
+    end
+
+    Kernel.ParallelRequire.files(spec_files)
+    ESpec.Configuration.add(file_opts: files_with_opts)
+
+    ESpec.Configuration.add(finish_loading_time: :os.timestamp)
+
+    spec_files
   end
 
 
