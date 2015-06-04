@@ -16,7 +16,7 @@ defmodule ESpec.Output.Docs do
     if Enum.any?(pending), do: string = string <> format_pending(pending)
     failed = ESpec.Example.failure(examples)
     if Enum.any?(failed), do: string = string <> format_failed(failed)
-    string <> format_footer(examples, failed, pending)
+    string = string <> format_footer(examples, failed, pending)
     string <> format_times(times, failed, pending)
   end
   
@@ -62,7 +62,7 @@ defmodule ESpec.Output.Docs do
     color = get_color(failed, pending)
     parts = ["#{Enum.count(examples)} examples", "#{Enum.count(failed)} failures"]
     if Enum.any?(pending), do: parts = parts ++ ["#{Enum.count(pending)} pending"]
-    "\n\n\t#{color}#{Enum.join(parts, ", ")}#{@reset}\n\n"
+    "\n\n\t#{color}#{Enum.join(parts, ", ")}#{@reset}"
   end
 
   defp format_times({start_loading_time, finish_loading_time, finish_specs_time}, failed, pending) do
