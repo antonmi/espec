@@ -1,7 +1,7 @@
 defmodule ESpec.AssertionHelpers do
   @moduledoc """
   Defines helper functions for modules which use ESpec.
-  These fucntions wraps arguments for ESpec.ExpectTo module.
+  These functions wraps arguments for ESpec.ExpectTo module.
   See `ESpec.Assertion` module for corresponding 'assertion modules'
   """
 
@@ -14,7 +14,7 @@ defmodule ESpec.AssertionHelpers do
   def be_between(min, max), do: {ESpec.Assertions.BeBetween, [min, max]}
   def be_close_to(value, delta), do: {ESpec.Assertions.BeCloseTo, [value, delta]}
   def match(value), do: {ESpec.Assertions.Match, value}
-  
+
   def raise_exception(exception, message), do: {ESpec.Assertions.RaiseException, [exception, message]}
   def raise_exception(exception), do: {ESpec.Assertions.RaiseException, [exception]}
   def raise_exception(), do: {ESpec.Assertions.RaiseException, []}
@@ -54,8 +54,8 @@ defmodule ESpec.AssertionHelpers do
   def have_key(value), do: {ESpec.Assertions.Dict.HaveKey, value}
   def have_value(value), do: {ESpec.Assertions.Dict.HaveValue, value}
   def eq_dict(value), do: {ESpec.Assertions.Dict.EqDict, value}
-  
-  Enum.each @elixir_types, fn(type) -> 
+
+  Enum.each @elixir_types, fn(type) ->
     def unquote(String.to_atom("be_#{type}"))() do
       {ESpec.Assertions.BeType, unquote(Macro.escape(type))}
     end
