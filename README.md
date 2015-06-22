@@ -463,8 +463,8 @@ defmodule SomeSpec do
   describe "with options" do
     defmodule Server do
       def call(a, b) do
-  ESpec.SomeModule.func(a, b)
-  ESpec.SomeModule.func(a, b)
+        ESpec.SomeModule.func(a, b)
+        ESpec.SomeModule.func(a, b)
       end
     end
 
