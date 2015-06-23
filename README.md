@@ -7,17 +7,17 @@
 ESpec is inspired by RSpec and the main idea is to be close to its perfect DSL.
 
 ## Features
-  * Test organization with `describe`, `context`, `it`, and etc blocks
-  * Familiar matchers: `eq`, `be_close_to`, `raise_exception`, etc
-  * Possibility to add custom matchers
+  * Test organization with `describe`, `context`, `it`, and etc blocks.
+  * Familiar matchers: `eq`, `be_close_to`, `raise_exception`, etc.
+  * Possibility to add custom matchers.
   * RSpec expectation syntax: 
     - With `expect` helper: `expect(smth1).to eq(smth2)` or `is_expected.to eq(smth)` when `subject` is defined;
     - With old-style `should`: `smth1 |> should eq smth2` or `should eq smth` when `subject` is defined.
-  * `before` and `finally` blocks (like RSpec `before` and `after`)
-  * `let`, `let!` and `subject`
+  * `before` and `finally` blocks (like RSpec `before` and `after`).
+  * `let`, `let!` and `subject`.
   * Shared examples.
   * Mocks with Meck.
-  * Doc specs
+  * Doc specs.
 
 ## Contents
 - [Installation](#installation)
