@@ -67,7 +67,9 @@ end
 ```
 
 Or run with `MIX_ENV=test`:
-`MIX_ENV=test mix espec`
+```sh
+MIX_ENV=test mix espec`
+```
 
 Place your `_spec.exs` files into `spec` folder. `use ESpec` in the 'spec module'.
 ```elixir
