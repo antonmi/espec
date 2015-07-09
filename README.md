@@ -305,6 +305,8 @@ Don't use `async: true` if you change the global state in your specs!
 ```elixir
 expect(actual).to eq(expected)  # passes if actual == expected
 expect(actual).to eql(expected) # passes if actual === expected
+expect(actual).to be_close_to(expected, delta)
+expect(actual).to be_between(hard_place, rock)
 ```
 #### Comparisons
 Can be used with `:>`, `:<`, `:>=`, `:<=`, and etc. 
