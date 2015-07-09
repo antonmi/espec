@@ -1,5 +1,9 @@
 defmodule ESpec.Assertions.String.EndWith do
-
+  @moduledoc """
+  Defines 'end_with' assertion.
+  
+  it do: expect(string).to end_with(value)
+  """
   use ESpec.Assertions.Interface
 
   defp match(string, val) do

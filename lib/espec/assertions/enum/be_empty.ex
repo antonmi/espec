@@ -1,5 +1,9 @@
 defmodule ESpec.Assertions.Enum.BeEmpty do
-
+  @moduledoc """
+  Defines 'be_empty' assertion.
+  
+  it do: expect(collection).to be_empty
+  """
   use ESpec.Assertions.Interface
 
   defp match(enum, _data) do
@@ -19,5 +23,4 @@ defmodule ESpec.Assertions.Enum.BeEmpty do
       "Expected `#{inspect enum}` to not be empty, but it is."
     end
   end
-
 end

@@ -1,5 +1,9 @@
 defmodule ESpec.Assertions.Enum.HaveAll do
-
+  @moduledoc """
+  Defines 'have_all' assertion.
+  
+  it do: expect(collection).to have_all(func)
+  """
   use ESpec.Assertions.Interface
 
   defp match(enum, func) do

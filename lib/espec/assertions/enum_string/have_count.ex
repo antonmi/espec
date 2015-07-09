@@ -1,5 +1,11 @@
 defmodule ESpec.Assertions.EnumString.HaveCount do
-
+  @moduledoc """
+  Defines 'have_count' assertion.
+  
+  it do: expect(enum).to have_count(value)
+  
+  it do: expect(string).to have_count(value)
+  """
   use ESpec.Assertions.Interface
 
   defp match(enum, val) when is_binary(enum) do

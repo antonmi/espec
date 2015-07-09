@@ -1,5 +1,9 @@
 defmodule ESpec.Assertions.Enum.HaveMin do
-
+  @moduledoc """
+  Defines 'have_min' assertion.
+  
+  it do: expect(collection).to have_min(value)
+  """
   use ESpec.Assertions.Interface
 
   defp match(enum, val) do
@@ -16,5 +20,4 @@ defmodule ESpec.Assertions.Enum.HaveMin do
     to = if positive, do: "to be", else: "not to be"
     "Expected the minimum value of `#{inspect enum}` #{to} `#{val}` but the minimum is `#{result}`."
   end
-
 end

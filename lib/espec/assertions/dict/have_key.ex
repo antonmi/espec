@@ -1,5 +1,9 @@
 defmodule ESpec.Assertions.Dict.HaveKey do
-
+  @moduledoc """
+  Defines 'have_key' assertion.
+  
+  it do: expect(dict).to have_key(value)
+  """
   use ESpec.Assertions.Interface
 
   defp match(dict, val) do

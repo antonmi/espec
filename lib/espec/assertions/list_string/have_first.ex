@@ -1,5 +1,11 @@
 defmodule ESpec.Assertions.ListString.HaveFirst do
+  @moduledoc """
+  Defines 'have_first' assertion.
+  
+  it do: expect(list).to have_first(value)
 
+  it do: expect(string).to have_first(value)
+  """
   use ESpec.Assertions.Interface
 
   defp match(list, val) when is_binary(list) do

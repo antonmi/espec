@@ -1,5 +1,11 @@
 defmodule ESpec.Assertions.Interface do
-
+  @moduledoc """
+  Defines the assertion interface.
+  There are 3 function should be defined in the 'assertion' module:
+  - `match/2`;
+  - `success_message/4`;
+  - `error_message/4`.
+  """
   defmacro __using__(_opts) do
     quote do
       def assert(subject, data, positive \\ true) do
@@ -17,5 +23,4 @@ defmodule ESpec.Assertions.Interface do
       end
     end
   end
-
 end

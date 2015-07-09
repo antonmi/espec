@@ -1,5 +1,9 @@
 defmodule ESpec.Assertions.Be do
-
+  @moduledoc """
+  Defines 'be' assertion.
+  
+  it do: expect(2).to be :>, 1
+  """
   use ESpec.Assertions.Interface
 
   defp match(subject, [op, val]) do
@@ -12,9 +16,7 @@ defmodule ESpec.Assertions.Be do
     "`#{inspect subject} #{op} #{inspect val}` #{to}."
   end  
 
-
   defp error_message(subject, [op, val], _result, positive) do
     "Expected `#{inspect subject} #{op} #{inspect val}` to be `#{positive}` but got `#{!positive}`."
   end
-
 end

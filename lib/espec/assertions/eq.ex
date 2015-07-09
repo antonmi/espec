@@ -1,5 +1,9 @@
 defmodule ESpec.Assertions.Eq do
-
+  @moduledoc """
+  Defines 'eq' (==) assertion.
+  
+  it do: expect(actual).to eq(expected)
+  """
   use ESpec.Assertions.Interface
 
   defp match(subject, value) do
@@ -17,5 +21,4 @@ defmodule ESpec.Assertions.Eq do
     but = if positive, do: "doesn't", else: "does"
     "Expected `#{inspect subject}` #{to} equals (==) `#{inspect data}`, but it #{but}."
   end
-
 end

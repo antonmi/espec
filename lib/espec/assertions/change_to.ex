@@ -1,4 +1,9 @@
 defmodule ESpec.Assertions.ChangeTo do
+  @moduledoc """
+  Defines 'change' assertion.
+  
+  it do: expect(function1).to change(function2, to)
+  """
   use ESpec.Assertions.Interface
 
   defp match(subject, [func, value]) do
@@ -28,5 +33,4 @@ defmodule ESpec.Assertions.ChangeTo do
     to = if positive, do: "to", else: "not to"
     "Expected `#{inspect subject}` #{to} change the value of `#{inspect func}` to `#{inspect value}`, but the initial value is `#{inspect value}`"
   end
-
 end

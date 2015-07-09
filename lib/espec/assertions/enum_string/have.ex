@@ -1,5 +1,11 @@
 defmodule ESpec.Assertions.EnumString.Have do
-
+  @moduledoc """
+  Defines 'have' assertion.
+  
+  it do: expect(enum).to have(value)
+  
+  it do: expect(string).to have(value)
+  """
   use ESpec.Assertions.Interface
 
   defp match(enum, val) when is_binary(enum) do

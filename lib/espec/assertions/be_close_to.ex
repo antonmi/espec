@@ -1,5 +1,9 @@
 defmodule ESpec.Assertions.BeCloseTo do
-
+  @moduledoc """
+  Defines 'be_close_to' assertion.
+  
+  it do: expect(2).to be_close_to(1, 3)
+  """
   use ESpec.Assertions.Interface
 
   defp match(subject, data) do

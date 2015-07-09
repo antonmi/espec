@@ -1,5 +1,11 @@
 defmodule ESpec.Assertions.ThrowTerm do
+  @moduledoc """
+  Defines 'throw_term' assertion.
   
+  it do: expect(function).to throw_term
+  
+  it do: expect(function).to throw_term(term)
+  """
   use ESpec.Assertions.Interface
 
   defp match(subject, []) do

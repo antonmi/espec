@@ -1,5 +1,9 @@
 defmodule ESpec.Assertions.Accepted do
-
+  @moduledoc """
+  Defines 'accepted' assertion.
+  
+  it do: expect(SomeModule).to accepted(:func)
+  """
   use ESpec.Assertions.Interface
 
   defp match(subject, [func, args, opts]) do
@@ -66,5 +70,4 @@ defmodule ESpec.Assertions.Accepted do
     count = if opts_count == :any, do: "at least once", else: "`#{opts_count}` times"
     "Expected `#{subject}` #{to} accept `#{inspect func}` with `#{inspect args}` in process `#{inspect pid}` #{count}, but #{but}."
   end
-
 end

@@ -1,4 +1,9 @@
 defmodule ESpec.Assertions.Match do
+  @moduledoc """
+  Defines 'match' (=~) assertion.
+  
+  it do: expect(actual).to match(expected)
+  """
   use ESpec.Assertions.Interface
 
   defp match(subject, value) do

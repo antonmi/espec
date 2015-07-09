@@ -1,5 +1,9 @@
 defmodule ESpec.Assertions.BeBetween do
-
+  @moduledoc """
+  Defines 'be_between' assertion.
+  
+  it do: expect(2).to be_between(1, 3)
+  """
   use ESpec.Assertions.Interface
 
   defp match(subject, [l, r]) do
@@ -17,5 +21,4 @@ defmodule ESpec.Assertions.BeBetween do
     but = if result, do: "it is", else: "it isn't"
     "Expected `#{inspect subject}` #{to} be between `#{inspect l}` and `#{inspect r}`, but #{but}."
   end
-
 end

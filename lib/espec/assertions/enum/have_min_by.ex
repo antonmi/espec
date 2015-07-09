@@ -1,5 +1,9 @@
 defmodule ESpec.Assertions.Enum.HaveMinBy do
-
+  @moduledoc """
+  Defines 'have_min_by' assertion.
+  
+  it do: expect(collection).to have_min_by(func, value)
+  """
   use ESpec.Assertions.Interface
 
   defp match(enum, [func, val]) do

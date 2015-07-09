@@ -1,5 +1,9 @@
 defmodule ESpec.Assertions.String.StartWith do
-
+  @moduledoc """
+  Defines 'start_with' assertion.
+  
+  it do: expect(string).to start_with(value)
+  """
   use ESpec.Assertions.Interface
 
   defp match(string, val) do

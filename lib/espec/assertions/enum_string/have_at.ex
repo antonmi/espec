@@ -1,5 +1,11 @@
 defmodule ESpec.Assertions.EnumString.HaveAt do
-
+  @moduledoc """
+  Defines 'have_at' assertion.
+  
+  it do: expect(enum).to have_at(pos, value)
+  
+  it do: expect(string).to have_at(pos, value)
+  """
   use ESpec.Assertions.Interface
 
   defp match(enum, [pos, val]) when is_binary(enum) do

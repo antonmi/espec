@@ -16,9 +16,7 @@ defmodule ESpec.Runner do
     {:ok, state}
   end
 
-  @doc """
-  Runs all examples.
-  """
+  @doc "Runs all examples."
   def run, do: GenServer.call(__MODULE__, :run, :infinity)
 
   def handle_call(:run, _pid, state) do

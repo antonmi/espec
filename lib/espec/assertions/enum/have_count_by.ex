@@ -1,5 +1,9 @@
 defmodule ESpec.Assertions.Enum.HaveCountBy do
-
+  @moduledoc """
+  Defines 'have_count_by' assertion.
+  
+  it do: expect(collection).to have_count_by(func, value)
+  """
   use ESpec.Assertions.Interface
 
   defp match(enum, [func, val]) do
@@ -16,6 +20,4 @@ defmodule ESpec.Assertions.Enum.HaveCountBy do
     to = if positive, do: "to", else: "to not"
     "Expected `#{inspect enum}` #{to} have count_by `#{inspect func}` be equal to `#{val}` but it has `#{result}` elements."
   end
-
-
 end

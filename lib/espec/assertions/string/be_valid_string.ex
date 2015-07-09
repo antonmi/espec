@@ -1,5 +1,9 @@
 defmodule ESpec.Assertions.String.BeValidString do
-
+  @moduledoc """
+  Defines 'be_valid_string' assertion.
+  
+  it do: expect(string).to be_valid_string
+  """
   use ESpec.Assertions.Interface
 
   defp match(string, _val) do

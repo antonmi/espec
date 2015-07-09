@@ -1,5 +1,13 @@
 defmodule ESpec.Assertions.RaiseException do
+  @moduledoc """
+  Defines 'raise_exception' assertion.
+  
+  it do: expect(function).to raise_exception
 
+  it do: expect(function).to raise_exception(ErrorModule)
+
+  it do: expect(function).to raise_exception(ErrorModule, "message")
+  """
   use ESpec.Assertions.Interface
 
   defp match(subject, []) do
@@ -79,5 +87,4 @@ defmodule ESpec.Assertions.RaiseException do
     to = if positive, do: "to", else: "not to"
     "Expected #{inspect subject} #{to} raise the `#{module}` exception with the message `#{message}`, but the `#{err_module}` exception was raised with the message `#{err_message}`."
   end
-
 end

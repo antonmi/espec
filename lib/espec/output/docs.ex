@@ -1,5 +1,7 @@
 defmodule ESpec.Output.Docs do
-
+  @moduledoc """
+  Generate plain colored text output.
+  """
   @green IO.ANSI.green
   @red IO.ANSI.red
   @cyan IO.ANSI.cyan
@@ -10,6 +12,7 @@ defmodule ESpec.Output.Docs do
   @status_colors [success: @green, failure: @red, pending: @yellow]
   @status_symbols [success: ".", failure: "F", pending: "*"]
 
+  @doc "Format the final result."
   def format_result(examples, times, _opts) do
     pending = ESpec.Example.pendings(examples)
     string = ""
@@ -20,6 +23,7 @@ defmodule ESpec.Output.Docs do
     string <> format_times(times, failed, pending)
   end
   
+  @doc "Format an example result."
   def format_example(example, opts) do
     color = color_for_status(example.status)
     symbol = symbol_for_status(example.status)
@@ -110,5 +114,4 @@ defmodule ESpec.Output.Docs do
 
   defp color_for_status(status), do: Keyword.get(@status_colors, status)
   defp symbol_for_status(status), do: Keyword.get(@status_symbols, status)
-
 end

@@ -1,5 +1,9 @@
 defmodule ESpec.Assertions.Enum.HaveMax do
-
+  @moduledoc """
+  Defines 'have_max' assertion.
+  
+  it do: expect(collection).to have_max(value)
+  """
   use ESpec.Assertions.Interface
 
   defp match(enum, val) do
@@ -16,5 +20,4 @@ defmodule ESpec.Assertions.Enum.HaveMax do
     to = if positive, do: "to be", else: "not to be"
     "Expected the maximum value of `#{inspect enum}` #{to} `#{val}` but the maximum is `#{result}`."
   end
-
 end

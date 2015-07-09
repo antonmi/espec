@@ -1,5 +1,9 @@
 defmodule ESpec.Assertions.String.BePrintable do
-
+  @moduledoc """
+  Defines 'be_printable' assertion.
+  
+  it do: expect(string).to be_printable
+  """
   use ESpec.Assertions.Interface
 
   defp match(string, _val) do

@@ -1,5 +1,9 @@
 defmodule ESpec.Assertions.List.HaveTl do
-
+  @moduledoc """
+  Defines 'have_tl' assertion.
+  
+  it do: expect(list).to have_tl(value)
+  """
   use ESpec.Assertions.Interface
 
   defp match(list, val) do
@@ -16,5 +20,4 @@ defmodule ESpec.Assertions.List.HaveTl do
     to = if positive, do: "to", else: "to not"
     "Expected `#{inspect list}` #{to} have `tl` `#{inspect val}` but it has `#{inspect result}`."
   end
-
 end

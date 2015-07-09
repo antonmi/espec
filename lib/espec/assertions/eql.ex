@@ -1,4 +1,9 @@
 defmodule ESpec.Assertions.Eql do
+  @moduledoc """
+  Defines 'eql' (===) assertion.
+  
+  it do: expect(actual).to eql(expected)
+  """
   use ESpec.Assertions.Interface
 
   defp match(subject, value) do

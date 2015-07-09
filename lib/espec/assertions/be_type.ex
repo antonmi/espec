@@ -1,5 +1,9 @@
 defmodule ESpec.Assertions.BeType do
-
+  @moduledoc """
+  Defines 'be_type' assertion.
+  
+  it do: expect("abc").to be_binary
+  """
   use ESpec.Assertions.Interface
 
   defp match(subject, :null) do
@@ -49,5 +53,4 @@ defmodule ESpec.Assertions.BeType do
     but = if positive, do: "isn't", else: "is"
     "Expected `#{inspect subject}` #{to} be `#{type}` but it #{but}."
   end
-
 end

@@ -1,5 +1,11 @@
 defmodule ESpec.Assertions.ListString.HaveLast do
-
+  @moduledoc """
+  Defines 'have_last' assertion.
+  
+  it do: expect(list).to have_last(value)
+  
+  it do: expect(string).to have_last(value)
+  """
   use ESpec.Assertions.Interface
 
   defp match(list, val) when is_binary(list) do
