@@ -176,6 +176,4 @@ defmodule Mix.Tasks.Espec do
     ESpec.Configuration.add(file_opts: files_with_opts)
     ESpec.Configuration.add(finish_loading_time: :os.timestamp)
   end
-
-
 end

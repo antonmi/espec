@@ -1,4 +1,7 @@
 defmodule ESpec.ExampleRunner do
+  @moduledoc """
+  Contains all the functions need to run a 'spec' example.
+  """
 
   @doc """
   Runs one specific example and returns an `%ESpec.Example{}` struct.
@@ -22,7 +25,7 @@ defmodule ESpec.ExampleRunner do
     end
   end
 
-  def run_example(example) do
+  defp run_example(example) do
     assigns = %{} 
     |> run_config_before(example)
     |> run_befores_and_lets(example)
@@ -43,13 +46,13 @@ defmodule ESpec.ExampleRunner do
     end
   end
 
-  def run_skipped(example) do
+  defp run_skipped(example) do
     example = %ESpec.Example{example | status: :pending, result: ESpec.Example.skip_message(example)}
     ESpec.Output.example_info(example)
     example
   end
 
-  def run_pending(example) do 
+  defp run_pending(example) do 
     example = %ESpec.Example{example | status: :pending, result: ESpec.Example.pending_message(example)}
     ESpec.Output.example_info(example)
     example
@@ -104,5 +107,4 @@ defmodule ESpec.ExampleRunner do
   end
 
  defp unload_mocks, do: ESpec.Mock.unload
-
 end

@@ -8,7 +8,6 @@ defmodule ESpec.ExampleHelpers do
   @skipped ~w(xit xexample xspecify)a
   @focused ~w(fit fexample fspecify focus)a
 
-  
   @doc """
   Adds example to @examples and defines function to wrap the spec.
   Sends 'double-underscore `__`' variable to the example block.
@@ -117,5 +116,4 @@ defmodule ESpec.ExampleHelpers do
   defp random_atom(arg) do
     String.to_atom("example_#{ESpec.Support.word_chars(arg)}_#{ESpec.Support.random_string}")
   end
-
 end

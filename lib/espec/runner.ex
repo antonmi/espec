@@ -1,13 +1,16 @@
 defmodule ESpec.Runner do
   @moduledoc """
   Defines functions which runs the examples.
+  Uses GenServer behavior.
   """
   use GenServer
 
+  @doc "Starts the `ESpec.Runner` server"
   def start do
     GenServer.start_link(__MODULE__, [], name: __MODULE__)
   end
 
+  @doc "Initiate the `ESpec.Runner` server with specs and options"
   def init(_args) do
     state = %{specs: ESpec.specs, opts: ESpec.Configuration.all}
     {:ok, state}
@@ -124,5 +127,4 @@ defmodule ESpec.Runner do
       example.opts[:focus] || Enum.any?(contexts, &(&1.opts[:focus]))
     end)
   end
-
 end

@@ -1,6 +1,6 @@
 defmodule ESpec.DocExample do
   @moduledoc """
-  Defines the 'extract' method with parse module content and return %ESpec.DocExample{} structs.
+  Defines the 'extract' method with parse module content and return `%ESpec.DocExample{}` structs.
   The struct is used by 'ESpec.DocTest' module to build the specs.
   """
 
@@ -10,7 +10,7 @@ defmodule ESpec.DocExample do
   rhs - console output,
   fun_arity - {fun, arity} tuple,
   line - line where function is definde,
-  type - define the doc spec type (:test, :error to :insepct).
+  type - define the doc spec type (:test, :error or :inspect).
   Read 'ESpec.DocTest' doc for more info.
   """
   defstruct lhs: nil, rhs: nil, fun_arity: nil, line: nil, type: :test
@@ -237,5 +237,4 @@ defmodule ESpec.DocExample do
     test = %{test | exprs: Enum.reverse(exprs)}
     [test | t]
   end
-
 end

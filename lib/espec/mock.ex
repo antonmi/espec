@@ -5,7 +5,7 @@ defmodule ESpec.Mock do
   The :non_strict allows create mocks for modules and functions that do not exist.
   The :passthroug options allow call other functions in the module.
   Information about mock is stored in the ':espec_mock_agent' set.
-  Mock are being unloaded after each example
+  Mock are being unloaded after each example.
   """
   @agent_name :espec_mock_agent
 

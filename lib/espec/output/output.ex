@@ -1,5 +1,5 @@
 defmodule ESpec.Output do
-
+  
   use GenServer
 
   def start do

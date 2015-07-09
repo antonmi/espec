@@ -23,9 +23,7 @@ defmodule ESpec.DocTest do
     The examples will be converted to: expect(fn -> input end).to raise_exception(error_module, error_message).
   """
 
-  @doc """
-    Parses the module and builds 'specs'.
-  """
+  @doc "Parses the module and builds 'specs'."
   defmacro doctest(module, opts \\ []) do
     do_import = Keyword.get(opts, :import, false)
     quote do

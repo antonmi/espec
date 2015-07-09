@@ -24,5 +24,4 @@ defmodule ESpec.Finally do
   end
 
   defp random_finally_name, do: String.to_atom("finally_#{ESpec.Support.random_string}")
-
 end

@@ -66,16 +66,11 @@ defmodule ESpec do
     ESpec.Output.start
   end
 
-  defp start_specs_agent do
-    Agent.start_link(fn -> [] end, name: @spec_agent_name)
-  end
+  @doc "Returns all examples."
+  def specs, do: Agent.get(@spec_agent_name, &(&1))
 
-  def specs do
-    Agent.get(@spec_agent_name, &(&1))
-  end
+  @doc "Adds example to the agent."
+  def add_spec(module), do: Agent.update(@spec_agent_name, &[module | &1])
 
-  def add_spec(module) do
-    Agent.update(@spec_agent_name, &[module | &1])
-  end
-
+  defp start_specs_agent, do: Agent.start_link(fn -> [] end, name: @spec_agent_name)
 end

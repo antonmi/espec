@@ -1,5 +1,4 @@
 defmodule Mix.Tasks.Espec.Init do
-
 	use Mix.Task
 	import Mix.Generator
 
@@ -71,5 +70,4 @@ defmodule Mix.Tasks.Espec.Init do
 		pending "There are so many features to test!"
 	end 
 	"""
-
 end

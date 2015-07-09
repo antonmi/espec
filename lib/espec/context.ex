@@ -100,6 +100,4 @@ defmodule ESpec.Context do
       quote do: context([focus: true], do: unquote(block))
     end
   end
-
-
 end

@@ -31,19 +31,13 @@ defmodule ESpec.Example do
   end
 
   @doc "Filters success examples."
-  def success(results) do
-    results |> Enum.filter(&(&1.status == :success))
-  end
+  def success(results), do: Enum.filter(results, &(&1.status == :success))
 
   @doc "Filters failed examples."
-  def failure(results) do
-    results |> Enum.filter(&(&1.status === :failure))
-  end
+  def failure(results), do: Enum.filter(results, &(&1.status === :failure))
 
   @doc "Filters pending examples."
-  def pendings(results) do
-    results |> Enum.filter(&(&1.status === :pending))
-  end
+  def pendings(results), do: Enum.filter(results, &(&1.status === :pending))
 
   @doc "Extracts specific structs from example context."
   def extract_befores_and_lets(example), do: extract(example.context, [ESpec.Before, ESpec.Let])
@@ -85,6 +79,4 @@ defmodule ESpec.Example do
       "Pending with message: #{example.opts[:pending]}."
     end
   end
-
-  
 end
