@@ -9,7 +9,10 @@ defmodule ESpec.Mock do
   """
   @agent_name :espec_mock_agent
 
-  @doc "Creates mock"
+  @doc """
+  Creates new mock using :meck. The :meck options are [:non_strict, :passthrough]
+  Stores mock in agent to remove it after spec.
+  """
   def expect(module, name, function) do
     try do
       :meck.new(module, [:non_strict, :passthrough])
@@ -24,14 +27,14 @@ defmodule ESpec.Mock do
     agent_put({module, self})
   end
 
-  @doc "Unload modules at the end of examples"
+  @doc "Unloads modules at the end of example"
   def unload do
     modules = agent_get(self) |> Enum.map(fn{m, _p} -> m end)
     :meck.unload(modules)
     agent_del(self)
   end
 
-  @doc "Start Agent to save mocked modules."
+  @doc "Starts Agent to save mocked modules."
   def start_agent do
     Agent.start_link(fn -> HashSet.new end, name: @agent_name)
   end
@@ -52,5 +55,4 @@ defmodule ESpec.Mock do
   defp agent_put(key) do
     Agent.update(@agent_name, &(Set.put(&1, key)))
   end
-
 end

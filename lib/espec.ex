@@ -42,9 +42,16 @@ defmodule ESpec do
     end
   end
 
+  @doc """
+  Allows to set the config options.
+  ESpec.configure(fn(config) ->
+    config.key value
+    config.another_key another_value
+  end)
+  """
   def configure(func), do: ESpec.Configuration.configure(func)
 
-  @doc "Runs the examples and prints results"
+  @doc "Runs the examples"
   def run do
     ESpec.Runner.start
     ESpec.Runner.run

@@ -9,13 +9,9 @@ defmodule ESpec.ExpectTo do
     apply(module, :assert, [subject, data, positive])
   end
 
-  @doc "Just `to` with `positive = false`."
+  @doc "Just apply `ESpec.ExpectTo.to` with `positive = false`."
   def to_not(rhs, {ESpec.ExpectTo, subject}), do: to(rhs, {ESpec.ExpectTo, subject}, false)
 
   @doc "Alias fo `to_not`."
   def not_to(rhs, {ESpec.ExpectTo, subject}), do: to(rhs, {ESpec.ExpectTo, subject}, false)
-
-  
 end
-
-

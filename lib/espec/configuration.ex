@@ -1,5 +1,8 @@
 defmodule ESpec.Configuration do
-  
+  @moduledoc """
+  Handles ESpec configuraions.
+  @list contains all available confitg options.
+  """
   @list [
     hello: "Description",
     before: "Defines before hook",
@@ -16,6 +19,11 @@ defmodule ESpec.Configuration do
     finish_specs_time: "Finished specs"
   ]
 
+  @doc """
+  Accepts a keyword of options.
+  Puts options into application environment.
+  Allows only whitelisted options.
+  """
   def add(opts) do
     opts |> Enum.each fn {key, val} ->
       if Enum.member?(Keyword.keys(@list), key) do
@@ -24,24 +32,21 @@ defmodule ESpec.Configuration do
     end
   end
 
-  def get(key) do
-    Application.get_env(:espec, key)
-  end
+  @doc "Returns the value associated with key."
+  def get(key), do: Application.get_env(:espec, key)
+  
+  @doc "Returns all options."
+  def all, do: Application.get_all_env(:espec)
 
-  def all do
-    Application.get_all_env(:espec)
-  end
-
-  def configure(func) do
-    func.({ESpec.Configuration})
-  end
+  @doc """
+  Allows to set the config options.
+  See `ESpec.configure/1`.
+  """
+  def configure(func), do: func.({ESpec.Configuration})
 
   Keyword.keys(@list) |> Enum.each fn(func) ->
     def unquote(func)(value, {ESpec.Configuration}) do
       ESpec.Configuration.add([{unquote(func), value}])
     end
   end
-
 end
-
-

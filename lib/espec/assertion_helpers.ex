@@ -1,7 +1,7 @@
 defmodule ESpec.AssertionHelpers do
   @moduledoc """
   Defines helper functions for modules which use ESpec.
-  These functions wraps arguments for ESpec.ExpectTo module.
+  These functions wrap arguments for ESpec.ExpectTo module.
   See `ESpec.Assertion` module for corresponding 'assertion modules'
   """
 
@@ -64,5 +64,5 @@ defmodule ESpec.AssertionHelpers do
   def be_function(arity), do: {ESpec.Assertions.BeType, [:function, arity]}
 
   def accepted(func, args \\ :any, opts \\ [pid: :any, count: :any]), do: {ESpec.Assertions.Accepted, [func, args, opts]}
-
 end
+

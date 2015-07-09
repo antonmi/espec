@@ -14,10 +14,7 @@ defmodule ESpec.Expect do
     end
   end
 
-  @doc "Wrapper for `ESpec.ExpectTo`. Passes the value returned by the block."
-  def expect(do: value), do: {ESpec.ExpectTo, value}
-
   @doc "Wrapper for `ESpec.ExpectTo`."
+  def expect(do: value), do: {ESpec.ExpectTo, value}
   def expect(value), do: {ESpec.ExpectTo, value}
-
 end

@@ -1,7 +1,9 @@
 defmodule ESpec.AllowTo do
+  @moduledoc """
+  Defines `to/2` function which make the mock.
+  """
   
-  require IEx
-
+  @doc "Makes specific mock with ESpec.Mock.expect/3."
   def to(mock, {ESpec.AllowTo, module}) do
     case mock do
       {:accept, name, function} -> ESpec.Mock.expect(module, name, function)
@@ -16,9 +18,7 @@ defmodule ESpec.AllowTo do
         end
       {:accept, name} -> 
         ESpec.Mock.expect(module, name, fn -> end)  
-        ESpec.Mock.expect(module, name, fn(_) -> end)  
+        ESpec.Mock.expect(module, name, fn(_) -> end) 
     end
   end
-
-
 end

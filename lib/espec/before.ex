@@ -7,12 +7,12 @@ defmodule ESpec.Before do
   and in example by `__` (`__[:key]`).
   """
 
-  @doc "Struct has random fuction name."
+  @doc "Struct has 'spec' module name and random fuction name."
   defstruct module: nil, function: nil
 
   @doc """
-  Adds %ESpec.Before sutructs to the context and
-  defines random function with random name which will be called when example is run.
+  Adds %ESpec.Before sutructs to the @context and
+  defines a function with random name which will be called when example is run.
   """
   defmacro before(do: block) do
     function = random_before_name
@@ -25,5 +25,4 @@ defmodule ESpec.Before do
   end
 
   defp random_before_name, do: String.to_atom("before_#{ESpec.Support.random_string}")
-
 end
