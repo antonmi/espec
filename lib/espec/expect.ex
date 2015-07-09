@@ -1,6 +1,6 @@
 defmodule ESpec.Expect do
   @moduledoc """
-  Defines helper functions for modules which use ESpec.
+  Defines `expect` and `is_expected` helper functions.
   These fucntions wrap arguments for ESpec.ExpectTo module.
   """
 
