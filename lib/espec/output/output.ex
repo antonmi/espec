@@ -12,6 +12,7 @@ defmodule ESpec.Output do
 
   @doc "Initiates server with configuration options and formatter"
   def init(args) do
+    if output_to_file?, do: create_out_file!
     state = %{opts: ESpec.Configuration.all, formatter: args[:formatter]}
     {:ok, state}
   end
@@ -20,7 +21,11 @@ defmodule ESpec.Output do
   def example_info(example), do: GenServer.cast(__MODULE__, {:example_info, example})
   
   @doc "Generates suite info"
-  def print_result(examples), do: GenServer.call(__MODULE__, {:print_result, examples})
+  def print_result(examples) do
+   result = GenServer.call(__MODULE__, {:print_result, examples})
+   if output_to_file?, do: close_out_file
+   result
+  end
   
   @doc false
   def handle_cast({:example_info, example}, state) do
@@ -37,14 +42,22 @@ defmodule ESpec.Output do
   @doc false
   def do_example_info(example, {formatter, opts}) do
     unless silent? do
-      IO.write formatter.format_example(example, opts)
+      if output_to_file? do
+        IO.write out_file, formatter.format_example(example, opts)
+      else
+        IO.write formatter.format_example(example, opts)
+      end
     end
   end
 
   @doc false
   def do_print_result(examples, {formatter, opts}) do
     unless silent? do
-      IO.write formatter.format_result(examples, get_times, opts)
+      if output_to_file? do
+        IO.write out_file, formatter.format_result(examples, get_times, opts)
+      else
+        IO.write formatter.format_result(examples, get_times, opts)
+      end
     end
   end
 
@@ -61,7 +74,18 @@ defmodule ESpec.Output do
     end
   end
 
-  def destination, do: :console
+  defp output_to_file?, do: out_path
+ 
+  defp create_out_file! do
+    File.mkdir_p!(Path.dirname(out_path))
+    {:ok, file} = File.open(out_path, [:write])
+    ESpec.Configuration.add([out_file: file])
+  end
+
+  defp close_out_file, do: File.close(out_file)
+  
+  defp out_file, do: ESpec.Configuration.get(:out_file)
+  defp out_path, do: ESpec.Configuration.get(:out)
 
   defp get_times do
     {

@@ -1,7 +1,7 @@
 defmodule ESpec.Configuration do
   @moduledoc """
   Handles ESpec configuraions.
-  @list contains all available confitg options.
+  @list contains all available keys in config.
   """
   @list [
     hello: "Description",
@@ -11,6 +11,8 @@ defmodule ESpec.Configuration do
     file_opts: "Run the specific file or spec in the file",
     format: "Specifies format: 'doc', 'html', 'json'",
     trace: "Alias for 'format=doc'",
+    out: "Output file path",
+    out_file: "Output file",
     focus: "Run only examples with [focus: true]",
     order: "Run specs in the order in which they are declared",
     test: "For test purpose",
