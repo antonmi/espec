@@ -7,10 +7,6 @@ defmodule SomeSpec do
     it do: true |> should be true
   end
 
-  context "error" do
-    it do: false |> should be true
-  end
-
   context "pending" do
     xit do: "some example"
   end
