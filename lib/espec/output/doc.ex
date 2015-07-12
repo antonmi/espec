@@ -12,12 +12,14 @@ defmodule ESpec.Output.Doc do
   @status_colors [success: @green, failure: @red, pending: @yellow]
   @status_symbols [success: ".", failure: "F", pending: "*"]
 
+  alias ESpec.Example 
+
   @doc "Format the final result."
   def format_result(examples, times, _opts) do
-    pending = ESpec.Example.pendings(examples)
+    pending = Example.pendings(examples)
     string = ""
     if Enum.any?(pending), do: string = string <> format_pending(pending)
-    failed = ESpec.Example.failure(examples)
+    failed = Example.failure(examples)
     if Enum.any?(failed), do: string = string <> format_failed(failed)
     string = string <> format_footer(examples, failed, pending)
     string <> format_times(times, failed, pending)
@@ -37,7 +39,7 @@ defmodule ESpec.Output.Doc do
   defp format_failed(failed) do
     res = failed |> Enum.with_index
     |> Enum.map fn({example, index}) -> 
-      format_example(example, example.error.message, index)
+      do_format_example(example, example.error.message, index)
     end
     Enum.join(res, "\n")
   end
@@ -45,12 +47,12 @@ defmodule ESpec.Output.Doc do
   defp format_pending(pending) do
     res = pending |> Enum.with_index
     |> Enum.map fn({example, index}) -> 
-      format_example(example, example.result, index)
+      do_format_example(example, example.result, index)
     end
     Enum.join(res, "\n")
   end
 
-  defp format_example(example, info, index) do
+  defp do_format_example(example, info, index) do
     color = color_for_status(example.status)
     decription = one_line_description(example)
     [
@@ -89,8 +91,8 @@ defmodule ESpec.Output.Doc do
 
   defp one_line_description(example) do
     module = "#{example.module}" |> String.replace("Elixir.", "")
-    [ module | ESpec.Example.context_descriptions(example)] ++ [example.description]
-    |> Enum.join(" ")
+    [ module | Example.context_descriptions(example)] ++ [example.description]
+    |> Enum.join(" ") |> String.rstrip
   end
 
   defp trace_description(example) do
@@ -104,7 +106,7 @@ defmodule ESpec.Output.Doc do
         "#{color}#{inspect example.result}#{@reset}"
       end
     end
-    array = ESpec.Example.context_descriptions(example) ++ [ex_desc]
+    array = Example.context_descriptions(example) ++ [ex_desc]
     {result, _} = Enum.reduce(array, {"", ""}, fn(description, acc) ->
       {d, w} = acc
       {d <> w <> "#{description}" <> "\n", w <> "  "}

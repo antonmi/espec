@@ -1,0 +1,21 @@
+<% last_example = List.last(examples) %>
+{
+"examples":
+[
+<%= for example <- examples do %>
+<% {decription, file_line, status, info} = example %>
+{"decription":"<%= decription %>","file_line":"<%= file_line %>","status":"<%= status %>","info":"<%= info %>"}
+<%= unless example == last_example, do: "," %>
+<% end %>
+],
+<% {example_count, failure_count, pending_count, duration, load_time, spec_time} = summary %>
+"summary":
+{
+"example_count":<%= example_count %>,
+"failure_count":<%= failure_count %>,
+"pending_count":<%= pending_count %>,
+"duration":<%= duration %>,
+"load_time":<%= load_time %>,
+"spec_time":<%= spec_time %>
+}
+}
