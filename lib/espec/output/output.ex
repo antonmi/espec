@@ -4,7 +4,7 @@ defmodule ESpec.Output do
   Uses specified formatter to format results.
   """
   use GenServer
-
+  alias ESpec.Configuration
   @doc "Starts server."
   def start do
     GenServer.start_link(__MODULE__, [formatter: formatter], name: __MODULE__)
@@ -13,7 +13,7 @@ defmodule ESpec.Output do
   @doc "Initiates server with configuration options and formatter"
   def init(args) do
     if output_to_file?, do: create_out_file!
-    state = %{opts: ESpec.Configuration.all, formatter: args[:formatter]}
+    state = %{opts: Configuration.all, formatter: args[:formatter]}
     {:ok, state}
   end
 
@@ -61,11 +61,11 @@ defmodule ESpec.Output do
     end
   end
 
-  defp silent?, do: ESpec.Configuration.get(:silent)
+  defp silent?, do: Configuration.get(:silent)
 
   defp formatter do
-    format = ESpec.Configuration.get(:format)
-    if ESpec.Configuration.get(:trace), do: format = "doc"
+    format = Configuration.get(:format)
+    if Configuration.get(:trace), do: format = "doc"
     cond do
       format == "doc" ->
         {ESpec.Output.Doc, %{details: true}}
@@ -79,19 +79,19 @@ defmodule ESpec.Output do
   defp create_out_file! do
     File.mkdir_p!(Path.dirname(out_path))
     {:ok, file} = File.open(out_path, [:write])
-    ESpec.Configuration.add([out_file: file])
+    Configuration.add([out_file: file])
   end
 
   defp close_out_file, do: File.close(out_file)
   
-  defp out_file, do: ESpec.Configuration.get(:out_file)
-  defp out_path, do: ESpec.Configuration.get(:out)
+  defp out_file, do: Configuration.get(:out_file)
+  defp out_path, do: Configuration.get(:out)
 
   defp get_times do
     {
-      ESpec.Configuration.get(:start_loading_time),
-      ESpec.Configuration.get(:finish_loading_time),
-      ESpec.Configuration.get(:finish_specs_time)
+      Configuration.get(:start_loading_time),
+      Configuration.get(:finish_loading_time),
+      Configuration.get(:finish_specs_time)
     }
   end
 end
