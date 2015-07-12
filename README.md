@@ -61,7 +61,7 @@ Set `preferred_cli_env` for `espec` in the `mix.exs` file:
 ```elixir
 def project do
   ...
-  preferred_cli_env: [espec: :test]
+  preferred_cli_env: [espec: :test],
   ...
 end
 ```
