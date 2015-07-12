@@ -1,4 +1,4 @@
-defmodule ESpec.Output.Docs do
+defmodule ESpec.Output.Doc do
   @moduledoc """
   Generate plain colored text output.
   """

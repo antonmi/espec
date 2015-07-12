@@ -68,9 +68,9 @@ defmodule ESpec.Output do
     if ESpec.Configuration.get(:trace), do: format = "doc"
     cond do
       format == "doc" ->
-        {ESpec.Output.Docs, %{details: true}}
+        {ESpec.Output.Doc, %{details: true}}
       true ->
-        {ESpec.Output.Docs, %{}}
+        {ESpec.Output.Doc, %{}}
     end
   end
 
