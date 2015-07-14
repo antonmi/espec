@@ -1,9 +1,9 @@
 defmodule BeTypeTest do
-
   use ExUnit.Case, async: true
 
   defmodule SomeSpec do
     use ESpec
+    
     context "Success" do
       it do: :atom |> should be_atom
       it do: "binary" |> should be_binary
@@ -44,15 +44,10 @@ defmodule BeTypeTest do
   end
 
   test "Success", context do
-    Enum.each(context[:success], fn(ex) ->
-      assert(ex.status == :success)
-    end)
+    Enum.each(context[:success], &(assert(&1.status == :success)))
   end
 
   test "Errors", context do
-    Enum.each(context[:errors], fn(ex) ->
-      assert(ex.status == :failure)
-    end)
+    Enum.each(context[:errors], &(assert(&1.status == :failure)))
   end
-
 end

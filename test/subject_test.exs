@@ -1,5 +1,4 @@
 defmodule SubjectTest do
-
   use ExUnit.Case, async: true
 
   defmodule SomeSpec do
@@ -35,7 +34,6 @@ defmodule SubjectTest do
     }
   end
 
-
   test "run ex1", context do
     example = ESpec.ExampleRunner.run(context[:ex1])
     assert(example.result == "subject = 10")
@@ -59,5 +57,4 @@ defmodule SubjectTest do
     example = ESpec.ExampleRunner.run(context[:ex6])
     assert(example.status == :success)
   end
-
 end

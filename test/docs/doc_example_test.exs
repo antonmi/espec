@@ -1,7 +1,5 @@
 defmodule ESpec.Docs.DocExampleTest do
-
   use ExUnit.Case, async: true
-
   import ExUnit.TestHelpers
 
   defmodule Mod1 do
@@ -24,7 +22,7 @@ defmodule ESpec.Docs.DocExampleTest do
     assert ex.lhs == "1 + 1"
     assert ex.rhs == "2"
     assert ex.fun_arity == {:f, 0}
-    assert ex.line == 15
+    assert ex.line == 13
   end
 
   defmodule Mod2 do
@@ -41,6 +39,4 @@ defmodule ESpec.Docs.DocExampleTest do
       ESpec.DocExample.extract(Mod2)
     end
   end
-
-
 end

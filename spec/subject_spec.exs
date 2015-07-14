@@ -17,16 +17,13 @@ defmodule SubjectSpec do
     it do: is_expected.to eq(10)
 
     context "new subject" do
-
       subject(List.last([1, 20]))
 
       it do: is_expected.to eq(20)
       it do: should eq(20)
-
     end
 
     subject(15+15)
-
     it do: is_expected.to eq(30)
   end
 
@@ -41,5 +38,4 @@ defmodule SubjectSpec do
       it do: subj |> should_not eq(10)
     end
   end
-
 end

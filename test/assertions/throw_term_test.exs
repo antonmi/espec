@@ -1,9 +1,9 @@
 defmodule ThowTermTest do
-
   use ExUnit.Case, async: true
 
   defmodule SomeSpec do
     use ESpec
+    
     let :func1, do: fn -> throw(:some_term) end
     let :func2, do: fn -> 1+1 end
 
@@ -33,15 +33,10 @@ defmodule ThowTermTest do
   end
 
   test "Success", context do
-    Enum.each(context[:success], fn(ex) ->
-      assert(ex.status == :success)
-    end)
+    Enum.each(context[:success],&(assert(&1.status == :success)))
   end
 
   test "Errors", context do
-    Enum.each(context[:errors], fn(ex) ->
-      assert(ex.status == :failure)
-    end)
+    Enum.each(context[:errors], &(assert(&1.status == :failure)))
   end
-
 end

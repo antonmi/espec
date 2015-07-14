@@ -1,5 +1,4 @@
 defmodule ESpec.Assertions.Enum.HaveMinBySpec do
-
   use ESpec, async: true
 
   let :range, do: (1..3)
@@ -14,5 +13,4 @@ defmodule ESpec.Assertions.Enum.HaveMinBySpec do
     it do: expect(range).to_not have_min_by(func, 3)
     it do: expect(range).to have_min_by(func, 1)
   end
-
 end

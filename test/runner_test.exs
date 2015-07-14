@@ -1,5 +1,4 @@
 defmodule RunnerTest do
-
   use ExUnit.Case, async: true
 
   defmodule SomeSpec do
@@ -35,5 +34,4 @@ defmodule RunnerTest do
     assert(List.first(examples).status == :success)
     assert(List.first(examples).status == :success)
   end
-
 end

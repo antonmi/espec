@@ -1,5 +1,4 @@
 defmodule ChangeSpec do
-  
   use ESpec
 
   def add(value), do: Agent.update(:some_spec_agent, &(Set.put(&1, value)))
@@ -26,5 +25,4 @@ defmodule ChangeSpec do
     it "change_from_to", do: expect(f1).to change(f2, 1, 2)    
     it "change_from_to", do: expect(f3).to change(f2, 0, 2)    
   end
-
-end 
+end

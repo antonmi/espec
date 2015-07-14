@@ -1,5 +1,4 @@
 defmodule ESpec.Assertions.EqSpec do
-
   use ESpec, async: true
 
   describe "ESpec.Assertions.Eq" do
@@ -28,5 +27,4 @@ defmodule ESpec.Assertions.EqSpec do
       it do: expect(1+1 == 1).to_not be false
     end
   end
-
 end

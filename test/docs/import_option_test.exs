@@ -10,7 +10,6 @@ defmodule ESpec.DocTestTest.Mod3 do
     2
   """
   def some_fun(a, b), do: a + b
-
 end |> ExUnit.TestHelpers.write_beam
 
 defmodule ESpec.DocTestTest.ImportSpec do
@@ -18,9 +17,7 @@ defmodule ESpec.DocTestTest.ImportSpec do
   doctest ESpec.DocTestTest.Mod3, import: true
 end |> ExUnit.TestHelpers.write_beam
 
-
 defmodule ESpec.Docs.ImportOptionTest do
-
   use ExUnit.Case, async: true
 
   setup do
@@ -40,6 +37,4 @@ defmodule ESpec.Docs.ImportOptionTest do
     ex = ESpec.ExampleRunner.run(context[:ex2])
     assert ex.status == :success
   end
-
-  
 end

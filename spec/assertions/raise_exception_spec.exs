@@ -1,9 +1,7 @@
 defmodule ESpec.Assertions.RaiseExceptionSpec do
-
   use ESpec, async: true
 
   describe "ESpec.Assertions.RaiseException" do
-
     let :func1, do: fn -> 1+"test" end
     let :func2, do: fn -> 1+1 end
     let :func3, do: fn -> List.first(:a) end
@@ -35,7 +33,5 @@ defmodule ESpec.Assertions.RaiseExceptionSpec do
       it do: expect(func3).to_not raise_exception(FunctionClauseError)
       it do: expect(func3).to_not raise_exception(FunctionClauseError, "no function clause matching in List.first/1")
     end
-
   end
-
 end

@@ -1,5 +1,4 @@
 defmodule ContextTest do
-
   use ExUnit.Case, async: true
 
   defmodule SomeSpec do

@@ -1,5 +1,4 @@
 defmodule AcceptedSpec do
-
 	use ESpec
 
 	import ESpec.TestHelpers
@@ -84,7 +83,4 @@ defmodule AcceptedSpec do
 			it do: expect(SomeModule).to accepted(:func, [10, 20], pid: :any, count: 2)
 		end
 	end
-
-
-
 end

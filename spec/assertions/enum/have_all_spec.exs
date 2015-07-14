@@ -1,5 +1,4 @@
 defmodule ESpec.Assertions.Enum.HaveAllSpec do
-
   use ESpec, async: true
 
   let :range, do: (1..3)
@@ -21,5 +20,4 @@ defmodule ESpec.Assertions.Enum.HaveAllSpec do
     it do: expect(range).to_not have_all(positive)
     it do: expect(range).to have_all(negative)
   end
-
 end

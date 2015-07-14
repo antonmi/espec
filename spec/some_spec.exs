@@ -10,5 +10,4 @@ defmodule SomeSpec do
   context "pending" do
     xit do: "some example"
   end
-
 end

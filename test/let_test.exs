@@ -1,5 +1,4 @@
 defmodule LetTest do
-
   use ExUnit.Case, async: true
 
   defmodule SomeSpec do
@@ -51,5 +50,4 @@ defmodule LetTest do
     example = ESpec.ExampleRunner.run(context[:ex4])
     assert(example.result == "y = 2")
   end
-
 end

@@ -1,5 +1,4 @@
 defmodule SkipExampleTest do
-
   use ExUnit.Case, async: true
 
   defmodule SomeSpec do

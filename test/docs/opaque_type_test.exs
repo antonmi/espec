@@ -9,11 +9,9 @@ end |> ExUnit.TestHelpers.write_beam
 defmodule ESpec.DocTestTest.OpaqueTypeSpec do
   use ESpec
   doctest ESpec.DocTestTest.Mod5
-
 end |> ExUnit.TestHelpers.write_beam
 
 defmodule ESpec.Docs.OpaqueTypeTest do
-
   use ExUnit.Case, async: true
 
   setup do
@@ -27,5 +25,4 @@ defmodule ESpec.Docs.OpaqueTypeTest do
     ex = ESpec.ExampleRunner.run(context[:ex1])
     assert ex.status == :success
   end
-
-end  
+end

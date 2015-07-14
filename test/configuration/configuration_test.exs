@@ -13,6 +13,4 @@ defmodule ConfigurationTest do
 			ESpec.configure(fn(c) -> c.hey :ok end)
 		end)
 	end
-
 end
-

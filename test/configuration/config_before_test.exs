@@ -1,5 +1,4 @@
 defmodule ConfigBeforeTest do
-
   use ExUnit.Case, async: true
 
   ESpec.configure fn(c) ->
@@ -40,5 +39,4 @@ defmodule ConfigBeforeTest do
     example = ESpec.ExampleRunner.run(context[:ex2])
     assert(example.result == "answer is 44")
   end
-
 end

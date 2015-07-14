@@ -1,5 +1,4 @@
 defmodule String.HaveAtTest do
-
   use ExUnit.Case, async: true
 
   defmodule SomeSpec do
@@ -27,15 +26,10 @@ defmodule String.HaveAtTest do
   end
 
   test "Success", context do
-    Enum.each(context[:success], fn(ex) ->
-      assert(ex.status == :success)
-    end)
+    Enum.each(context[:success], &(assert(&1.status == :success)))
   end
 
   test "Errors", context do
-    Enum.each(context[:errors], fn(ex) ->
-      assert(ex.status == :failure)
-    end)
+    Enum.each(context[:errors], &(assert(&1.status == :failure)))
   end
-
 end

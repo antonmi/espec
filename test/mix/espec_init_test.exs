@@ -1,5 +1,4 @@
 defmodule EspecInitTest do
-
   use ExUnit.Case
 
   @tmp_path Path.join(__DIR__, "tmp")

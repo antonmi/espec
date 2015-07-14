@@ -1,5 +1,4 @@
 defmodule PendingExampleTest do
-
   use ExUnit.Case, async: true
 
   defmodule SomeSpec do
@@ -54,7 +53,4 @@ defmodule PendingExampleTest do
   test "ex6", context do    
     assert(context[:ex6].result == "focus fcontext")
   end
-
-
- 
 end

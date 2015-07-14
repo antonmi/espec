@@ -41,7 +41,6 @@ end |> ExUnit.TestHelpers.write_beam
 
 
 defmodule ESpec.Docs.ExcepAndOnlyTest do
-
   use ExUnit.Case, async: true
 
   test "check except examples" do

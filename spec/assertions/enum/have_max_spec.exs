@@ -1,5 +1,4 @@
 defmodule ESpec.Assertions.Enum.HaveMaxSpec do
-
   use ESpec, async: true
 
   let :range, do: (1..3)
@@ -13,5 +12,4 @@ defmodule ESpec.Assertions.Enum.HaveMaxSpec do
     it do: expect(range).to_not have_max(3)
     it do: expect(range).to have_max(2)
   end
-
 end

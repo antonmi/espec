@@ -1,5 +1,4 @@
 defmodule ESpec.Assertions.List.HaveTlSpec do
-
   use ESpec, async: true
 
   subject [1,2,3]
@@ -13,5 +12,4 @@ defmodule ESpec.Assertions.List.HaveTlSpec do
     it do: should_not have_tl [2,3]
     it do: should have_tl [1,2]
   end
-
 end

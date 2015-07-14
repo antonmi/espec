@@ -18,7 +18,6 @@ defmodule LetSpec do
       let! :a, do: __[:a] + 1
       it do: expect(a).to eq(2)
     end
-
   end
 
   describe "let" do
@@ -51,6 +50,4 @@ defmodule LetSpec do
 
     it do: b |> should eq 2
   end
-
-
 end

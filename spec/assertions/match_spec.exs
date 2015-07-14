@@ -1,9 +1,7 @@
 defmodule ESpec.Assertions.MatchSpec do
-
   use ESpec, async: true
 
   describe "ESpec.Assertions.Match" do
-
     context "Success" do
       it do: expect("abcd").to match(~r/c(d)/)
       it do: expect("abcd").to match("bc")
@@ -17,7 +15,5 @@ defmodule ESpec.Assertions.MatchSpec do
       it do: expect("abcd").to match(~r/e/)
       it do: expect("abcd").to match("ad")
     end
-
   end
-
 end

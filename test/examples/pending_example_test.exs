@@ -1,5 +1,4 @@
 defmodule PendingExampleTest do
-
   use ExUnit.Case, async: true
 
   defmodule SomeSpec do

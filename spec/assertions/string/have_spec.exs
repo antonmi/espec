@@ -1,5 +1,4 @@
 defmodule ESpec.Assertions.String.Have do
-
   use ESpec, async: true
 
   subject "qwerty"
@@ -13,5 +12,4 @@ defmodule ESpec.Assertions.String.Have do
     it do: should_not have("qwe")
     it do: should have("zx")
   end
-
 end

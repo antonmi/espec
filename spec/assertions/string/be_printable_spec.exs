@@ -1,5 +1,4 @@
 defmodule ESpec.Assertions.String.BePrintableSpec do
-
   use ESpec, async: true
 
   context "Success" do
@@ -11,5 +10,4 @@ defmodule ESpec.Assertions.String.BePrintableSpec do
     it do: "qwerty" |> should_not be_printable
     it do: <<1, 2, 3>> |> should be_printable
   end
-
 end

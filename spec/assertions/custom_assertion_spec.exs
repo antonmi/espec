@@ -3,8 +3,8 @@ Code.require_file("spec/support/assertions/be_odd_assertion.ex")
 Code.require_file("spec/support/assertions/custom_assertions.ex")
 
 defmodule CustomAssertionSpec do
-	use ESpec, async: true
-	import CustomAssertions
+  use ESpec, async: true
+  import CustomAssertions
 
   context "Success" do
     subject 3
@@ -25,5 +25,4 @@ defmodule CustomAssertionSpec do
     it do: should_not be_odd
     it do: 2 |> should be_odd
   end
-
 end

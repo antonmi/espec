@@ -21,7 +21,6 @@ end |> ExUnit.TestHelpers.write_beam
 
 
 defmodule ESpec.Docs.DocTestTest do
-
   use ExUnit.Case, async: true
 
   setup do
@@ -52,6 +51,4 @@ defmodule ESpec.Docs.DocTestTest do
     assert ex.status == :success
     assert ex.result == "`:f` equals `:f`."
   end
-
-
 end

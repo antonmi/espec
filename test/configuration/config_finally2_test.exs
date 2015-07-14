@@ -1,5 +1,4 @@
 defmodule ConfigFinallyTest2 do
-
   use ExUnit.Case
 
   defmodule SomeSpec do

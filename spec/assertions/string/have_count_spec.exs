@@ -1,5 +1,4 @@
 defmodule ESpec.Assertions.String.HaveCountSpec do
-
   use ESpec, async: true
 
   subject "qwerty"
@@ -18,5 +17,4 @@ defmodule ESpec.Assertions.String.HaveCountSpec do
     it do: should_not have_count(6)
     it do: should have_count(3)
   end
-
 end

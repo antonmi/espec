@@ -1,5 +1,4 @@
 defmodule ExampleTest do
-
   use ExUnit.Case, async: true
 
   defmodule SomeSpec do
@@ -36,7 +35,7 @@ defmodule ExampleTest do
   test "check ex1", context do
     assert(context[:ex1].description == "")
     assert(context[:ex1].file ==  __ENV__.file)
-    assert(context[:ex1].line == 8)
+    assert(context[:ex1].line == 7)
   end
 
   test "run ex1", context do
@@ -48,7 +47,7 @@ defmodule ExampleTest do
   test "check ex2", context do
     assert(context[:ex2].description == "failed example with name")
     assert(context[:ex2].file ==  __ENV__.file)
-    assert(context[:ex2].line == 9)
+    assert(context[:ex2].line == 8)
   end
 
   test "run ex2", context do

@@ -1,29 +1,21 @@
 defmodule BeforESpec do
-
   use ESpec, async: true
 
-  before do
-    { :ok, a: "top before" }
-  end
+  before do: { :ok, a: "top before" }
 
   it do: expect(__.a).to eq("top before")
   it do: expect(__[:b]).to eq(nil)
   it do: expect(__[:c]).to eq(nil)
 
   describe "D1" do
-
-    before do
-      { :ok, b: "D1 before" }
-    end
+    before do: { :ok, b: "D1 before" }
 
     it do: expect(__.a).to eq("top before")
     it do: expect(__.b).to eq("D1 before")
     it do: expect(__[:c]).to eq(nil)
 
     describe "D2" do
-      before do
-        { :ok, c: "D2 before" }
-      end
+      before do: { :ok, c: "D2 before" }
 
       it do: expect(__.a).to eq("top before")
       it do: expect(__.b).to eq("D1 before")
@@ -31,11 +23,8 @@ defmodule BeforESpec do
     end
 
     describe "Not valid" do
-      before do
-        {:ok, 
-          [%{a: 1, b: 2}]
-        }
-      end  
+      before do: {:ok, [%{a: 1, b: 2}]}
+
       it do: expect(__.a).to eq("top before")
       it do: expect(__.b).to eq("D1 before")
     end
@@ -43,9 +32,7 @@ defmodule BeforESpec do
   end
 
   context "function in __" do
-    before do
-      { :ok, a: fn(a) -> a*2 end }
-    end
+    before do: { :ok, a: fn(a) -> a*2 end }
 
     it do: expect(__.a.(5)).to eq(10)
     it do: expect(__[:b]).to eq(nil)
@@ -72,6 +59,4 @@ defmodule BeforESpec do
     it do: expect(__.b).to eq("bbb")
     it do: expect(__.c).to eq("ccc")
   end
-
-
 end

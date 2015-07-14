@@ -1,5 +1,4 @@
 defmodule LetsWithBeforesTest do
-
   use ExUnit.Case, async: true
 
   defmodule SomeSpec do
@@ -46,5 +45,4 @@ defmodule LetsWithBeforesTest do
     example = ESpec.ExampleRunner.run(context[:ex4])
     assert(example.status == :success)
   end
-
 end

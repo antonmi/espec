@@ -1,5 +1,4 @@
 defmodule XcontextTest do
-
   use ExUnit.Case, async: true
 
   defmodule SomeSpec do
@@ -48,5 +47,4 @@ defmodule XcontextTest do
     assert(length(Enum.filter(results, &(&1.status == :success))) == 1)
     assert(length(Enum.filter(results, &(&1.status == :pending))) == 9)
   end
-
 end

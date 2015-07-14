@@ -24,5 +24,3 @@ defmodule DocTestSpec do
 
   it do: expect(ESpec.DocTestTest.Mod1.f).to eq(:f)
 end
-
-

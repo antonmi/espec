@@ -1,5 +1,4 @@
 defmodule ESpec.Assertions.String.BeValidSpec do
-
   use ESpec, async: true
 
   context "Success" do
@@ -11,5 +10,4 @@ defmodule ESpec.Assertions.String.BeValidSpec do
     it do: "qwerty" |> should_not be_valid_string
     it do: <<0xffff :: 16>> |> should be_valid_string
   end
-
 end

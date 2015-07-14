@@ -1,12 +1,8 @@
 defmodule AllowAcceptSpec do
-
 	use ESpec
 
 	describe "allow(module).to accept(name, func)" do
-
-		before do
-			allow(SomeModule).to accept(:func, fn(a) -> "mock! #{a}" end)
-		end
+		before do: allow(SomeModule).to accept(:func, fn(a) -> "mock! #{a}" end)
 
 		it do: expect(SomeModule.func(1)).to eq("mock! 1")
 	end
@@ -22,5 +18,4 @@ defmodule AllowAcceptSpec do
 		it do: expect(SomeModule.func(1)).to eq("mock! 1")
 		it do: expect(SomeModule.func2).to eq("mock! func2")
 	end
-
 end

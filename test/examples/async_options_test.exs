@@ -1,5 +1,4 @@
 defmodule AsyncOptionTest do
-
   use ExUnit.Case, async: true
 
   defmodule SomeSpecAsync do
@@ -35,5 +34,4 @@ defmodule AsyncOptionTest do
     assert length(async) == 2
     assert length(sync) == 2
   end
-
 end

@@ -1,5 +1,4 @@
 defmodule SharedSpecsTest do
-
   use ExUnit.Case, async: true
 
   defmodule SharedSpec do
@@ -41,5 +40,4 @@ defmodule SharedSpecsTest do
       assert(ex.status == :success)
     end)
   end
-
 end

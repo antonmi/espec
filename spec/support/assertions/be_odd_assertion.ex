@@ -1,5 +1,4 @@
 defmodule BeOddAssertion do
-
   use ESpec.Assertions.Interface
 
   defp match(subject, []) do
@@ -16,5 +15,4 @@ defmodule BeOddAssertion do
     to = if positive, do: "to", else: "not to"
     "Expected `#{inspect subject}` #{to} be the odd number, but the remainder is '#{result}'."
   end
-
 end

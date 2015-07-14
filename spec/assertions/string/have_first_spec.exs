@@ -1,5 +1,4 @@
 defmodule ESpec.Assertions.String.HaveFirstSpec do
-
   use ESpec, async: true
 
   subject "qwerty"
@@ -13,5 +12,4 @@ defmodule ESpec.Assertions.String.HaveFirstSpec do
     it do: should_not have_first "q"
     it do: should have_first "w"
   end
-
 end

@@ -12,16 +12,12 @@ defmodule ESpec.DocTestTest.Mod4 do
   def f, do: :f
 end |> ExUnit.TestHelpers.write_beam
 
-
-
 defmodule ESpec.DocTest.ExceptionsSpec do
   use ESpec, async: true
   doctest ESpec.DocTestTest.Mod4, only: [f: 0]
 end |> ExUnit.TestHelpers.write_beam
 
-
 defmodule ESpec.Docs.ExceptionTest do
-
   use ExUnit.Case, async: true
   
   setup do
@@ -47,5 +43,4 @@ defmodule ESpec.Docs.ExceptionTest do
     ex = ESpec.ExampleRunner.run(context[:ex3])
     assert ex.status == :failure
   end
-
 end

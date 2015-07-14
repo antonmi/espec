@@ -1,5 +1,4 @@
 defmodule FinallyTest do
-
   use ExUnit.Case, async: true
 
   defmodule SomeSpec do
@@ -30,7 +29,4 @@ defmodule FinallyTest do
     assert(Application.get_env(:espec, :finally_b) == 2)
     assert(Application.get_env(:espec, :finally_c) == nil)
   end
-
-
-
 end

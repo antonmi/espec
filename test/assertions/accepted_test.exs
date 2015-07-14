@@ -1,7 +1,5 @@
 defmodule AcceptedTest do
-
 	use ExUnit.Case
-
 	import ExUnit.TestHelpers
 
 	defmodule SomeModule do
@@ -14,9 +12,7 @@ defmodule AcceptedTest do
 
 		describe "function call in another process" do
 			defmodule Server do
-				def call(a, b) do
-					SomeModule.func(a, b)
-				end
+				def call(a, b), do: SomeModule.func(a, b)
 			end
 
 			before do
@@ -69,9 +65,6 @@ defmodule AcceptedTest do
 	end
 
 	test "Success", context do
-		Enum.each(context[:success], fn(ex) ->
-			assert(ex.status == :success)
-		end)
+		Enum.each(context[:success], &(assert(&1.status == :success)))
 	end
-
 end

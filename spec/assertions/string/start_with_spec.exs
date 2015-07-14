@@ -1,5 +1,4 @@
 defmodule ESpec.Assertions.String.StartWithSpec do
-
   use ESpec, async: true
 
   subject "qwerty"
@@ -25,5 +24,4 @@ defmodule ESpec.Assertions.String.StartWithSpec do
       it do: should start_with "e"
     end    
   end
-
 end

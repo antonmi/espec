@@ -48,7 +48,6 @@ defmodule MockSpec do
     before do
       spawn fn -> allow(SomeModule).to accept(:f, fn(a) -> "mock! #{a}" end) end
     end
-
     # it do: expect(SomeModule.f).to eq(:f)
   end
  
@@ -81,5 +80,4 @@ defmodule MockSpec do
     it do: expect(SomeModule.f2(AAA, BBB)).to eq("mock! AAA BBB")
     it do: expect(SomeModule.f2(10, 20)).to eq("10 and 20")
   end
-
 end
