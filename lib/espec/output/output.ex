@@ -39,8 +39,7 @@ defmodule ESpec.Output do
     {:reply, :ok, state}
   end
 
-  @doc false
-  def do_example_info(example, {formatter, opts}) do
+  defp do_example_info(example, {formatter, opts}) do
     unless silent? do
       if output_to_file? do
         IO.write out_file, formatter.format_example(example, opts)
@@ -50,8 +49,7 @@ defmodule ESpec.Output do
     end
   end
 
-  @doc false
-  def do_print_result(examples, {formatter, opts}) do
+  defp do_print_result(examples, {formatter, opts}) do
     unless silent? do
       if output_to_file? do
         IO.write out_file, formatter.format_result(examples, get_times, opts)
@@ -68,7 +66,7 @@ defmodule ESpec.Output do
     if Configuration.get(:trace), do: format = "doc"
     cond do
       format == "doc" -> {ESpec.Output.Doc, %{details: true}}
-      format == "json" -> {ESpec.Output.JSON, %{}}
+      format == "json" -> {ESpec.Output.Json, %{}}
       true -> {ESpec.Output.Doc, %{}}
     end
   end

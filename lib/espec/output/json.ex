@@ -1,4 +1,4 @@
-defmodule ESpec.Output.JSON do
+defmodule ESpec.Output.Json do
   @moduledoc """
   Generate json output.
   """
