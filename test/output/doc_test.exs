@@ -43,6 +43,9 @@ defmodule Output.DocTest do
   test "format_result", context do
     times = {{1436, 865768, 500000}, {1436, 865768, 500100}, {1436, 865768, 500200}}
     output = ESpec.Output.Doc.format_result(context[:examples], times, %{})
-    assert output == "\n\n\t1) Output.DocTest.SomeSpec Output.DocTest.SomeSpec\n\t\e[36m/home/antonmi/elixir/espec/test/output/doc_test.exs:9\e[0m\n\t\e[33mTemporarily skipped with: `xit`.\e[0m\n\n\t1) Output.DocTest.SomeSpec Output.DocTest.SomeSpec\n\t\e[36m/home/antonmi/elixir/espec/test/output/doc_test.exs:8\e[0m\n\t\e[31mExpected `1` to equals (==) `2`, but it doesn't.\e[0m\n\n\t\e[31m3 examples, 1 failures, 1 pending\e[0m\n\n\t\e[31mFinished in 0.0 seconds (0.0s on load, 0.0s on specs)\e[0m\n\n"
+    assert String.match?(output, ~r/Output\.DocTest\.SomeSpec/)
+    assert String.match?(output, ~r/Temporarily skipped with: `xit`/)
+    assert String.match?(output, ~r/Expected `1` to equals/)
+    assert String.match?(output, ~r/3 examples, 1 failures, 1 pending/)
   end
 end
