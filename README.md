@@ -18,8 +18,10 @@ ESpec is inspired by RSpec and the main idea is to be close to its perfect DSL.
   * `before` and `finally` blocks (like RSpec `before` and `after`).
   * `let`, `let!` and `subject`.
   * Shared examples.
+  * Async examaples.
   * Mocks with Meck.
   * Doc specs.
+  * Etc and etc.
 
 ## Contents
 - [Installation](#installation)
