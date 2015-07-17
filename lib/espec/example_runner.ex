@@ -39,11 +39,22 @@ defmodule ESpec.ExampleRunner do
         example = %ESpec.Example{example | status: :failure, error: error}
         ESpec.Output.example_info(example)
         example
+      other_error ->
+        error = %ESpec.AssertionError{message: format_other_error(other_error)}
+        example = %ESpec.Example{example | status: :failure, error: error}
+        ESpec.Output.example_info(example)
+        example
     after
       run_finallies(assigns, example)
       |> run_config_finally(example)
       unload_mocks
     end
+  end
+
+  defp format_other_error(error) do
+    error_message = Exception.format_banner(:error, error)
+    stacktrace = Exception.format_stacktrace(System.stacktrace)
+    error_message <> "\n" <> stacktrace
   end
 
   defp run_skipped(example) do
