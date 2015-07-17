@@ -8,6 +8,6 @@ defmodule SomeSpec do
   end
 
   context "pending" do
-    it do: raise "some example"
+    xit do: raise "some example"
   end
 end
