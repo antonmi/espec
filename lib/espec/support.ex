@@ -6,7 +6,7 @@ defmodule ESpec.Support do
   @doc "Returns long random string."
   def random_string, do: "#{Enum.shuffle(97..122)}"
 
-  @doc "Filters string keeping only word chars."
+  @doc "Filters string replacing non-word characters by '_'."
   def word_chars(string) do
     String.replace(string, ~r/[\W+\d+\s+]/, "_")
     |> String.downcase
