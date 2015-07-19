@@ -318,6 +318,13 @@ Can be used with `:>`, `:<`, `:>=`, `:<=`, and etc.
 expect(actual).to be operator, value 
 ```
 Passes if `apply(Kernel, operator, [actual, value]) == true`
+#### Booleans
+```elixir
+expect(actual).to be_true
+expect(actual).to be_truthy
+expect(actual).to be_false
+expect(actual).to be_falsy
+```
 #### Regular expressions
 ```elixir
 expect(actual).to match(~r/expression/)
@@ -328,17 +335,17 @@ There are many helpers to test enumerable collections:
 ```elixir
 expect(collection).to be_empty #Enum.count(collection) == 0
 ... have(value)                #Enum.member?(collection, value)
-... have_all(func)              #Enum.all?(collection, func)
-... have_any(func)              #Enum.any?(collection, func)
+... have_all(func)             #Enum.all?(collection, func)
+... have_any(func)             #Enum.any?(collection, func)
 ... have_at(position, value)   #Enum.at?(collection, position) == value
 ... have_count(value)          #Enum.count(collection) == value
 ... have_size(value)           #alias
 ... have_length(value)         #alias
-... have_count_by(func, value)  #Enum.count(collection, func) == value
+... have_count_by(func, value) #Enum.count(collection, func) == value
 ... have_max(value)            #Enum.max(collection) == value
-... have_max_by(func, value)    #Enum.max_by(collection, fun) == value
+... have_max_by(func, value)   #Enum.max_by(collection, fun) == value
 ... have_min(value)            #Enum.min(collection) == value
-... have_min_by(func, value)    #Enum.min_by(collection, fun) == value
+... have_min_by(func, value)   #Enum.min_by(collection, fun) == value
 ```
 #### List
 ```elixir
