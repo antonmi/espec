@@ -15,6 +15,9 @@ defmodule ESpec.AssertionHelpers do
   def be_close_to(value, delta), do: {ESpec.Assertions.BeCloseTo, [value, delta]}
   def match(value), do: {ESpec.Assertions.Match, value}
 
+  def be_true, do: {ESpec.Assertions.Boolean.BeTrue, []}
+  def be_false, do: {ESpec.Assertions.Boolean.BeFalse, []}
+
   def raise_exception(exception, message), do: {ESpec.Assertions.RaiseException, [exception, message]}
   def raise_exception(exception), do: {ESpec.Assertions.RaiseException, [exception]}
   def raise_exception(), do: {ESpec.Assertions.RaiseException, []}

@@ -70,7 +70,7 @@ defmodule SomeSpec do
 
   it do: expect(height).to eq(3)
 
-  it do: IO.inspect result
+  # it do: IO.inspect result
 
 
 
