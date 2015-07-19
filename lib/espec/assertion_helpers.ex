@@ -17,6 +17,8 @@ defmodule ESpec.AssertionHelpers do
 
   def be_true, do: {ESpec.Assertions.Boolean.BeTrue, []}
   def be_false, do: {ESpec.Assertions.Boolean.BeFalse, []}
+  def be_truthy, do: {ESpec.Assertions.Boolean.BeTruthy, []}
+  def be_falsy, do: {ESpec.Assertions.Boolean.BeFalsy, []}
 
   def raise_exception(exception, message), do: {ESpec.Assertions.RaiseException, [exception, message]}
   def raise_exception(exception), do: {ESpec.Assertions.RaiseException, [exception]}
