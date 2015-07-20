@@ -1,0 +1,19 @@
+<html>
+<head>
+<title>ESpec results</title>
+<style type="text/css">
+  ul { list-style:none }
+  li.context { background-color: lightblue; font-weight: bold }
+  li.success { background-color: lightgreen }
+  li.failure { background-color: lightcoral }
+  li.pending { background-color: lightyellow }
+</style>
+</head>
+<body>
+<h2>ESpec results</h2>
+<% {example_count, failure_count, pending_count, duration, load_time, spec_time} = summary %>
+<p><%= example_count %> examples, <%= failure_count %> failures, <%= pending_count %> pending</p>
+<p>Finished in <%= duration %> seconds (<%= load_time %>s on load, <%= spec_time %>s on specs)</p>
+<%= examples %>
+</body>
+</html>

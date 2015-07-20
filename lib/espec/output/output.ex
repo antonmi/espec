@@ -22,7 +22,7 @@ defmodule ESpec.Output do
   
   @doc "Generates suite info"
   def print_result(examples) do
-   result = GenServer.call(__MODULE__, {:print_result, examples})
+   result = GenServer.call(__MODULE__, {:print_result, examples}, :infinity)
    if output_to_file?, do: close_out_file
    result
   end
@@ -65,8 +65,9 @@ defmodule ESpec.Output do
     format = Configuration.get(:format)
     if Configuration.get(:trace), do: format = "doc"
     cond do
-      format == "doc" -> {ESpec.Output.Doc, %{details: true}}
       format == "json" -> {ESpec.Output.Json, %{}}
+      format == "html" -> {ESpec.Output.Html, %{}}
+      format == "doc" -> {ESpec.Output.Doc, %{details: true}}
       true -> {ESpec.Output.Doc, %{}}
     end
   end
