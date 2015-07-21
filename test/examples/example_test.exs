@@ -6,6 +6,7 @@ defmodule ExampleTest do
 
     example do: "some example"
     example "failed example with name" do
+      :timer.sleep(2)
       expect(true).to be(false)
     end
 
@@ -57,6 +58,7 @@ defmodule ExampleTest do
     assert(example.error.data == false)
     assert(example.error.result == false)
     assert(example.error.asserion == ESpec.Assertions.Eq)
+    assert(example.duration > 0)
   end
 
   test "ex3 opts", context do

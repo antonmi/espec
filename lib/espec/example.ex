@@ -16,12 +16,13 @@ defmodule ESpec.Example do
   context - example context. Accumulator for 'contexts' and 'lets',
   shared - marks example as shared,
   status - example status (:new, :success, :failure, :pending),
-  result - the value returned by example block or the pending message
-  error - store an error.
+  result - the value returned by example block or the pending message,
+  error - store an error,
+  duration - test duration.
   """
   defstruct description: "", module: nil, function: nil, opts: [],
             file: nil, line: nil, context: [], shared: false, async: false,
-            status: :new, result: nil, error: %ESpec.AssertionError{}
+            status: :new, result: nil, error: %ESpec.AssertionError{}, duration: 0
 
   @doc "Description with contexts."
   def context_descriptions(%ESpec.Example{context: context, description: _description, function: _function}) do

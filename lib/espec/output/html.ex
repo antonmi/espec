@@ -62,6 +62,7 @@ defmodule ESpec.Output.Html do
     else
       if ex.status == :failure, do: ex.error.message, else: ex.result
     end
+    res = "#{res} (#{ex.duration} ms)"
     String.replace(res, "\"", "'")
   end
 

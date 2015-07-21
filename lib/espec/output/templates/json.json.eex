@@ -3,8 +3,8 @@
 "examples":
 [
 <%= for example <- examples do %>
-<% {decription, file_line, status, info} = example %>
-{"decription":"<%= decription %>","file_line":"<%= file_line %>","status":"<%= status %>","info":"<%= info %>"}
+<% {decription, file_line, status, info, duration} = example %>
+{"decription":"<%= decription %>","file_line":"<%= file_line %>","status":"<%= status %>","info":"<%= info %>","duration":<%= duration %>}
 <%= unless example == last_example, do: "," %>
 <% end %>
 ],

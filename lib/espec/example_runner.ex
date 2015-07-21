@@ -21,27 +21,30 @@ defmodule ESpec.ExampleRunner do
       example.opts[:pending] ->
         run_pending(example)  
       true ->
-        run_example(example)
+        run_example(example, :os.timestamp)
     end
   end
 
-  defp run_example(example) do
+  defp run_example(example, start_time) do
     assigns = %{} 
     |> run_config_before(example)
     |> run_befores_and_lets(example)
     try do
       result = apply(example.module, example.function, [assigns])
-      example = %ESpec.Example{example | status: :success, result: result}
+      duration = duration_in_ms(start_time, :os.timestamp)
+      example = %ESpec.Example{example | status: :success, result: result, duration: duration}
       ESpec.Output.example_info(example)
       example
     rescue
       error in [ESpec.AssertionError] ->
-        example = %ESpec.Example{example | status: :failure, error: error}
+        duration = duration_in_ms(start_time, :os.timestamp)
+        example = %ESpec.Example{example | status: :failure, error: error, duration: duration}
         ESpec.Output.example_info(example)
         example
       other_error ->
         error = %ESpec.AssertionError{message: format_other_error(other_error)}
-        example = %ESpec.Example{example | status: :failure, error: error}
+        duration = duration_in_ms(start_time, :os.timestamp)
+        example = %ESpec.Example{example | status: :failure, error: error, duration: duration}
         ESpec.Output.example_info(example)
         example
     after
@@ -117,5 +120,9 @@ defmodule ESpec.ExampleRunner do
     end
   end
 
- defp unload_mocks, do: ESpec.Mock.unload
+  defp unload_mocks, do: ESpec.Mock.unload
+
+  defp duration_in_ms(start_time, end_time) do
+    div(:timer.now_diff(end_time, start_time), 1000)
+  end
 end

@@ -30,6 +30,7 @@ defmodule PendingExampleTest do
   test "ex2", context do    
     assert(context[:ex2].status == :pending)
     assert(context[:ex2].result == "Pending example.")
+    assert(context[:ex2].duration == 0)
   end
 
   test "ex3", context do    

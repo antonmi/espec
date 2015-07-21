@@ -28,7 +28,7 @@ defmodule ESpec.Output.Json do
 
   defp do_format_example(example, info) do
     decription = one_line_description(example)
-    {decription, "#{example.file}:#{example.line}", example.status, String.replace(info, "\"", "'")}
+    {decription, "#{example.file}:#{example.line}", example.status, String.replace("#{info}", "\"", "'"), example.duration}
   end
 
   def format_summary(examples, pending, failed, {start_loading_time, finish_loading_time, finish_specs_time}) do
