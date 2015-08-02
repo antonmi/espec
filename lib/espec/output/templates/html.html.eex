@@ -1,19 +1,54 @@
+<!doctype html>
 <html>
+
 <head>
-<title>ESpec results</title>
-<style type="text/css">
-  ul { list-style:none }
-  li.context { background-color: lightblue; font-weight: bold }
-  li.success { background-color: lightgreen }
-  li.failure { background-color: lightcoral }
-  li.pending { background-color: lightyellow }
-</style>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ESpec results</title>
+    <style type="text/css">
+        header,nav{width:100%}aside,h2{display:inline-block;color:#454545}aside p,body,h2,h3,h4{margin:0}header,section{box-shadow:0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12)}.checkbox,.checkbox .outline,header{box-sizing:border-box}.checkbox,.checkbox .outline,aside,h2{display:inline-block}html{font-size:16px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif}body{color:#757575;background:#fafafa}header{background:#fff;position:fixed;padding:1rem 3rem .5rem;z-index:30}aside{text-align:right;width:70%}nav{border-top:1px solid #CCC;margin-top:.5rem;padding-top:.5rem;text-align:center}main{width:900px;margin:0 auto}.success{background-color:rgba(174,234,105,.7)}.failure{background-color:rgba(255,129,129,.7)}.pending{background-color:rgba(255,247,180,.7)}.success:hover{background-color:#aeea69}.failure:hover{background-color:#ff8181}.pending:hover{background-color:#fff7b4}h2,h3,h4{font-style:normal;font-variant:normal;font-weight:400}h2{width:30%;font-size:2rem}h3{padding:0 .4rem;font-size:1.5rem}h4{padding:.6rem 0;font-weight:700}section{padding:2rem;margin-bottom:2rem;background:#fff;border:1px solid rgba(0,0,0,.12)}.checkbox{position:relative;z-index:1;vertical-align:middle;height:1.5rem;margin:0;padding:0 0 0 1.5rem}.checkbox+.checkbox{margin-left:2rem}.checkbox input{position:absolute;width:0;height:0;line-height:1.5rem;margin:0;padding:0;opacity:0;-ms-appearance:none;-moz-appearance:none;-webkit-appearance:none;appearance:none;border:none}.checkbox input:checked+.outline{border:2px solid #448AFF}.checkbox input:checked+.outline .tick{background:url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjxzdmcKICAgeG1sbnM6ZGM9Imh0dHA6Ly9wdXJsLm9yZy9kYy9lbGVtZW50cy8xLjEvIgogICB4bWxuczpjYz0iaHR0cDovL2NyZWF0aXZlY29tbW9ucy5vcmcvbnMjIgogICB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiCiAgIHhtbG5zOnN2Zz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciCiAgIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIKICAgdmVyc2lvbj0iMS4xIgogICB2aWV3Qm94PSIwIDAgMSAxIgogICBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJ4TWluWU1pbiBtZWV0Ij4KICA8cGF0aAogICAgIGQ9Ik0gMC4wNDAzODA1OSwwLjYyNjc3NjcgMC4xNDY0NDY2MSwwLjUyMDcxMDY4IDAuNDI5Mjg5MzIsMC44MDM1NTMzOSAwLjMyMzIyMzMsMC45MDk2MTk0MSB6IE0gMC4yMTcxNTcyOSwwLjgwMzU1MzM5IDAuODUzNTUzMzksMC4xNjcxNTcyOSAwLjk1OTYxOTQxLDAuMjczMjIzMyAwLjMyMzIyMzMsMC45MDk2MTk0MSB6IgogICAgIGlkPSJyZWN0Mzc4MCIKICAgICBzdHlsZT0iZmlsbDojZmZmZmZmO2ZpbGwtb3BhY2l0eToxO3N0cm9rZTpub25lIiAvPgo8L3N2Zz4K) #448AFF}.checkbox .label{position:relative;cursor:pointer;font-size:1rem;line-height:1.5rem;margin:0;text-transform:uppercase}.checkbox .outline{position:absolute;top:3px;left:0;width:1rem;height:1rem;margin:0;cursor:pointer;overflow:hidden;border:2px solid rgba(0,0,0,.54);border-radius:2px;z-index:2}.checkbox .tick{position:absolute;top:0;left:0;height:100%;width:100%;background:0 0;transition-duration:.28s;transition-timing-function:cubic-bezier(.4,0,.2,1);-webkit-transition-property:background;transition-property:background}.checkbox .tick,.tree li{-webkit-transition-timing-function:cubic-bezier(.4,0,.2,1);-webkit-transition-duration:.28s}ul{padding:0 0 0 2rem;list-style:none}.tree li{list-style-type:none;padding:.6rem;position:relative;transition-duration:.28s;transition-timing-function:cubic-bezier(.4,0,.2,1);-webkit-transition-property:all;transition-property:all}.tree li::after,.tree li::before{content:"";position:absolute;left:-1.5rem;border-left:2px solid #ccc;width:1.5rem}.tree li::before{top:0;border-bottom:2px solid #ccc;height:1.5rem}.tree li::after{top:1.5rem;border-top:2px solid #ccc;height:100%}.last-child::after,.tree>li:first-child::before{display:none}@media only screen and (max-width:980px){main{width:700px}}@media only screen and (max-width:780px){aside,h2{width:100%}html{font-size:14px}header{padding:5%}aside{text-align:left;padding-top:.5rem}main{width:90%}}
+    </style>
 </head>
+
 <body>
+<header>
 <h2>ESpec results</h2>
+<aside>
 <% {example_count, failure_count, pending_count, duration, load_time, spec_time} = summary %>
 <p><%= example_count %> examples, <%= failure_count %> failures, <%= pending_count %> pending</p>
 <p>Finished in <%= duration %> seconds (<%= load_time %>s on load, <%= spec_time %>s on specs)</p>
+</aside>
+<nav>
+<label for="checkbox-success" class="checkbox">
+<input type="checkbox" id="checkbox-success" data-selector="success" checked>
+<span class="outline">
+<span class="tick"></span>
+</span>
+<span class="label">success</span>
+</label>
+<label for="checkbox-pending" class="checkbox">
+<input type="checkbox" id="checkbox-pending" data-selector="pending" checked>
+<span class="outline">
+<span class="tick"></span>
+</span>
+<span class="label">pending</span>
+</label>
+<label for="checkbox-failure" class="checkbox">
+<input type="checkbox" id="checkbox-failure" data-selector="failure" checked>
+<span class="outline">
+<span class="tick"></span>
+</span>
+<span class="label">failure</span>
+</label>
+</nav>
+</header>
+<main>
 <%= examples %>
+</main>
+<script>
+function ready(a){"use strict";"loading"!==document.readyState?a():document.addEventListener("DOMContentLoaded",a)}ready(function(){"use strict";function a(){document.querySelector("main").style.paddingTop=1.5*document.querySelector("header").offsetHeight+"px"}function b(a,b){Array.prototype.forEach.call(a,b)}function c(a){a.style.opacity=0,a.style.display="",g();var b=+new Date,c=function(){a.style.opacity=+a.style.opacity+(new Date-b)/10,b=+new Date,+a.style.opacity<1&&(window.requestAnimationFrame&&requestAnimationFrame(c)||setTimeout(c,16))};c()}function d(a){a.style.opacity=1;var b=+new Date,c=function(){a.style.opacity=a.style.opacity-(new Date-b)/200,b=+new Date,+a.style.opacity>0?window.requestAnimationFrame&&requestAnimationFrame(c)||setTimeout(c,16):(a.style.display="none",g())};c()}function e(a,b){a.classList?a.classList.add(b):a.className+=" "+b}function f(a,b){a.classList?a.classList.remove(b):a.className=a.className.replace(new RegExp("(^|\\b)"+b.split(" ").join("|")+"(\\b|$)","gi")," ")}function g(){var a,c,d=document.querySelectorAll("ul");b(d,function(d){c=d.children,a=null,b(c,function(b){f(b,"last-child"),"none"!==b.style.display&&(a=b)}),a&&e(a,"last-child")})}function h(a){if("checkbox"===a.target.type){var e=document.getElementById(a.target.id),f=document.querySelectorAll("."+e.getAttribute("data-selector"));b(f,function(b){a.target.checked?c(b):d(b)})}}document.addEventListener("click",h),window.addEventListener("resize",a),a(),g()});
+</script>
 </body>
 </html>

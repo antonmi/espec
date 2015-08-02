@@ -6,7 +6,7 @@ defmodule ESpec.Output.Html do
   @doc "Format the final result."
   def format_result(examples, times, _opts) do
     tree = context_tree(examples)
-    html = make_html(tree)
+    html = make_html(tree, true)
     summary = format_summary(examples, times)
     string = EEx.eval_file(template_path, [examples: html, summary: summary])
     String.replace(string, "\n", "")
@@ -45,18 +45,29 @@ defmodule ESpec.Output.Html do
     {dict, [value | values]}
   end
 
-  defp make_html({dict, values}) do
+  defp make_html({dict, values}, top? \\ false, firstli? \\ false) do
     lis = Enum.reduce(values, "", fn(ex, acc) ->    
       acc <> "<li class='#{li_class(ex)}'>#{ex_desc(ex)}</li>"
-    end) 
-    uls = Enum.reduce(dict, lis, fn({key, d}, acc) -> 
-      mainli = "<li class='context'>#{key.description}</li>"
-      acc <> "<ul>#{mainli}" <> make_html(d) <> "</ul>"
+    end)
+    if  String.length(lis) > 0 do
+      lis = if firstli?, do: "<ul class='tree'>" <> lis <> "</ul>", else: "<ul>" <> lis <> "</ul>"
+    end
+    uls = Enum.reduce(dict, lis, fn({key, d}, acc) ->
+      if top? do
+        acc <> "<section class='context'><h3>#{key.description}</h3>" <> make_html(d, false, true) <> "</section>"
+      else
+        mainli = "<li><h4>#{key.description}</h4>" 
+        if firstli? do
+          acc <> "<ul class='tree'>#{mainli}" <> make_html(d) <> "</li></ul>"
+        else
+          acc <> "<ul>#{mainli}" <> make_html(d) <> "</li></ul>"
+        end
+      end
     end)
     uls
   end
 
-  def ex_desc(ex) do
+  defp ex_desc(ex) do
     res = if String.length(ex.description) > 0 do 
       ex.description
     else
@@ -68,7 +79,7 @@ defmodule ESpec.Output.Html do
 
   defp li_class(ex), do: ex.status
 
-  def format_summary(examples, {start_loading_time, finish_loading_time, finish_specs_time}) do
+  defp format_summary(examples, {start_loading_time, finish_loading_time, finish_specs_time}) do
     pending = Example.pendings(examples)
     failed = Example.failure(examples)
     load_time = :timer.now_diff(finish_loading_time, start_loading_time)
