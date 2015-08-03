@@ -33,6 +33,8 @@ defmodule ESpec do
       import ESpec.Before
       import ESpec.Finally
       import ESpec.Let, except: [start_agent: 1, agent_get: 1, agent_put: 2]
+
+      import ExUnit.CaptureIO
     end
   end
 
