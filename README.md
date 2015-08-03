@@ -40,6 +40,7 @@ ESpec is inspired by RSpec and the main idea is to be close to its perfect DSL.
 - [Doc specs](#doc-specs)
 - [Configuration and options](#configuration-and-options)
 - [Contributing](#contributing)
+
 ## Installation
 
 Add `espec` to dependencies in the `mix.exs` file:
