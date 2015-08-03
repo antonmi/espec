@@ -39,7 +39,7 @@ ESpec is inspired by RSpec and the main idea is to be close to its perfect DSL.
 - [Mocks](#mocks)
 - [Doc specs](#doc-specs)
 - [Configuration and options](#configuration-and-options)
-
+- [Contributing](#contributing)
 ## Installation
 
 Add `espec` to dependencies in the `mix.exs` file:
@@ -612,6 +612,18 @@ mix espec --trace
 You may use `--format` with `--out` option to write output to the file.
 ```sh
 mix espec --format=html --out=spec.html
+```
+## Contributing
+##### Contributions are welcome and appreciated!
+
+Request a new feature by creating an issue.
+
+Create a pull request with new features and fixes.
+
+ESpec is tested using ExUnit and ESpec. So run:
+```sh
+mix test
+mix espec
 ```
 
 
