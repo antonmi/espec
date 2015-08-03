@@ -16,7 +16,7 @@ defmodule ESpec.Output.Json do
   end
   
   @doc "Format an example result."
-  def format_example(example, opts), do: ""
+  def format_example(_example, _opts), do: ""
 
   defp template_path, do: Path.join(Path.dirname(__ENV__.file), "templates/json.json.eex")
 
