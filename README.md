@@ -18,9 +18,10 @@ ESpec is inspired by RSpec and the main idea is to be close to its perfect DSL.
   * `before` and `finally` blocks (like RSpec `before` and `after`).
   * `let`, `let!` and `subject`.
   * Shared examples.
-  * Async examaples.
+  * Async examples.
   * Mocks with Meck.
   * Doc specs.
+  * HTML and JSON outputs.
   * Etc and etc.
 
 ## Contents
@@ -591,6 +592,29 @@ Find the results in `/cover` folder.
 ESpec, like ExUnit, uses very simple wrapper around OTP's cover. But you can override this.
 
 Take a look to [coverex](https://github.com/alfert/coverex) as a perfect example.
+
+#### Output formats
+There are three formatters in ESpec: 'doc', 'json' and 'html'.
+
+Example:
+```sh
+mix espec --format=doc
+```
+The 'doc' format will print detailed description of example and its context. 
+
+`--trace` option is an alias for `--fromat=doc`.
+```sh
+mix espec --trace
+```
+
+'html' and 'json' formatters prepare pretty HTML and JSON outputs.
+
+You may use `--format` with `--out` option to write output to the file.
+```sh
+mix espec --format=html --out=spec.html
+```
+
+
 
 
 
