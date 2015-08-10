@@ -276,8 +276,8 @@ defmodule SharedSpec do
   it do: should eq("world!")
 end
 ```
-`shared: true` marks examples in the module as shared, so the examples will be skipped untile you reuse them.
-You can use the examples with `it_behaes_like` macro:
+`shared: true` marks examples in the module as shared, so the examples will be skipped until you reuse them.
+You can use the examples with `it_behaves_like` macro:
 ```elixir
 defmodule UseSharedSpec do
   use ESpec
@@ -603,7 +603,7 @@ mix espec --format=doc
 ```
 The 'doc' format will print detailed description of example and its context. 
 
-`--trace` option is an alias for `--fromat=doc`.
+`--trace` option is an alias for `--format=doc`.
 ```sh
 mix espec --trace
 ```
