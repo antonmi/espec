@@ -126,7 +126,7 @@ Available options are:
 There are also `xcontext`, `xdescribe`, `xexample_group` macros to skip example groups.
 And `fcontext`, `fdescribe`, `fexample_group` for focused groups.
 
-'spec' module is also a context with module name as description. One can add options for this context after `yse ESpec:`
+'spec' module is also a context with module name as description. One can add options for this context after `use ESpec:`
 ```elixir
 defmodule SomeSpec do
   use ESpec, skip: "Skip all examples in the module"
