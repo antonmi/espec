@@ -1,6 +1,6 @@
 defmodule ESpec.Output.Doc do
   @moduledoc """
-  Generate plain colored text output.
+  Generates plain colored text output.
   """
   @green IO.ANSI.green
   @red IO.ANSI.red
@@ -14,7 +14,7 @@ defmodule ESpec.Output.Doc do
 
   alias ESpec.Example 
 
-  @doc "Format the final result."
+  @doc "Formats the final result."
   def format_result(examples, times, _opts) do
     pending = Example.pendings(examples)
     string = ""
@@ -25,7 +25,7 @@ defmodule ESpec.Output.Doc do
     string <> format_times(times, failed, pending)
   end
   
-  @doc "Format an example result."
+  @doc "Formats an example result."
   def format_example(example, opts) do
     color = color_for_status(example.status)
     symbol = symbol_for_status(example.status)

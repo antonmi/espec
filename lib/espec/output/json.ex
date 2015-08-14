@@ -1,9 +1,9 @@
 defmodule ESpec.Output.Json do
   @moduledoc """
-  Generate json output.
+  Generates json output.
   """
   alias ESpec.Example
-  @doc "Format the final result."
+  @doc "Formats the final result."
   def format_result(examples, times, _opts) do
     pending = Example.pendings(examples)
     failed = Example.failure(examples)
@@ -15,7 +15,7 @@ defmodule ESpec.Output.Json do
     String.replace(string, "\n", "")
   end
   
-  @doc "Format an example result."
+  @doc "Formats an example result."
   def format_example(_example, _opts), do: ""
 
   defp template_path, do: Path.join(Path.dirname(__ENV__.file), "templates/json.json.eex")

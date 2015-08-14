@@ -1,6 +1,6 @@
 defmodule ESpec.Output.Html do
   @moduledoc """
-  Generate json output.
+  Generates html output.
   """
   alias ESpec.Example
   @doc "Format the final result."
@@ -12,7 +12,7 @@ defmodule ESpec.Output.Html do
     String.replace(string, "\n", "")
   end
   
-  @doc "Format an example result."
+  @doc "Formats an example result."
   def format_example(_example, _opts), do: ""
 
   defp template_path, do: Path.join(Path.dirname(__ENV__.file), "templates/html.html.eex")
