@@ -67,6 +67,8 @@ defmodule ESpec.AssertionHelpers do
   end
   def be_nil, do: {ESpec.Assertions.BeType, :null}
   def be_function(arity), do: {ESpec.Assertions.BeType, [:function, arity]}
+  def be_struct, do: {ESpec.Assertions.BeType, :struct}
+  def be_struct(name), do: {ESpec.Assertions.BeType, [:struct, name]}
 
   def accepted(func, args \\ :any, opts \\ [pid: :any, count: :any]), do: {ESpec.Assertions.Accepted, [func, args, opts]}
 end

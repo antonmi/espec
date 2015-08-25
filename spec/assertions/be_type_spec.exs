@@ -18,6 +18,8 @@ defmodule ESpec.Assertions.BeTypeSpec do
 		it do: make_ref |> should be_reference
 		it do: {:a, :b} |> should be_tuple
 		it do: fn(_a, _b) -> :ok end |> should be_function(2)
+                it do: HashDict.new |> should be_struct
+                it do: HashDict.new |> should be_struct(HashDict)
 	end
 
 	xcontext "Error" do
@@ -29,5 +31,8 @@ defmodule ESpec.Assertions.BeTypeSpec do
 
 		it do: fn(_a) -> :ok end |> should be_function(2)
 		it do: fn(_a, _b) -> :ok end |> should_not be_function(2)
+
+                it do: 1 |> should be_struct
+                it do: HashDict.new |> should_not be_struct
 	end
 end
