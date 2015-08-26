@@ -387,6 +387,8 @@ expect(:espec).to be_atom  #is_atom(:espec) == true
 ... be_tuple
 ... be_function
 ... be_function(arity)
+... be_struct
+... be_struct(StructExample)
 ```
 #### Exceptions
 ```elixir
