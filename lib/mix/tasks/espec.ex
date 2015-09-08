@@ -86,6 +86,7 @@ defmodule Mix.Tasks.Espec do
   """
 
   @cover [output: "cover", tool: Cover]
+  @recursive true
 
   def run(args) do
     {opts, files, _} = OptionParser.parse(args)
