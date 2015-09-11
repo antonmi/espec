@@ -110,9 +110,11 @@ defmodule Mix.Tasks.Espec do
     
     parse_spec_files(project, opts, files)
     
-    success = ESpec.run()
+    success = ESpec.run
 
     if cover, do: cover.()
+    
+    ESpec.stop
 
     System.at_exit(fn(_) -> unless success, do: exit({:shutdown, 1}) end)
   end
@@ -128,7 +130,6 @@ defmodule Mix.Tasks.Espec do
         {Path.absname(file), []}
     end
   end
-
 
   defp require_spec_helper(dir) do
     file = Path.join(dir, "spec_helper.exs")

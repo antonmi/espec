@@ -68,6 +68,15 @@ defmodule ESpec do
     ESpec.Output.start
   end
 
+  @doc "Stops ESpec components"
+  def stop do
+    stop_specs_agent
+    ESpec.Let.stop_agent
+    ESpec.Mock.stop_agent
+    ESpec.Runner.stop
+    ESpec.Output.stop
+  end
+  
   @doc "Returns all examples."
   def specs, do: Agent.get(@spec_agent_name, &(&1))
 
@@ -75,4 +84,5 @@ defmodule ESpec do
   def add_spec(module), do: Agent.update(@spec_agent_name, &[module | &1])
 
   defp start_specs_agent, do: Agent.start_link(fn -> [] end, name: @spec_agent_name)
+  def stop_specs_agent, do: Agent.stop(@spec_agent_name)
 end

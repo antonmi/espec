@@ -19,10 +19,19 @@ defmodule ESpec.Runner do
   @doc "Runs all examples."
   def run, do: GenServer.call(__MODULE__, :run, :infinity)
 
+  @doc false
+  def stop, do: GenServer.call(__MODULE__, :stop)
+
+  @doc false
   def handle_call(:run, _pid, state) do
     result = do_run(state[:specs], state[:opts])
     {:reply, result, state}
   end
+
+  @doc false
+  def handle_call(:stop, _pid, state) do
+    {:stop, :normal, :ok, []}
+  end 
 
   defp do_run(specs, opts) do
     if ESpec.Configuration.get(:order) do

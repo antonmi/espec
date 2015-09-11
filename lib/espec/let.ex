@@ -95,9 +95,10 @@ defmodule ESpec.Let do
   end
 
   @doc "Starts Agent to save state of 'lets'."
-  def start_agent do
-    Agent.start_link(fn -> HashDict.new end, name: @agent_name)
-  end
+  def start_agent, do: Agent.start_link(fn -> HashDict.new end, name: @agent_name)
+
+  @doc "Stops Agent"
+  def stop_agent, do: Agent.stop(@agent_name)
 
   @doc "Get stored value."
   def agent_get(key) do
@@ -106,9 +107,7 @@ defmodule ESpec.Let do
   end
 
   @doc "Store value."
-  def agent_put(key, value) do
-    Agent.update(@agent_name, &(Dict.put(&1, key, value)))
-  end
+  def agent_put(key, value), do: Agent.update(@agent_name, &(Dict.put(&1, key, value)))
 
   defp random_let_name, do: String.to_atom("let_#{ESpec.Support.random_string}")
 end

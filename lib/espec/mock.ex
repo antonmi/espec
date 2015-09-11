@@ -35,9 +35,10 @@ defmodule ESpec.Mock do
   end
 
   @doc "Starts Agent to save mocked modules."
-  def start_agent do
-    Agent.start_link(fn -> HashSet.new end, name: @agent_name)
-  end
+  def start_agent, do: Agent.start_link(fn -> HashSet.new end, name: @agent_name)
+  
+  @doc "Stops Agent"
+  def stop_agent, do: Agent.stop(@agent_name)
 
   defp agent_get(pid) do
     Agent.get(@agent_name, &(&1))
@@ -52,7 +53,5 @@ defmodule ESpec.Mock do
     Agent.update(@agent_name, fn(_state) -> new_set end)
   end
 
-  defp agent_put(key) do
-    Agent.update(@agent_name, &(Set.put(&1, key)))
-  end
+  defp agent_put(key), do: Agent.update(@agent_name, &(Set.put(&1, key)))
 end

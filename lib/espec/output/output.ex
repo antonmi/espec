@@ -26,7 +26,10 @@ defmodule ESpec.Output do
    if output_to_file?, do: close_out_file
    result
   end
-  
+
+  @doc false
+  def stop, do: GenServer.call(__MODULE__, :stop)
+
   @doc false
   def handle_cast({:example_info, example}, state) do
     do_example_info(example, state[:formatter])
@@ -38,6 +41,11 @@ defmodule ESpec.Output do
     do_print_result(examples, state[:formatter])
     {:reply, :ok, state}
   end
+
+  @doc false
+  def handle_call(:stop, _pid, state) do
+    {:stop, :normal, :ok, []}
+  end  
 
   defp do_example_info(example, {formatter, opts}) do
     unless silent? do
