@@ -19,18 +19,17 @@ defmodule Mix.Tasks.Espec.Init do
 		
 	ESpec.configure fn(config) ->
 		config.before fn ->
-			{:ok, hello: :world}
+			# {:ok, hello: :world}
 		end
 		
 		config.finally fn(__) -> 
-			__.hello
+		
 		end
 	end
 	"""
 
 	embed_template :example_spec, """
 	defmodule ExampleSpec do
-		
 		use ESpec
 		
 		before do
