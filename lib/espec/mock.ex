@@ -10,12 +10,13 @@ defmodule ESpec.Mock do
   @agent_name :espec_mock_agent
 
   @doc """
-  Creates new mock using :meck. The :meck options are [:non_strict, :passthrough]
+  Creates new mock using :meck. The default :meck options are [:non_strict, :passthrough]
+  but they can be overriden.
   Stores mock in agent to remove it after spec.
   """
-  def expect(module, name, function) do
+  def expect(module, name, function, meck_options \\ [:non_strict, :passthrough]) do
     try do
-      :meck.new(module, [:non_strict, :passthrough])
+      :meck.new(module, meck_options)
     rescue
       error in [ErlangError] ->
         case error do
