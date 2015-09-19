@@ -12,7 +12,7 @@ ESpec is inspired by RSpec and the main idea is to be close to its perfect DSL.
   * Test organization with `describe`, `context`, `it`, and etc blocks.
   * Familiar matchers: `eq`, `be_close_to`, `raise_exception`, etc.
   * Possibility to add custom matchers.
-  * RSpec expectation syntax: 
+  * RSpec expectation syntax:
     - With `expect` helper: `expect(smth1).to eq(smth2)` or `is_expected.to eq(smth)` when `subject` is defined;
     - With old-style `should`: `smth1 |> should eq smth2` or `should eq smth` when `subject` is defined.
   * `before` and `finally` blocks (like RSpec `before` and `after`).
@@ -48,7 +48,7 @@ Add `espec` to dependencies in the `mix.exs` file:
 ```elixir
 def deps do
   ...
-  {:espec, "~> 0.7.0", only: :test},
+  {:espec, "~> 0.7.1", only: :test},
   #{:espec, github: "antonmi/espec", only: :test}, to get the latest version
   ...
 end
@@ -103,16 +103,16 @@ MIX_ENV=test mix help espec
 ## Context blocks
 There are three macros with the same functionality: `context`, `describe`, and `example_group`.
 
-Context can have description and options. 
+Context can have description and options.
 ```elixir
 defmodule SomeSpec do
   use ESpec
-  
+
   example_group do
     context "Some context" do
       it do: expect("abc").to match(~r/b/)
     end
-    
+
     describe "Some another context with opts", focus: true do
       it do: 5 |> should be_between(4,6)
     end
@@ -131,7 +131,7 @@ And `fcontext`, `fdescribe`, `fexample_group` for focused groups.
 defmodule SomeSpec do
   use ESpec, skip: "Skip all examples in the module"
   ...
-end 
+end
 ```
 ## Examples
 
@@ -140,11 +140,11 @@ end
 defmodule SomeSpec do
 
   example do: expect([1,2,3]).to have_max(3)
-  
+
   it "Test with description" do
     4.2 |> should be_close_to(4, 0.5)
   end
-  
+
   specify "Test with options", [pending: true], do: "pending"
 end
 ```
@@ -156,10 +156,10 @@ There are also macros:
 ```elixir
 defmodule SomeSpec do
   use ESpec
-  
+
   xit "skip", do: "skipped"
   focus "Focused", do: "Focused example"
-  
+
   it "pending example"
   pending "it is also pending example"
 end
@@ -172,16 +172,16 @@ The blocks can return `{:ok, key: value, ...}`, so the keyword list will be save
 ```elixir
 defmodule SomeSpec do
   use ESpec
-  
+
   before do: {:ok, a: 1}
-  
+
   context "Context" do
     before do: {:ok, b: __[:a] + 1}
     finally do: "#{__[:b]} == 2"
-    
+
     it do: __.a |> should eq 1
     it do: __.b |> should eq 2
-    
+
     finally do: "This finally will not be run. Define 'finally' before the example"
   end
 end  
@@ -222,14 +222,14 @@ defmodule SomeSpec do
   use ESpec
 
   before do: {:ok, answer: __.answer + 1}          # __ == %{anwser: 43}       
-  finally do: {:ok, answer: __.answer + 1}             # __ == %{anwser: 46} 
+  finally do: {:ok, answer: __.answer + 1}             # __ == %{anwser: 46}
 
   context do
-    before do: {:ok, answer: __.answer + 1}        # __ == %{anwser: 43} 
-    finally do: {:ok, answer: __.answer + 1}           # __ == %{anwser: 45} 
+    before do: {:ok, answer: __.answer + 1}        # __ == %{anwser: 43}
+    finally do: {:ok, answer: __.answer + 1}           # __ == %{anwser: 45}
     it do: __.answer |> should eq 44
   end
-end 
+end
 ```
 So, 'config.finally' will print `46`.
 Pay attention to how `finally` blocks are defined and evaluated.
@@ -241,11 +241,11 @@ The `__` is available in 'lets' but neither `let` nor `let!` can modify the dict
 ```elixir
 defmodule SomeSpec do
   use ESpec
-  
+
   before do: {:ok, a: 1}
   let! :a, do: __.a
   let :b, do: __.a + 1
-  
+
   it do: expect(a).to eq(1)
   it do: expect(b).to eq(2)
 end  
@@ -254,7 +254,7 @@ end
 ```elixir
 defmodule SomeSpec do
   use ESpec
-  
+
   subject(1+1)
   it do: is_expected.to eq(2)
   it do: should eq 2
@@ -264,14 +264,14 @@ defmodule SomeSpec do
     it do: is_expected.to_not eq(2)
     it do: should_not eq 2
   end
-end 
+end
 ```
 ## Shared Examples
 One can reuse the examples defined in spec module.
 ```elixir
 defmodule SharedSpec do
   use ESpec, shared: true
-  
+
   subject __.hello
   it do: should eq("world!")
 end
@@ -281,10 +281,10 @@ You can use the examples with `it_behaves_like` macro:
 ```elixir
 defmodule UseSharedSpec do
   use ESpec
-  
+
   before do: {:ok, hello: "world!"}
   it_behaves_like(SharedSpec)
-end 
+end
 ```
 ## Async examples
 There is an `async: true` option you can set for the context or for the individual example:
@@ -292,10 +292,10 @@ There is an `async: true` option you can set for the context or for the individu
 defmodule AsyncSpec do
   use ESpec, async: true
   it do: "async example"
-  
+
   context "Sync", async: false do
     it do: "sync example"
-    
+
     it "async again", async: true do
       "async"
     end
@@ -315,9 +315,9 @@ expect(actual).to be_close_to(expected, delta)
 expect(actual).to be_between(hard_place, rock)
 ```
 #### Comparisons
-Can be used with `:>`, `:<`, `:>=`, `:<=`, and etc. 
+Can be used with `:>`, `:<`, `:>=`, `:<=`, and etc.
 ```elixir
-expect(actual).to be operator, value 
+expect(actual).to be operator, value
 ```
 Passes if `apply(Kernel, operator, [actual, value]) == true`
 #### Booleans
@@ -405,7 +405,7 @@ expect(function).to throw_term(term)
 Test if call of function1 change the function2 returned value to smth or from to smth
 ```elexir
 expect(function1).to change(function2, to)
-expect(function1).to change(function2, from, to) 
+expect(function1).to change(function2, from, to)
 ```
 
 ## Custom matchers
@@ -449,7 +449,7 @@ allow(SomeModule).to accept(f1: fn -> :f1 end, f2: fn -> :f2 end)
 One can use `passthrough/1` function to call the original function:
 ```elixir
   before do
-    allow(SomeModule).to accept(:fun, fn 
+    allow(SomeModule).to accept(:fun, fn
       :mocked -> "mock!"
       _ -> passthrough([args])
     end)
@@ -476,7 +476,7 @@ defmodule SomeSpec do
     allow(SomeModule).to accept(:func, fn(a,b) -> a+b end)
     SomeModule.func(1, 2)
   end  
- 
+
   it do: expect(SomeModule).to accepted(:func)
   it do: expect(SomeModule).to accepted(:func, [1,2])
 
@@ -603,7 +603,7 @@ Example:
 ```sh
 mix espec --format=doc
 ```
-The 'doc' format will print detailed description of example and its context. 
+The 'doc' format will print detailed description of example and its context.
 
 `--trace` option is an alias for `--format=doc`.
 ```sh
@@ -628,10 +628,3 @@ ESpec is tested using ExUnit and ESpec. So run:
 mix test
 mix espec
 ```
-
-
-
-
-
-
-

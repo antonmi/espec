@@ -1,7 +1,7 @@
 defmodule ESpec.Mixfile do
   use Mix.Project
 
-  @version "0.7.0"
+  @version "0.7.1"
 
   def project do
     [app: :espec,
@@ -12,7 +12,7 @@ defmodule ESpec.Mixfile do
      package: package,
      deps: deps,
      source_url: "https://github.com/antonmi/espec",
-     preferred_cli_env: [espec: :test]  
+     preferred_cli_env: [espec: :test]
    ]
   end
 
