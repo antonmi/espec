@@ -76,6 +76,7 @@ defmodule ESpec.DocTest do
             {rhs, _} = Code.eval_string(ex.rhs, [], __ENV__)
             s = """
             def #{function}(shared) do
+              shared[:key]
               expect(#{inspect lhs}).to eq(#{inspect rhs})
             end  
             """
@@ -84,6 +85,7 @@ defmodule ESpec.DocTest do
             lhs = ex.lhs
             s = """
             def #{function}(shared) do
+              shared[:key]
               expect(fn -> Code.eval_string(#{lhs}) end).to raise_exception(#{error_module}, "#{error_message}")
             end  
             """
@@ -93,6 +95,7 @@ defmodule ESpec.DocTest do
             lhs = inspect(lhs)
             s = """
             def #{function}(shared) do
+              shared[:key]
               expect(#{inspect lhs}).to eq(#{inspect rhs})
             end  
             """

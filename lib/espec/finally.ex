@@ -18,7 +18,10 @@ defmodule ESpec.Finally do
     quote do
       tail = @context
       head =  %ESpec.Finally{function: unquote(function)}
-      def unquote(function)(var!(shared)), do: unquote(block)
+      def unquote(function)(var!(shared)) do
+        var!(shared)
+        unquote(block)
+      end
       @context [head | tail]
     end
   end

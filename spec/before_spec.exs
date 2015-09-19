@@ -1,7 +1,9 @@
 defmodule BeforeSpec do
   use ESpec, async: true
 
-  before do: { :ok, a: "top before" }
+  before do 
+    {:ok, a: "top before" }
+  end
 
   it do: expect(shared.a).to eq("top before")
   it do: expect(shared[:b]).to eq(nil)

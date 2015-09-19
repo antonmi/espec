@@ -26,7 +26,10 @@ defmodule ESpec.Let do
       tail = @context
       head =  %ESpec.Let{var: unquote(var), module: __MODULE__, function: unquote(function), keep_quoted: unquote(keep_quoted)}
 
-      def unquote(function)(var!(shared), keep_quoted), do: {unquote(block), keep_quoted, var!(shared)}
+      def unquote(function)(var!(shared), keep_quoted) do
+        var!(shared)
+        {unquote(block), keep_quoted, var!(shared)}
+      end
 
       @context [head | tail]
 
