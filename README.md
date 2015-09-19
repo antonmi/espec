@@ -8,7 +8,7 @@ It is NOT a wrapper around ExUnit but a completely new test framework written fr
 
 ESpec is inspired by RSpec and the main idea is to be close to its perfect DSL.
 
-#### Warning! Since 0.8.0 '__' is replaced by 'shared'.
+#### Warning! Since 0.8.0 '__' has been replaced by 'shared'.
 
 ## Features
   * Test organization with `describe`, `context`, `it`, and etc blocks.
