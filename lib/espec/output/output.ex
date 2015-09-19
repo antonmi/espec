@@ -19,7 +19,7 @@ defmodule ESpec.Output do
 
   @doc "Generates example info."
   def example_info(example), do: GenServer.cast(__MODULE__, {:example_info, example})
-  
+
   @doc "Generates suite info"
   def print_result(examples) do
    result = GenServer.call(__MODULE__, {:print_result, examples}, :infinity)
@@ -43,9 +43,9 @@ defmodule ESpec.Output do
   end
 
   @doc false
-  def handle_call(:stop, _pid, state) do
+  def handle_call(:stop, _pid, _state) do
     {:stop, :normal, :ok, []}
-  end  
+  end
 
   defp do_example_info(example, {formatter, opts}) do
     unless silent? do
@@ -81,7 +81,7 @@ defmodule ESpec.Output do
   end
 
   defp output_to_file?, do: out_path
- 
+
   defp create_out_file! do
     File.mkdir_p!(Path.dirname(out_path))
     {:ok, file} = File.open(out_path, [:write])
@@ -89,7 +89,7 @@ defmodule ESpec.Output do
   end
 
   defp close_out_file, do: File.close(out_file)
-  
+
   defp out_file, do: Configuration.get(:out_file)
   defp out_path, do: Configuration.get(:out)
 

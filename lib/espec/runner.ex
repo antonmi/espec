@@ -29,7 +29,7 @@ defmodule ESpec.Runner do
   end
 
   @doc false
-  def handle_call(:stop, _pid, state) do
+  def handle_call(:stop, _pid, _state) do
     {:stop, :normal, :ok, []}
   end
 
