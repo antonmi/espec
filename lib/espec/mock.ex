@@ -8,15 +8,16 @@ defmodule ESpec.Mock do
   Mock are being unloaded after each example.
   """
   @agent_name :espec_mock_agent
-
+  @default_options [:non_strict, :passthrough]
   @doc """
   Creates new mock using :meck. The default :meck options are [:non_strict, :passthrough]
   but they can be overriden.
   Stores mock in agent to remove it after spec.
   """
-  def expect(module, name, function, meck_options \\ [:non_strict, :passthrough]) do
+  def expect(module, name, function, meck_options) do
+    opts = if Enum.empty?(meck_options), do: @default_options, else: meck_options
     try do
-      :meck.new(module, meck_options)
+      :meck.new(module, opts)
     rescue
       error in [ErlangError] ->
         case error do
@@ -37,7 +38,7 @@ defmodule ESpec.Mock do
 
   @doc "Starts Agent to save mocked modules."
   def start_agent, do: Agent.start_link(fn -> HashSet.new end, name: @agent_name)
-  
+
   @doc "Stops Agent"
   def stop_agent, do: Agent.stop(@agent_name)
 
@@ -48,7 +49,7 @@ defmodule ESpec.Mock do
 
   defp agent_del(pid) do
     new_set = Agent.get(@agent_name, &(&1))
-    |> Enum.reduce(HashSet.new, fn({m, p}, acc) -> 
+    |> Enum.reduce(HashSet.new, fn({m, p}, acc) ->
       if p != pid, do: HashSet.put(acc, {m, p}), else: acc
     end)
     Agent.update(@agent_name, fn(_state) -> new_set end)

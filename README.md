@@ -440,6 +440,10 @@ Behind the scenes 'allow accept' makes the following:
 :meck.expect(module, name, function)
 ```
 Find the explanation aboute the `:non_strict` and `:passthrough` options [here](https://github.com/eproxus/meck/blob/master/src/meck.erl).
+The default options (`[:non_strict, :passthrough]`) can be overridden:
+```elixir
+allow(SomeModule).to accept(:func, fn(a,b) -> a+b end, [:non_strict, :unstick])
+```
 All the mocked modules are unloaded whith `:meck.unload(modules)` after each example.
 
 You can also pass a list of atom-function pairs to the `accept` function:
