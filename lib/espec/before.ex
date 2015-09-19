@@ -4,7 +4,7 @@ defmodule ESpec.Before do
   If before block returns {:ok, key: value},
   the {key, value} is added to an 'exapmle dict'.
   The dict can be accessed in another `before`, in `let`,
-  and in example by `__` (`__[:key]`).
+  and in example by `shared` (`shared[:key]`).
   """
 
   @doc "Struct has 'spec' module name and random fuction name."
@@ -19,7 +19,7 @@ defmodule ESpec.Before do
     quote do
       tail = @context
       head =  %ESpec.Before{module: __MODULE__, function: unquote(function)}
-      def unquote(function)(var!(__)), do: unquote(block)
+      def unquote(function)(var!(shared)), do: unquote(block)
       @context [head | tail]
     end
   end

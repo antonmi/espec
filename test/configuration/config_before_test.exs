@@ -14,11 +14,11 @@ defmodule ConfigBeforeTest do
   defmodule SomeSpec do
     use ESpec
 
-    it do: "answer is #{__[:answer]}"
+    it do: "answer is #{shared[:answer]}"
 
     context "with before and let" do
-      before do: {:ok, answer: __[:answer] + 1}
-      let :answer, do: __[:answer] + 1
+      before do: {:ok, answer: shared[:answer] + 1}
+      let :answer, do: shared[:answer] + 1
       it do: "answer is #{answer}"
     end
   end

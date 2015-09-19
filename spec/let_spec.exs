@@ -13,9 +13,9 @@ defmodule LetSpec do
       it do: expect(f).to eq(5)
     end
 
-    context "use __" do
+    context "use 'shared''" do
       before do: {:ok, a: 1}
-      let! :a, do: __[:a] + 1
+      let! :a, do: shared[:a] + 1
       it do: expect(a).to eq(2)
     end
   end
@@ -32,9 +32,9 @@ defmodule LetSpec do
       it do: expect(f).to eq(5)
     end
 
-    context "use __" do
+    context "use 'shared'" do
       before do: {:ok, a: 1}
-      let :a, do: __[:a] + 1
+      let :a, do: shared[:a] + 1
       it do: expect(a).to eq(2)
     end
 

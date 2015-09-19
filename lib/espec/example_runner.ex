@@ -6,7 +6,7 @@ defmodule ESpec.ExampleRunner do
   @doc """
   Runs one specific example and returns an `%ESpec.Example{}` struct.
   The sequence in the following:
-  - evaluates 'befores' and 'lets'. 'befores' fill the map for `__`, 'lets' can access `__` ;
+  - evaluates 'befores' and 'lets'. 'befores' fill the map for `shared`, 'lets' can access `shared` ;
   - runs 'example block';
   - evaluate 'finally's'
   The struct has fields `[status: :success, result: result]` or `[status: failed, error: error]`

@@ -4,15 +4,15 @@ defmodule SharedSpecsTest do
   defmodule SharedSpec do
     use ESpec, shared: true
 
-    before do: {:ok, c: __.b + 1}
+    before do: {:ok, c: shared.b + 1}
 
-    let! :c, do: __.c
+    let! :c, do: shared.c
 
     context "SharedSpec context" do
-      let :d, do: __.c + 1
+      let :d, do: shared.c + 1
 
-      it do: expect(__.a).to eq(1)
-      it do: expect(__.b).to eq(2)
+      it do: expect(shared.a).to eq(1)
+      it do: expect(shared.b).to eq(2)
       it do: expect(c).to eq(3)
       it do: expect(d).to eq(4)
     end

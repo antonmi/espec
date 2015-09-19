@@ -15,9 +15,9 @@ defmodule LetTest do
       it do: "f.(2) = #{f.(2)}"
     end
 
-    context "Use __" do
+    context "Use 'shared'" do
       before do: {:ok, x: 1}
-      let :y, do: __[:x] + 1
+      let :y, do: shared[:x] + 1
       it do: "y = #{y}"
     end
   end

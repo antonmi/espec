@@ -5,7 +5,7 @@ defmodule ConfigFinallyTest2 do
     use ESpec
 
     before do: {:ok, a: 1}
-    finally do: {:ok, a: __[:a] + 1}
+    finally do: {:ok, a: shared[:a] + 1}
     it do: "some test"
   end
 

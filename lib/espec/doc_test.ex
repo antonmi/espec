@@ -75,7 +75,7 @@ defmodule ESpec.DocTest do
             {lhs, _} = Code.eval_string(ex.lhs, [], __ENV__)
             {rhs, _} = Code.eval_string(ex.rhs, [], __ENV__)
             s = """
-            def #{function}(__) do
+            def #{function}(shared) do
               expect(#{inspect lhs}).to eq(#{inspect rhs})
             end  
             """
@@ -83,7 +83,7 @@ defmodule ESpec.DocTest do
             {error_module, error_message} = ex.rhs
             lhs = ex.lhs
             s = """
-            def #{function}(__) do
+            def #{function}(shared) do
               expect(fn -> Code.eval_string(#{lhs}) end).to raise_exception(#{error_module}, "#{error_message}")
             end  
             """
@@ -92,7 +92,7 @@ defmodule ESpec.DocTest do
             {rhs, _} = Code.eval_string(ex.rhs, [], __ENV__)
             lhs = inspect(lhs)
             s = """
-            def #{function}(__) do
+            def #{function}(shared) do
               expect(#{inspect lhs}).to eq(#{inspect rhs})
             end  
             """

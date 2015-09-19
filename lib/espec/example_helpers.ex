@@ -10,7 +10,7 @@ defmodule ESpec.ExampleHelpers do
 
   @doc """
   Adds example to @examples and defines function to wrap the spec.
-  Sends 'double-underscore `__`' variable to the example block.
+  Sends `shared`' variable to the example block.
   """
   defmacro example(description, opts, do: block) do
     function = (random_atom(description))
@@ -19,7 +19,7 @@ defmodule ESpec.ExampleHelpers do
       @examples %ESpec.Example{ description: unquote(description), module: __MODULE__, function: unquote(function),
                                 opts: unquote(opts), file: __ENV__.file, line: __ENV__.line, context: context,
                                 shared: @shared}
-      def unquote(function)(var!(__)), do: unquote(block)
+      def unquote(function)(var!(shared)), do: unquote(block)
     end
   end
 
@@ -101,7 +101,7 @@ defmodule ESpec.ExampleHelpers do
       quote do: example(unquote(description), [pending: unquote(description)], do: nil)
     end
   end
-  
+
   @doc "Defines examples using another module."
   defmacro it_behaves_like(module) do
     quote do

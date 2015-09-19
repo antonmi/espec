@@ -22,7 +22,7 @@ defmodule Mix.Tasks.Espec.Init do
 			# {:ok, hello: :world}
 		end
 		
-		config.finally fn(__) -> 
+		config.finally fn(shared) ->
 		
 		end
 	end
@@ -34,25 +34,25 @@ defmodule Mix.Tasks.Espec.Init do
 		
 		before do
 			answer = Enum.reduce((1..9), &(&2 + &1)) - 3
-			{:ok, answer: answer} #saves {:key, :value} to `__`
+			{:ok, answer: answer} #saves {:key, :value} to `shared`
 		end
 
 		example "test" do
-			expect(__.answer).to eq(42)
+			expect(shared.answer).to eq(42)
 		end
 
 		context "Defines context" do
-			subject(__.answer)
+			subject(shared.answer)
 			
 			it do: is_expected.to be_between(41, 43)
 			
 			describe "is an alias for context" do
 				before do
-					value = __.answer * 2
+					value = shared.answer * 2
 					{:ok, new_answer: value}
 				end
 
-				let :val, do: __.new_answer
+				let :val, do: shared.new_answer
 
 				it "checks val" do
 					expect(val).to eq(84)

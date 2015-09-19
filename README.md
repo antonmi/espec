@@ -195,7 +195,7 @@ mix espec spec/some_spec.exs --string 'context with tag'
 ## `before` and `finally`
 `before` blocks are evaluated before the example and `finally` runs after the example.
 
-The blocks can return `{:ok, key: value, ...}`, so the keyword list will be saved in the dictionary and can be accessed in other `before` blocks, in the example, and in `finally` blocks through ['double-underscore' `__`](#double-underscore):
+The blocks can return `{:ok, key: value, ...}`, so the keyword list will be saved in the dictionary and can be accessed in other `before` blocks, in the example, and in `finally` blocks through ['double-underscore' `shared`](#double-underscore):
 ```elixir
 defmodule SomeSpec do
   use ESpec
@@ -203,11 +203,11 @@ defmodule SomeSpec do
   before do: {:ok, a: 1}
 
   context "Context" do
-    before do: {:ok, b: __[:a] + 1}
-    finally do: "#{__[:b]} == 2"
+    before do: {:ok, b: shared[:a] + 1}
+    finally do: "#{shared[:b]} == 2"
 
-    it do: __.a |> should eq 1
-    it do: __.b |> should eq 2
+    it do: shared.a |> should eq 1
+    it do: shared.b |> should eq 2
 
     finally do: "This finally will not be run. Define 'finally' before the example"
   end
@@ -220,27 +220,27 @@ ESpec.start
 
 ESpec.configure fn(config) ->
   config.before fn -> {:ok, answer: 42} end  #can assign values in dictionary
-  config.finally fn(__) -> __.answer  end     #can access assigns
+  config.finally fn(shared) -> shared.answer  end     #can access assigns
 end
 ```
 These functions will be called before and after each example which ESpec runs.
 
 ## 'double-underscore'
-`__` is used to share data between spec blocks. You can access data by `__.some_key` or `__[:some_key]`.
-`__.some_key` will raise exception if the key 'some_key' does not exist, while `__[:some_key]` will return `nil`.
+`shared` is used to share data between spec blocks. You can access data by `shared.some_key` or `shared[:some_key]`.
+`shared.some_key` will raise exception if the key 'some_key' does not exist, while `shared[:some_key]` will return `nil`.
 
-The `__` variable appears in your `before`, `finally`, in `config.before` and `config.finally`, in `let` and `example` blocks.
+The `shared` variable appears in your `before`, `finally`, in `config.before` and `config.finally`, in `let` and `example` blocks.
 
 `before` and `finally` blocks (including 'global') can modify the dictionay when return `{:ok, key: value}`.
-The example bellow illustrate the life-cycle of `__`:
+The example bellow illustrate the life-cycle of `shared`:
 
 `spec_helper.exs`
 ```elixir
 ESpec.start
 
 ESpec.configure fn(config) ->
-  config.before fn -> {:ok, answer: 42} end         # __ == %{anwser: 42}
-  config.finally fn(__) -> IO.puts __.answer  end    # it will print 46   
+  config.before fn -> {:ok, answer: 42} end         # shared == %{anwser: 42}
+  config.finally fn(shared) -> IO.puts shared.answer  end    # it will print 46   
 end
 ```
 `some_spec.exs`:
@@ -248,13 +248,13 @@ end
 defmodule SomeSpec do
   use ESpec
 
-  before do: {:ok, answer: __.answer + 1}          # __ == %{anwser: 43}       
-  finally do: {:ok, answer: __.answer + 1}             # __ == %{anwser: 46}
+  before do: {:ok, answer: shared.answer + 1}          # shared == %{anwser: 43}       
+  finally do: {:ok, answer: shared.answer + 1}             # shared == %{anwser: 46}
 
   context do
-    before do: {:ok, answer: __.answer + 1}        # __ == %{anwser: 43}
-    finally do: {:ok, answer: __.answer + 1}           # __ == %{anwser: 45}
-    it do: __.answer |> should eq 44
+    before do: {:ok, answer: shared.answer + 1}        # shared == %{anwser: 43}
+    finally do: {:ok, answer: shared.answer + 1}           # shared == %{anwser: 45}
+    it do: shared.answer |> should eq 44
   end
 end
 ```
@@ -264,14 +264,14 @@ Pay attention to how `finally` blocks are defined and evaluated.
 ## `let` and `subject`
 `let` and `let!` have the same behaviour as in RSpec. Both defines memoizable functions in 'spec module'. The value will be cached across multiple calls in the same example but not across examples. `let` is not evaluated until the first time the function it defines is invoked. Use `let!` to force the  invocation before each example.
 
-The `__` is available in 'lets' but neither `let` nor `let!` can modify the dictionary.
+The `shared` is available in 'lets' but neither `let` nor `let!` can modify the dictionary.
 ```elixir
 defmodule SomeSpec do
   use ESpec
 
   before do: {:ok, a: 1}
-  let! :a, do: __.a
-  let :b, do: __.a + 1
+  let! :a, do: shared.a
+  let :b, do: shared.a + 1
 
   it do: expect(a).to eq(1)
   it do: expect(b).to eq(2)
@@ -299,7 +299,7 @@ One can reuse the examples defined in spec module.
 defmodule SharedSpec do
   use ESpec, shared: true
 
-  subject __.hello
+  subject shared.hello
   it do: should eq("world!")
 end
 ```
@@ -525,7 +525,7 @@ defmodule SomeSpec do
       {:ok, pid: pid}
     end
 
-    it do: expect(ESpec.SomeModule).to accepted(:func, [1,2], pid: __.pid, count: 2)
+    it do: expect(ESpec.SomeModule).to accepted(:func, [1,2], pid: shared.pid, count: 2)
   end
 end
 ```

@@ -5,21 +5,21 @@ defmodule BeforeTest do
     use ESpec
 
     before do: {:ok, a: 1}
-    it do: "#{__[:a]} is defined"
+    it do: "#{shared[:a]} is defined"
 
     context "Context" do
       before do: {:ok, a: 10, b: 2}
-      it do: "#{__[:a]} and #{__[:b]} is defined"
+      it do: "#{shared[:a]} and #{shared[:b]} is defined"
 
       describe "Describe" do
         before do: {:ok, b: fn(a) -> a*2 end}
-        it do: "#{__[:b].(10)} == 20"
+        it do: "#{shared[:b].(10)} == 20"
       end
     end
 
-    context "__ is available" do
-      before do: {:ok, b: __[:a] + 1 }
-      it do: "b = #{__[:b]}"
+    context "'shared is available" do
+      before do: {:ok, b: shared[:a] + 1 }
+      it do: "b = #{shared[:b]}"
     end
   end
 

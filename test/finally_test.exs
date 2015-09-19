@@ -7,10 +7,10 @@ defmodule FinallyTest do
     before do: {:ok, a: 1}
     finally do
       Application.put_env(:espec, :finally_a, 1)
-      {:ok, b: __[:a] + 1}
+      {:ok, b: shared[:a] + 1}
     end 
 
-    finally do: Application.put_env(:espec, :finally_b, __[:b])
+    finally do: Application.put_env(:espec, :finally_b, shared[:b])
 
 
     it do: "some test"

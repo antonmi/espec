@@ -26,7 +26,7 @@ defmodule ESpec.Let do
       tail = @context
       head =  %ESpec.Let{var: unquote(var), module: __MODULE__, function: unquote(function), keep_quoted: unquote(keep_quoted)}
 
-      def unquote(function)(var!(__), keep_quoted), do: {unquote(block), keep_quoted, var!(__)}
+      def unquote(function)(var!(shared), keep_quoted), do: {unquote(block), keep_quoted, var!(shared)}
 
       @context [head | tail]
 
@@ -39,7 +39,7 @@ defmodule ESpec.Let do
             functions = [{__MODULE__, __MODULE__.__info__(:functions)} | __ENV__.functions]
             env = %{__ENV__ | functions: functions}
             
-            {result, _assigns} = Code.eval_quoted(result, [__: assigns], env)
+            {result, _assigns} = Code.eval_quoted(result, [shared: assigns], env)
             ESpec.Let.agent_put({self, __MODULE__, unquote(var)}, {result, false, assigns})
             result
           else

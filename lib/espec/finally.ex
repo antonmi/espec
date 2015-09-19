@@ -2,7 +2,7 @@ defmodule ESpec.Finally do
   @moduledoc """
   Defines `finally` macro.
   The block is evaluated after the example.
-  `__` is available.
+  `shared` is available.
   Define the `finally` before example!.
   """
 
@@ -18,7 +18,7 @@ defmodule ESpec.Finally do
     quote do
       tail = @context
       head =  %ESpec.Finally{function: unquote(function)}
-      def unquote(function)(var!(__)), do: unquote(block)
+      def unquote(function)(var!(shared)), do: unquote(block)
       @context [head | tail]
     end
   end

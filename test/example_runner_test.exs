@@ -7,7 +7,7 @@ defmodule ExampleRunnerTest do
     before do
       {:ok, a: 10}
     end
-    it do: "a = #{__[:a]}"
+    it do: "a = #{shared[:a]}"
 
     context "Context" do
       let :a, do: 20

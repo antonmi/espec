@@ -63,7 +63,7 @@ defmodule AcceptedSpec do
 		end
 
 		it "accepted with pid" do
-			expect(SomeModule).to accepted(:func, [10, 20], pid: __.pid)
+			expect(SomeModule).to accepted(:func, [10, 20], pid: shared.pid)
 		end
 
 		it "not accepted with another pid" do
