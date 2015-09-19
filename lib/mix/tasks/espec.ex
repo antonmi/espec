@@ -47,7 +47,7 @@ defmodule Mix.Tasks.Espec do
   In case a single file is being tested, it is possible pass a specific
   line number:
 
-      mix espec spec/some/particular/file_spec.exs:42    
+      mix espec spec/some/particular/file_spec.exs:42
 
   ## Command line options
 
@@ -58,6 +58,8 @@ defmodule Mix.Tasks.Espec do
     * `--out`        - write output to a file instead of $stdout.
     * `--trace`      - alias for `--format=doc`
     * `--cover`      - enable code coverage
+    * `--only`       - run only tests that match the filter `--only some:tag`
+    * `--exclude`    - exclude tests that match the filter `--exclude some:tag`
 
   ## Configuration
     * `:spec_paths` - list of paths containing spec files, defaults to `["spec"]`.
@@ -91,7 +93,7 @@ defmodule Mix.Tasks.Espec do
   def run(args) do
     {opts, files, _} = OptionParser.parse(args)
     check_env!
-    
+
     Mix.Task.run "loadpaths", args
 
     project = Mix.Project.config
@@ -107,13 +109,13 @@ defmodule Mix.Tasks.Espec do
     Mix.Task.run "app.start", args
 
     ensure_espec_loaded!
-    
+
     parse_spec_files(project, opts, files)
-    
+
     success = ESpec.run
 
     if cover, do: cover.()
-    
+
     ESpec.stop
 
     System.at_exit(fn(_) -> unless success, do: exit({:shutdown, 1}) end)
@@ -149,7 +151,7 @@ defmodule Mix.Tasks.Espec do
                 "Or set MIX_ENV explicitly (MIX_ENV=test mix espec)"
     end
   end
- 
+
   defp ensure_espec_loaded! do
     case Application.load(:espec) do
       :ok -> :ok
@@ -158,9 +160,9 @@ defmodule Mix.Tasks.Espec do
   end
 
   defp parse_spec_files(project, opts, files) do
-    spec_paths = project[:spec_paths] || ["spec"] 
+    spec_paths = project[:spec_paths] || ["spec"]
     spec_pattern =  project[:spec_pattern] || "*_spec.exs"
-    
+
     ESpec.Configuration.add(start_loading_time: :os.timestamp)
     ESpec.Configuration.add(opts)
     Enum.each(spec_paths, &require_spec_helper(&1))

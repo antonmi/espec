@@ -15,6 +15,8 @@ defmodule ESpec.Configuration do
     out_file: "Output file",
     focus: "Run only examples with [focus: true]",
     order: "Run specs in the order in which they are declared",
+    only: "Run only tests that match the filter",
+    exclude: "Exclude tests that match the filter",
     test: "For test purpose",
     start_loading_time: "Starts loading files",
     finish_loading_time: "Finished loading",
@@ -36,7 +38,7 @@ defmodule ESpec.Configuration do
 
   @doc "Returns the value associated with key."
   def get(key), do: Application.get_env(:espec, key)
-  
+
   @doc "Returns all options."
   def all, do: Application.get_all_env(:espec)
 

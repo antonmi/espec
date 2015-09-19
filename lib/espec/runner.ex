@@ -31,7 +31,7 @@ defmodule ESpec.Runner do
   @doc false
   def handle_call(:stop, _pid, state) do
     {:stop, :normal, :ok, []}
-  end 
+  end
 
   defp do_run(specs, opts) do
     if ESpec.Configuration.get(:order) do
@@ -51,10 +51,10 @@ defmodule ESpec.Runner do
       |> run_examples
     end)
     |> List.flatten
-  end    
+  end
 
   defp run_in_random(specs, opts) do
-    examples = Enum.map(specs, fn(module) -> 
+    examples = Enum.map(specs, fn(module) ->
       filter(module.examples, opts)
     end) |> List.flatten |> Enum.shuffle
 
@@ -82,15 +82,16 @@ defmodule ESpec.Runner do
     Enum.map(examples, &ESpec.ExampleRunner.run(&1))
   end
 
-  defp filter(examples, opts) do
+  @doc false
+  def filter(examples, opts) do
     file_opts = opts[:file_opts] || []
     examples = filter_shared(examples)
-    if Enum.any?(file_opts) do
-      examples = file_opts_filter(examples, file_opts)
-    end
-    if opts[:focus] do
-      examples = filter_focus(examples)
-    end
+
+    if Enum.any?(file_opts), do: examples = file_opts_filter(examples, file_opts)
+    if opts[:focus], do: examples = filter_focus(examples)
+    if opts[:only], do: examples = filter_only(examples, opts[:only])
+    if opts[:exclude], do: examples = filter_only(examples, opts[:exclude], true)
+
     examples
   end
 
@@ -114,7 +115,7 @@ defmodule ESpec.Runner do
   defp get_closest(arr, value) do
     arr = Enum.sort(arr)
     diff = abs(value - hd(arr))
-    {_d, el} = Enum.reduce(arr, {diff, hd(arr)}, fn(el, {d, e}) -> 
+    {_d, el} = Enum.reduce(arr, {diff, hd(arr)}, fn(el, {d, e}) ->
       diff = abs(value - el)
       if diff < d, do: {diff, el}, else: {d, e}
     end)
@@ -133,5 +134,39 @@ defmodule ESpec.Runner do
       contexts = ESpec.Example.extract_contexts(example)
       example.opts[:focus] || Enum.any?(contexts, &(&1.opts[:focus]))
     end)
+  end
+
+  defp filter_only(examples, only, reverse \\ false) do
+    [key, value] = extract_opts(only)
+    Enum.filter(examples, fn(example) ->
+      contexts = ESpec.Example.extract_contexts(example)
+      key = String.to_atom(key)
+      example_tag_value = example.opts[key]
+      context_tag_values = Enum.map(contexts, &(&1.opts[key]))
+      tag_values =  Enum.filter([example_tag_value | context_tag_values], &(&1))
+      if reverse do
+        if Enum.empty?(tag_values), do: true, else: !is_any_with_tag?(tag_values, value)
+      else
+        is_any_with_tag?(tag_values, value)
+      end
+    end)
+  end
+
+  defp is_any_with_tag?(tag_values, value) do
+    Enum.any?(tag_values, fn(tag) ->
+      if is_atom(tag) do
+        if value, do: Atom.to_string(tag) == value, else: tag
+      else
+        if value, do: tag == value, else: tag
+      end
+    end)
+  end
+
+  defp extract_opts(key_value) do
+    if String.match?(key_value, ~r/:/) do
+      String.split(key_value, ":")
+    else
+      [key_value, false]
+    end
   end
 end
