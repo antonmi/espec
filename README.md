@@ -8,6 +8,8 @@ It is NOT a wrapper around ExUnit but a completely new test framework written fr
 
 ESpec is inspired by RSpec and the main idea is to be close to its perfect DSL.
 
+#### Warning! Since 0.8.0 '__' is replaced by 'shared'.
+
 ## Features
   * Test organization with `describe`, `context`, `it`, and etc blocks.
   * Familiar matchers: `eq`, `be_close_to`, `raise_exception`, etc.
@@ -31,7 +33,7 @@ ESpec is inspired by RSpec and the main idea is to be close to its perfect DSL.
 - [Examples](#examples)
 - [Filters](#filters)
 - ['before' and 'finally'](#before-and-finally)
-- ['double-underscore'](#double-underscore)
+- ['shared'](#shared)
 - ['let' and 'subject'](#let-and-subject)
 - [Shared examples](#shared-examples)
 - [Async examples](#async-examples)
@@ -195,7 +197,7 @@ mix espec spec/some_spec.exs --string 'context with tag'
 ## `before` and `finally`
 `before` blocks are evaluated before the example and `finally` runs after the example.
 
-The blocks can return `{:ok, key: value, ...}`, so the keyword list will be saved in the dictionary and can be accessed in other `before` blocks, in the example, and in `finally` blocks through ['double-underscore' `shared`](#double-underscore):
+The blocks can return `{:ok, key: value, ...}`, so the keyword list will be saved in the dictionary and can be accessed in other `before` blocks, in the example, and in `finally` blocks through ['shared`](#shared):
 ```elixir
 defmodule SomeSpec do
   use ESpec
@@ -225,7 +227,7 @@ end
 ```
 These functions will be called before and after each example which ESpec runs.
 
-## 'double-underscore'
+## 'shared'
 `shared` is used to share data between spec blocks. You can access data by `shared.some_key` or `shared[:some_key]`.
 `shared.some_key` will raise exception if the key 'some_key' does not exist, while `shared[:some_key]` will return `nil`.
 
