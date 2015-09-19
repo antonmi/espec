@@ -91,6 +91,7 @@ defmodule ESpec.Runner do
     if opts[:focus], do: examples = filter_focus(examples)
     if opts[:only], do: examples = filter_only(examples, opts[:only])
     if opts[:exclude], do: examples = filter_only(examples, opts[:exclude], true)
+    if opts[:string], do: examples = filter_string(examples, opts[:string])
 
     examples
   end
@@ -133,6 +134,13 @@ defmodule ESpec.Runner do
     Enum.filter(examples, fn(example) ->
       contexts = ESpec.Example.extract_contexts(example)
       example.opts[:focus] || Enum.any?(contexts, &(&1.opts[:focus]))
+    end)
+  end
+
+  defp filter_string(examples, string) do
+    Enum.filter(examples, fn(example) ->
+      description = Enum.join([example.description | ESpec.Example.context_descriptions(example)])
+      String.contains?(description, string)
     end)
   end
 

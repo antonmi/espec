@@ -29,7 +29,7 @@ ESpec is inspired by RSpec and the main idea is to be close to its perfect DSL.
 - [Run specs](#run-specs)
 - [Context blocks](#context-blocks)
 - [Examples](#examples)
-- [Tags](#tags)
+- [Filters](#filters)
 - ['before' and 'finally'](#before-and-finally)
 - ['double-underscore'](#double-underscore)
 - ['let' and 'subject'](#let-and-subject)
@@ -166,13 +166,13 @@ defmodule SomeSpec do
 end
 ```
 
-##Tags
+##Filters
 One can tag example or context and then use `--only` or `--exclude` option to run (or exclude) tests with specific tag.
 ```elixir
 defmodule SomeSpec do
   use ESpec
 
-  context "with tag", context_tag: :some_tag do
+  context "context with tag", context_tag: :some_tag do
     it do: "some example"
     it "example with tag", example_tag: true do
      "another example"
@@ -184,7 +184,10 @@ end
 mix espec spec/some_spec.exs --only context_tag:some_tag --exclude example_tag
 ```
 This runs only one test "some example"
-
+You can also filter examples by `--string` option which filter examples which contain given string it their nested description.
+```sh
+mix espec spec/some_spec.exs --string 'context with tag'
+```
 
 ## `before` and `finally`
 `before` blocks are evaluated before the example and `finally` runs after the example.

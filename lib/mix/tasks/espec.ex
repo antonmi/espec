@@ -60,6 +60,7 @@ defmodule Mix.Tasks.Espec do
     * `--cover`      - enable code coverage
     * `--only`       - run only tests that match the filter `--only some:tag`
     * `--exclude`    - exclude tests that match the filter `--exclude some:tag`
+    * `--string`     - run only examples whose full nested descriptions contain string `--string 'only this'`
 
   ## Configuration
     * `:spec_paths` - list of paths containing spec files, defaults to `["spec"]`.

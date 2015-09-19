@@ -17,6 +17,7 @@ defmodule ESpec.Configuration do
     order: "Run specs in the order in which they are declared",
     only: "Run only tests that match the filter",
     exclude: "Exclude tests that match the filter",
+    string: "Run only examples whose full nested descriptions contain string",
     test: "For test purpose",
     start_loading_time: "Starts loading files",
     finish_loading_time: "Finished loading",

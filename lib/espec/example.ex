@@ -24,7 +24,7 @@ defmodule ESpec.Example do
             file: nil, line: nil, context: [], shared: false, async: false,
             status: :new, result: nil, error: %ESpec.AssertionError{}, duration: 0
 
-  @doc "Description with contexts."
+  @doc "Context descriptions."
   def context_descriptions(%ESpec.Example{context: context, description: _description, function: _function}) do
     context
     |> Enum.filter(fn(struct) -> struct.__struct__ == ESpec.Context end)
@@ -55,7 +55,7 @@ defmodule ESpec.Example do
       value
     else
       nil
-    end  
+    end
   end
 
   defp extract(context, modules) do
