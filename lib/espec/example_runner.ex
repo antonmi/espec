@@ -26,14 +26,16 @@ defmodule ESpec.ExampleRunner do
   end
 
   defp run_example(example, start_time) do
-    assigns = %{}
-    |> run_config_before(example)
-    |> run_befores_and_lets(example)
     try do
+      assigns = before_example_actions(example)
+
       result = apply(example.module, example.function, [assigns])
       duration = duration_in_ms(start_time, :os.timestamp)
       example = %ESpec.Example{example | status: :success, result: result, duration: duration}
       ESpec.Output.example_info(example)
+
+      after_example_actions(assigns, example)
+
       example
     rescue
       error in [ESpec.AssertionError] ->
@@ -48,11 +50,21 @@ defmodule ESpec.ExampleRunner do
         ESpec.Output.example_info(example)
         example
     after
-      run_finallies(assigns, example)
-      |> run_config_finally(example)
       unload_mocks
     end
   end
+
+  defp before_example_actions(example) do
+    assigns = %{}
+    |> run_config_before(example)
+    |> run_befores_and_lets(example)
+  end
+
+  def after_example_actions(assigns, example) do
+    run_finallies(assigns, example)
+    |> run_config_finally(example)
+  end
+
 
   defp format_other_error(error) do
     error_message = Exception.format_banner(:error, error)
