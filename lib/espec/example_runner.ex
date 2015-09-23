@@ -19,14 +19,14 @@ defmodule ESpec.ExampleRunner do
       example.opts[:skip] || Enum.any?(contexts, &(&1.opts[:skip])) ->
         run_skipped(example)
       example.opts[:pending] ->
-        run_pending(example)  
+        run_pending(example)
       true ->
         run_example(example, :os.timestamp)
     end
   end
 
   defp run_example(example, start_time) do
-    assigns = %{} 
+    assigns = %{}
     |> run_config_before(example)
     |> run_befores_and_lets(example)
     try do
@@ -66,7 +66,7 @@ defmodule ESpec.ExampleRunner do
     example
   end
 
-  defp run_pending(example) do 
+  defp run_pending(example) do
     example = %ESpec.Example{example | status: :pending, result: ESpec.Example.pending_message(example)}
     ESpec.Output.example_info(example)
     example
@@ -75,7 +75,7 @@ defmodule ESpec.ExampleRunner do
   defp run_config_before(assigns, _example) do
     func = ESpec.Configuration.get(:before)
     if func, do: fill_dict(assigns, func.()), else: assigns
-  end 
+  end
 
   defp run_befores_and_lets(assigns, example) do
     ESpec.Example.extract_befores_and_lets(example)
@@ -96,7 +96,7 @@ defmodule ESpec.ExampleRunner do
   defp run_finallies(assigns, example) do
     ESpec.Example.extract_finallies(example)
     |> Enum.reduce(assigns, fn(finally, map) ->
-      returned =  apply(example.module, finally.function, [map])
+      returned =  apply(finally.module, finally.function, [map])
       fill_dict(map, returned)
     end)
   end
@@ -110,12 +110,12 @@ defmodule ESpec.ExampleRunner do
 
   defp fill_dict(map, res) do
     case res do
-      {:ok, list} when is_list(list) -> 
+      {:ok, list} when is_list(list) ->
         if Keyword.keyword?(list) do
           Enum.reduce(list, map, fn({k,v}, a) -> Dict.put(a, k, v) end)
         else
           map
-        end  
+        end
       _ -> map
     end
   end

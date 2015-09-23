@@ -7,7 +7,7 @@ defmodule ESpec.Finally do
   """
 
   @doc "Struct has random fuction name."
-  defstruct function: ""
+  defstruct module: nil, function: nil
 
   @doc """
   Adds %ESpec.Finally sutructs to the context and
@@ -17,7 +17,7 @@ defmodule ESpec.Finally do
     function = random_finally_name
     quote do
       tail = @context
-      head =  %ESpec.Finally{function: unquote(function)}
+      head =  %ESpec.Finally{module: __MODULE__, function: unquote(function)}
       def unquote(function)(var!(shared)) do
         var!(shared)
         unquote(block)

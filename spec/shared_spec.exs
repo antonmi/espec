@@ -1,7 +1,10 @@
 defmodule SharedSpec do
-  use ESpec, shared: true#, async: true
+  use ESpec, shared: true, async: true
 
   before do: {:ok, c: shared.b + 1}
+  finally do
+     unless shared[:c] == 3, do: raise "Error"
+  end
 
   let! :c, do: shared.c
 
@@ -25,12 +28,16 @@ end
 
 defmodule UseSharedSpecSpec do
   use ESpec
-  
+
   before do: {:ok, a: 1}
+
+  finally do
+     unless shared[:c] == 3, do: raise "Error"
+  end
 
   context "SomeSpec context" do
     before do: {:ok, b: 2}
 
     it_behaves_like(SharedSpec)
   end
-end 
+end
