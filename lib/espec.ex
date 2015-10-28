@@ -11,7 +11,7 @@ defmodule ESpec do
       ESpec.add_spec(__MODULE__)
 
       Module.register_attribute __MODULE__, :examples, accumulate: true
-      
+
       @shared unquote(args)[:shared] || false
       @before_compile ESpec
 
@@ -20,12 +20,13 @@ defmodule ESpec do
 
       import ESpec.ExampleHelpers
       import ESpec.DocTest, only: [doctest: 1, doctest: 2]
-      
+
       import ESpec.Expect
       use ESpec.Expect
+      import ESpec.To
       import ESpec.Should
       use ESpec.Should
-    
+
       import ESpec.AssertionHelpers
 
       import ESpec.Allow
@@ -76,7 +77,7 @@ defmodule ESpec do
     ESpec.Runner.stop
     ESpec.Output.stop
   end
-  
+
   @doc "Returns all examples."
   def specs, do: Agent.get(@spec_agent_name, &(&1))
 
