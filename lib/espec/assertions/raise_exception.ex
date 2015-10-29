@@ -1,7 +1,7 @@
 defmodule ESpec.Assertions.RaiseException do
   @moduledoc """
   Defines 'raise_exception' assertion.
-  
+
   it do: expect(function).to raise_exception
 
   it do: expect(function).to raise_exception(ErrorModule)
@@ -66,7 +66,7 @@ defmodule ESpec.Assertions.RaiseException do
     if positive do
       "Expected #{inspect subject} to raise an exception, but nothing was raised."
     else
-      "Expected #{inspect subject} to not raise an exception, but an exception was raised."
+      "Expected #{inspect subject} not to raise an exception, but an exception was raised."
     end
   end
 
@@ -74,7 +74,7 @@ defmodule ESpec.Assertions.RaiseException do
     if positive do
       "Expected #{inspect subject} to raise the `#{module}` exception, but nothing was raised."
     else
-      "Expected #{inspect subject} to not raise the `#{module}` exception, but the `#{err_module}` exception was raised."
+      "Expected #{inspect subject} not to raise the `#{module}` exception, but the `#{err_module}` exception was raised."
     end
   end
 

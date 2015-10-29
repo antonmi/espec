@@ -1,9 +1,9 @@
 defmodule ESpec.Assertions.ThrowTerm do
   @moduledoc """
   Defines 'throw_term' assertion.
-  
+
   it do: expect(function).to throw_term
-  
+
   it do: expect(function).to throw_term(term)
   """
   use ESpec.Assertions.Interface
@@ -37,13 +37,13 @@ defmodule ESpec.Assertions.ThrowTerm do
   end
 
   defp error_message(subject, [], term, positive) do
-    to = if positive, do: "to", else: "to not"
+    to = if positive, do: "to", else: "not to"
     but = if positive, do: "nothing was thrown", else: "`#{term}` was thrown"
     "Expected `#{inspect subject}` #{to} throw term, but #{but}."
   end
 
   defp error_message(subject, [data], {term, false}, positive) do
-    to = if positive, do: "to", else: "to not"
+    to = if positive, do: "to", else: "not to"
     but = if positive, do: "nothing was thrown", else: "the `#{term}` was thrown"
     "Expected `#{inspect subject}` #{to} throw #{inspect data}, but #{but}."
   end

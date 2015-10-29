@@ -1,7 +1,7 @@
 defmodule ESpec.Assertions.List.HaveHd do
   @moduledoc """
   Defines 'have_hd' assertion.
-  
+
   it do: expect(list).to have_hd(value)
   """
   use ESpec.Assertions.Interface
@@ -14,10 +14,10 @@ defmodule ESpec.Assertions.List.HaveHd do
   defp success_message(list, val, _result, positive) do
     to = if positive, do: "has", else: "doesn't have"
     "`#{inspect list}` #{to} `hd` == `#{inspect val}`."
-  end 
+  end
 
   defp error_message(list, val, result, positive) do
-    to = if positive, do: "to", else: "to not"
+    to = if positive, do: "to", else: "not to"
     "Expected `#{inspect list}` #{to} have `hd` `#{val}` but it has `#{result}`."
   end
 end

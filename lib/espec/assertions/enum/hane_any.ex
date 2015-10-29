@@ -1,7 +1,7 @@
 defmodule ESpec.Assertions.Enum.HaveAny do
   @moduledoc """
   Defines 'have_any' assertion.
-  
+
   it do: expect(collection).to have_any(func)
   """
   use ESpec.Assertions.Interface
@@ -20,7 +20,7 @@ defmodule ESpec.Assertions.Enum.HaveAny do
   end
 
   defp error_message(enum, func, result, positive) do
-    to = if positive, do: "to", else: "to not"
+    to = if positive, do: "to", else: "not to"
     "Expected `#{inspect func}` #{to} return `true` for at least one element in `#{inspect enum}` but it returns `#{result}` for all."
   end
 end

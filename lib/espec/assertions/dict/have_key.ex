@@ -1,7 +1,7 @@
 defmodule ESpec.Assertions.Dict.HaveKey do
   @moduledoc """
   Defines 'have_key' assertion.
-  
+
   it do: expect(dict).to have_key(value)
   """
   use ESpec.Assertions.Interface
@@ -14,11 +14,11 @@ defmodule ESpec.Assertions.Dict.HaveKey do
   defp success_message(dict, val, _result, positive) do
     to = if positive, do: "has", else: "doesn't have"
     "`#{inspect dict}` #{to} key `#{inspect val}`."
-  end 
+  end
 
   defp error_message(dict, val, _result, positive) do
-    to = if positive, do: "to", else: "to not"
-    but = if positive, do: "has not", else: "has"
+    to = if positive, do: "to", else: "not to"
+    but = if positive, do: "doesn't have", else: "has"
     "Expected `#{inspect dict}` #{to} have key `#{inspect val}` but it #{but}."
   end
 

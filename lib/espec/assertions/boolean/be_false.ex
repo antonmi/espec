@@ -1,7 +1,7 @@
 defmodule ESpec.Assertions.Boolean.BeFalse do
   @moduledoc """
   Defines 'be_false' assertion.
-  
+
   it do: expect(1 == 2).to be_false
   """
   use ESpec.Assertions.Interface
@@ -15,9 +15,9 @@ defmodule ESpec.Assertions.Boolean.BeFalse do
     to = if positive, do: "is", else: "is not"
     "`#{inspect subject}` #{to} false."
   end
-  
+
   defp error_message(subject, _val, _result, positive) do
-    to = if positive, do: "to", else: "to not"
+    to = if positive, do: "to", else: "not to"
     but = if positive, do: "it isn't", else: "it is"
     "Expected `#{inspect subject}` #{to} be false but #{but}."
   end

@@ -1,9 +1,9 @@
 defmodule ESpec.Assertions.EnumString.HaveCount do
   @moduledoc """
   Defines 'have_count' assertion.
-  
+
   it do: expect(enum).to have_count(value)
-  
+
   it do: expect(string).to have_count(value)
   """
   use ESpec.Assertions.Interface
@@ -24,7 +24,7 @@ defmodule ESpec.Assertions.EnumString.HaveCount do
   end
 
   defp error_message(enum, val, result, positive) do
-    to = if positive, do: "to", else: "to not"
+    to = if positive, do: "to", else: "not to"
     "Expected `#{inspect enum}` #{to} have `#{val}` elements but it has `#{result}`."
   end
 

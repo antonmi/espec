@@ -1,7 +1,7 @@
 defmodule ESpec.Assertions.Accepted do
   @moduledoc """
   Defines 'accepted' assertion.
-  
+
   it do: expect(SomeModule).to accepted(:func)
   """
   use ESpec.Assertions.Interface
@@ -11,19 +11,19 @@ defmodule ESpec.Assertions.Accepted do
     opts_count = Keyword.get(opts, :count) || :any
 
     count = get_count(subject, func, args, pid)
-    
+
     if opts_count == :any do
       if count >= 1 do
         {true, true}
-      else  
+      else
         {false, count}
       end
     else
       if count == opts_count do
         {true, true}
-      else  
+      else
         {false, count}
-      end  
+      end
     end
   end
 
@@ -39,7 +39,7 @@ defmodule ESpec.Assertions.Accepted do
           case el do
             {_, {^subject, ^func, ^args}, _return} -> true
             _ -> false
-          end  
+          end
         args == :any ->
           case el do
             {^pid, {^subject, ^func, _}, _return} -> true
@@ -49,8 +49,8 @@ defmodule ESpec.Assertions.Accepted do
           case el do
             {^pid, {^subject, ^func, ^args}, _return} -> true
             _  -> false
-          end    
-      end 
+          end
+      end
     end)
   end
 
@@ -60,10 +60,10 @@ defmodule ESpec.Assertions.Accepted do
     count = if opts_count == :any, do: "at least once", else: "`#{opts_count}` times"
     to = if positive, do: "accepted", else: "didn't accept"
     "`#{inspect subject}` #{to} `#{inspect func}` with `#{inspect args}` in process `#{inspect pid}` #{count}."
-  end  
+  end
 
   defp error_message(subject, [func, args, opts], result, positive) do
-    to = if positive, do: "to", else: "to not"
+    to = if positive, do: "to", else: "not to"
     but = "it accepted the function `#{result}` times"
     pid = Keyword.get(opts, :pid) || :any
     opts_count = Keyword.get(opts, :count) || :any

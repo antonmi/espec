@@ -1,7 +1,7 @@
 defmodule ESpec.Assertions.BeType do
   @moduledoc """
   Defines 'be_type' assertion.
-  
+
   it do: expect("abc").to be_binary
   """
   use ESpec.Assertions.Interface
@@ -30,12 +30,12 @@ defmodule ESpec.Assertions.BeType do
   defp success_message(subject, :null, _result, positive) do
     to = if positive, do: "is", else: "is not"
     "`#{inspect subject}` #{to} nil."
-  end 
+  end
 
   defp success_message(subject, [:function, arity], _result, positive) do
     to = if positive, do: "is", else: "is not"
     "`#{inspect subject}` #{to} `function` with arity `#{arity}`."
-  end 
+  end
 
   defp success_message(subject, [:struct, name], _result, positive) do
     to = if positive, do: "is", else: "is not"
@@ -45,28 +45,28 @@ defmodule ESpec.Assertions.BeType do
   defp success_message(subject, type, _result, positive) do
     to = if positive, do: "is", else: "is not"
     "`#{inspect subject}` #{to} is `#{type}`."
-  end 
+  end
 
   defp error_message(subject, :null, _result, positive) do
-    to = if positive, do: "to", else: "to not"
+    to = if positive, do: "to", else: "not to"
     but = if positive, do: "isn't", else: "is"
     "Expected `#{inspect subject}` #{to} be nil but it #{but}."
   end
 
   defp error_message(subject, [:function, arity], _result, positive) do
-    to = if positive, do: "to", else: "to not"
+    to = if positive, do: "to", else: "not to"
     but = if positive, do: "isn't", else: "is"
     "Expected `#{inspect subject}` #{to} be function with arity `#{arity}` but it #{but}."
   end
 
   defp error_message(subject, [:struct, name], _result, positive) do
-    to = if positive, do: "to", else: "to not"
+    to = if positive, do: "to", else: "not to"
     but = if positive, do: "isn't", else: "is"
     "Expected `#{inspect subject}` #{to} be struct with name `#{name}` but it #{but}"
   end
 
   defp error_message(subject, type, _result, positive) do
-    to = if positive, do: "to", else: "to not"
+    to = if positive, do: "to", else: "not to"
     but = if positive, do: "isn't", else: "is"
     "Expected `#{inspect subject}` #{to} be `#{type}` but it #{but}."
   end

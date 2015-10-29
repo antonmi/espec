@@ -1,7 +1,7 @@
 defmodule ESpec.Assertions.String.StartWith do
   @moduledoc """
   Defines 'start_with' assertion.
-  
+
   it do: expect(string).to start_with(value)
   """
   use ESpec.Assertions.Interface
@@ -22,9 +22,9 @@ defmodule ESpec.Assertions.String.StartWith do
     to = if positive, do: "starts", else: "doesn't start"
     "`#{inspect string}` #{to} with `#{inspect val}`."
   end
-  
+
   defp error_message(string, val, result, positive) do
-    to = if positive, do: "to", else: "to not"
+    to = if positive, do: "to", else: "not to"
     "Expected `#{inspect string}` #{to} start with `#{val}` but it starts with `#{result}`."
   end
 

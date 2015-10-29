@@ -1,7 +1,7 @@
 defmodule ESpec.Assertions.String.EndWith do
   @moduledoc """
   Defines 'end_with' assertion.
-  
+
   it do: expect(string).to end_with(value)
   """
   use ESpec.Assertions.Interface
@@ -22,9 +22,9 @@ defmodule ESpec.Assertions.String.EndWith do
     to = if positive, do: "ends", else: "doesn't end"
     "`#{inspect string}` #{to} with `#{inspect val}`."
   end
-  
+
   defp error_message(string, val, result, positive) do
-    to = if positive, do: "to", else: "to not"
+    to = if positive, do: "to", else: "not to"
     "Expected `#{inspect string}` #{to} end with `#{val}` but it ends with `#{result}`."
   end
 

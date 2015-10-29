@@ -1,7 +1,7 @@
 defmodule ESpec.Assertions.ListString.HaveFirst do
   @moduledoc """
   Defines 'have_first' assertion.
-  
+
   it do: expect(list).to have_first(value)
 
   it do: expect(string).to have_first(value)
@@ -21,10 +21,10 @@ defmodule ESpec.Assertions.ListString.HaveFirst do
   defp success_message(list, val, _result, positive) do
     to = if positive, do: "has", else: "doesn't have"
     "`#{inspect list}` #{to} first element `#{inspect val}`."
-  end 
+  end
 
   defp error_message(list, val, result, positive) do
-    to = if positive, do: "to", else: "to not"
+    to = if positive, do: "to", else: "not to"
     "Expected `#{inspect list}` #{to} have first element `#{inspect val}` but it has `#{result}`."
   end
 
