@@ -7,7 +7,7 @@ defmodule AcceptedSpec do
 		def f, do: :f
 		def m, do: :m
 	end |> write_beam
-	
+
 	describe "expect(module).to accepted(func, args)" do
 		before do
 			allow(SomeModule).to accept(:func, fn(a, b) -> a+b end)
@@ -15,8 +15,8 @@ defmodule AcceptedSpec do
 		end
 
 		context "Success" do
-			it do: expect(SomeModule).to accepted(:func, [1, 2])
-			it do: expect(SomeModule).to_not accepted(:another_function, [])
+			it do: expect SomeModule |> to accepted(:func, [1, 2])
+			it do: expect SomeModule |> to_not accepted(:another_function, [])
 		end
 
 		xcontext "Error" do

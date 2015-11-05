@@ -1,7 +1,7 @@
 defmodule ESpec.Assertions.Eq do
   @moduledoc """
   Defines 'eq' (==) assertion.
-  
+
   it do: expect(actual).to eq(expected)
   """
   use ESpec.Assertions.Interface
@@ -14,7 +14,7 @@ defmodule ESpec.Assertions.Eq do
   defp success_message(subject, data, _result, positive) do
     to = if positive, do: "equals", else: "doesn't equal"
     "`#{inspect subject}` #{to} `#{inspect data}`."
-  end  
+  end
 
   defp error_message(subject, data, _result, positive) do
     to = if positive, do: "to", else: "not to"

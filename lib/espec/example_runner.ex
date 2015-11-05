@@ -28,8 +28,10 @@ defmodule ESpec.ExampleRunner do
   defp run_example(example, start_time) do
     try do
       assigns = before_example_actions(example)
-
-      result = apply(example.module, example.function, [assigns])
+      result = case apply(example.module, example.function, [assigns]) do
+        {ESpec.ExpectTo, res} -> res
+        res -> res
+      end
       duration = duration_in_ms(start_time, :os.timestamp)
       example = %ESpec.Example{example | status: :success, result: result, duration: duration}
       ESpec.Output.example_info(example)
