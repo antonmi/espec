@@ -453,8 +453,15 @@ You can mock the module with 'allow accept':
 ```elixir
 defmodule SomeSpec do
   use ESpec
-  before do: allow(SomeModule).to accept(:func, fn(a,b) -> a+b end)
-  it do: expect SomeModule.func(1, 2) |> to eq 3
+  context "with old syntax"
+    before do: allow(SomeModule).to accept(:func, fn(a,b) -> a+b end)
+    it do: expect SomeModule.func(1, 2) |> to eq 3
+  end
+
+  context "with new syntax"
+    before do: allow SomeModule |> to accept :func, fn(a,b) -> a+b end
+    it do: expect SomeModule.func(1, 2) |> to eq 3
+  end
 end
 ```
 If you don't specify the function to return ESpec creates stubs with arity `0` and `1`:
@@ -462,7 +469,7 @@ If you don't specify the function to return ESpec creates stubs with arity `0` a
 ```elixir
 defmodule SomeSpec do
   use ESpec
-  before do: allow(SomeModule).to accept(:func)
+  before do: allow SomeModule |> to accept(:func)
   it do: expect SomeModule.func |> to be_nil
   it do: expect SomeModule.func(42) |> to be_nil
 end
@@ -475,18 +482,18 @@ Behind the scenes 'allow accept' makes the following:
 Find the explanation aboute the `:non_strict` and `:passthrough` options [here](https://github.com/eproxus/meck/blob/master/src/meck.erl).
 The default options (`[:non_strict, :passthrough]`) can be overridden:
 ```elixir
-allow(SomeModule).to accept(:func, fn(a,b) -> a+b end, [:non_strict, :unstick])
+allow SomeModule) |> to accept :func, fn(a,b) -> a+b end, [:non_strict, :unstick]
 ```
 All the mocked modules are unloaded whith `:meck.unload(modules)` after each example.
 
 You can also pass a list of atom-function pairs to the `accept` function:
 ```elixir
-allow(SomeModule).to accept(f1: fn -> :f1 end, f2: fn -> :f2 end)
+allow SomeModule |> to accept f1: fn -> :f1 end, f2: fn -> :f2 end
 ```
 One can use `passthrough/1` function to call the original function:
 ```elixir
   before do
-    allow(SomeModule).to accept(:fun, fn
+    allow SomeModule |> to accept(:fun, fn
       :mocked -> "mock!"
       _ -> passthrough([args])
     end)
@@ -510,7 +517,7 @@ So, the options are:
 defmodule SomeSpec do
   use ESpec
   before do
-    allow(SomeModule).to accept(:func, fn(a,b) -> a+b end)
+    allow SomeModule |> to accept :func, fn(a,b) -> a+b end
     SomeModule.func(1, 2)
   end  
 
