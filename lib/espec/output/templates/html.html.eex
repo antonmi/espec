@@ -16,9 +16,12 @@
 <header>
 <h2>ESpec results</h2>
 <aside>
-<% {example_count, failure_count, pending_count, duration, load_time, spec_time} = summary %>
+<% {example_count, failure_count, pending_count, duration, load_time, spec_time, seed} = summary %>
 <p><%= example_count %> examples, <%= failure_count %> failures, <%= pending_count %> pending</p>
 <p>Finished in <%= duration %> seconds (<%= load_time %>s on load, <%= spec_time %>s on specs)</p>
+<%= if seed do %>
+<p>Randomized with seed <%= seed %></p>
+<% end %>
 </aside>
 <nav>
 <label for="checkbox-success" class="checkbox">

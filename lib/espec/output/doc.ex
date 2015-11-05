@@ -12,7 +12,7 @@ defmodule ESpec.Output.Doc do
   @status_colors [success: @green, failure: @red, pending: @yellow]
   @status_symbols [success: ".", failure: "F", pending: "*"]
 
-  alias ESpec.Example 
+  alias ESpec.Example
 
   @doc "Formats the final result."
   def format_result(examples, times, _opts) do
@@ -22,9 +22,10 @@ defmodule ESpec.Output.Doc do
     failed = Example.failure(examples)
     if Enum.any?(failed), do: string = string <> format_failed(failed)
     string = string <> format_footer(examples, failed, pending)
-    string <> format_times(times, failed, pending)
+    string = string <> format_times(times, failed, pending)
+    string <> format_seed
   end
-  
+
   @doc "Formats an example result."
   def format_example(example, opts) do
     color = color_for_status(example.status)
@@ -38,7 +39,7 @@ defmodule ESpec.Output.Doc do
 
   defp format_failed(failed) do
     res = failed |> Enum.with_index
-    |> Enum.map fn({example, index}) -> 
+    |> Enum.map fn({example, index}) ->
       do_format_example(example, example.error.message, index)
     end
     Enum.join(res, "\n")
@@ -46,7 +47,7 @@ defmodule ESpec.Output.Doc do
 
   defp format_pending(pending) do
     res = pending |> Enum.with_index
-    |> Enum.map fn({example, index}) -> 
+    |> Enum.map fn({example, index}) ->
       do_format_example(example, example.result, index)
     end
     Enum.join(res, "\n")
@@ -54,10 +55,10 @@ defmodule ESpec.Output.Doc do
 
   defp do_format_example(example, info, index) do
     color = color_for_status(example.status)
-    decription = one_line_description(example)
+    description = one_line_description(example)
     [
       "\n",
-      "\t#{index + 1}) #{decription}",
+      "\t#{index + 1}) #{description}",
       "\t#{@cyan}#{example.file}:#{example.line}#{@reset}",
       "\t#{color}#{info}#{@reset}",
     ]
@@ -79,6 +80,15 @@ defmodule ESpec.Output.Doc do
     <> " (#{us_to_sec(load_time)}s on load, #{us_to_sec(spec_time)}s on specs)#{@reset}\n\n"
   end
 
+  defp format_seed do
+    if ESpec.Configuration.get(:order) do
+      ""
+    else
+      seed = ESpec.Configuration.get(:seed)
+      "\tRandomized with seed #{seed}\n\n"
+    end
+  end
+
   defp us_to_sec(us), do: div(us, 10000) / 100
 
   defp get_color(failed, pending) do
@@ -97,7 +107,7 @@ defmodule ESpec.Output.Doc do
 
   defp trace_description(example) do
     color = color_for_status(example.status)
-    ex_desc = if String.length(example.description) > 0 do 
+    ex_desc = if String.length(example.description) > 0 do
       "#{color}#{example.description}#{@reset}"
     else
       if example.status == :failure do
@@ -110,7 +120,7 @@ defmodule ESpec.Output.Doc do
     {result, _} = Enum.reduce(array, {"", ""}, fn(description, acc) ->
       {d, w} = acc
       {d <> w <> "#{description}" <> "\n", w <> "  "}
-    end) 
+    end)
     result
   end
 

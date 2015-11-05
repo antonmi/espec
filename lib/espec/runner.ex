@@ -4,6 +4,7 @@ defmodule ESpec.Runner do
   Uses GenServer behavior.
   """
   use GenServer
+  alias ESpec.Configuration
 
   @doc "Starts the `ESpec.Runner` server"
   def start do
@@ -12,7 +13,7 @@ defmodule ESpec.Runner do
 
   @doc "Initiate the `ESpec.Runner` server with specs and options"
   def init(_args) do
-    state = %{specs: ESpec.specs, opts: ESpec.Configuration.all}
+    state = %{specs: ESpec.specs, opts: Configuration.all}
     {:ok, state}
   end
 
@@ -34,12 +35,13 @@ defmodule ESpec.Runner do
   end
 
   defp do_run(specs, opts) do
-    if ESpec.Configuration.get(:order) do
+    if Configuration.get(:order) do
       examples = run_in_order(specs, opts)
     else
+      seed_random!
       examples = run_in_random(specs, opts)
     end
-    ESpec.Configuration.add([finish_specs_time: :os.timestamp])
+    Configuration.add([finish_specs_time: :os.timestamp])
     ESpec.Output.print_result(examples)
     !Enum.any?(ESpec.Example.failure(examples))
   end
@@ -47,7 +49,7 @@ defmodule ESpec.Runner do
   defp run_in_order(specs, opts) do
     specs |> Enum.reverse
     |> Enum.map(fn(module) ->
-      filter(module.examples, opts)
+      filter(module.examples |> Enum.reverse, opts)
       |> run_examples
     end)
     |> List.flatten
@@ -176,5 +178,16 @@ defmodule ESpec.Runner do
     else
       [key_value, false]
     end
+  end
+
+  defp seed_random! do
+    conf_seed = Configuration.get(:seed)
+    if conf_seed do
+      seed = String.to_integer(conf_seed)
+    else
+      seed =  :os.timestamp |> elem(2)
+      Configuration.add(seed: seed)
+    end
+    :random.seed({3172, 9814, seed})
   end
 end

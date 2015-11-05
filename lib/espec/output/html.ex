@@ -11,12 +11,12 @@ defmodule ESpec.Output.Html do
     string = EEx.eval_file(template_path, [examples: html, summary: summary])
     String.replace(string, "\n", "")
   end
-  
+
   @doc "Formats an example result."
   def format_example(_example, _opts), do: ""
 
   defp template_path, do: Path.join(Path.dirname(__ENV__.file), "templates/html.html.eex")
-  
+
   defp context_tree(examples) do
     examples
     |> Enum.reduce({HashDict.new, []}, fn(ex, acc) ->
@@ -29,7 +29,7 @@ defmodule ESpec.Output.Html do
     d = case HashDict.get(dict, el) do
       {inner, vals} -> put_deep({inner, vals}, tl, value)
       nil -> put_deep({HashDict.new, []}, tl, value)
-    end 
+    end
     {HashDict.put(dict, el, d), values}
   end
 
@@ -39,14 +39,14 @@ defmodule ESpec.Output.Html do
       nil -> HashDict.put(dict, el, {HashDict.new, [value]})
       end
     {new_dict, values}
-  end 
+  end
 
   defp put_deep({dict, values}, [], value) do
     {dict, [value | values]}
   end
 
   defp make_html({dict, values}, top? \\ false, firstli? \\ false) do
-    lis = Enum.reduce(values, "", fn(ex, acc) ->    
+    lis = Enum.reduce(values, "", fn(ex, acc) ->
       acc <> "<li class='#{li_class(ex)}'>#{ex_desc(ex)}</li>"
     end)
     if  String.length(lis) > 0 do
@@ -56,7 +56,7 @@ defmodule ESpec.Output.Html do
       if top? do
         acc <> "<section class='context'><h3>#{key.description}</h3>" <> make_html(d, false, true) <> "</section>"
       else
-        mainli = "<li><h4>#{key.description}</h4>" 
+        mainli = "<li><h4>#{key.description}</h4>"
         if firstli? do
           acc <> "<ul class='tree'>#{mainli}" <> make_html(d) <> "</li></ul>"
         else
@@ -68,12 +68,12 @@ defmodule ESpec.Output.Html do
   end
 
   defp ex_desc(ex) do
-    res = if String.length(ex.description) > 0 do 
+    res = if String.length(ex.description) > 0 do
       ex.description
     else
       if ex.status == :failure, do: ex.error.message, else: ex.result
     end
-    res = "#{res} (#{ex.duration} ms)"
+    res = "#{inspect res} (#{ex.duration} ms)"
     String.replace(res, "\"", "'")
   end
 
@@ -84,11 +84,21 @@ defmodule ESpec.Output.Html do
     failed = Example.failure(examples)
     load_time = :timer.now_diff(finish_loading_time, start_loading_time)
     spec_time = :timer.now_diff(finish_specs_time, finish_loading_time)
+    seed = get_seed
     {
       Enum.count(examples), Enum.count(failed), Enum.count(pending),
-      us_to_sec(load_time + spec_time), us_to_sec(load_time), us_to_sec(spec_time)
+      us_to_sec(load_time + spec_time), us_to_sec(load_time), us_to_sec(spec_time),
+      seed
     }
   end
 
   defp us_to_sec(us), do: div(us, 10000) / 100
+
+  defp get_seed do
+    if ESpec.Configuration.get(:order) do
+      false
+    else
+      seed = ESpec.Configuration.get(:seed)
+    end
+  end
 end

@@ -61,6 +61,7 @@ defmodule Mix.Tasks.Espec do
     * `--only`       - run only tests that match the filter `--only some:tag`
     * `--exclude`    - exclude tests that match the filter `--exclude some:tag`
     * `--string`     - run only examples whose full nested descriptions contain string `--string 'only this'`
+    * `--seed`       - seeds the random number generator used to randomize tests order
 
   ## Configuration
     * `:spec_paths` - list of paths containing spec files, defaults to `["spec"]`.

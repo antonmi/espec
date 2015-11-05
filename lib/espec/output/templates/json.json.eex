@@ -3,12 +3,12 @@
 "examples":
 [
 <%= for example <- examples do %>
-<% {decription, file_line, status, info, duration} = example %>
-{"decription":"<%= decription %>","file_line":"<%= file_line %>","status":"<%= status %>","info":"<%= info %>","duration":<%= duration %>}
+<% {description, file_line, status, info, duration} = example %>
+{"description":"<%= description %>","file_line":"<%= file_line %>","status":"<%= status %>","info":"<%= info %>","duration":<%= duration %>}
 <%= unless example == last_example, do: "," %>
 <% end %>
 ],
-<% {example_count, failure_count, pending_count, duration, load_time, spec_time} = summary %>
+<% {example_count, failure_count, pending_count, duration, load_time, spec_time, seed} = summary %>
 "summary":
 {
 "example_count":<%= example_count %>,
@@ -17,5 +17,8 @@
 "duration":<%= duration %>,
 "load_time":<%= load_time %>,
 "spec_time":<%= spec_time %>
+<%= if seed do %>
+,"Randomized with seed":<%= seed %>
+<% end %>
 }
 }

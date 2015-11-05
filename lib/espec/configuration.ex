@@ -18,6 +18,7 @@ defmodule ESpec.Configuration do
     only: "Run only tests that match the filter",
     exclude: "Exclude tests that match the filter",
     string: "Run only examples whose full nested descriptions contain string",
+    seed: "Seeds the random number generator used to randomize tests order",
     test: "For test purpose",
     start_loading_time: "Starts loading files",
     finish_loading_time: "Finished loading",
