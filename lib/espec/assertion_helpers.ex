@@ -29,20 +29,20 @@ defmodule ESpec.AssertionHelpers do
   def throw_term(term), do: {ESpec.Assertions.ThrowTerm, [term]}
   def throw_term(), do: {ESpec.Assertions.ThrowTerm, []}
 
-  def change(func, value), do: {ESpec.Assertions.ChangeTo, [func, value]}
-  def change(func, before, value), do: {ESpec.Assertions.ChangeFromTo, [func, before, value]}
+  def change(func, value) when is_function(func), do: {ESpec.Assertions.ChangeTo, [func, value]}
+  def change(func, before, value) when is_function(func), do: {ESpec.Assertions.ChangeFromTo, [func, before, value]}
 
-  def have_all(func), do: {ESpec.Assertions.Enum.HaveAll, func}
-  def have_any(func), do: {ESpec.Assertions.Enum.HaveAny, func}
-  def have_count_by(func, val), do: {ESpec.Assertions.Enum.HaveCountBy, [func, val]}
+  def have_all(func) when is_function(func), do: {ESpec.Assertions.Enum.HaveAll, func}
+  def have_any(func) when is_function(func), do: {ESpec.Assertions.Enum.HaveAny, func}
+  def have_count_by(func, val) when is_function(func), do: {ESpec.Assertions.Enum.HaveCountBy, [func, val]}
   def be_empty, do: {ESpec.Assertions.Enum.BeEmpty, []}
   def have_max(value), do: {ESpec.Assertions.Enum.HaveMax, value}
-  def have_max_by(func, value), do: {ESpec.Assertions.Enum.HaveMaxBy, [func, value]}
+  def have_max_by(func, value) when is_function(func), do: {ESpec.Assertions.Enum.HaveMaxBy, [func, value]}
   def have_min(value), do: {ESpec.Assertions.Enum.HaveMin, value}
-  def have_min_by(func, value), do: {ESpec.Assertions.Enum.HaveMinBy, [func, value]}
+  def have_min_by(func, value) when is_function(func), do: {ESpec.Assertions.Enum.HaveMinBy, [func, value]}
 
   def have(val), do: {ESpec.Assertions.EnumString.Have, val}
-  def have_at(pos, val), do: {ESpec.Assertions.EnumString.HaveAt, [pos, val]}
+  def have_at(pos, val) when is_number(pos), do: {ESpec.Assertions.EnumString.HaveAt, [pos, val]}
 
   def have_first(value), do: {ESpec.Assertions.ListString.HaveFirst, value}
   def have_last(value), do: {ESpec.Assertions.ListString.HaveLast, value}
