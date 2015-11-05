@@ -9,6 +9,7 @@ script:
   - mix test
   - mix espec --silent
   - mix espec --format=json --out=spec.json
+  - mix espec --format=html --out=spec.html
 notifications:
   recipients:
     - anton.mishchuk@gmail.com
