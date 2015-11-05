@@ -20,8 +20,10 @@ defmodule ESpec.AssertionHelpers do
   def be_truthy, do: {ESpec.Assertions.Boolean.BeTruthy, []}
   def be_falsy, do: {ESpec.Assertions.Boolean.BeFalsy, []}
 
-  def raise_exception(exception, message), do: {ESpec.Assertions.RaiseException, [exception, message]}
-  def raise_exception(exception), do: {ESpec.Assertions.RaiseException, [exception]}
+  def raise_exception(exception, message) when is_atom(exception) and is_binary(message) do
+    {ESpec.Assertions.RaiseException, [exception, message]}
+  end
+  def raise_exception(exception) when is_atom(exception), do: {ESpec.Assertions.RaiseException, [exception]}
   def raise_exception(), do: {ESpec.Assertions.RaiseException, []}
 
   def throw_term(term), do: {ESpec.Assertions.ThrowTerm, [term]}
@@ -72,4 +74,3 @@ defmodule ESpec.AssertionHelpers do
 
   def accepted(func, args \\ :any, opts \\ [pid: :any, count: :any]), do: {ESpec.Assertions.Accepted, [func, args, opts]}
 end
-
