@@ -199,15 +199,15 @@ mix espec spec/some_spec.exs --string 'context with tag'
 ## `before` and `finally`
 `before` blocks are evaluated before the example and `finally` runs after the example.
 
-The blocks can return `{:ok, key: value, ...}`, so the keyword list will be saved in the dictionary and can be accessed in other `before` blocks, in the example, and in `finally` blocks through ['shared`](#shared):
+The blocks can return `{:shared, key: value, ...}` or (like in ExUnit) `{:ok, key: value, ...}`, so the keyword list will be saved in the dictionary and can be accessed in other `before` blocks, in the example, and in `finally` blocks through ['shared`](#shared):
 ```elixir
 defmodule SomeSpec do
   use ESpec
 
-  before do: {:ok, a: 1}
+  before do: {:shared, a: 1}
 
   context "Context" do
-    before do: {:ok, b: shared[:a] + 1}
+    before do: {:shared, b: shared[:a] + 1}
     finally do: "#{shared[:b]} == 2"
 
     it do: shared.a |> should eq 1
@@ -223,7 +223,7 @@ You can configure 'global' `before` and `finally` in `spec_helper.exs`:
 ESpec.start
 
 ESpec.configure fn(config) ->
-  config.before fn -> {:ok, answer: 42} end  #can assign values in dictionary
+  config.before fn -> {:shared, answer: 42} end  #can assign values in dictionary
   config.finally fn(shared) -> shared.answer  end     #can access assigns
 end
 ```
@@ -243,7 +243,7 @@ The example bellow illustrate the life-cycle of `shared`:
 ESpec.start
 
 ESpec.configure fn(config) ->
-  config.before fn -> {:ok, answer: 42} end         # shared == %{anwser: 42}
+  config.before fn -> {:shared, answer: 42} end         # shared == %{anwser: 42}
   config.finally fn(shared) -> IO.puts shared.answer  end    # it will print 46   
 end
 ```
@@ -252,12 +252,12 @@ end
 defmodule SomeSpec do
   use ESpec
 
-  before do: {:ok, answer: shared.answer + 1}          # shared == %{anwser: 43}       
-  finally do: {:ok, answer: shared.answer + 1}             # shared == %{anwser: 46}
+  before do: {:shared, answer: shared.answer + 1}          # shared == %{anwser: 43}       
+  finally do: {:shared, answer: shared.answer + 1}         # shared == %{anwser: 46}
 
   context do
-    before do: {:ok, answer: shared.answer + 1}        # shared == %{anwser: 43}
-    finally do: {:ok, answer: shared.answer + 1}           # shared == %{anwser: 45}
+    before do: {:shared, answer: shared.answer + 1}        # shared == %{anwser: 43}
+    finally do: {:shared, answer: shared.answer + 1}       # shared == %{anwser: 45}
     it do: shared.answer |> should eq 44
   end
 end
@@ -273,7 +273,7 @@ The `shared` is available in 'lets' but neither `let` nor `let!` can modify the 
 defmodule SomeSpec do
   use ESpec
 
-  before do: {:ok, a: 1}
+  before do: {:shared, a: 1}
   let! :a, do: shared.a
   let :b, do: shared.a + 1
 
