@@ -33,7 +33,7 @@ ESpec is inspired by RSpec and the main idea is to be close to its perfect DSL.
 - [Examples](#examples)
 - [Filters](#filters)
 - ['before' and 'finally'](#before-and-finally)
-- ['shared'](#shared)
+- ['shared' data](#shared-data)
 - ['let' and 'subject'](#let-and-subject)
 - [Shared examples](#shared-examples)
 - [Async examples](#async-examples)
@@ -227,7 +227,7 @@ end
 ```
 These functions will be called before and after each example which ESpec runs.
 
-## 'shared'
+## 'shared' data
 `shared` is used to share data between spec blocks. You can access data by `shared.some_key` or `shared[:some_key]`.
 `shared.some_key` will raise exception if the key 'some_key' does not exist, while `shared[:some_key]` will return `nil`.
 
