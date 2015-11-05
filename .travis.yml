@@ -8,6 +8,7 @@ sudo: false
 script:
   - mix test
   - mix espec --silent
+  - mix espec --format=json --out=spec.json
 notifications:
   recipients:
     - anton.mishchuk@gmail.com
