@@ -23,7 +23,7 @@ defmodule Output.JsonTest do
     times = {{1436, 865768, 500000}, {1436, 865768, 500100}, {1436, 865768, 500200}}
     output = ESpec.Output.Json.format_result(context[:examples], times, %{})
     assert String.match?(output, ~r/"examples"/)
-    assert String.match?(output, ~r/"decription"/)
+    assert String.match?(output, ~r/"description"/)
     assert String.match?(output, ~r/Output\.JsonTest\.SomeSpec/)
     assert String.match?(output, ~r/Temporarily skipped with: `xit`/)
   end
