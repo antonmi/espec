@@ -3,12 +3,12 @@ defmodule ConfigBeforeTest do
 
   ESpec.configure fn(c) ->
     c.before fn ->
-      {:ok, answer: 42}
+      {:shared, answer: 42}
     end
   end
 
   test "set before in config" do
-    assert(ESpec.Configuration.get(:before).() == {:ok, answer: 42})
+    assert(ESpec.Configuration.get(:before).() == {:shared, answer: 42})
   end
   
   defmodule SomeSpec do

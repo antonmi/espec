@@ -10,7 +10,7 @@ defmodule BeforeSpec do
   it do: expect(shared[:c]).to eq(nil)
 
   describe "D1" do
-    before do: { :ok, b: "D1 before" }
+    before do: { :shared, b: "D1 before" }
 
     it do: expect(shared.a).to eq("top before")
     it do: expect(shared.b).to eq("D1 before")
@@ -25,7 +25,7 @@ defmodule BeforeSpec do
     end
 
     describe "Not valid" do
-      before do: {:ok, [%{a: 1, b: 2}]}
+      before do: {:shared, [%{a: 1, b: 2}]}
 
       it do: expect(shared.a).to eq("top before")
       it do: expect(shared.b).to eq("D1 before")
@@ -54,7 +54,7 @@ defmodule BeforeSpec do
 
   context "many before blocks" do
     before do: { :ok, a: "a" }
-    before do: { :ok, a: "aa", b: "b"}
+    before do: { :shared, a: "aa", b: "b"}
     before do: { :ok, a: "aaa", b: "bbb", c: "ccc"}
 
     it do: expect(shared.a).to eq("aaa")

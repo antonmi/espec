@@ -3,6 +3,8 @@ defmodule ESpec.ExampleRunner do
   Contains all the functions need to run a 'spec' example.
   """
 
+  @dict_keys [:ok, :shared]
+
   @doc """
   Runs one specific example and returns an `%ESpec.Example{}` struct.
   The sequence in the following:
@@ -124,7 +126,7 @@ defmodule ESpec.ExampleRunner do
 
   defp fill_dict(map, res) do
     case res do
-      {:ok, list} when is_list(list) ->
+      {key, list} when key in @dict_keys and is_list(list) ->
         if Keyword.keyword?(list) do
           Enum.reduce(list, map, fn({k,v}, a) -> Dict.put(a, k, v) end)
         else
