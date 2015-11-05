@@ -116,6 +116,11 @@ defmodule ESpec.ExampleHelpers do
     end
   end
 
+  @doc "alias for include_examples"
+  defmacro include_examples(module) do
+    quote do: it_behaves_like(unquote(module))
+  end
+
   defp random_atom(arg) do
     String.to_atom("example_#{ESpec.Support.word_chars(arg)}_#{ESpec.Support.random_string}")
   end

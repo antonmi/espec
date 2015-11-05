@@ -20,13 +20,14 @@ defmodule SharedSpecsTest do
 
   defmodule UseSharedSpecSpec do
     use ESpec
-    
+
     before do: {:ok, a: 1}
 
     context "SomeSpec context" do
       before do: {:ok, b: 2}
 
       it_behaves_like(SharedSpec)
+      include_examples(SharedSpec)
     end
   end
 

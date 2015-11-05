@@ -39,5 +39,6 @@ defmodule UseSharedSpecSpec do
     before do: {:ok, b: 2}
 
     it_behaves_like(SharedSpec)
+    include_examples(SharedSpec)
   end
 end

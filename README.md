@@ -306,13 +306,15 @@ defmodule SharedSpec do
 end
 ```
 `shared: true` marks examples in the module as shared, so the examples will be skipped until you reuse them.
-You can use the examples with `it_behaves_like` macro:
+You can use the examples with `it_behaves_like` or its alias `include_examples` macro:
 ```elixir
 defmodule UseSharedSpec do
   use ESpec
 
   before do: {:ok, hello: "world!"}
   it_behaves_like(SharedSpec)
+  #or
+  include_examples(SharedSpec)
 end
 ```
 ## Async examples
