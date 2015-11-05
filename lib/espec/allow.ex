@@ -11,7 +11,7 @@ defmodule ESpec.Allow do
   def accept(name, func), do: {:accept, name, func}
   def accept(name, func, meck_options) when is_list(meck_options), do: {:accept, name, func, meck_options}
   def accept(list), do: {:accept, list}
-  
+
   @doc "Delegates to `:meck.passthrough/1`."
   def passthrough(args), do: :meck.passthrough(args)
 end
