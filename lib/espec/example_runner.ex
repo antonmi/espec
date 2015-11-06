@@ -59,7 +59,7 @@ defmodule ESpec.ExampleRunner do
   end
 
   defp before_example_actions(example) do
-    assigns = %{}
+    %{}
     |> run_config_before(example)
     |> run_befores_and_lets(example)
   end

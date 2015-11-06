@@ -14,9 +14,10 @@ ESpec is inspired by RSpec and the main idea is to be close to its perfect DSL.
   * Test organization with `describe`, `context`, `it`, and etc blocks.
   * Familiar matchers: `eq`, `be_close_to`, `raise_exception`, etc.
   * Possibility to add custom matchers.
-  * RSpec expectation syntax:
-    - With `expect` helper: `expect(smth1).to eq(smth2)` or `is_expected.to eq(smth)` when `subject` is defined;
-    - With old-style `should`: `smth1 |> should eq smth2` or `should eq smth` when `subject` is defined.
+  * There are three (!) types of expectation syntax:
+    - RSpec syntax with `expect` helper: `expect(smth1).to eq(smth2)` or `is_expected.to eq(smth)` when `subject` is defined;
+    - `expect` syntax without annoying parenthesis `expect smth1 |> to eq smth2` or `is_expected |> to eq smth` when `subject` is defined;
+    - `should` syntax: `smth1 |> should eq smth2` or `should eq smth` when `subject` is defined.
   * `before` and `finally` blocks (like RSpec `before` and `after`).
   * `let`, `let!` and `subject`.
   * Shared examples.
@@ -84,6 +85,7 @@ Place your `_spec.exs` files into `spec` folder. `use ESpec` in the 'spec module
 ```elixir
 defmodule SomeSpec do
   use ESpec
+  it do: expect true |> to be_true
   it do: expect(1+1).to eq(2)
   it do: (1..3) |> should have 2
 end
@@ -113,7 +115,7 @@ defmodule SomeSpec do
 
   example_group do
     context "Some context" do
-      it do: expect("abc").to match(~r/b/)
+      it do: expect "abc" |> to match(~r/b/)
     end
 
     describe "Some another context with opts", focus: true do
@@ -142,7 +144,7 @@ end
 ```elixir
 defmodule SomeSpec do
 
-  example do: expect([1,2,3]).to have_max(3)
+  example do: expect [1,2,3] |> to have_max(3)
 
   it "Test with description" do
     4.2 |> should be_close_to(4, 0.5)
@@ -197,15 +199,15 @@ mix espec spec/some_spec.exs --string 'context with tag'
 ## `before` and `finally`
 `before` blocks are evaluated before the example and `finally` runs after the example.
 
-The blocks can return `{:ok, key: value, ...}`, so the keyword list will be saved in the dictionary and can be accessed in other `before` blocks, in the example, and in `finally` blocks through ['shared`](#shared):
+The blocks can return `{:shared, key: value, ...}` or (like in ExUnit) `{:ok, key: value, ...}`, so the keyword list will be saved in the dictionary and can be accessed in other `before` blocks, in the example, and in `finally` blocks through ['shared`](#shared):
 ```elixir
 defmodule SomeSpec do
   use ESpec
 
-  before do: {:ok, a: 1}
+  before do: {:shared, a: 1}
 
   context "Context" do
-    before do: {:ok, b: shared[:a] + 1}
+    before do: {:shared, b: shared[:a] + 1}
     finally do: "#{shared[:b]} == 2"
 
     it do: shared.a |> should eq 1
@@ -221,7 +223,7 @@ You can configure 'global' `before` and `finally` in `spec_helper.exs`:
 ESpec.start
 
 ESpec.configure fn(config) ->
-  config.before fn -> {:ok, answer: 42} end  #can assign values in dictionary
+  config.before fn -> {:shared, answer: 42} end  #can assign values in dictionary
   config.finally fn(shared) -> shared.answer  end     #can access assigns
 end
 ```
@@ -241,7 +243,7 @@ The example bellow illustrate the life-cycle of `shared`:
 ESpec.start
 
 ESpec.configure fn(config) ->
-  config.before fn -> {:ok, answer: 42} end         # shared == %{anwser: 42}
+  config.before fn -> {:shared, answer: 42} end         # shared == %{anwser: 42}
   config.finally fn(shared) -> IO.puts shared.answer  end    # it will print 46   
 end
 ```
@@ -250,12 +252,12 @@ end
 defmodule SomeSpec do
   use ESpec
 
-  before do: {:ok, answer: shared.answer + 1}          # shared == %{anwser: 43}       
-  finally do: {:ok, answer: shared.answer + 1}             # shared == %{anwser: 46}
+  before do: {:shared, answer: shared.answer + 1}          # shared == %{anwser: 43}       
+  finally do: {:shared, answer: shared.answer + 1}         # shared == %{anwser: 46}
 
   context do
-    before do: {:ok, answer: shared.answer + 1}        # shared == %{anwser: 43}
-    finally do: {:ok, answer: shared.answer + 1}           # shared == %{anwser: 45}
+    before do: {:shared, answer: shared.answer + 1}        # shared == %{anwser: 43}
+    finally do: {:shared, answer: shared.answer + 1}       # shared == %{anwser: 45}
     it do: shared.answer |> should eq 44
   end
 end
@@ -271,12 +273,12 @@ The `shared` is available in 'lets' but neither `let` nor `let!` can modify the 
 defmodule SomeSpec do
   use ESpec
 
-  before do: {:ok, a: 1}
+  before do: {:shared, a: 1}
   let! :a, do: shared.a
   let :b, do: shared.a + 1
 
-  it do: expect(a).to eq(1)
-  it do: expect(b).to eq(2)
+  it do: expect a |> to eq 1
+  it do: expect b |> to eq 2
 end  
 ```
 `subject` and `subject!` are just aliases for `let :subject, do: smth` and `let! :subject, do: smth`. You can use `is_expected` macro (or a simple `should` expression) when `subject` is defined.
@@ -285,12 +287,12 @@ defmodule SomeSpec do
   use ESpec
 
   subject(1+1)
-  it do: is_expected.to eq(2)
+  it do: is_expected |> to eq 2
   it do: should eq 2
 
   context "with block" do
     subject do: 2+2
-    it do: is_expected.to_not eq(2)
+    it do: is_expected |> to_not eq 2
     it do: should_not eq 2
   end
 end
@@ -340,76 +342,76 @@ Don't use `async: true` if you change the global state in your specs!
 ## Matchers
 #### Equality
 ```elixir
-expect(actual).to eq(expected)  # passes if actual == expected
-expect(actual).to eql(expected) # passes if actual === expected
-expect(actual).to be_close_to(expected, delta)
-expect(actual).to be_between(hard_place, rock)
+expect actual |> to eq expected  # passes if actual == expected
+expect actual |> to eql expected # passes if actual === expected
+expect actual |> to be_close_to expected, delta
+expect actual |> to be_between hard_place, rock
 ```
 #### Comparisons
 Can be used with `:>`, `:<`, `:>=`, `:<=`, and etc.
 ```elixir
-expect(actual).to be operator, value
+expect actual |> to be operator, value
 ```
 Passes if `apply(Kernel, operator, [actual, value]) == true`
 #### Booleans
 ```elixir
-expect(actual).to be_true
-expect(actual).to be_truthy
-expect(actual).to be_false
-expect(actual).to be_falsy
+expect actual |> to be_true
+expect actual |> to be_truthy
+expect actual |> to be_false
+expect actual |> to be_falsy
 ```
 #### Regular expressions
 ```elixir
-expect(actual).to match(~r/expression/)
-expect(actual).to match("string")
+expect actual |> to match ~r/expression/
+expect actual |> to match "string"
 ```
 #### Enumerable
 There are many helpers to test enumerable collections:
 ```elixir
-expect(collection).to be_empty #Enum.count(collection) == 0
-... have(value)                #Enum.member?(collection, value)
-... have_all(func)             #Enum.all?(collection, func)
-... have_any(func)             #Enum.any?(collection, func)
-... have_at(position, value)   #Enum.at?(collection, position) == value
-... have_count(value)          #Enum.count(collection) == value
-... have_size(value)           #alias
-... have_length(value)         #alias
-... have_count_by(func, value) #Enum.count(collection, func) == value
-... have_max(value)            #Enum.max(collection) == value
-... have_max_by(func, value)   #Enum.max_by(collection, fun) == value
-... have_min(value)            #Enum.min(collection) == value
-... have_min_by(func, value)   #Enum.min_by(collection, fun) == value
+expect collection |> to be_empty #Enum.count(collection) == 0
+... have value                   #Enum.member?(collection, value)
+... have_all func                #Enum.all?(collection, func)
+... have_any func                #Enum.any?(collection, func)
+... have_at position, value      #Enum.at?(collection, position) == value
+... have_count value             #Enum.count(collection) == value
+... have_size value              #alias
+... have_length value            #alias
+... have_count_by func, value    #Enum.count(collection, func) == value
+... have_max value               #Enum.max(collection) == value
+... have_max_by func, value      #Enum.max_by(collection, fun) == value
+... have_min value               #Enum.min(collection) == value
+... have_min_by func, value      #Enum.min_by(collection, fun) == value
 ```
 #### List
 ```elixir
-expect(list).to have_first(value) #List.first(list) == value
-... have_last(value)              #List.last(list) == value
-... have_hd                       #hd(list) == value
-... have_tl                       #tl(list) == value
+expect list |> to have_first value  #List.first(list) == value
+... have_last value                 #List.last(list) == value
+... have_hd value                   #hd(list) == value
+... have_tl value                   #tl(list) == value
 ```
 #### String
 ```elixir
-expect(string).to have_first(value)  #String.first(string) == value
-... have_last(value)                 #String.last(string) == value
-... start_with(value)                #String.starts_with?(string, value)
-... end_with(value)                  #String.end_with?(string, value)
-... have(value)                      #String.contains?(string, value)    
-... have_at(pos, value)              #String.at(string, pos) == value
-... have_length(value)               #Stirng.length(string) == value
-... have_size(value)                 #alias
-... have_count(value)                #alias
-... be_valid_string                  #String.valid?(string)
-... be_printable                     #String.printable?(string)
+expect string |> to have_first value  #String.first(string) == value
+... have_last value                   #String.last(string) == value
+... start_with value                  #String.starts_with?(string, value)
+... end_with value                    #String.end_with?(string, value)
+... have value                        #String.contains?(string, value)    
+... have_at pos, value                #String.at(string, pos) == value
+... have_length value                 #Stirng.length(string) == value
+... have_size value                   #alias
+... have_count value                  #alias
+... be_valid_string                   #String.valid?(string)
+... be_printable                      #String.printable?(string)
 ```
 #### Dict
 ```elixir
-expect(dict).to have_key(value)     #Dict.has_key?(value)
-expect(dict).to have_value(value)   #Enum.member?(Dict.values(dict), value)
+expect dict |> to have_key value    #Dict.has_key?(value)
+expect dict |> to have_value value  #Enum.member?(Dict.values(dict), value)
 ```
 
 #### Type checking
 ``` elixir
-expect(:espec).to be_atom  #is_atom(:espec) == true
+expect :espec |> to be_atom  #is_atom(:espec) == true
 ... be_binary
 ... be_bitstring
 ... be_boolean
@@ -417,26 +419,26 @@ expect(:espec).to be_atom  #is_atom(:espec) == true
 ... ...
 ... be_tuple
 ... be_function
-... be_function(arity)
+... be_function arity
 ... be_struct
-... be_struct(StructExample)
+... be_struct StructExample
 ```
 #### Exceptions
 ```elixir
-expect(function).to raise_exception
-expect(function).to raise_exception(ErrorModule)
-expect(function).to raise_exception(ErrorModule, "message")
+expect function |> to raise_exception
+expect function |> to raise_exception ErrorModule
+expect function |> to raise_exception ErrorModule, "message"
 ```
 #### Throws
 ```elixir
-expect(function).to throw_term
-expect(function).to throw_term(term)
+expect function |> to throw_term
+expect function |> to throw_term(term)
 ```
 #### Change state
 Test if call of function1 change the function2 returned value to smth or from to smth
 ```elexir
-expect(function1).to change(function2, to)
-expect(function1).to change(function2, from, to)
+expect function1 |> to change function2, to
+expect function1 |> to change function2, from, to
 ```
 
 ## Custom matchers
@@ -451,8 +453,15 @@ You can mock the module with 'allow accept':
 ```elixir
 defmodule SomeSpec do
   use ESpec
-  before do: allow(SomeModule).to accept(:func, fn(a,b) -> a+b end)
-  it do: expect(SomeModule.func(1, 2)).to eq(3)
+  context "with old syntax"
+    before do: allow(SomeModule).to accept(:func, fn(a,b) -> a+b end)
+    it do: expect SomeModule.func(1, 2) |> to eq 3
+  end
+
+  context "with new syntax"
+    before do: allow SomeModule |> to accept :func, fn(a,b) -> a+b end
+    it do: expect SomeModule.func(1, 2) |> to eq 3
+  end
 end
 ```
 If you don't specify the function to return ESpec creates stubs with arity `0` and `1`:
@@ -460,9 +469,9 @@ If you don't specify the function to return ESpec creates stubs with arity `0` a
 ```elixir
 defmodule SomeSpec do
   use ESpec
-  before do: allow(SomeModule).to accept(:func)
-  it do: expect(SomeModule.func).to be_nil
-  it do: expect(SomeModule.func(42)).to be_nil
+  before do: allow SomeModule |> to accept(:func)
+  it do: expect SomeModule.func |> to be_nil
+  it do: expect SomeModule.func(42) |> to be_nil
 end
 ```
 Behind the scenes 'allow accept' makes the following:
@@ -473,25 +482,25 @@ Behind the scenes 'allow accept' makes the following:
 Find the explanation aboute the `:non_strict` and `:passthrough` options [here](https://github.com/eproxus/meck/blob/master/src/meck.erl).
 The default options (`[:non_strict, :passthrough]`) can be overridden:
 ```elixir
-allow(SomeModule).to accept(:func, fn(a,b) -> a+b end, [:non_strict, :unstick])
+allow SomeModule) |> to accept :func, fn(a,b) -> a+b end, [:non_strict, :unstick]
 ```
 All the mocked modules are unloaded whith `:meck.unload(modules)` after each example.
 
 You can also pass a list of atom-function pairs to the `accept` function:
 ```elixir
-allow(SomeModule).to accept(f1: fn -> :f1 end, f2: fn -> :f2 end)
+allow SomeModule |> to accept f1: fn -> :f1 end, f2: fn -> :f2 end
 ```
 One can use `passthrough/1` function to call the original function:
 ```elixir
   before do
-    allow(SomeModule).to accept(:fun, fn
+    allow SomeModule |> to accept(:fun, fn
       :mocked -> "mock!"
       _ -> passthrough([args])
     end)
   end
 
-  it do: expect(SomeModule.fun(:mocked)).to eq("mock!")
-  it do: expect(SomeModule.fun(2)).to eq(3)
+  it do: expect SomeModule.fun(:mocked) |> to eq "mock!"
+  it do: expect SomeModule.fun(2) |> to eq 3
 ```
 The `passthrough/1` just calls the `:meck.passthrough/1` from the `:meck` module.
 
@@ -508,12 +517,12 @@ So, the options are:
 defmodule SomeSpec do
   use ESpec
   before do
-    allow(SomeModule).to accept(:func, fn(a,b) -> a+b end)
+    allow SomeModule |> to accept :func, fn(a,b) -> a+b end
     SomeModule.func(1, 2)
   end  
 
-  it do: expect(SomeModule).to accepted(:func)
-  it do: expect(SomeModule).to accepted(:func, [1,2])
+  it do: expect SomeModule |> to accepted :func
+  it do: expect SomeModule |> to accepted :func, [1,2]
 
   describe "with options" do
     defmodule Server do
@@ -529,7 +538,7 @@ defmodule SomeSpec do
       {:ok, pid: pid}
     end
 
-    it do: expect(ESpec.SomeModule).to accepted(:func, [1,2], pid: shared.pid, count: 2)
+    it do: expect ESpec.SomeModule |> to accepted :func, [1,2], pid: shared.pid, count: 2
   end
 end
 ```
@@ -577,7 +586,7 @@ iex> Enum.map [1, 2, 3], fn(x) ->
 Such examples will be converted to:
 ```elixir
 it "Example description" do
-  expect(input).to eq(output)
+  expect input |> to eq output
 end  
 ```
 - Examples which return complex structure so Elixir prints it as `#Name<...>.`:
@@ -590,7 +599,7 @@ iex> Enum.into([a: 10, b: 20], HashDict.new)
 The examples will be converted to:
 ```elixir
 it "Example description" do
-  expect(inspect input).to eq(output)
+  expect inspect(input) |> to eq output
 end
 ```
 - Examples with exceptions:
@@ -603,7 +612,7 @@ iex(1)> String.to_atom((fn() -> 1 end).())
 The examples will be tested as:
 ```elixir
 it "Example description" do
-  expect(fn -> input end).to raise_exception(error_module, error_message)
+  expect fn -> input end |> to raise_exception error_module, error_message
 end
 ```
 
