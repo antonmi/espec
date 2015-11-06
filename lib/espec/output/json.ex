@@ -54,7 +54,7 @@ defmodule ESpec.Output.Json do
     if ESpec.Configuration.get(:order) do
       false
     else
-      seed = ESpec.Configuration.get(:seed)
+      ESpec.Configuration.get(:seed)
     end
   end
 end

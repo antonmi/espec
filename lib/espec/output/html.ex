@@ -98,7 +98,7 @@ defmodule ESpec.Output.Html do
     if ESpec.Configuration.get(:order) do
       false
     else
-      seed = ESpec.Configuration.get(:seed)
+      ESpec.Configuration.get(:seed)
     end
   end
 end
