@@ -256,7 +256,7 @@ defmodule SomeSpec do
   finally do: {:shared, answer: shared.answer + 1}         # shared == %{anwser: 46}
 
   context do
-    before do: {:shared, answer: shared.answer + 1}        # shared == %{anwser: 43}
+    before do: {:shared, answer: shared.answer + 1}        # shared == %{anwser: 44}
     finally do: {:shared, answer: shared.answer + 1}       # shared == %{anwser: 45}
     it do: shared.answer |> should eq 44
   end
