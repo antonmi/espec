@@ -182,12 +182,17 @@ defmodule ESpec.Runner do
 
   defp seed_random! do
     conf_seed = Configuration.get(:seed)
-    if conf_seed do
-      seed = String.to_integer(conf_seed)
-    else
-      seed =  :os.timestamp |> elem(2)
-      Configuration.add(seed: seed)
+
+    if conf_seed == nil do
+      conf_seed = :os.timestamp |> elem(2)
+      Configuration.add(seed: conf_seed)
     end
+
+    seed = case conf_seed do
+      seed when is_number(seed) -> seed
+      seed when is_binary(seed) -> String.to_integer(seed)
+    end
+
     :random.seed({3172, 9814, seed})
   end
 end
