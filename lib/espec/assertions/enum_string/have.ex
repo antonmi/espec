@@ -20,7 +20,7 @@ defmodule ESpec.Assertions.EnumString.Have do
 
   defp success_message(enum, val, _result, positive) do
     to = if positive, do: "has", else: "doesn't have"
-    "`#{inspect enum}` #{to} `#{val}`."
+    "`#{inspect enum}` #{to} `#{inspect val}`."
   end
 
   defp error_message(enum, val, result, positive) do
