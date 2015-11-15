@@ -94,9 +94,11 @@ defmodule Mix.Tasks.Espec do
 
   def run(args) do
     {opts, files, _} = OptionParser.parse(args)
-    check_env!
 
+    check_env!
     Mix.Task.run "loadpaths", args
+
+    if Keyword.get(opts, :compile, true), do: Mix.Project.compile(args)
 
     project = Mix.Project.config
     cover   = Keyword.merge(@cover, project[:test_coverage] || [])
