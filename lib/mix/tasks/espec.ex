@@ -98,7 +98,7 @@ defmodule Mix.Tasks.Espec do
     check_env!
     Mix.Task.run "loadpaths", args
 
-    if Keyword.get(opts, :compile, true), do: Mix.Project.compile(args)
+    if Keyword.get(opts, :compile, true), do: Mix.Task.run("compile", args)
 
     project = Mix.Project.config
     cover   = Keyword.merge(@cover, project[:test_coverage] || [])
