@@ -319,6 +319,21 @@ defmodule UseSharedSpec do
   include_examples(SharedSpec)
 end
 ```
+Be carefull with `let` and `let!` when using shared examples. You can't access `let` from 'spec module' in 'shared module'.
+```elixir
+defmodule SomeSharedSpec do
+  use ESpec, shared: true
+  it do: expect a |> to eq "a"
+end
+
+defmodule SomeSpec do
+  use ESpec
+  let :a, do: "a"
+  include_examples(SomeSharedSpec)
+end
+```
+Elixir will not compile `SomeSharedSpec` module with error: function a/0 undefined. So use `shared` dictionary in 'before' block to set the value.
+
 ## Async examples
 There is an `async: true` option you can set for the context or for the individual example:
 ```elixir
