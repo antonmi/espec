@@ -350,7 +350,7 @@ defmodule AsyncSpec do
   end
 end
 ```
-The examples will be partioned into two queries. Examples in asynchronous query will be executed in parallel in different processes.
+The examples will be partitioned into two queries. Examples in asynchronous query will be executed in parallel in different processes.
 
 Don't use `async: true` if you change the global state in your specs!
 
