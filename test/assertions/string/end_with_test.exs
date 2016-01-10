@@ -5,7 +5,7 @@ defmodule String.EndWithTest do
     use ESpec
 
     subject "qwerty"
-  
+
     context "Success" do
       it do: should end_with "rty"
       it do: should_not end_with "ert"
@@ -18,7 +18,7 @@ defmodule String.EndWithTest do
         it do: should_not end_with "ert"
       end
     end
-      
+
     context "Error" do
       it do: should_not end_with "rty"
       it do: should end_with "ert"
@@ -29,7 +29,7 @@ defmodule String.EndWithTest do
       context "Error" do
         it do: should_not end_with "q"
         it do: should end_with "e"
-      end    
+      end
     end
   end
 

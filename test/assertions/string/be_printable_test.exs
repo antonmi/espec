@@ -5,15 +5,15 @@ defmodule String.BePrintableTest do
     use ESpec
 
     subject "qwerty"
-  
+
     context "Success" do
-      it do: "qwerty" |> should be_printable
-      it do: <<1, 2, 3>> |> should_not be_printable
+      it do: "qwerty" |> should(be_printable)
+      it do: <<1, 2, 3>> |> should_not(be_printable)
     end
 
     context "Error" do
-      it do: "qwerty" |> should_not be_printable
-      it do: <<1, 2, 3>> |> should be_printable
+      it do: "qwerty" |> should_not(be_printable)
+      it do: <<1, 2, 3>> |> should(be_printable)
     end
   end
 

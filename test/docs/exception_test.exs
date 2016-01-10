@@ -19,7 +19,7 @@ end |> ExUnit.TestHelpers.write_beam
 
 defmodule ESpec.Docs.ExceptionTest do
   use ExUnit.Case, async: true
-  
+
   setup do
     examples = ESpec.DocTest.ExceptionsSpec.examples
     {:ok,
