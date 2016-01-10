@@ -173,13 +173,14 @@ defmodule Mix.Tasks.Espec do
 
     files_with_opts = []
 
-    if Enum.any?(files) do
-      files_with_opts = parse_files(files)
-      spec_files = files_with_opts |> Enum.map(fn {f,_} -> f end)
-      spec_files = Mix.Utils.extract_files(spec_files, spec_pattern)
-    else
-      spec_files = Mix.Utils.extract_files(spec_paths, spec_pattern)
-    end
+    spec_files =
+      if Enum.any?(files) do
+        files_with_opts = parse_files(files)
+        files = files_with_opts |> Enum.map(fn {f,_} -> f end)
+        Mix.Utils.extract_files(files, spec_pattern)
+      else
+        Mix.Utils.extract_files(spec_paths, spec_pattern)
+      end
 
     Kernel.ParallelRequire.files(spec_files)
     ESpec.Configuration.add(file_opts: files_with_opts)

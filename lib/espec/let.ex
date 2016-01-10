@@ -98,7 +98,7 @@ defmodule ESpec.Let do
   end
 
   @doc "Starts Agent to save state of 'lets'."
-  def start_agent, do: Agent.start_link(fn -> HashDict.new end, name: @agent_name)
+  def start_agent, do: Agent.start_link(fn -> Map.new end, name: @agent_name)
 
   @doc "Stops Agent"
   def stop_agent, do: Agent.stop(@agent_name)

@@ -19,24 +19,24 @@ defmodule ESpec.Output.Html do
 
   defp context_tree(examples) do
     examples
-    |> Enum.reduce({HashDict.new, []}, fn(ex, acc) ->
+    |> Enum.reduce({Map.new, []}, fn(ex, acc) ->
       contexts = Enum.filter(ex.context, &(&1.__struct__ == ESpec.Context))
       put_deep(acc, contexts, ex)
     end)
   end
 
   defp put_deep({dict, values}, [el | tl], value) when length(tl) > 0 do
-    d = case HashDict.get(dict, el) do
+    d = case Map.get(dict, el) do
       {inner, vals} -> put_deep({inner, vals}, tl, value)
-      nil -> put_deep({HashDict.new, []}, tl, value)
+      nil -> put_deep({Map.new, []}, tl, value)
     end
-    {HashDict.put(dict, el, d), values}
+    {Map.put(dict, el, d), values}
   end
 
   defp put_deep({dict, values}, [el], value) do
-    new_dict = case HashDict.get(dict, el) do
-      {inner, vals} -> HashDict.put(dict, el, {inner, [value | vals]})
-      nil -> HashDict.put(dict, el, {HashDict.new, [value]})
+    new_dict = case Map.get(dict, el) do
+      {inner, vals} -> Map.put(dict, el, {inner, [value | vals]})
+      nil -> Map.put(dict, el, {Map.new, [value]})
       end
     {new_dict, values}
   end

@@ -37,23 +37,23 @@ defmodule ESpec.Mock do
   end
 
   @doc "Starts Agent to save mocked modules."
-  def start_agent, do: Agent.start_link(fn -> HashSet.new end, name: @agent_name)
+  def start_agent, do: Agent.start_link(fn -> MapSet.new end, name: @agent_name)
 
   @doc "Stops Agent"
   def stop_agent, do: Agent.stop(@agent_name)
 
   defp agent_get(pid) do
     Agent.get(@agent_name, &(&1))
-    |> Enum.filter fn{_m, p} -> p == pid end
+    |> Enum.filter(fn{_m, p} -> p == pid end)
   end
 
   defp agent_del(pid) do
     new_set = Agent.get(@agent_name, &(&1))
-    |> Enum.reduce(HashSet.new, fn({m, p}, acc) ->
-      if p != pid, do: HashSet.put(acc, {m, p}), else: acc
+    |> Enum.reduce(MapSet.new, fn({m, p}, acc) ->
+      if p != pid, do: MapSet.put(acc, {m, p}), else: acc
     end)
     Agent.update(@agent_name, fn(_state) -> new_set end)
   end
 
-  defp agent_put(key), do: Agent.update(@agent_name, &(Set.put(&1, key)))
+  defp agent_put(key), do: Agent.update(@agent_name, &(MapSet.put(&1, key)))
 end
