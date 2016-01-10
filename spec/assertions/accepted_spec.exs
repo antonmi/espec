@@ -15,8 +15,8 @@ defmodule AcceptedSpec do
 		end
 
 		context "Success" do
-			it do: expect SomeModule |> to accepted(:func, [1, 2])
-			it do: expect SomeModule |> to_not accepted(:another_function, [])
+			it do: expect SomeModule |> to(accepted(:func, [1, 2]))
+			it do: expect SomeModule |> to_not(accepted(:another_function, []))
 		end
 
 		xcontext "Error" do
