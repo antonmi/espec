@@ -39,17 +39,17 @@ defmodule ESpec.Output.Doc do
 
   defp format_failed(failed) do
     res = failed |> Enum.with_index
-    |> Enum.map fn({example, index}) ->
+    |> Enum.map(fn({example, index}) ->
       do_format_example(example, example.error.message, index)
-    end
+    end)
     Enum.join(res, "\n")
   end
 
   defp format_pending(pending) do
     res = pending |> Enum.with_index
-    |> Enum.map fn({example, index}) ->
+    |> Enum.map(fn({example, index}) ->
       do_format_example(example, example.result, index)
-    end
+    end)
     Enum.join(res, "\n")
   end
 

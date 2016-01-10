@@ -31,11 +31,11 @@ defmodule ESpec.Configuration do
   Allows only whitelisted options.
   """
   def add(opts) do
-    opts |> Enum.each fn {key, val} ->
+    opts |> Enum.each(fn {key, val} ->
       if Enum.member?(Keyword.keys(@list), key) do
         Application.put_env(:espec, key, val)
       end
-    end
+    end)
   end
 
   @doc "Returns the value associated with key."
@@ -50,9 +50,9 @@ defmodule ESpec.Configuration do
   """
   def configure(func), do: func.({ESpec.Configuration})
 
-  Keyword.keys(@list) |> Enum.each fn(func) ->
+  Keyword.keys(@list) |> Enum.each(fn(func) ->
     def unquote(func)(value, {ESpec.Configuration}) do
       ESpec.Configuration.add([{unquote(func), value}])
     end
-  end
+  end)
 end

@@ -35,12 +35,13 @@ defmodule ESpec.Runner do
   end
 
   defp do_run(specs, opts) do
-    if Configuration.get(:order) do
-      examples = run_in_order(specs, opts)
-    else
-      seed_random!
-      examples = run_in_random(specs, opts)
-    end
+    examples =
+      if Configuration.get(:order) do
+        run_in_order(specs, opts)
+      else
+        seed_random!
+        run_in_random(specs, opts)
+      end
     Configuration.add([finish_specs_time: :os.timestamp])
     ESpec.Output.print_result(examples)
     !Enum.any?(ESpec.Example.failure(examples))

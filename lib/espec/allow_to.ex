@@ -12,8 +12,8 @@ defmodule ESpec.AllowTo do
       {:accept, list} when is_list(list) -> mock_list(module, list)
       {:accept, list, meck_options} when is_list(list) and is_list(meck_options) -> mock_list(module, list, meck_options)
       {:accept, name} when is_atom(name) ->
-        ESpec.Mock.expect(module, name, fn -> end, [])
-        ESpec.Mock.expect(module, name, fn(_) -> end, [])
+        ESpec.Mock.expect(module, name, fn -> nil end, [])
+        ESpec.Mock.expect(module, name, fn(_) -> nil end, [])
     end
   end
 
@@ -23,8 +23,8 @@ defmodule ESpec.AllowTo do
         ESpec.Mock.expect(module, name, function, meck_options)
       end)
     else
-      Enum.each(list, &ESpec.Mock.expect(module, &1, fn -> end, meck_options))
-      Enum.each(list, &ESpec.Mock.expect(module, &1, fn(_) -> end, meck_options))
+      Enum.each(list, &ESpec.Mock.expect(module, &1, fn -> nil end, meck_options))
+      Enum.each(list, &ESpec.Mock.expect(module, &1, fn(_) -> nil end, meck_options))
     end
   end
 end

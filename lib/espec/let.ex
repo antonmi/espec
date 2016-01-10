@@ -10,7 +10,6 @@ defmodule ESpec.Let do
   @doc "Struct keeps the name of variable and random function name."
   defstruct var: nil, module: nil, function: nil, keep_quoted: nil
 
-  @doc "The name of Agent to save state for lets and subject"
   @agent_name :espec_let_agent
 
   @doc """
