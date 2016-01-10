@@ -34,8 +34,8 @@ defmodule SubjectSpec do
     context "redefine" do
       subject :subj, do: 3+5
       it do: expect(subj).to eq(8)
-      it do: subj |> should eq(8)
-      it do: subj |> should_not eq(10)
+      it do: subj |> should(eq 8)
+      it do: subj |> should_not(eq 10)
     end
   end
 end

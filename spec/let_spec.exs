@@ -48,6 +48,6 @@ defmodule LetSpec do
     let :a, do: 1
     let :b, do: a + 1
 
-    it do: b |> should eq 2
+    it do: b |> should(eq 2)
   end
 end

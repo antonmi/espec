@@ -11,22 +11,22 @@ defmodule SharedSpec do
   context "SharedSpec context" do
     let :d, do: shared.c + 1
 
-    it do: expect shared.a |> to eq(1)
-    it do: expect shared.b |> to eq(2)
-    it do: expect c |> to eq(3)
-    it do: expect d |> to eq(4)
+    it do: expect shared.a |> to(eq 1)
+    it do: expect shared.b |> to(eq 2)
+    it do: expect c |> to(eq 3)
+    it do: expect d |> to(eq 4)
   end
 
   describe "let use let" do
     let :a, do: shared.a
     let :b, do: a + 1
 
-    it do: b |> should eq 2
+    it do: b |> should(eq 2)
   end
 
   describe "let and let form outer module" do
-    it do: shared.outer_let |> should eq :outer_let
-    it do: shared.outer_let! |> should eq :outer_let!
+    it do: shared.outer_let |> should(eq :outer_let)
+    it do: shared.outer_let! |> should(eq :outer_let!)
   end
 end
 

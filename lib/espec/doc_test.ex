@@ -11,7 +11,7 @@ defmodule ESpec.DocTest do
     ...> end
     [2,4,6]
     Such examples will be converted to: 'expect(input).to eq(output)' assertion.
-  
+
   :inspect - examples which return complex structure so Elixir prints it as #Name<...>.
     iex> Enum.into([a: 10, b: 20], HashDict.new)
     #HashDict<[b: 20, a: 10]>
@@ -55,11 +55,11 @@ defmodule ESpec.DocTest do
         examples = ESpec.DocTest.filter_only(examples, unquote(opts)[:only])
       end
       if Keyword.get(unquote(opts), :except, false) do
-        examples = ESpec.DocTest.filter_except(examples, unquote(opts)[:except]) 
-      end 
+        examples = ESpec.DocTest.filter_except(examples, unquote(opts)[:except])
+      end
 
       Enum.with_index(examples)
-      |> Enum.each(fn({ex, index}) -> 
+      |> Enum.each(fn({ex, index}) ->
         context = Enum.reverse(@context)
         {fun, arity} = ex.fun_arity
 
@@ -69,41 +69,41 @@ defmodule ESpec.DocTest do
         @examples %ESpec.Example{ description: description, module: __MODULE__, function: function,
                                   opts: [], file: __ENV__.file, line: __ENV__.line, context: context,
                                   shared: false}
+        string_to_eval =
+          cond do
+            ex.type == :test ->
+              {lhs, _} = Code.eval_string(ex.lhs, [], __ENV__)
+              {rhs, _} = Code.eval_string(ex.rhs, [], __ENV__)
+              """
+              def #{function}(shared) do
+                shared[:key]
+                expect(#{inspect lhs}).to eq(#{inspect rhs})
+              end
+              """
+            ex.type == :error ->
+              {error_module, error_message} = ex.rhs
+              lhs = ex.lhs
+              """
+              def #{function}(shared) do
+                shared[:key]
+                expect(fn -> Code.eval_string(#{lhs}) end).to raise_exception(#{error_module}, "#{error_message}")
+              end
+              """
+            ex.type == :inspect ->
+              {lhs, _} = Code.eval_string(ex.lhs, [], __ENV__)
+              {rhs, _} = Code.eval_string(ex.rhs, [], __ENV__)
+              lhs = inspect(lhs)
+              """
+              def #{function}(shared) do
+                shared[:key]
+                expect(#{inspect lhs}).to eq(#{inspect rhs})
+              end
+              """
+            true ->
+              raise RuntimeError, message: "Wrong %ESpec.DocExample{} type!"
+          end
 
-        cond do
-          ex.type == :test ->
-            {lhs, _} = Code.eval_string(ex.lhs, [], __ENV__)
-            {rhs, _} = Code.eval_string(ex.rhs, [], __ENV__)
-            s = """
-            def #{function}(shared) do
-              shared[:key]
-              expect(#{inspect lhs}).to eq(#{inspect rhs})
-            end  
-            """
-          ex.type == :error ->
-            {error_module, error_message} = ex.rhs
-            lhs = ex.lhs
-            s = """
-            def #{function}(shared) do
-              shared[:key]
-              expect(fn -> Code.eval_string(#{lhs}) end).to raise_exception(#{error_module}, "#{error_message}")
-            end  
-            """
-          ex.type == :inspect ->
-            {lhs, _} = Code.eval_string(ex.lhs, [], __ENV__)
-            {rhs, _} = Code.eval_string(ex.rhs, [], __ENV__)
-            lhs = inspect(lhs)
-            s = """
-            def #{function}(shared) do
-              shared[:key]
-              expect(#{inspect lhs}).to eq(#{inspect rhs})
-            end  
-            """
-          true ->
-            raise RuntimeError, message: "Wrong %ESpec.DocExample{} type!"  
-        end
-
-        Code.eval_string(s, [], __ENV__)
+        Code.eval_string(string_to_eval, [], __ENV__)
       end)
     end
   end
