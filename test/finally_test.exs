@@ -1,5 +1,5 @@
 defmodule FinallyTest do
-  use ExUnit.Case, async: true
+  use ExUnit.Case
 
   defmodule SomeSpec do
     use ESpec
@@ -8,10 +8,9 @@ defmodule FinallyTest do
     finally do
       Application.put_env(:espec, :finally_a, 1)
       {:ok, b: shared[:a] + 1}
-    end 
+    end
 
     finally do: Application.put_env(:espec, :finally_b, shared[:b])
-
 
     it do: "some test"
     finally do: Application.put_env(:espec, :finally_c, 3)
@@ -28,5 +27,38 @@ defmodule FinallyTest do
     assert(Application.get_env(:espec, :finally_a) == 1)
     assert(Application.get_env(:espec, :finally_b) == 2)
     assert(Application.get_env(:espec, :finally_c) == nil)
+  end
+end
+
+defmodule FinallyTestWithExceptions do
+  use ExUnit.Case
+
+  defmodule Spec.FailingSpec do
+    use ESpec
+
+    finally do: Application.put_env(:espec, :finally_value, 100500)
+
+    it "failing example 1", do: expect 1 |> to(eq 2)
+    it "failing exampe 2", do: raise "Some error"
+  end
+
+  setup do
+    Application.put_env(:espec, :finally_value, 0)
+    {:ok,
+      ex1: Enum.at(Spec.FailingSpec.examples, 0),
+      ex2: Enum.at(Spec.FailingSpec.examples, 1)
+    }
+  end
+
+  test "run ex1", context do
+    example = ESpec.ExampleRunner.run(context[:ex1])
+    assert(example.status == :failure)
+    assert(Application.get_env(:espec, :finally_value) == 100500)
+  end
+
+  test "run ex2", context do
+    example = ESpec.ExampleRunner.run(context[:ex2])
+    assert(example.status == :failure)
+    assert(Application.get_env(:espec, :finally_value) == 100500)
   end
 end

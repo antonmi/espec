@@ -28,6 +28,7 @@ defmodule ESpec.ExampleRunner do
   end
 
   defp run_example(example, start_time) do
+    assigns = %{}
     try do
       assigns = before_example_actions(example)
       result = case apply(example.module, example.function, [assigns]) do
@@ -37,21 +38,21 @@ defmodule ESpec.ExampleRunner do
       duration = duration_in_ms(start_time, :os.timestamp)
       example = %ESpec.Example{example | status: :success, result: result, duration: duration}
       ESpec.Output.example_info(example)
-
       after_example_actions(assigns, example)
-
       example
     rescue
       error in [ESpec.AssertionError] ->
         duration = duration_in_ms(start_time, :os.timestamp)
         example = %ESpec.Example{example | status: :failure, error: error, duration: duration}
         ESpec.Output.example_info(example)
+        after_example_actions(assigns, example)
         example
       other_error ->
         error = %ESpec.AssertionError{message: format_other_error(other_error)}
         duration = duration_in_ms(start_time, :os.timestamp)
         example = %ESpec.Example{example | status: :failure, error: error, duration: duration}
         ESpec.Output.example_info(example)
+        after_example_actions(assigns, example)
         example
     after
       unload_mocks
