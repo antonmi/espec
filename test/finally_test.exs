@@ -36,14 +36,19 @@ defmodule FinallyTestWithExceptions do
   defmodule Spec.FailingSpec do
     use ESpec
 
-    finally do: Application.put_env(:espec, :finally_value, 100500)
+    before do: {:ok, foo: :bar}
+    finally do
+      Application.put_env(:espec, :finally_value, 100500)
+      Application.put_env(:espec, :shared_value, shared[:foo])
+    end
 
     it "failing example 1", do: expect 1 |> to(eq 2)
     it "failing exampe 2", do: raise "Some error"
   end
 
   setup do
-    Application.put_env(:espec, :finally_value, 0)
+    Application.put_env(:espec, :finally_value, nil)
+    Application.put_env(:espec, :finally_value, nil)
     {:ok,
       ex1: Enum.at(Spec.FailingSpec.examples, 0),
       ex2: Enum.at(Spec.FailingSpec.examples, 1)
@@ -54,11 +59,13 @@ defmodule FinallyTestWithExceptions do
     example = ESpec.ExampleRunner.run(context[:ex1])
     assert(example.status == :failure)
     assert(Application.get_env(:espec, :finally_value) == 100500)
+    assert(Application.get_env(:espec, :shared_value) == :bar)
   end
 
   test "run ex2", context do
     example = ESpec.ExampleRunner.run(context[:ex2])
     assert(example.status == :failure)
     assert(Application.get_env(:espec, :finally_value) == 100500)
+    assert(Application.get_env(:espec, :shared_value) == :bar)
   end
 end

@@ -28,9 +28,8 @@ defmodule ESpec.ExampleRunner do
   end
 
   defp run_example(example, start_time) do
-    assigns = %{}
+    assigns = before_example_actions(example)
     try do
-      assigns = before_example_actions(example)
       result = case apply(example.module, example.function, [assigns]) do
         {ESpec.ExpectTo, res} -> res
         res -> res
