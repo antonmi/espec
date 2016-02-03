@@ -2,6 +2,8 @@ defmodule Mix.Tasks.Espec.Init do
   use Mix.Task
   import Mix.Generator
 
+  @preferred_cli_env :test
+
   @shortdoc "Create spec/spec_helper.exs and spec/example_spec.exs"
 
   @spec_folder "spec"

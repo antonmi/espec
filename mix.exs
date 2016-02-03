@@ -11,7 +11,7 @@ defmodule ESpec.Mixfile do
      description: description,
      package: package,
      deps: deps,
-     source_url: "https://github.com/antonmi/espec",
+     source_url: "https://github.com/antonmi/espec"
      preferred_cli_env: [espec: :test]
    ]
   end

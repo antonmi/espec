@@ -31,6 +31,7 @@ defmodule Mix.Tasks.Espec do
   use Mix.Task
 
   @shortdoc "Runs specs"
+  @preferred_cli_env :test
 
   @moduledoc """
   Runs the specs.
@@ -148,12 +149,18 @@ defmodule Mix.Tasks.Espec do
   end
 
   defp check_env! do
-    unless System.get_env("MIX_ENV") || Mix.env == :test do
-      Mix.raise "espec is running on environment #{Mix.env}.\n" <>
-                "It is recommended to run espec in test environment.\n" <>
-                "Please add `preferred_cli_env: [espec: :test]` to project configurations in mix.exs file.\n" <>
-                "Or set MIX_ENV explicitly (MIX_ENV=test mix espec)"
+    if elixir_version < "1.3.0" do
+      unless System.get_env("MIX_ENV") || Mix.env == :test do
+        Mix.raise "espec is running on environment #{Mix.env}.\n" <>
+                  "It is recommended to run espec in test environment.\n" <>
+                  "Please add `preferred_cli_env: [espec: :test]` to project configurations in mix.exs file.\n" <>
+                  "Or set MIX_ENV explicitly (MIX_ENV=test mix espec)"
+      end
     end
+  end
+
+  defp elixir_version do
+    System.version() |> String.split("-") |> hd
   end
 
   defp ensure_espec_loaded! do
