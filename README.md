@@ -233,7 +233,7 @@ These functions will be called before and after each example which ESpec runs.
 
 The `shared` variable appears in your `before`, `finally`, in `config.before` and `config.finally`, in `let` and `example` blocks.
 
-`before` and `finally` blocks (including 'global') can modify the dictionay when return `{:ok, key: value}`.
+`before` and `finally` blocks (including 'global') can modify the dictionay when return `{:shared, key: value}`.
 The example bellow illustrate the life-cycle of `shared`:
 
 `spec_helper.exs`
