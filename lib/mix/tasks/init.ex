@@ -6,14 +6,30 @@ defmodule Mix.Tasks.Espec.Init do
 
   @shortdoc "Create spec/spec_helper.exs and spec/example_spec.exs"
 
+  @moduledoc """
+  Creates neccessary files.
+
+  This tasks creates `spec/spec_helper.exs` and `spec/example_spec.exs`
+
+  ## Command line options
+
+  * `--skip-examples` - skip creating of example files
+
+  """
+
   @spec_folder "spec"
   @spec_helper "spec_helper.exs"
   @example_spec "example_spec.exs"
 
-  def run(_args) do
+  def run(args) do
+    {opts, _, _} = OptionParser.parse(args)
+
     create_directory @spec_folder
     create_file(Path.join(@spec_folder, @spec_helper), spec_helper_template(nil))
-    create_file(Path.join(@spec_folder, @example_spec), example_spec_template(nil))
+
+    unless opts[:skip_examples] do
+      create_file(Path.join(@spec_folder, @example_spec), example_spec_template(nil))
+    end
   end
 
   embed_template :spec_helper, """
