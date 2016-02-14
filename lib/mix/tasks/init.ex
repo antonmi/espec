@@ -37,11 +37,11 @@ defmodule Mix.Tasks.Espec.Init do
 
   ESpec.configure fn(config) ->
     config.before fn ->
-      # {:shared, hello: :world}
+      {:shared, hello: :world}
     end
 
-    config.finally fn(shared) ->
-
+    config.finally fn(_shared) ->
+      :ok
     end
   end
   """
@@ -56,7 +56,7 @@ defmodule Mix.Tasks.Espec.Init do
     end
 
     example "test" do
-      expect shared.answer |> to eq(42)
+      expect shared.answer |> to(eq 42)
     end
 
     context "Defines context" do
@@ -73,7 +73,7 @@ defmodule Mix.Tasks.Espec.Init do
         let :val, do: shared.new_answer
 
         it "checks val" do
-          expect val |> to eq 84
+          expect val |> to(eq 84)
         end
       end
     end
