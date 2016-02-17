@@ -39,6 +39,14 @@ defmodule ESpec.ExampleRunner do
       ESpec.Output.example_info(example)
       after_example_actions(assigns, example)
       example
+    catch
+      what, value ->
+        duration = duration_in_ms(start_time, :os.timestamp)
+        error = %ESpec.AssertionError{message: "#{what} #{inspect value}"}
+        example = %ESpec.Example{example | status: :failure, error: error, duration: duration}
+        ESpec.Output.example_info(example)
+        after_example_actions(assigns, example)
+        example
     rescue
       error in [ESpec.AssertionError] ->
         duration = duration_in_ms(start_time, :os.timestamp)
