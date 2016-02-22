@@ -30,37 +30,14 @@ defmodule ESpec.ExampleRunner do
   defp run_example(example, start_time) do
     assigns = before_example_actions(example)
     try do
-      result = case apply(example.module, example.function, [assigns]) do
-        {ESpec.ExpectTo, res} -> res
-        res -> res
-      end
-      duration = duration_in_ms(start_time, :os.timestamp)
-      example = %ESpec.Example{example | status: :success, result: result, duration: duration}
-      ESpec.Output.example_info(example)
-      after_example_actions(assigns, example)
-      example
+      try_run(example, assigns, start_time)
     catch
-      what, value ->
-        duration = duration_in_ms(start_time, :os.timestamp)
-        error = %ESpec.AssertionError{message: "#{what} #{inspect value}"}
-        example = %ESpec.Example{example | status: :failure, error: error, duration: duration}
-        ESpec.Output.example_info(example)
-        after_example_actions(assigns, example)
-        example
+      what, value -> do_catch(example, assigns, start_time, what, value)
     rescue
-      error in [ESpec.AssertionError] ->
-        duration = duration_in_ms(start_time, :os.timestamp)
-        example = %ESpec.Example{example | status: :failure, error: error, duration: duration}
-        ESpec.Output.example_info(example)
-        after_example_actions(assigns, example)
-        example
+      error in [ESpec.AssertionError] -> do_rescue(example, assigns, start_time, error)      
       other_error ->
         error = %ESpec.AssertionError{message: format_other_error(other_error)}
-        duration = duration_in_ms(start_time, :os.timestamp)
-        example = %ESpec.Example{example | status: :failure, error: error, duration: duration}
-        ESpec.Output.example_info(example)
-        after_example_actions(assigns, example)
-        example
+        do_rescue(example, assigns, start_time, error)
     after
       unload_mocks
     end
@@ -72,11 +49,39 @@ defmodule ESpec.ExampleRunner do
     |> run_befores_and_lets(example)
   end
 
+  defp try_run(example, assigns, start_time) do
+    result = case apply(example.module, example.function, [assigns]) do
+      {ESpec.ExpectTo, res} -> res
+      res -> res
+    end
+    duration = duration_in_ms(start_time, :os.timestamp)
+    example = %ESpec.Example{example | status: :success, result: result, duration: duration}
+    ESpec.Output.example_info(example)
+    after_example_actions(assigns, example)
+    example
+  end
+
+  defp do_catch(example, assigns, start_time, what, value) do
+    duration = duration_in_ms(start_time, :os.timestamp)
+    error = %ESpec.AssertionError{message: "#{what} #{inspect value}"}
+    example = %ESpec.Example{example | status: :failure, error: error, duration: duration}
+    ESpec.Output.example_info(example)
+    after_example_actions(assigns, example)
+    example
+  end
+
+  defp do_rescue(example, assigns, start_time, error) do
+    duration = duration_in_ms(start_time, :os.timestamp)
+    example = %ESpec.Example{example | status: :failure, error: error, duration: duration}
+    ESpec.Output.example_info(example)
+    after_example_actions(assigns, example)
+    example
+  end
+
   def after_example_actions(assigns, example) do
     run_finallies(assigns, example)
     |> run_config_finally(example)
   end
-
 
   defp format_other_error(error) do
     error_message = Exception.format_banner(:error, error)
