@@ -21,6 +21,20 @@ defmodule BeforeTest do
       before do: {:ok, b: shared[:a] + 1 }
       it do: "b = #{shared[:b]}"
     end
+
+    context "error or throw" do
+      context "throw term" do
+        before do: throw :some_term
+
+        it do: true
+      end
+
+      context "fail " do
+        before do: raise "Error"
+
+        it do: true
+      end
+    end
   end
 
   setup_all do
@@ -28,7 +42,9 @@ defmodule BeforeTest do
       ex1: Enum.at(SomeSpec.examples, 0),
       ex2: Enum.at(SomeSpec.examples, 1),
       ex3: Enum.at(SomeSpec.examples, 2),
-      ex4: Enum.at(SomeSpec.examples, 3)
+      ex4: Enum.at(SomeSpec.examples, 3),
+      ex5: Enum.at(SomeSpec.examples, 4),
+      ex6: Enum.at(SomeSpec.examples, 5)
     }
   end
 
@@ -50,5 +66,17 @@ defmodule BeforeTest do
   test "run ex4", context do
     example = ESpec.ExampleRunner.run(context[:ex4])
     assert(example.result == "b = 2")
+  end
+
+  test "run example which throws term", context do
+    example = ESpec.ExampleRunner.run(context[:ex5])
+    assert example.status == :failure
+    assert String.match?(example.error.message, ~r/throw :some_term/)
+  end
+
+  test "run example which raises error", context do
+    example = ESpec.ExampleRunner.run(context[:ex6])
+    assert example.status == :failure
+    assert String.match?(example.error.message, ~r/\(RuntimeError\) Error/)
   end
 end

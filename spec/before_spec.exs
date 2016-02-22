@@ -1,7 +1,7 @@
 defmodule BeforeSpec do
   use ESpec, async: true
 
-  before do 
+  before do
     {:ok, a: "top before" }
   end
 
@@ -30,7 +30,6 @@ defmodule BeforeSpec do
       it do: expect(shared.a).to eq("top before")
       it do: expect(shared.b).to eq("D1 before")
     end
-
   end
 
   context "function in 'shared'" do

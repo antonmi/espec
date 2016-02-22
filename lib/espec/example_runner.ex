@@ -5,6 +5,10 @@ defmodule ESpec.ExampleRunner do
 
   @dict_keys [:ok, :shared]
 
+  alias ESpec.Example
+  alias ESpec.AssertionError
+  alias ESpec.Output
+
   @doc """
   Runs one specific example and returns an `%ESpec.Example{}` struct.
   The sequence in the following:
@@ -16,7 +20,7 @@ defmodule ESpec.ExampleRunner do
   `error` is a `%ESpec.AssertionError{}` struct.
   """
   def run(example) do
-    contexts = ESpec.Example.extract_contexts(example)
+    contexts = Example.extract_contexts(example)
     cond do
       example.opts[:skip] || Enum.any?(contexts, &(&1.opts[:skip])) ->
         run_skipped(example)
@@ -28,15 +32,15 @@ defmodule ESpec.ExampleRunner do
   end
 
   defp run_example(example, start_time) do
-    assigns = before_example_actions(example)
+    {assigns, example} = before_example_actions(example)
     try do
       try_run(example, assigns, start_time)
     catch
       what, value -> do_catch(example, assigns, start_time, what, value)
     rescue
-      error in [ESpec.AssertionError] -> do_rescue(example, assigns, start_time, error)      
+      error in [AssertionError] -> do_rescue(example, assigns, start_time, error)
       other_error ->
-        error = %ESpec.AssertionError{message: format_other_error(other_error)}
+        error = %AssertionError{message: format_other_error(other_error)}
         do_rescue(example, assigns, start_time, error)
     after
       unload_mocks
@@ -44,36 +48,39 @@ defmodule ESpec.ExampleRunner do
   end
 
   defp before_example_actions(example) do
-    %{}
-    |> run_config_before(example)
-    |> run_befores_and_lets(example)
+    {%{}, example}
+    |> run_config_before
+    |> run_befores_and_lets
   end
 
   defp try_run(example, assigns, start_time) do
+    if example.status == :failure, do: raise example.error
+
     result = case apply(example.module, example.function, [assigns]) do
       {ESpec.ExpectTo, res} -> res
       res -> res
     end
+
     duration = duration_in_ms(start_time, :os.timestamp)
-    example = %ESpec.Example{example | status: :success, result: result, duration: duration}
-    ESpec.Output.example_info(example)
+    example = %Example{example | status: :success, result: result, duration: duration}
+    Output.example_info(example)
     after_example_actions(assigns, example)
     example
   end
 
   defp do_catch(example, assigns, start_time, what, value) do
     duration = duration_in_ms(start_time, :os.timestamp)
-    error = %ESpec.AssertionError{message: "#{what} #{inspect value}"}
-    example = %ESpec.Example{example | status: :failure, error: error, duration: duration}
-    ESpec.Output.example_info(example)
+    error = %AssertionError{message: format_catch(what, value)}
+    example = %Example{example | status: :failure, error: error, duration: duration}
+    Output.example_info(example)
     after_example_actions(assigns, example)
     example
   end
 
   defp do_rescue(example, assigns, start_time, error) do
     duration = duration_in_ms(start_time, :os.timestamp)
-    example = %ESpec.Example{example | status: :failure, error: error, duration: duration}
-    ESpec.Output.example_info(example)
+    example = %Example{example | status: :failure, error: error, duration: duration}
+    Output.example_info(example)
     after_example_actions(assigns, example)
     example
   end
@@ -83,47 +90,74 @@ defmodule ESpec.ExampleRunner do
     |> run_config_finally(example)
   end
 
-  defp format_other_error(error) do
-    error_message = Exception.format_banner(:error, error)
-    stacktrace = Exception.format_stacktrace(System.stacktrace)
-    error_message <> "\n" <> stacktrace
-  end
-
   defp run_skipped(example) do
-    example = %ESpec.Example{example | status: :pending, result: ESpec.Example.skip_message(example)}
-    ESpec.Output.example_info(example)
+    example = %Example{example | status: :pending, result: Example.skip_message(example)}
+    Output.example_info(example)
     example
   end
 
   defp run_pending(example) do
-    example = %ESpec.Example{example | status: :pending, result: ESpec.Example.pending_message(example)}
-    ESpec.Output.example_info(example)
+    example = %Example{example | status: :pending, result: Example.pending_message(example)}
+    Output.example_info(example)
     example
   end
 
-  defp run_config_before(assigns, _example) do
+  defp run_config_before({assigns, example}) do
     func = ESpec.Configuration.get(:before)
-    if func, do: fill_dict(assigns, func.()), else: assigns
+    if func do
+      try do
+        {fill_dict(assigns, func.()), example}
+      catch
+        what, value -> catch_before(what, value, {assigns, example})
+      rescue
+        any_error -> rescure_before(any_error, {assigns, example})
+      end
+    else
+      {assigns, example}
+    end
   end
 
-  defp run_befores_and_lets(assigns, example) do
-    ESpec.Example.extract_befores_and_lets(example)
-    |> Enum.reduce(assigns, fn(before_or_let, map) ->
-      case before_or_let.__struct__ do
-        ESpec.Before ->
-          before = before_or_let
-          returned = apply(before.module, before.function, [map])
-          fill_dict(map, returned)
-        ESpec.Let ->
-          let = before_or_let
-          ESpec.Let.agent_put({self, let.module, let.var}, apply(let.module, let.function, [map]))
-          map
+  defp run_befores_and_lets({assigns, example}) do
+    Example.extract_befores_and_lets(example)
+    |> Enum.reduce({assigns, example}, fn(before_or_let, {map, example}) ->
+      try do
+        assigns = do_run_befores_and_let(before_or_let, example, map)
+        {assigns, example}
+      catch
+        what, value -> catch_before(what, value, {map, example})
+      rescue
+        any_error -> rescure_before(any_error, {map, example})
       end
     end)
   end
 
+  defp catch_before(what, value, {map, example}) do
+    error = %AssertionError{message: format_catch(what, value)}
+    example = %Example{example | status: :failure, error: error}
+    {map, example}
+  end
+
+  defp rescure_before(error, {map, example}) do
+    error = %AssertionError{message: format_other_error(error)}
+    example = %Example{example | status: :failure, error: error}
+    {map, example}
+  end
+
+  defp do_run_befores_and_let(before_or_let, example, map) do
+    case before_or_let.__struct__ do
+      ESpec.Before ->
+        before = before_or_let
+        returned = apply(before.module, before.function, [map])
+        fill_dict(map, returned)
+      ESpec.Let ->
+        let = before_or_let
+        ESpec.Let.agent_put({self, let.module, let.var}, apply(let.module, let.function, [map]))
+        map
+    end
+  end
+
   defp run_finallies(assigns, example) do
-    ESpec.Example.extract_finallies(example)
+    Example.extract_finallies(example)
     |> Enum.reduce(assigns, fn(finally, map) ->
       returned =  apply(finally.module, finally.function, [map])
       fill_dict(map, returned)
@@ -154,4 +188,12 @@ defmodule ESpec.ExampleRunner do
   defp duration_in_ms(start_time, end_time) do
     div(:timer.now_diff(end_time, start_time), 1000)
   end
+
+  defp format_other_error(error) do
+    error_message = Exception.format_banner(:error, error)
+    stacktrace = Exception.format_stacktrace(System.stacktrace)
+    error_message <> "\n" <> stacktrace
+  end
+
+  defp format_catch(what, value), do: "#{what} #{inspect value}"
 end
