@@ -8,7 +8,7 @@ defmodule ESpec.Let do
   """
 
   @doc "Struct keeps the name of variable and random function name."
-  defstruct var: nil, module: nil, function: nil, keep_quoted: nil
+  defstruct var: nil, module: nil, function: nil
 
   @agent_name :espec_let_agent
 
@@ -17,47 +17,42 @@ defmodule ESpec.Let do
   That function will be called when example is run.
   The function will place the block value to the Agent dict.
   """
-  defmacro let(var, keep_quoted \\ true, do: block) do
+  defmacro let(var, do: block) do
     function = random_let_name
-    if keep_quoted, do: block = Macro.escape(block)
+    block = Macro.escape(block)
 
     quote do
       tail = @context
-      head =  %ESpec.Let{var: unquote(var), module: __MODULE__, function: unquote(function), keep_quoted: unquote(keep_quoted)}
+      head =  %ESpec.Let{var: unquote(var), module: __MODULE__, function: unquote(function)}
 
-      def unquote(function)(var!(shared), keep_quoted) do
+      def unquote(function)(var!(shared)) do
         var!(shared)
-        {unquote(block), keep_quoted, var!(shared)}
+        {unquote(block), var!(shared)}
       end
 
       @context [head | tail]
 
       unless ESpec.Let.agent_get({__MODULE__, "already_defined_#{unquote(var)}"}) do
-          
-        def unquote(var)() do 
-          {result, keep_quoted, assigns} = ESpec.Let.agent_get({self, __MODULE__, unquote(var)})
-          if keep_quoted do
-            #TODO This __ENV__ hack is annoying 
-            functions = [{__MODULE__, __MODULE__.__info__(:functions)} | __ENV__.functions]
-            env = %{__ENV__ | functions: functions}
-            
-            {result, _assigns} = Code.eval_quoted(result, [shared: assigns], env)
-            ESpec.Let.agent_put({self, __MODULE__, unquote(var)}, {result, false, assigns})
-            result
-          else
-            result
-          end
-        end  
-          
+        def unquote(var)() do
+          {result, assigns} = ESpec.Let.agent_get({self, __MODULE__, unquote(var)})
+          #TODO This __ENV__ hack is annoying
+          functions = [{__MODULE__, __MODULE__.__info__(:functions)} | __ENV__.functions]
+          env = %{__ENV__ | functions: functions}
+          {result, _assigns} = Code.eval_quoted(result, [shared: assigns], env)
+          ESpec.Let.agent_put({self, __MODULE__, unquote(var)}, {resultw, assigns})
+          result
+        end
         ESpec.Let.agent_put({__MODULE__, "already_defined_#{unquote(var)}"}, true)
       end
-
     end
   end
 
   @doc "let! evaluate block like `before`"
   defmacro let!(var, do: block) do
-    quote do: let(unquote(var), false, do: unquote(block))
+    quote do
+      let unquote(var), do: unquote(block)
+      before do: unquote(block)
+    end
   end
 
   @doc "Defines 'subject'."

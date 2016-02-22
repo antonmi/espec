@@ -18,6 +18,19 @@ defmodule LetSpec do
       let! :a, do: shared[:a] + 1
       it do: expect(a).to eq(2)
     end
+
+    context "let! performs like let with before" do
+      let! :test, do: 123
+      let! :test2, do: test + 1
+
+      context "some context" do
+        let! :test, do: 130
+
+        it "equals 131" do
+          expect test2 |> to(eq 131)
+        end
+      end
+    end
   end
 
   describe "let" do

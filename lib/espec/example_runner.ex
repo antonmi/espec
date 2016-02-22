@@ -111,7 +111,7 @@ defmodule ESpec.ExampleRunner do
           fill_dict(map, returned)
         ESpec.Let ->
           let = before_or_let
-          ESpec.Let.agent_put({self, let.module, let.var}, apply(let.module, let.function, [map, let.keep_quoted]))
+          ESpec.Let.agent_put({self, let.module, let.var}, apply(let.module, let.function, [map]))
           map
       end
     end)
