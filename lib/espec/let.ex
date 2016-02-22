@@ -39,7 +39,7 @@ defmodule ESpec.Let do
           functions = [{__MODULE__, __MODULE__.__info__(:functions)} | __ENV__.functions]
           env = %{__ENV__ | functions: functions}
           {result, _assigns} = Code.eval_quoted(result, [shared: assigns], env)
-          ESpec.Let.agent_put({self, __MODULE__, unquote(var)}, {resultw, assigns})
+          ESpec.Let.agent_put({self, __MODULE__, unquote(var)}, {result, assigns})
           result
         end
         ESpec.Let.agent_put({__MODULE__, "already_defined_#{unquote(var)}"}, true)
