@@ -18,6 +18,10 @@ defmodule ExampleRunnerTest do
     context "errors" do
       it do: expect(1).to eq(2)
       it do: UndefinedModule.run
+
+      context "throw term inside it block" do
+        it do: throw :some_term
+      end
     end
   end
 
@@ -26,7 +30,8 @@ defmodule ExampleRunnerTest do
       ex1: Enum.at(SomeSpec.examples, 0),
       ex2: Enum.at(SomeSpec.examples, 1),
       ex3: Enum.at(SomeSpec.examples, 2),
-      ex4: Enum.at(SomeSpec.examples, 3)
+      ex4: Enum.at(SomeSpec.examples, 3),
+      ex5: Enum.at(SomeSpec.examples, 4)
     }
   end
 
@@ -47,5 +52,11 @@ defmodule ExampleRunnerTest do
     example = ESpec.ExampleRunner.run(context[:ex4])
     assert example.status == :failure
     assert String.match?(example.error.message, ~r/undefined function/)
+  end
+
+  test "run example which throws term", context do
+    example = ESpec.ExampleRunner.run(context[:ex5])
+    assert example.status == :failure
+    assert String.match?(example.error.message, ~r/throw :some_term/)
   end
 end
