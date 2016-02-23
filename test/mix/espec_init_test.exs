@@ -7,7 +7,7 @@ defmodule EspecInitTest do
 
   setup context do
     Mix.shell(Mix.Shell.Process) # Get Mix output sent to the current process to avoid polluting tests.
-    function = if skip_examples = context[:skip_examples] do
+    function = if context[:skip_examples] do
       fn -> Mix.Tasks.Espec.Init.run(["--skip-examples"]) end
     else
       fn -> Mix.Tasks.Espec.Init.run([]) end

@@ -9,49 +9,52 @@ defmodule ESpec.To do
   These functions wrap arguments for `ESpec.AllowTo` module.
   """
 
+  alias ESpec.AllowTo
+  alias ESpec.ExpectTo
+
   @doc "Wrappers for `ESpec.AllowTo.to`."
   def to(module, {:accept, name, function}) when is_atom(name) do
-    ESpec.AllowTo.to({:accept, name, function}, {ESpec.AllowTo, module})
+    AllowTo.to({:accept, name, function}, {AllowTo, module})
   end
 
   @doc false
   def to(module, {:accept, name, function, meck_options}) when is_atom(name) and is_list(meck_options) do
-    ESpec.AllowTo.to({:accept, name, function, meck_options}, {ESpec.AllowTo, module})
+    AllowTo.to({:accept, name, function, meck_options}, {AllowTo, module})
   end
 
   @doc false
   def to(module, {:accept, list}) when is_list(list) do
-    ESpec.AllowTo.to({:accept, list}, {ESpec.AllowTo, module})
+    AllowTo.to({:accept, list}, {AllowTo, module})
   end
 
   @doc false
   def to(module, {:accept, list, meck_options}) when is_list(list) and is_list(meck_options)  do
-    ESpec.AllowTo.to({:accept, list, meck_options}, {ESpec.AllowTo, module})
+    AllowTo.to({:accept, list, meck_options}, {AllowTo, module})
   end
 
   @doc false
   def to(module, {:accept, name}) when is_atom(name) do
-    ESpec.AllowTo.to({:accept, name}, {ESpec.AllowTo, module})
+    AllowTo.to({:accept, name}, {AllowTo, module})
   end
 
   @doc "Special case for `is_expected` when `subject` present."
-  def to({ESpec.ExpectTo, subject}, {module, data}), do: to(subject, {module, data})
+  def to({ExpectTo, subject}, {module, data}), do: to(subject, {module, data})
 
   @doc "Wrapper for `ESpec.ExpectTo.to`."
   def to(subject, {module, data}) do
-    ESpec.ExpectTo.to({module, data}, {ESpec.ExpectTo, subject})
+    ExpectTo.to({module, data}, {ExpectTo, subject})
   end
 
   @doc "Special case for `is_expected` when `subject` present."
-  def to_not({ESpec.ExpectTo, subject}, {module, data}), do: to_not(subject, {module, data})
+  def to_not({ExpectTo, subject}, {module, data}), do: to_not(subject, {module, data})
 
   @doc "Wrapper for `ESpec.ExpectTo.to_not`."
   def to_not(subject, {module, data}) do
-    ESpec.ExpectTo.to_not({module, data}, {ESpec.ExpectTo, subject})
+    ExpectTo.to_not({module, data}, {ExpectTo, subject})
   end
 
   @doc "Special case for `is_expected` when `subject` present."
-  def not_to({ESpec.ExpectTo, subject}, {module, data}), do: not_to(subject, {module, data})
+  def not_to({ExpectTo, subject}, {module, data}), do: not_to(subject, {module, data})
 
   @doc "Wrapper for `ESpec.ExpectTo.not_to`."
   def not_to(subject, {module, data}), do: to_not(subject, {module, data})

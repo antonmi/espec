@@ -15,9 +15,7 @@ defmodule ESpec.DocExample do
   """
   defstruct lhs: nil, rhs: nil, fun_arity: nil, line: nil, type: :test
 
-  defmodule Error do
-    defexception [:message]
-  end
+  defmodule Error, do: defexception [:message]
 
   @doc "Extract module docs and returns a list of %ESpec.DocExample{} structs"
   def extract(module) do
@@ -34,7 +32,7 @@ defmodule ESpec.DocExample do
     docs = for doc <- all_docs[:docs],
                doc <- extract_from_doc(doc),
                do: doc
-    
+
     Enum.map(moduledocs ++ docs, &to_struct/1)
   end
 
@@ -44,11 +42,11 @@ defmodule ESpec.DocExample do
 
   defp to_struct(%{exprs: [{lhs, {:error, error_module, error_message}}], fun_arity: fun_arity, line: line}) do
     %__MODULE__{lhs: String.strip(lhs), rhs: {error_module, error_message}, fun_arity: fun_arity, line: line, type: :error}
-  end  
+  end
 
   defp to_struct(%{exprs: [{lhs, {:inspect, string}}], fun_arity: fun_arity, line: line}) do
     %__MODULE__{lhs: String.strip(lhs), rhs: string, fun_arity: fun_arity, line: line, type: :inspect}
-  end  
+  end
 
   defp extract_from_moduledoc({_, doc}) when doc in [false, nil], do: []
 

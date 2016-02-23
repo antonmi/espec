@@ -4,6 +4,8 @@ defmodule ESpec.Expect do
   These functions wrap arguments for ESpec.ExpectTo module.
   """
 
+  alias ESpec.ExpectTo
+
   @doc false
   defmacro __using__(_arg) do
     quote do
@@ -15,6 +17,6 @@ defmodule ESpec.Expect do
   end
 
   @doc "Wrapper for `ESpec.ExpectTo`."
-  def expect(do: value), do: {ESpec.ExpectTo, value}
-  def expect(value), do: {ESpec.ExpectTo, value}
+  def expect(do: value), do: {ExpectTo, value}
+  def expect(value), do: {ExpectTo, value}
 end

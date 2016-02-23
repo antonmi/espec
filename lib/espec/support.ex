@@ -8,7 +8,8 @@ defmodule ESpec.Support do
 
   @doc "Filters string replacing non-word characters by '_'."
   def word_chars(string) do
-    String.replace(string, ~r/[\W+\d+\s+]/, "_")
+    string
+    |> String.replace(~r/[\W+\d+\s+]/, "_")
     |> String.downcase
   end
 end

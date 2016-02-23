@@ -3,7 +3,7 @@ defmodule ESpec.ExampleRunner do
   Contains all the functions need to run a 'spec' example.
   """
 
-  defmodule AfterExampleError, do: defexception example_error: nil
+  defmodule AfterExampleError, do: defexception example_error: nil, message: nil
 
   @dict_keys [:ok, :shared]
 
@@ -64,7 +64,7 @@ defmodule ESpec.ExampleRunner do
       res -> res
     end
 
-    {assigns, example} = after_example_actions(assigns, example)
+    {_assigns, example} = after_example_actions(assigns, example)
     if example.status == :failure, do: raise %AfterExampleError{example_error: example.error}
 
     duration = duration_in_ms(start_time, :os.timestamp)
@@ -175,7 +175,7 @@ defmodule ESpec.ExampleRunner do
     {map, example}
   end
 
-  defp do_run_befores_and_let(before_or_let, example, map) do
+  defp do_run_befores_and_let(before_or_let, _example, map) do
     case before_or_let.__struct__ do
       ESpec.Before ->
         before = before_or_let

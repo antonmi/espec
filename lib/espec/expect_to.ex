@@ -5,15 +5,15 @@ defmodule ESpec.ExpectTo do
   @agent_name :espec_expect_to_agent
 
   @doc "Calls specific asserion."
-  def to({module, data}, {ESpec.ExpectTo, subject}) do
+  def to({module, data}, {__MODULE__, subject}) do
     apply(module, :assert, [subject, data, true])
   end
 
   @doc "Just apply 'assert' with `positive = false`."
-  def to_not({module, data}, {ESpec.ExpectTo, subject}) do
+  def to_not({module, data}, {__MODULE__, subject}) do
     apply(module, :assert, [subject, data, false])
   end
 
   @doc "Alias fo `to_not`."
-  def not_to(rhs, {ESpec.ExpectTo, subject}), do: to_not(rhs, {ESpec.ExpectTo, subject})
+  def not_to(rhs, {__MODULE__, subject}), do: to_not(rhs, {__MODULE__, subject})
 end

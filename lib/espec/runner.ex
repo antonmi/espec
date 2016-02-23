@@ -5,6 +5,8 @@ defmodule ESpec.Runner do
   """
   use GenServer
   alias ESpec.Configuration
+  alias ESpec.Example
+  alias ESpec.ExampleRunner
 
   @doc "Starts the `ESpec.Runner` server"
   def start do
@@ -43,7 +45,7 @@ defmodule ESpec.Runner do
     end
     Configuration.add([finish_specs_time: :os.timestamp])
     ESpec.Output.print_result(examples)
-    !Enum.any?(ESpec.Example.failure(examples))
+    !Enum.any?(Example.failure(examples))
   end
 
   defp run_in_order(specs, opts) do
@@ -71,18 +73,16 @@ defmodule ESpec.Runner do
 
   @doc false
   def partition_async(examples) do
-    Enum.partition(examples, &ESpec.Example.extract_option(&1, :async) === true)
+    Enum.partition(examples, &Example.extract_option(&1, :async) === true)
   end
 
   defp run_async(examples) do
     examples
-    |> Enum.map(&Task.async(fn -> ESpec.ExampleRunner.run(&1) end))
+    |> Enum.map(&Task.async(fn -> ExampleRunner.run(&1) end))
     |> Enum.map(&Task.await(&1, :infinity))
   end
 
-  defp run_sync(examples) do
-    Enum.map(examples, &ESpec.ExampleRunner.run(&1))
-  end
+  defp run_sync(examples), do: Enum.map(examples, &ExampleRunner.run(&1))
 
   @doc false
   def filter(examples, opts) do
@@ -134,14 +134,14 @@ defmodule ESpec.Runner do
 
   defp filter_focus(examples) do
     Enum.filter(examples, fn(example) ->
-      contexts = ESpec.Example.extract_contexts(example)
+      contexts = Example.extract_contexts(example)
       example.opts[:focus] || Enum.any?(contexts, &(&1.opts[:focus]))
     end)
   end
 
   defp filter_string(examples, string) do
     Enum.filter(examples, fn(example) ->
-      description = Enum.join([example.description | ESpec.Example.context_descriptions(example)])
+      description = Enum.join([example.description | Example.context_descriptions(example)])
       String.contains?(description, string)
     end)
   end
@@ -149,7 +149,7 @@ defmodule ESpec.Runner do
   defp filter_only(examples, only, reverse \\ false) do
     [key, value] = extract_opts(only)
     Enum.filter(examples, fn(example) ->
-      contexts = ESpec.Example.extract_contexts(example)
+      contexts = Example.extract_contexts(example)
       key = String.to_atom(key)
       example_tag_value = example.opts[key]
       context_tag_values = Enum.map(contexts, &(&1.opts[key]))
