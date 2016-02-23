@@ -22,7 +22,7 @@ defmodule ESpec.Example do
   """
   defstruct description: "", module: nil, function: nil, opts: [],
             file: nil, line: nil, context: [], shared: false, async: false,
-            status: :new, result: nil, error: %ESpec.AssertionError{}, duration: 0
+            status: :new, result: nil, error: nil, duration: 0
 
   @doc "Context descriptions."
   def context_descriptions(%ESpec.Example{context: context, description: _description, function: _function}) do

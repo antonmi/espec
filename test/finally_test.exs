@@ -13,12 +13,28 @@ defmodule FinallyTest do
     finally do: Application.put_env(:espec, :finally_b, shared[:b])
 
     it do: "some test"
+
+    context "error or throw" do
+      context "throw term" do
+        finally do: throw :some_term
+        it do: true
+      end
+
+      context "fail " do
+        finally do: raise "Error"
+        it do: true
+      end
+    end
+
+    #this finally is not accessible
     finally do: Application.put_env(:espec, :finally_c, 3)
   end
 
   setup_all do
     {:ok,
-      ex1: Enum.at(SomeSpec.examples, 0)
+      ex1: Enum.at(SomeSpec.examples, 0),
+      ex2: Enum.at(SomeSpec.examples, 1),
+      ex3: Enum.at(SomeSpec.examples, 2)
     }
   end
 
@@ -27,6 +43,18 @@ defmodule FinallyTest do
     assert(Application.get_env(:espec, :finally_a) == 1)
     assert(Application.get_env(:espec, :finally_b) == 2)
     assert(Application.get_env(:espec, :finally_c) == nil)
+  end
+
+  test "run example which throws term", context do
+    example = ESpec.ExampleRunner.run(context[:ex2])
+    assert example.status == :failure
+    assert String.match?(example.error.message, ~r/throw :some_term/)
+  end
+
+  test "run example which raises error", context do
+    example = ESpec.ExampleRunner.run(context[:ex3])
+    assert example.status == :failure
+    assert String.match?(example.error.message, ~r/\(RuntimeError\) Error/)
   end
 end
 

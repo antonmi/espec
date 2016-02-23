@@ -25,13 +25,11 @@ defmodule BeforeTest do
     context "error or throw" do
       context "throw term" do
         before do: throw :some_term
-
         it do: true
       end
 
       context "fail " do
         before do: raise "Error"
-
         it do: true
       end
     end
