@@ -70,6 +70,9 @@ defmodule ESpec.AssertionHelpers do
   def be_struct, do: {ESpec.Assertions.BeType, :struct}
   def be_struct(name), do: {ESpec.Assertions.BeType, [:struct, name]}
 
+  def be_ok, do: {ESpec.Assertions.TupleFirstElement, :ok}
+  def be_error, do: {ESpec.Assertions.TupleFirstElement, :error}
+
   def accepted(func, args \\ :any, opts \\ [pid: :any, count: :any]), do: {ESpec.Assertions.Accepted, [func, args, opts]}
 end
 
