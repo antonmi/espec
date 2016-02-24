@@ -403,9 +403,16 @@ expect(function).to throw_term(term)
 ```
 #### Change state
 Test if call of function1 change the function2 returned value to smth or from to smth
-```elexir
+```elixir
 expect(function1).to change(function2, to)
-expect(function1).to change(function2, from, to) 
+expect(function1).to change(function2, from, to)
+```
+
+#### `:ok` and `:error` tuples.
+Test if the first element of a tuple begins has `:ok` or `:error` atoms.
+```elixir
+expect({:ok}) |> to(be_ok)
+expect({:error}) |> to(be_error)
 ```
 
 ## Custom matchers
