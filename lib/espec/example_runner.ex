@@ -175,17 +175,13 @@ defmodule ESpec.ExampleRunner do
     {map, example}
   end
 
-  defp do_run_befores_and_let(before_or_let, _example, map) do
-    case before_or_let.__struct__ do
-      ESpec.Before ->
-        before = before_or_let
-        returned = apply(before.module, before.function, [map])
-        fill_dict(map, returned)
-      ESpec.Let ->
-        let = before_or_let
-        ESpec.Let.agent_put({self, let.module, let.var}, apply(let.module, let.function, [map]))
-        map
-    end
+  defp do_run_befores_and_let(%ESpec.Let{} = let, _example, map) do
+    ESpec.Let.Impl.run_before(let, map)
+  end
+
+  defp do_run_befores_and_let(%ESpec.Before{} = before, _example, map) do
+    returned = apply(before.module, before.function, [map])
+    fill_dict(map, returned)
   end
 
   defp fill_dict(map, res) do
