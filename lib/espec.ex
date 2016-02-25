@@ -33,7 +33,7 @@ defmodule ESpec do
 
       import ESpec.Before
       import ESpec.Finally
-      import ESpec.Let, except: [start_agent: 0, stop_agent: 0, agent_get: 1, agent_put: 2, run_before: 2]
+      import ESpec.Let
 
       import ExUnit.CaptureIO
     end
@@ -64,7 +64,7 @@ defmodule ESpec do
   def start do
     {:ok, _} = Application.ensure_all_started(:espec)
     start_specs_agent
-    ESpec.Let.start_agent
+    ESpec.Let.Impl.start_agent
     ESpec.Mock.start_agent
     ESpec.Output.start
   end
@@ -72,7 +72,7 @@ defmodule ESpec do
   @doc "Stops ESpec components"
   def stop do
     stop_specs_agent
-    ESpec.Let.stop_agent
+    ESpec.Let.Impl.stop_agent
     ESpec.Mock.stop_agent
     ESpec.Runner.stop
     ESpec.Output.stop

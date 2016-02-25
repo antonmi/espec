@@ -176,7 +176,7 @@ defmodule ESpec.ExampleRunner do
   end
 
   defp do_run_befores_and_let(%ESpec.Let{} = let, _example, map) do
-    ESpec.Let.run_before(let, map)
+    ESpec.Let.Impl.run_before(let, map)
   end
 
   defp do_run_befores_and_let(%ESpec.Before{} = before, _example, map) do
