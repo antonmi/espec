@@ -19,7 +19,6 @@ defmodule ESpec.Let do
   """
   defmacro let(var, do: block) do
     function = random_let_name
-    block = Macro.escape(block)
 
     quote do
       tail = @context
@@ -27,20 +26,20 @@ defmodule ESpec.Let do
 
       def unquote(function)(var!(shared)) do
         var!(shared)
-        {unquote(block), var!(shared)}
+        unquote(block)
       end
 
       @context [head | tail]
 
       unless ESpec.Let.agent_get({__MODULE__, "already_defined_#{unquote(var)}"}) do
         def unquote(var)() do
-          {result, assigns} = ESpec.Let.agent_get({self, __MODULE__, unquote(var)})
-          #TODO This __ENV__ hack is annoying
-          functions = [{__MODULE__, __MODULE__.__info__(:functions)} | __ENV__.functions]
-          env = %{__ENV__ | functions: functions}
-          {result, _assigns} = Code.eval_quoted(result, [shared: assigns], env)
-          ESpec.Let.agent_put({self, __MODULE__, unquote(var)}, {result, assigns})
-          result
+          case ESpec.Let.agent_get({self, __MODULE__, unquote(var)}) do
+            {:todo, funcname, shared} ->
+              result = apply(__MODULE__, funcname, [shared])
+              ESpec.Let.agent_put({self, __MODULE__, unquote(var)}, {:done, result})
+              result
+            {:done, result} -> result
+          end
         end
         ESpec.Let.agent_put({__MODULE__, "already_defined_#{unquote(var)}"}, true)
       end
@@ -51,7 +50,7 @@ defmodule ESpec.Let do
   defmacro let!(var, do: block) do
     quote do
       let unquote(var), do: unquote(block)
-      before do: unquote(block)
+      before do: unquote(var)
     end
   end
 
@@ -100,11 +99,17 @@ defmodule ESpec.Let do
   @doc "Get stored value."
   def agent_get(key) do
     dict = Agent.get(@agent_name, &(&1))
-    Dict.get(dict, key)
+    Map.get(dict, key)
   end
 
   @doc "Store value."
-  def agent_put(key, value), do: Agent.update(@agent_name, &(Dict.put(&1, key, value)))
+  def agent_put(key, value), do: Agent.update(@agent_name, &(Map.put(&1, key, value)))
+
+  @doc "Resets stored let value and prepares for evaluation. Called by ExampleRunner."
+  def run_before(let, shared) do
+    agent_put({self, let.module, let.var}, {:todo, let.function, shared})
+    shared
+  end
 
   defp random_let_name, do: String.to_atom("let_#{ESpec.Support.random_string}")
 end

@@ -50,11 +50,6 @@ defmodule LetSpec do
       let :a, do: shared[:a] + 1
       it do: expect(a).to eq(2)
     end
-
-    context "let runs only when called" do
-      let :b, do: IO.puts("You will not see it")
-      it do: expect(1).to eq(1)
-    end
   end
 
   describe "let use let" do
@@ -62,5 +57,19 @@ defmodule LetSpec do
     let :b, do: a + 1
 
     it do: b |> should(eq 2)
+  end
+
+  describe "let is lazy and memoizes" do
+    let :a do
+      value = Application.get_env(:espec, :let_value, "") <> ".let"
+      Application.put_env(:espec, :let_value, value)
+      value
+    end
+
+    it do
+      Application.put_env(:espec, :let_value, "initial")
+      expect(a).to eq("initial.let")
+      expect(a).to eq("initial.let")
+    end
   end
 end
