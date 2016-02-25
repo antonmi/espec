@@ -3,7 +3,7 @@ defmodule ESpec.DocTestTest.Mod4 do
     iex> String.to_atom((fn() -> 1 end).())
     ** (ArgumentError) argument error
 
-    iex> 1 + "2"
+    iex> raise ArithmeticError
     ** (ArithmeticError) bad argument in arithmetic expression
 
     iex> 1 + 1
