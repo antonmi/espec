@@ -33,18 +33,24 @@ defmodule ESpec.DocExample do
                doc <- extract_from_doc(doc),
                do: doc
 
-    Enum.map(moduledocs ++ docs, &to_struct/1)
+    moduledocs ++ docs
+    |> Enum.map(&to_struct/1)
+    |> List.flatten
   end
 
-  defp to_struct(%{exprs: [{lhs, {:test, rhs}}], fun_arity: fun_arity, line: line}) do
+  def to_struct(%{exprs: list, fun_arity: fun_arity, line: line}) do
+    Enum.map(list, &item_to_struct(&1, fun_arity, line))
+  end
+
+  defp item_to_struct({lhs, {:test, rhs}}, fun_arity, line) do
     %__MODULE__{lhs: String.strip(lhs), rhs: String.strip(rhs), fun_arity: fun_arity, line: line, type: :test}
   end
 
-  defp to_struct(%{exprs: [{lhs, {:error, error_module, error_message}}], fun_arity: fun_arity, line: line}) do
+  defp item_to_struct({lhs, {:error, error_module, error_message}}, fun_arity, line) do
     %__MODULE__{lhs: String.strip(lhs), rhs: {error_module, error_message}, fun_arity: fun_arity, line: line, type: :error}
   end
 
-  defp to_struct(%{exprs: [{lhs, {:inspect, string}}], fun_arity: fun_arity, line: line}) do
+  defp item_to_struct({lhs, {:inspect, string}}, fun_arity, line) do
     %__MODULE__{lhs: String.strip(lhs), rhs: string, fun_arity: fun_arity, line: line, type: :inspect}
   end
 
@@ -66,7 +72,6 @@ defmodule ESpec.DocExample do
     lines = String.split(doc, ~r/\n/, trim: false) |> adjust_indent
     extract_tests(lines, line, "", "", [], true)
   end
-
 
   defp adjust_indent(lines) do
     adjust_indent(lines, [], 0, :text)

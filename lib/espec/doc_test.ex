@@ -59,7 +59,7 @@ defmodule ESpec.DocTest do
       end
 
       Enum.with_index(examples)
-      |> Enum.each(fn({ex, index}) ->
+      |> Enum.reduce({[], {nil, nil}}, fn({ex, index}, {prev_binding, {binding_fun, binding_arity}}) ->
         context = Enum.reverse(@context)
         {fun, arity} = ex.fun_arity
 
@@ -69,41 +69,51 @@ defmodule ESpec.DocTest do
         @examples %ESpec.Example{ description: description, module: __MODULE__, function: function,
                                   opts: [], file: __ENV__.file, line: __ENV__.line, context: context,
                                   shared: false}
-        string_to_eval =
+
+        binding = case {binding_fun, binding_arity} do
+          {^fun, ^arity} -> prev_binding
+          _ -> []
+        end
+
+        {string_to_eval, new_binding} =
           cond do
             ex.type == :test ->
-              {lhs, _} = Code.eval_string(ex.lhs, [], __ENV__)
-              {rhs, _} = Code.eval_string(ex.rhs, [], __ENV__)
-              """
+              {lhs, new_binding} = Code.eval_string(ex.lhs, binding, __ENV__)
+              {rhs, _} = Code.eval_string(ex.rhs, binding, __ENV__)
+              str = """
               def #{function}(shared) do
                 shared[:key]
                 expect(#{inspect lhs}).to eq(#{inspect rhs})
               end
               """
+              {str, new_binding}
             ex.type == :error ->
               {error_module, error_message} = ex.rhs
               lhs = ex.lhs
-              """
+              str = """
               def #{function}(shared) do
                 shared[:key]
                 expect(fn -> Code.eval_string(#{lhs}) end).to raise_exception(#{error_module}, "#{error_message}")
               end
               """
+              {str, binding}
             ex.type == :inspect ->
-              {lhs, _} = Code.eval_string(ex.lhs, [], __ENV__)
-              {rhs, _} = Code.eval_string(ex.rhs, [], __ENV__)
+              {lhs, new_binding} = Code.eval_string(ex.lhs, binding, __ENV__)
+              {rhs, _} = Code.eval_string(ex.rhs, binding, __ENV__)
               lhs = inspect(lhs)
-              """
+              str = """
               def #{function}(shared) do
                 shared[:key]
                 expect(#{inspect lhs}).to eq(#{inspect rhs})
               end
               """
+              {str, new_binding}
             true ->
               raise RuntimeError, message: "Wrong %ESpec.DocExample{} type!"
           end
 
         Code.eval_string(string_to_eval, [], __ENV__)
+        {binding ++ new_binding, {fun, arity}}
       end)
     end
   end
