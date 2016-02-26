@@ -24,8 +24,8 @@ defmodule ESpec.Mixfile do
     [
       {:meck, "~> 0.8.4"},
       # Docs
-      {:earmark, "~> 0.2.0", only: :docs},
-      {:ex_doc, "~> 0.11.3", only: :docs}
+      {:earmark, "~> 0.2.1", only: :docs},
+      {:ex_doc, "~> 0.11.4", only: :docs}
     ]
   end
 
