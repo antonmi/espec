@@ -41,7 +41,8 @@ defmodule ESpec.Example do
   def pendings(results), do: Enum.filter(results, &(&1.status === :pending))
 
   @doc "Extracts specific structs from example context."
-  def extract_befores_and_lets(example), do: extract(example.context, [ESpec.Before, ESpec.Let])
+  def extract_befores(example), do: extract(example.context, [ESpec.Before])
+  def extract_lets(example), do: extract(example.context, [ESpec.Let])
   def extract_finallies(example), do: extract(example.context, [ESpec.Finally])
   def extract_contexts(example), do: extract(example.context, [ESpec.Context])
 
