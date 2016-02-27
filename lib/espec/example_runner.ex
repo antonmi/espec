@@ -119,11 +119,18 @@ defmodule ESpec.ExampleRunner do
   end
 
   defp run_befores_and_lets({assigns, example}) do
-    Example.extract_befores_and_lets(example)
-    |> Enum.reduce({assigns, example}, fn(before_or_let, {map, example}) ->
-        fun = fn -> {do_run_befores_and_let(before_or_let, example, map), example} end
+    Example.extract_lets(example)
+    |> Enum.each(&ESpec.Let.Impl.run_before/1)
+
+    {assigns, example} = Example.extract_befores(example)
+    |> Enum.reduce({assigns, example}, fn(before, {assigns, example}) ->
+        ESpec.Let.Impl.update_shared(assigns)
+        fun = fn -> {do_run_before(before, assigns), example} end
         call_with_rescue(fun, {assigns, example})
     end)
+    ESpec.Let.Impl.update_shared(assigns)
+
+    {assigns, example}
   end
 
   defp run_finallies({assigns, example}) do
@@ -175,11 +182,7 @@ defmodule ESpec.ExampleRunner do
     {map, example}
   end
 
-  defp do_run_befores_and_let(%ESpec.Let{} = let, _example, map) do
-    ESpec.Let.Impl.run_before(let, map)
-  end
-
-  defp do_run_befores_and_let(%ESpec.Before{} = before, _example, map) do
+  defp do_run_before(%ESpec.Before{} = before, map) do
     returned = apply(before.module, before.function, [map])
     fill_dict(map, returned)
   end
