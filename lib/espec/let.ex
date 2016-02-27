@@ -41,7 +41,7 @@ defmodule ESpec.Let do
   defmacro let!(var, do: block) do
     quote do
       let unquote(var), do: unquote(block)
-      before do: unquote(var)
+      before do: unquote(var)()
     end
   end
 
@@ -87,7 +87,8 @@ defmodule ESpec.Let do
     @doc "This function is used by the let macro to implement lazy evaluation"
     def let_eval(module, var) do
       case agent_get({self, module, var}) do
-        {:todo, funcname, shared} ->
+        {:todo, funcname} ->
+          shared = agent_get({self, :shared})
           result = apply(module, funcname, [shared])
           agent_put({self, module, var}, {:done, result})
           result
@@ -103,9 +104,13 @@ defmodule ESpec.Let do
     def stop_agent, do: Agent.stop(@agent_name)
 
     @doc "Resets stored let value and prepares for evaluation. Called by ExampleRunner."
-    def run_before(let, shared) do
-      agent_put({self, let.module, let.var}, {:todo, let.function, shared})
-      shared
+    def run_before(let) do
+      agent_put({self, let.module, let.var}, {:todo, let.function})
+    end
+
+    @doc "Updates the shared map that is available to let blocks. Called by ExampleRunner."
+    def update_shared(shared) do
+      agent_put({self, :shared}, shared)
     end
 
     defp agent_get(key) do
