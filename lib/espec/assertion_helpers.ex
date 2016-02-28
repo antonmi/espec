@@ -75,4 +75,7 @@ defmodule ESpec.AssertionHelpers do
   def be_struct(name), do: {Assertions.BeType, [:struct, name]}
 
   def accepted(func, args \\ :any, opts \\ [pid: :any, count: :any]), do: {Assertions.Accepted, [func, args, opts]}
+
+  def be_ok_result(), do: {Assertions.Result.BeOkResult, []}
+  def be_error_result(), do: {Assertions.Result.BeErrorResult, []}
 end

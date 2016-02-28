@@ -11,7 +11,7 @@ defmodule ESpec.Assertions.Enum.BeEmpty do
     {result == 0, result}
   end
 
-  defp success_message(enum, _val, _result, positive) do
+  defp success_message(enum, _data, _result, positive) do
     to = if positive, do: "is", else: "is not"
     "`#{inspect enum}` #{to} empty."
   end
