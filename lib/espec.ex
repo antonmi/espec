@@ -28,7 +28,6 @@ defmodule ESpec do
       use ESpec.Should
 
       import ESpec.AssertionHelpers
-
       import ESpec.Allow
 
       import ESpec.Before
@@ -36,6 +35,7 @@ defmodule ESpec do
       import ESpec.Let
 
       import ExUnit.CaptureIO
+      use ESpec.DescribedModule
     end
   end
 

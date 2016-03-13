@@ -467,6 +467,19 @@ The only functions you should implement is `match/2`, `success_message/4`, and `
 Read the [wiki page](https://github.com/antonmi/espec/wiki/Custom-matchers) for detailed instructions.
 There is an example [custom_assertion_spec.exs](https://github.com/antonmi/espec/blob/master/spec/assertions/custom_assertion_spec.ex).
 
+## described_module
+If you keep the naming convention 'module TheModuleSpec is spec for TheModule' you can access tested module by `described_module` helper.
+```elixir
+defmodule TheModule do
+  def fun, do: :fun
+end
+
+defmodule TheModuleSpec do
+  use ESpec
+  it do: expect described_module.fun |> to(eq :fun)
+end
+```
+
 ## Mocks
 ESpec uses [Meck](https://github.com/eproxus/meck) to mock functions.
 You can mock the module with 'allow accept':
