@@ -38,6 +38,7 @@ ESpec is inspired by RSpec and the main idea is to be close to its perfect DSL.
 - [Async examples](#async-examples)
 - [Matchers](#matchers)
 - [Custom matchers](#custom-matchers)
+- [described_module](#described_module)
 - [Mocks](#mocks)
 - [Doc specs](#doc-specs)
 - [Configuration and options](#configuration-and-options)
