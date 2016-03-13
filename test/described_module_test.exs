@@ -1,6 +1,5 @@
-defmodule ESpec.Docs.DocExampleTest do
+defmodule ESpec.DescribedModuleTest do
   use ExUnit.Case, async: true
-  import ExUnit.TestHelpers
 
   defmodule TheSpecModule do
     def test, do: :test
