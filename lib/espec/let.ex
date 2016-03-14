@@ -1,6 +1,6 @@
 defmodule ESpec.Let do
   @moduledoc """
-  Defines 'let', 'let!' and 'subject' macrsos.
+  Defines 'let', 'let!' and 'subject' macros.
   'let' and 'let!' macros define named functions with cached return values.
   The 'let' evaluate block in runtime when called first time.
   The 'let!' evaluates as a before block just after all 'befores' for example.
@@ -11,7 +11,7 @@ defmodule ESpec.Let do
   defstruct var: nil, module: nil, function: nil
 
   @doc """
-  The macro defines funtion with random name which returns block value.
+  The macro defines function with random name which returns block value.
   That function will be called when example is run.
   The function will place the block value to the Agent dict.
   """

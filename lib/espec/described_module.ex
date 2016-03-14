@@ -1,6 +1,6 @@
 defmodule ESpec.DescribedModule do
   @moduledoc """
-  Defines the 'described_module' helper wich make possible accessing to tested module.
+  Defines the 'described_module' helper which makes accessing tested module possible.
   Keep in mind the convention 'module TheModuleSpec is spec for TheModule'
   """
 
