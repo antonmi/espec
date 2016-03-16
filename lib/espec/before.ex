@@ -7,11 +7,11 @@ defmodule ESpec.Before do
   and in example by `shared` (`shared[:key]`).
   """
 
-  @doc "Struct has 'spec' module name and random fuction name."
+  @doc "Struct has 'spec' module name and random function name."
   defstruct module: nil, function: nil
 
   @doc """
-  Adds %ESpec.Before sutructs to the @context and
+  Adds %ESpec.Before structs to the @context and
   defines a function with random name which will be called when example is run.
   """
   defmacro before(do: block) do

@@ -1,6 +1,6 @@
 defmodule ESpec.Configuration do
   @moduledoc """
-  Handles ESpec configuraions.
+  Handles ESpec configurations.
   @list contains all available keys in config.
   """
   @list [

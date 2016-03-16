@@ -1,7 +1,7 @@
 defmodule ESpec.Allow do
   @moduledoc """
-  Defines helper functions for mocking and stubbinf.
-  These fucntions wrap arguments for ESpec.AllowTo module.
+  Defines helper functions for mocking and stubbing.
+  These functions wrap arguments for ESpec.AllowTo module.
   """
   @doc "Wrapper for `ESpec.AllowTo`."
   def allow(module), do: {ESpec.AllowTo, module}
