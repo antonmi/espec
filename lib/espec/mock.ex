@@ -3,7 +3,7 @@ defmodule ESpec.Mock do
   Defines 'expect` function to mock function using 'meck'.
   :meck.new is called with options :non_strict and :passthrough.
   The :non_strict allows create mocks for modules and functions that do not exist.
-  The :passthroug options allow call other functions in the module.
+  The :passthrough options allow call other functions in the module.
   Information about mock is stored in the ':espec_mock_agent' set.
   Mock are being unloaded after each example.
   """

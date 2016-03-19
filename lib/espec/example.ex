@@ -6,7 +6,7 @@ defmodule ESpec.Example do
   """
 
   @doc """
-  Expampe struct.
+  Example struct.
   description - the description of example,
   module - spec module,
   function - random function name,

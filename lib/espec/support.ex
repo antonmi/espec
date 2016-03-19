@@ -1,6 +1,6 @@
 defmodule ESpec.Support do
   @moduledoc """
-  Contains come function for generating random fucntion names.
+  Contains come functions for generating random function names.
   """
 
   @doc "Returns long random string."

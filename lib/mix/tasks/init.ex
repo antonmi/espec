@@ -7,7 +7,7 @@ defmodule Mix.Tasks.Espec.Init do
   @shortdoc "Create spec/spec_helper.exs and spec/example_spec.exs"
 
   @moduledoc """
-  Creates neccessary files.
+  Creates necessary files.
 
   This tasks creates `spec/spec_helper.exs` and `spec/example_spec.exs`
 

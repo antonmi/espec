@@ -10,7 +10,7 @@ defmodule ESpec.Finally do
   defstruct module: nil, function: nil
 
   @doc """
-  Adds %ESpec.Finally sutructs to the context and
+  Adds %ESpec.Finally structs to the context and
   defines random function with random name which will be called when example is run.
   """
   defmacro finally(do: block) do
