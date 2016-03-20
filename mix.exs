@@ -31,7 +31,7 @@ defmodule ESpec.Mixfile do
 
   defp description do
     """
-       BDD test framework for Elixir inspired by RSpec.
+       BDD testing framework for Elixir inspired by RSpec.
     """
   end
 
