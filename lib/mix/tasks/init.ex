@@ -33,8 +33,6 @@ defmodule Mix.Tasks.Espec.Init do
   end
 
   embed_template :spec_helper, """
-  ESpec.start
-
   ESpec.configure fn(config) ->
     config.before fn ->
       {:shared, hello: :world}

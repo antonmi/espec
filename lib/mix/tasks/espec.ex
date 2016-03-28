@@ -114,8 +114,10 @@ defmodule Mix.Tasks.Espec do
     Mix.Task.run "app.start", args
 
     ensure_espec_loaded!
+    set_configuration(opts)
 
-    parse_spec_files(project, opts, files)
+    ESpec.start
+    parse_spec_files(project, files)
 
     success = ESpec.run
 
@@ -170,12 +172,15 @@ defmodule Mix.Tasks.Espec do
     end
   end
 
-  defp parse_spec_files(project, opts, files) do
+  defp set_configuration(opts) do
+    ESpec.Configuration.add(start_loading_time: :os.timestamp)
+    ESpec.Configuration.add(opts)
+  end
+
+  defp parse_spec_files(project, files) do
     spec_paths = project[:spec_paths] || ["spec"]
     spec_pattern =  project[:spec_pattern] || "*_spec.exs"
 
-    ESpec.Configuration.add(start_loading_time: :os.timestamp)
-    ESpec.Configuration.add(opts)
     Enum.each(spec_paths, &require_spec_helper(&1))
 
     files_with_opts = []
