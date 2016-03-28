@@ -31,7 +31,6 @@ defmodule EspecInitTest do
 
   test "spec_helper content" do
     {:ok, content} = File.read(Path.join(@tmp_path, "spec/spec_helper.exs"))
-    assert content =~ "ESpec.start"
     assert content =~ "ESpec.config"
   end
 
