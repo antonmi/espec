@@ -41,10 +41,10 @@ defmodule ESpec.Example do
   def pendings(results), do: Enum.filter(results, &(&1.status === :pending))
 
   @doc "Extracts specific structs from example context."
-  def extract_befores(example), do: extract(example.context, [ESpec.Before])
-  def extract_lets(example), do: extract(example.context, [ESpec.Let])
-  def extract_finallies(example), do: extract(example.context, [ESpec.Finally])
-  def extract_contexts(example), do: extract(example.context, [ESpec.Context])
+  def extract_befores(example), do: extract(example.context, ESpec.Before)
+  def extract_lets(example), do: extract(example.context, ESpec.Let)
+  def extract_finallies(example), do: extract(example.context, ESpec.Finally)
+  def extract_contexts(example), do: extract(example.context, ESpec.Context)
 
   @doc "Extracts example options."
   def extract_option(example, option) do
@@ -59,8 +59,8 @@ defmodule ESpec.Example do
     end
   end
 
-  defp extract(context, modules) do
-    Enum.filter(context, &Enum.member?(modules, &1.__struct__))
+  defp extract(context, module) do
+    Enum.filter(context, &(&1.__struct__ == module))
   end
 
   @doc "Message for skipped examples."
