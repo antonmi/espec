@@ -13,13 +13,18 @@ defmodule ESpec.ExampleHelpers do
   Sends `shared`' variable to the example block.
   """
   defmacro example(description, opts, do: block) do
-    function = (random_atom(description))
+    function = random_atom(description)
+    escaped_block = Macro.escape(block)
     quote do
       context = Enum.reverse(@context)
       @examples %ESpec.Example{ description: unquote(description), module: __MODULE__, function: unquote(function),
                                 opts: unquote(opts), file: __ENV__.file, line: __ENV__.line, context: context,
                                 shared: @shared}
+
+
+
       def unquote(function)(var!(shared)) do
+        unquote(__MODULE__).check_lets(@context, @defined_lets, unquote(escaped_block))
         var!(shared)
         unquote(block)
       end
@@ -119,6 +124,32 @@ defmodule ESpec.ExampleHelpers do
   @doc "alias for include_examples"
   defmacro include_examples(module) do
     quote do: it_behaves_like(unquote(module))
+  end
+
+  def check_lets(context, defined_lets, escaped_block) do
+    context_lets = context
+    |> ESpec.Example.extract(ESpec.Let)
+    |> Enum.map(&(&1.var))
+
+    funcs = ESpec.AstParser.function_list(escaped_block)
+
+    diff = Enum.uniq(defined_lets) -- context_lets
+    |> Enum.map(&("#{&1}/0"))
+
+    if Enum.member?(funcs, "should/1") || Enum.member?(funcs, "is_expected/0") do
+      funcs = ["subject/0" | funcs]
+    end
+
+
+    leaking_func = Enum.find(diff, &(Enum.member?(funcs, &1)))
+
+    case leaking_func do
+      "subject/0" ->
+        raise "The subject is not defined in the current scope!"
+      string when is_binary(string) ->
+        raise "The let function `#{leaking_func}` is not defined in the current scope!"
+      nil -> :ok
+    end
   end
 
   defp random_atom(arg) do
