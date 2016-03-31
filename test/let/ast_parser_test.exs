@@ -1,6 +1,6 @@
-defmodule AstParserTest do
+defmodule Let.AstParserTest do
   use ExUnit.Case, async: true
-  alias ESpec.AstParser
+  alias ESpec.Let.AstParser
 
   def simplest_ast do
     quote do: 1 + 1
@@ -66,7 +66,7 @@ defmodule AstParserTest do
 
   test "simplest ast" do
     fun_list = AstParser.function_list(simplest_ast)
-    assert fun_list == ["Elixir.AstParserTest.+/2"]
+    assert fun_list == ["Elixir.Let.AstParserTest.+/2"]
   end
 
   test "simple_ast" do
@@ -76,12 +76,12 @@ defmodule AstParserTest do
 
   test "simple_ast_2" do
     fun_list = AstParser.function_list(simple_ast_2)
-    assert fun_list == ["SomeModule.fun/2", "Elixir.AstParserTest.+/2"]
+    assert fun_list == ["SomeModule.fun/2", "Elixir.Let.AstParserTest.+/2"]
   end
 
   test "ordinary ast" do
     fun_list = AstParser.function_list(ordinary_ast)
-    assert fun_list == ["Enum.reduce/3", "Elixir.AstParserTest.*/2", "v/0", "k/0", "%{}/2"]
+    assert fun_list == ["Enum.reduce/3", "Elixir.Let.AstParserTest.*/2", "v/0", "k/0", "%{}/2"]
   end
 
   test "ordinary_ast_2" do

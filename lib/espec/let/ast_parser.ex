@@ -1,7 +1,6 @@
-defmodule ESpec.AstParser do
+defmodule ESpec.Let.AstParser do
   def function_list(ast), do: Enum.uniq(parse(ast, []))
 
-  # rebuild tree if pipe operator
   defp parse({:|>, _, [ast_left, {ast, context, args}]}, fun_list) do
     parse({ast, context, [ast_left | args]}, fun_list)
   end
@@ -10,12 +9,10 @@ defmodule ESpec.AstParser do
     [func_desc(module, fun, args) | fun_list ++ parse_args(args)]
   end
 
-  # skip
   defp parse({fun, [], args}, fun_list) when fun in [:fn, :->, :__block__, :__aliases__] do
     fun_list ++ parse_args(args)
   end
 
-  # ignore
   defp parse({fun, _, _}, fun_list) when fun in [:defmodule, :def, :defmacro] do
     fun_list
   end
@@ -39,10 +36,6 @@ defmodule ESpec.AstParser do
 
   defp func_desc(module, fun, args) do
     arity = if is_list(args), do: length(args), else: 0
-    if module do
-      "#{module}.#{fun}/#{arity}"
-    else
-      "#{fun}/#{arity}"
-    end
+    if module, do: "#{module}.#{fun}/#{arity}", else: "#{fun}/#{arity}"
   end
 end
