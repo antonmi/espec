@@ -22,9 +22,9 @@ defmodule ESpec.ExampleHelpers do
                                 shared: @shared}
 
 
+      ESpec.Let.Checker.check(@context, @defined_lets, unquote(escaped_block))
 
       def unquote(function)(var!(shared)) do
-        ESpec.Let.Checker.check(@context, @defined_lets, unquote(escaped_block))
         var!(shared)
         unquote(block)
       end
@@ -125,8 +125,6 @@ defmodule ESpec.ExampleHelpers do
   defmacro include_examples(module) do
     quote do: it_behaves_like(unquote(module))
   end
-
-
 
   defp random_atom(arg) do
     String.to_atom("example_#{ESpec.Support.word_chars(arg)}_#{ESpec.Support.random_string}")

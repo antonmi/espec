@@ -8,7 +8,7 @@ defmodule ESpec.Let.Checker do
     functions = all_functions(escaped_block)
     leaking_func = Enum.find(diff, &(Enum.member?(functions, &1)))
 
-    if leaking_func, do: raise exception_message(leaking_func)
+    if leaking_func, do: raise ESpec.LetError, exception_message(leaking_func)
   end
 
   defp context_lets(context) do
