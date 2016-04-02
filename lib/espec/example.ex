@@ -59,7 +59,7 @@ defmodule ESpec.Example do
     end
   end
 
-  defp extract(context, module) do
+  def extract(context, module) do
     Enum.filter(context, &(&1.__struct__ == module))
   end
 

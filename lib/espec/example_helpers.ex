@@ -13,12 +13,16 @@ defmodule ESpec.ExampleHelpers do
   Sends `shared`' variable to the example block.
   """
   defmacro example(description, opts, do: block) do
-    function = (random_atom(description))
+    function = random_atom(description)
+    escaped_block = Macro.escape(block)
     quote do
       context = Enum.reverse(@context)
       @examples %ESpec.Example{ description: unquote(description), module: __MODULE__, function: unquote(function),
                                 opts: unquote(opts), file: __ENV__.file, line: __ENV__.line, context: context,
                                 shared: @shared}
+
+      ESpec.Let.Checker.check(@context, @defined_lets, unquote(escaped_block))
+
       def unquote(function)(var!(shared)) do
         var!(shared)
         unquote(block)
