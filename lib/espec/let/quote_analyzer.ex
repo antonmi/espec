@@ -1,4 +1,4 @@
-defmodule ESpec.Let.AstParser do
+defmodule ESpec.Let.QuoteAnalyzer do
   def function_list(ast), do: Enum.uniq(parse(ast, []))
 
   defp parse({:|>, _, [ast_left, {ast, context, args}]}, fun_list) do

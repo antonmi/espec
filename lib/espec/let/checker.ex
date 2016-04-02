@@ -18,7 +18,7 @@ defmodule ESpec.Let.Checker do
   end
 
   def all_functions(escaped_block) do
-    funs = ESpec.Let.AstParser.function_list(escaped_block)
+    funs = ESpec.Let.QuoteAnalyzer.function_list(escaped_block)
     if Enum.member?(funs, "should/1") || Enum.member?(funs, "is_expected/0") do
       funs = ["subject/0" | funs]
     end

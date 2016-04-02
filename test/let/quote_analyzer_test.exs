@@ -1,6 +1,6 @@
-defmodule Let.AstParserTest do
+defmodule Let.QuoteAnalyzerTest do
   use ExUnit.Case, async: true
-  alias ESpec.Let.AstParser
+  alias ESpec.Let.QuoteAnalyzer
 
   def simplest_ast do
     quote do: 1 + 1
@@ -63,44 +63,43 @@ defmodule Let.AstParserTest do
     end
   end
 
-
   test "simplest ast" do
-    fun_list = AstParser.function_list(simplest_ast)
-    assert fun_list == ["Elixir.Let.AstParserTest.+/2"]
+    fun_list = QuoteAnalyzer.function_list(simplest_ast)
+    assert fun_list == ["Elixir.Let.QuoteAnalyzerTest.+/2"]
   end
 
   test "simple_ast" do
-    fun_list = AstParser.function_list(simple_ast)
+    fun_list = QuoteAnalyzer.function_list(simple_ast)
     assert fun_list == ["SomeModule.fun/2"]
   end
 
   test "simple_ast_2" do
-    fun_list = AstParser.function_list(simple_ast_2)
-    assert fun_list == ["SomeModule.fun/2", "Elixir.Let.AstParserTest.+/2"]
+    fun_list = QuoteAnalyzer.function_list(simple_ast_2)
+    assert fun_list == ["SomeModule.fun/2", "Elixir.Let.QuoteAnalyzerTest.+/2"]
   end
 
   test "ordinary ast" do
-    fun_list = AstParser.function_list(ordinary_ast)
-    assert fun_list == ["Enum.reduce/3", "Elixir.Let.AstParserTest.*/2", "v/0", "k/0", "%{}/2"]
+    fun_list = QuoteAnalyzer.function_list(ordinary_ast)
+    assert fun_list == ["Enum.reduce/3", "Elixir.Let.QuoteAnalyzerTest.*/2", "v/0", "k/0", "%{}/2"]
   end
 
   test "ordinary_ast_2" do
-    fun_list = AstParser.function_list(ordinary_ast_2)
+    fun_list = QuoteAnalyzer.function_list(ordinary_ast_2)
     assert fun_list == ["M.fun/1"]
   end
 
   test "ast_with_pipe" do
-    fun_list = AstParser.function_list(ast_with_pipe)
+    fun_list = QuoteAnalyzer.function_list(ast_with_pipe)
     assert fun_list ==["should/2", "eq/1", "a/0", "SomeModule.should/2"]
   end
 
   test "ast_with_pipe_2" do
-    fun_list = AstParser.function_list(ast_with_pipe_2)
+    fun_list = QuoteAnalyzer.function_list(ast_with_pipe_2)
     assert fun_list == ["should/2", "eq/1", "List.first/1", "a/0"]
   end
 
   test "spec_ast" do
-    fun_list = AstParser.function_list(spec_ast)
+    fun_list = QuoteAnalyzer.function_list(spec_ast)
     assert fun_list == ["it/2", "should/2", "eq/1", "List.first/1", "a/0"]
   end
 end

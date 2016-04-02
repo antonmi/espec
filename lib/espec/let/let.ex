@@ -37,8 +37,6 @@ defmodule ESpec.Let do
 
       @defined_lets [unquote(var) | @defined_lets]
     end
-
-
   end
 
   @doc "let! evaluate block like `before`"
