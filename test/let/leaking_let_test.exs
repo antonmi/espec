@@ -70,7 +70,7 @@ defmodule LeakingLetTest do
 
     example = ESpec.ExampleRunner.run(context[:ex2])
     assert example.status == :failure
-    assert example.error.message =~ "The let function `a/0` is not defined in the current scope!"
+    assert example.error.message =~ "\(ESpec.LetError\) The let function `a/0` is not defined in the current scope!"
   end
 
   test "runs ex1 then ex3", context do
@@ -79,7 +79,7 @@ defmodule LeakingLetTest do
 
     example = ESpec.ExampleRunner.run(context[:ex3])
     assert example.status == :failure
-    assert example.error.message =~ "The let function `a/0` is not defined in the current scope!"
+    assert example.error.message =~ "\(ESpec.LetError\) The let function `a/0` is not defined in the current scope!"
   end
 
   test "runs ex5 then ex4", context do
@@ -88,7 +88,7 @@ defmodule LeakingLetTest do
 
     example = ESpec.ExampleRunner.run(context[:ex4])
     assert example.status == :failure
-    assert example.error.message =~ "The let function `a/0` is not defined in the current scope!"
+    assert example.error.message =~ "\(ESpec.LetError\) The let function `a/0` is not defined in the current scope!"
   end
 
   test "runs ex6 then ex7 and ex8", context do

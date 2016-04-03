@@ -119,6 +119,7 @@ defmodule ESpec.ExampleRunner do
   end
 
   defp run_befores_and_lets({assigns, example}) do
+    ESpec.Let.Impl.clear_lets(example.module)
     Example.extract_lets(example)
     |> Enum.each(&ESpec.Let.Impl.run_before/1)
 

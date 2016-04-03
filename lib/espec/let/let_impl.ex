@@ -11,6 +11,12 @@ defmodule ESpec.Let.Impl do
         result
       {:done, result} ->
         result
+      nil ->
+        funcname = case var do
+          :subject -> "subject"
+          _ -> "let function `#{var}/0`"
+        end
+        raise ESpec.LetError, "The #{funcname} is not defined in the current scope!"
     end
   end
 
@@ -23,6 +29,15 @@ defmodule ESpec.Let.Impl do
   @doc "Resets stored let value and prepares for evaluation. Called by ExampleRunner."
   def run_before(let) do
     agent_put({self, let.module, let.var}, {:todo, let.function})
+  end
+
+  @doc "Clears all let values for the given module. Called by ExampleRunner."
+  def clear_lets(module) do
+    me = self
+    Agent.update(@agent_name, fn (map)->
+      keys_to_remove = Map.keys(map) |> Enum.filter(&match?({^me, ^module, _}, &1))
+      Map.drop(map, keys_to_remove)
+    end)
   end
 
   @doc "Updates the shared map that is available to let blocks. Called by ExampleRunner."
