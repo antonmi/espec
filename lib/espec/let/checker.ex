@@ -1,5 +1,6 @@
 defmodule ESpec.Let.Checker do
-  def check(context, defined_lets, escaped_block) do
+  def check(context, module, escaped_block) do
+    defined_lets = module.defined_lets
     context_lets = context_lets(context)
 
     diff = Enum.uniq(defined_lets) -- context_lets
