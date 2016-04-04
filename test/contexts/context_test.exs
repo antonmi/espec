@@ -33,6 +33,10 @@ defmodule ContextTest do
     context ESpec.Context do
       it do: "context with atom as description"
     end
+
+    context "Do nothing with empty context"
+    describe "Do nothing with empty context"
+    example_group "Do nothing with empty context"
   end
 
   setup_all do
