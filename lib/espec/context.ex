@@ -39,9 +39,14 @@ defmodule ESpec.Context do
     end
   end
 
-  @doc "Add empty context."
+  @doc "context with block"
   defmacro context(do: block) do
     quote do: context("", [], do: unquote(block))
+  end
+
+  @doc "empty context"
+  defmacro context(description) do
+    quote do: context("", [], do: true)
   end
 
   @doc "Aliases for `context`."
@@ -56,6 +61,10 @@ defmodule ESpec.Context do
 
     defmacro unquote(func)(do: block) do
       quote do: context(do: unquote(block))
+    end
+
+    defmacro unquote(func)(description) do
+      quote do: context(description)
     end
   end
 
@@ -95,7 +104,7 @@ defmodule ESpec.Context do
     defmacro unquote(func)(description, do: block) do
       quote do: context(unquote(description), [focus: true], do: unquote(block))
     end
-    
+
     defmacro unquote(func)(do: block) do
       quote do: context([focus: true], do: unquote(block))
     end
