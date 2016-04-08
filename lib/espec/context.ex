@@ -45,7 +45,7 @@ defmodule ESpec.Context do
   end
 
   @doc "empty context"
-  defmacro context(description) do
+  defmacro context(_description) do
     quote do: context("", [], do: true)
   end
 
@@ -63,8 +63,8 @@ defmodule ESpec.Context do
       quote do: context(do: unquote(block))
     end
 
-    defmacro unquote(func)(description) do
-      quote do: context(description)
+    defmacro unquote(func)(_description) do
+      quote do: context(_description)
     end
   end
 
