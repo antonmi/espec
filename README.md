@@ -466,7 +466,7 @@ expect {:error, :an_error} |> to(be_error_result)
 You can define your own matchers!
 The only functions you should implement is `match/2`, `success_message/4`, and `error_message`.
 Read the [wiki page](https://github.com/antonmi/espec/wiki/Custom-matchers) for detailed instructions.
-There is an example [custom_assertion_spec.exs](https://github.com/antonmi/espec/blob/master/spec/assertions/custom_assertion_spec.ex).
+There is an example in [custom_assertion_spec.exs](https://github.com/antonmi/espec/blob/master/spec/assertions/custom_assertion_spec.exs).
 
 ## described_module
 If you keep the naming convention 'module TheModuleSpec is spec for TheModule' you can access tested module by `described_module` helper.
