@@ -1,5 +1,8 @@
 defmodule ESpec.Let.QuoteAnalyzer do
-  def function_list(ast), do: Enum.uniq(parse(ast, []))
+  def function_list(ast) do
+    {funcs, assigments} = Enum.partition(parse(ast, []), fn {key, value} -> key == :fun end)
+    Enum.uniq(Keyword.values(funcs) -- Keyword.values(assigments))
+  end
 
   defp parse({:|>, _, [ast_left, {ast, context, args}]}, fun_list) do
     parse({ast, context, [ast_left | args]}, fun_list)
@@ -7,6 +10,10 @@ defmodule ESpec.Let.QuoteAnalyzer do
 
   defp parse({{:., [], [{:__aliases__, [alias: false], [module]}, fun]}, [], args}, fun_list) do
     [func_desc(module, fun, args) | fun_list ++ parse_args(args)]
+  end
+
+  defp parse({:=, _, [{assignment, _, _}, _value]}, fun_list) do
+    [{:=, "#{assignment}/0"} | fun_list]
   end
 
   defp parse({fun, [], args}, fun_list) when fun in [:fn, :->, :__block__, :__aliases__] do
@@ -36,6 +43,7 @@ defmodule ESpec.Let.QuoteAnalyzer do
 
   defp func_desc(module, fun, args) do
     arity = if is_list(args), do: length(args), else: 0
-    if module, do: "#{module}.#{fun}/#{arity}", else: "#{fun}/#{arity}"
+    desc = if module, do: "#{module}.#{fun}/#{arity}", else: "#{fun}/#{arity}"
+    {:fun, desc}
   end
 end
