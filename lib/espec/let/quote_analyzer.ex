@@ -1,7 +1,7 @@
 defmodule ESpec.Let.QuoteAnalyzer do
   def function_list(ast) do
-    {funcs, assigments} = Enum.partition(parse(ast, []), fn {key, value} -> key == :fun end)
-    Enum.uniq(Keyword.values(funcs) -- Keyword.values(assigments))
+    {funcs, assignments} = Enum.partition(parse(ast, []), fn {key, _value} -> key == :fun end)
+    Enum.uniq(Keyword.values(funcs)) -- Enum.uniq(Keyword.values(assignments))
   end
 
   defp parse({:|>, _, [ast_left, {ast, context, args}]}, fun_list) do
