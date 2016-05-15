@@ -39,6 +39,13 @@ defmodule LeakingLetTest do
           expect(result) |> to(eq 23)
         end
       end
+
+      describe "use let name in pattern match" do
+        it "is not okay" do
+          {:ok, result} = {:ok, 123} # this still fails
+          expect(result) |> to(eq 123)
+        end
+      end
     end
   end
 
@@ -53,6 +60,7 @@ defmodule LeakingLetTest do
 
       ex6: Enum.at(SomeSpec3.examples, 0),
       ex7: Enum.at(SomeSpec3.examples, 1),
+      ex8: Enum.at(SomeSpec3.examples, 2),
     }
   end
 
@@ -83,11 +91,14 @@ defmodule LeakingLetTest do
     assert example.error.message =~ "The let function `a/0` is not defined in the current scope!"
   end
 
-  test "runs ex6 then ex7", context do
+  test "runs ex6 then ex7 and ex8", context do
     example = ESpec.ExampleRunner.run(context[:ex6])
     assert example.status == :success
 
     example = ESpec.ExampleRunner.run(context[:ex7])
+    assert example.status == :success
+
+    example = ESpec.ExampleRunner.run(context[:ex8])
     assert example.status == :success
    end
 end

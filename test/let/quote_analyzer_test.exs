@@ -67,7 +67,23 @@ defmodule Let.QuoteAnalyzerTest do
     quote do
       it "test" do
         a = 1
+        b = 2
         a |> should(eq 1)
+        b |> should(eq 2)
+      end
+    end
+  end
+
+  def spec_ast_with_assignments do
+    quote do
+      it "test" do
+        {:ok, foo}  = {:ok, 1}
+        {bar, :error} = {2, :error}
+        {a, b, c, d} = {1, 2, 3, 4}
+        baz = if true, do: 1, else: 2
+        bazbaz = List.first([1])
+
+        foo + bar + a + b + c + d + baz + bazbaz
       end
     end
   end
@@ -115,5 +131,10 @@ defmodule Let.QuoteAnalyzerTest do
   test "spec_ast_with_local_variable" do
     fun_list = QuoteAnalyzer.function_list(spec_ast_with_local_variable)
     assert fun_list == ["it/2", "should/2", "eq/1"]
+  end
+
+  test "spec_ast_with_assignments" do
+    fun_list = QuoteAnalyzer.function_list(spec_ast_with_assignments)
+    assert fun_list == ["it/2", "Elixir.Let.QuoteAnalyzerTest.+/2"]
   end
 end
