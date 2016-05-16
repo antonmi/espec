@@ -22,7 +22,6 @@ defmodule ESpec.ExampleHelpers do
                                 shared: @shared}
 
       def unquote(function)(var!(shared)) do
-        ESpec.Let.Checker.check(@context, __MODULE__, unquote(escaped_block))
         var!(shared)
         unquote(block)
       end
