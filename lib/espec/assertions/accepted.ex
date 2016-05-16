@@ -12,19 +12,13 @@ defmodule ESpec.Assertions.Accepted do
 
     count = get_count(subject, func, args, pid)
 
-    if opts_count == :any do
-      if count >= 1 do
-        {true, true}
-      else
-        {false, count}
-      end
+    matched = if opts_count == :any do
+      count >= 1
     else
-      if count == opts_count do
-        {true, true}
-      else
-        {false, count}
-      end
+      count == opts_count
     end
+
+    {matched, count}
   end
 
   defp get_count(subject, func, args, pid) do
@@ -68,6 +62,6 @@ defmodule ESpec.Assertions.Accepted do
     pid = Keyword.get(opts, :pid) || :any
     opts_count = Keyword.get(opts, :count) || :any
     count = if opts_count == :any, do: "at least once", else: "`#{opts_count}` times"
-    "Expected `#{subject}` #{to} accept `#{inspect func}` with `#{inspect args}` in process `#{inspect pid}` #{count}, but #{but}."
+    "Expected `#{inspect subject}` #{to} accept `#{inspect func}` with `#{inspect args}` in process `#{inspect pid}` #{count}, but #{but}."
   end
 end

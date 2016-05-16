@@ -83,4 +83,44 @@ defmodule AcceptedSpec do
 			it do: expect(SomeModule).to accepted(:func, [10, 20], pid: :any, count: 2)
 		end
 	end
+
+	describe "messages" do
+		import ESpec.Assertions.Accepted, only: [assert: 3]
+
+		before do
+			allow(SomeModule).to accept(:func, fn(a, b) -> a+b end)
+		end
+
+		it "for positive assertions" do
+			SomeModule.func(1, 2)
+
+			expect(assert(SomeModule, [:func, :any, []], true))
+			.to eq("`AcceptedSpec.SomeModule` accepted `:func` with `:any` in process `:any` at least once.")
+
+			expect(assert(SomeModule, [:func, [1, 2], [count: 1]], true))
+			.to eq("`AcceptedSpec.SomeModule` accepted `:func` with `[1, 2]` in process `:any` `1` times.")
+		end
+
+		it "for negative assertions" do
+			expect(assert(SomeModule, [:func, :any, []], false))
+			.to eq("`AcceptedSpec.SomeModule` didn't accept `:func` with `:any` in process `:any` at least once.")
+
+			expect(assert(SomeModule, [:func, [1, 2], [count: 1]], false))
+			.to eq("`AcceptedSpec.SomeModule` didn't accept `:func` with `[1, 2]` in process `:any` `1` times.")
+		end
+
+		it "for failed positive assertions" do
+			expect(fn -> assert(SomeModule, [:func, :any, []], true) end)
+			.to raise_exception(Elixir.ESpec.AssertionError,
+				"Expected `AcceptedSpec.SomeModule` to accept `:func` with `:any` in process `:any` at least once, but it accepted the function `0` times.")
+		end
+
+		it "for failed negative assertions" do
+			SomeModule.func(1, 2)
+
+			expect(fn -> assert(SomeModule, [:func, :any, []], false) end)
+			.to raise_exception(Elixir.ESpec.AssertionError,
+				"Expected `AcceptedSpec.SomeModule` not to accept `:func` with `:any` in process `:any` at least once, but it accepted the function `1` times.")
+		end
+	end
 end
