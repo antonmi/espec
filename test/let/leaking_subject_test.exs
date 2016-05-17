@@ -46,7 +46,7 @@ defmodule LeakingSubjectTest do
 
     example = ESpec.ExampleRunner.run(context[:ex2])
     assert example.status == :failure
-    assert example.error.message =~ "The subject is not defined in the current scope!"
+    assert example.error.message =~ "\(ESpec.LetError\) The subject is not defined in the current scope!"
   end
 
   test "runs ex1 then ex3", context do
@@ -55,7 +55,7 @@ defmodule LeakingSubjectTest do
 
     example = ESpec.ExampleRunner.run(context[:ex3])
     assert example.status == :failure
-    assert example.error.message =~ "The subject is not defined in the current scope!"
+    assert example.error.message =~ "\(ESpec.LetError\) The subject is not defined in the current scope!"
   end
 
   test "runs ex1 then ex4", context do
@@ -64,7 +64,7 @@ defmodule LeakingSubjectTest do
 
     example = ESpec.ExampleRunner.run(context[:ex4])
     assert example.status == :failure
-    assert example.error.message =~ "The subject is not defined in the current scope!"
+    assert example.error.message =~ "\(ESpec.LetError\) The subject is not defined in the current scope!"
   end
 
   test "runs ex6 then ex5", context do
@@ -73,6 +73,6 @@ defmodule LeakingSubjectTest do
 
     example = ESpec.ExampleRunner.run(context[:ex5])
     assert example.status == :failure
-    assert example.error.message =~ "The subject is not defined in the current scope!"
+    assert example.error.message =~ "\(ESpec.LetError\) The subject is not defined in the current scope!"
   end
 end
