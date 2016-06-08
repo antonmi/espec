@@ -502,27 +502,27 @@ If you don't specify the function to return ESpec creates stubs with arity `0` a
 `fn -> end` and `fn(_) -> end`, which return `nil`.
 ```elixir
 defmodule SomeSpec do
-   use ESpec
-   before do: allow SomeModule |> to(accept :func)
-   it do: expect SomeModule.func |> to(be_nil)
-   it do: expect SomeModule.func(42) |> to(be_nil)
+  use ESpec
+  before do: allow SomeModule |> to(accept :func)
+  it do: expect SomeModule.func |> to(be_nil)
+  it do: expect SomeModule.func(42) |> to(be_nil)
 end
 ```
 You can also use pattern matching in your mocks:
 ```elixir
 defmodule SomeSpec do
-   use ESpec
-   before do
-     args = {:some, :args}
-     allow SomeModule |> to(accept :func, fn(^args) -> {:ok, :success} end)
-   end
+  use ESpec
+  before do
+    args = {:some, :args}
+    allow SomeModule |> to(accept :func, fn(^args) -> {:ok, :success} end)
+  end
   
-   it do: expect SomeModule.func({:some, :args}) |> to(be_ok_result)
+  it do: expect SomeModule.func({:some, :args}) |> to(be_ok_result)
   
-   it "raises exception when does not match" do
-     expect(fn -> SomeModule.func({:wrong, :args}) end)
-     |> to(raise_exception FunctionClauseError)
-   end  
+  it "raises exception when does not match" do
+    expect(fn -> SomeModule.func({:wrong, :args}) end)
+    |> to(raise_exception FunctionClauseError)
+  end  
 end
 ```
 Behind the scenes 'allow accept' makes the following:
