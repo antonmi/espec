@@ -488,12 +488,12 @@ You can mock the module with 'allow accept':
 defmodule SomeSpec do
   use ESpec
   context "with old syntax"
-    before do: allow(SomeModule).to accept(:func, fn(a,b) -> a+b end)
+    before do: allow(SomeModule).to accept(:func, fn(a, b) -> a + b end)
     it do: expect SomeModule.func(1, 2) |> to(eq 3)
   end
 
   context "with new syntax"
-    before do: allow SomeModule |> to(accept :func, fn(a,b) -> a+b end)
+    before do: allow SomeModule |> to(accept :func, fn(a, b) -> a + b end)
     it do: expect SomeModule.func(1, 2) |> to(eq 3)
   end
 end
@@ -502,10 +502,27 @@ If you don't specify the function to return ESpec creates stubs with arity `0` a
 `fn -> end` and `fn(_) -> end`, which return `nil`.
 ```elixir
 defmodule SomeSpec do
-  use ESpec
-  before do: allow SomeModule |> to(accept :func)
-  it do: expect SomeModule.func |> to(be_nil)
-  it do: expect SomeModule.func(42) |> to(be_nil)
+   use ESpec
+   before do: allow SomeModule |> to(accept :func)
+   it do: expect SomeModule.func |> to(be_nil)
+   it do: expect SomeModule.func(42) |> to(be_nil)
+end
+```
+You can also use pattern matching in your mocks:
+```elixir
+defmodule SomeSpec do
+   use ESpec
+   before do
+     args = {:some, :args}
+     allow SomeModule |> to(accept :func, fn(^args) -> {:ok, :success} end)
+   end
+  
+   it do: expect SomeModule.func({:some, :args}) |> to(be_ok_result)
+  
+   it "raises exception when does not match" do
+     expect(fn -> SomeModule.func({:wrong, :args}) end)
+     |> to(raise_exception FunctionClauseError)
+   end  
 end
 ```
 Behind the scenes 'allow accept' makes the following:
