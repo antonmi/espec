@@ -11,7 +11,7 @@ defmodule BeforeTest do
       before do: {:ok, a: 10, b: 2}
       it do: "#{shared[:a]} and #{shared[:b]} is defined"
 
-      describe "Describe" do
+      ESpec.Context.describe "Describe" do
         before do: {:ok, b: fn(a) -> a*2 end}
         it do: "#{shared[:b].(10)} == 20"
       end

@@ -10,7 +10,7 @@ defmodule AcceptedTest do
 	defmodule SomeSpec do
 		use ESpec
 
-		describe "function call in another process" do
+		ESpec.Context.describe "function call in another process" do
 			defmodule Server do
 				def call(a, b), do: SomeModule.func(a, b)
 			end
@@ -35,7 +35,7 @@ defmodule AcceptedTest do
 			end
 		end
 
-		describe "count option" do
+		ESpec.Context.describe "count option" do
 			before do
 				allow(SomeModule).to accept(:func, fn(a, b) -> a+b end)
 				SomeModule.func(1, 2)
@@ -46,7 +46,7 @@ defmodule AcceptedTest do
 			it do: expect(SomeModule).to_not accepted(:func, [1, 2], count: 1)
 		end
 
-		describe "any args" do
+		ESpec.Context.describe "any args" do
 			before do
 				allow(SomeModule).to accept(:func, fn(a, b) -> a+b end)
 				SomeModule.func(1, 2)

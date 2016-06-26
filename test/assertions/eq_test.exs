@@ -5,12 +5,12 @@ defmodule EqTest do
     use ESpec
 
     context "Success" do
-      describe "ESpec.Assertions.Eq" do
+      ESpec.Context.describe "ESpec.Assertions.Eq" do
         it do: expect(1+1).to eq(2.0)
         it do: expect(1+1).to_not eq(3)
       end
 
-      describe "be" do
+      ESpec.Context.describe "be" do
         it do: expect(1+1 == 2).to be true
         it do: expect(1+1 == 1).to_not be true
         it do: expect(1+1 == 1).to be false
@@ -20,12 +20,12 @@ defmodule EqTest do
     end
 
     context "Errors" do
-      describe "ESpec.Assertions.Eq" do
+      ESpec.Context.describe "ESpec.Assertions.Eq" do
         it do: expect(1+1).to eq(3.0)
         it do: expect(1+1).to_not eq(2)
       end
 
-      describe "be" do
+      ESpec.Context.describe "be" do
         it do: expect(1+1 == 1).to be true
         it do: expect(1+1 == 1).to_not be false
       end

@@ -51,10 +51,15 @@ defmodule ESpec.DocTest do
     quote do
       examples = ESpec.DocExample.extract(unquote(module))
 
-      examples = cond do
-        Keyword.get(unquote(opts), :only, :false) -> ESpec.DocTest.filter_only(examples, unquote(opts)[:only])
-        Keyword.get(unquote(opts), :except, false) -> ESpec.DocTest.filter_except(examples, unquote(opts)[:except])
-        true -> examples
+      examples = if Keyword.get(unquote(opts), :only, :false) do
+        ESpec.DocTest.filter_only(examples, unquote(opts)[:only])
+      else
+        examples
+      end
+      examples = if Keyword.get(unquote(opts), :except, false) do
+        ESpec.DocTest.filter_except(examples, unquote(opts)[:except])
+      else
+        examples
       end
 
       Enum.with_index(examples)

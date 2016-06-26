@@ -4,13 +4,13 @@ defmodule LeakingSubjectTest do
   defmodule SomeSpec do
     use ESpec
 
-    describe "first" do
+    ESpec.Context.describe "first" do
       subject do: []
 
       it "is empty by default", do: should be_empty
     end
 
-    describe "second" do
+    ESpec.Context.describe "second" do
       it do: should be_empty
       it do: is_expected |> to(be_empty)
       it do: is_expected.to be_empty
@@ -19,10 +19,10 @@ defmodule LeakingSubjectTest do
 
   defmodule SomeSpec2 do
     use ESpec
-    describe "second" do
+    ESpec.Context.describe "second" do
       it do: should(eq 1)
     end
-    describe "first" do
+    ESpec.Context.describe "first" do
       subject do: 1
       it do: should(eq 1)
     end
