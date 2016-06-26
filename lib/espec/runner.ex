@@ -89,11 +89,11 @@ defmodule ESpec.Runner do
     file_opts = opts[:file_opts] || []
     examples = filter_shared(examples)
 
-    if Enum.any?(file_opts), do: examples = file_opts_filter(examples, file_opts)
-    if opts[:focus], do: examples = filter_focus(examples)
-    if opts[:only], do: examples = filter_only(examples, opts[:only])
-    if opts[:exclude], do: examples = filter_only(examples, opts[:exclude], true)
-    if opts[:string], do: examples = filter_string(examples, opts[:string])
+    examples = if Enum.any?(file_opts), do: file_opts_filter(examples, file_opts), else: examples
+    examples = if opts[:focus], do: filter_focus(examples), else: examples
+    examples = if opts[:only], do: filter_only(examples, opts[:only]), else: examples
+    examples = if opts[:exclude], do: filter_only(examples, opts[:exclude], true), else: examples
+    examples = if opts[:string], do: filter_string(examples, opts[:string]), else: examples
 
     examples
   end
@@ -181,16 +181,17 @@ defmodule ESpec.Runner do
   end
 
   defp seed_random! do
-    conf_seed = Configuration.get(:seed)
-
-    if conf_seed == nil do
-      conf_seed = :os.timestamp |> elem(2)
-      Configuration.add(seed: conf_seed)
+    conf_seed = if seed = Configuration.get(:seed) do
+      seed
+    else
+      seed = :os.timestamp |> elem(2)
+      Configuration.add(seed: seed)
+      seed
     end
 
-    seed = case conf_seed do
-      seed when is_number(seed) -> seed
-      seed when is_binary(seed) -> String.to_integer(seed)
+    seed = cond do
+      is_number(conf_seed) -> conf_seed
+      is_binary(conf_seed) -> String.to_integer(conf_seed)
     end
 
     :random.seed({3172, 9814, seed})

@@ -9,7 +9,7 @@ defmodule ContextTest do
     context "Context 1", a: 1, b: 2 do
       it do: "is in Context 1"
 
-      describe "Describe 1" do
+      ESpec.Context.describe "Describe 1" do
         it do: "is in Describe 1"
       end
     end
@@ -22,7 +22,7 @@ defmodule ContextTest do
       it do: "in context without description bu with opts"
     end
 
-    describe "is alias" do
+    ESpec.Context.describe "is alias" do
       it do: "some example"
     end
 
@@ -35,7 +35,7 @@ defmodule ContextTest do
     end
 
     context "Do nothing with empty context"
-    describe "Do nothing with empty context"
+    ESpec.Context.describe "Do nothing with empty context"
     example_group "Do nothing with empty context"
   end
 

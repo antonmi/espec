@@ -51,7 +51,7 @@ defmodule ExampleRunnerTest do
   test "run failed example with runtime error", context do
     example = ESpec.ExampleRunner.run(context[:ex4])
     assert example.status == :failure
-    assert String.match?(example.error.message, ~r/undefined function/)
+    assert String.match?(example.error.message, ~r/undefined/)
   end
 
   test "run example which throws term", context do

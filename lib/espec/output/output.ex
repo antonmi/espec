@@ -71,7 +71,7 @@ defmodule ESpec.Output do
 
   defp formatter do
     format = Configuration.get(:format)
-    if Configuration.get(:trace), do: format = "doc"
+    format = if Configuration.get(:trace), do: "doc", else: format
     cond do
       format == "json" -> {ESpec.Output.Json, %{}}
       format == "html" -> {ESpec.Output.Html, %{}}

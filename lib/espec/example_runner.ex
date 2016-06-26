@@ -168,17 +168,21 @@ defmodule ESpec.ExampleRunner do
   end
 
   defp do_catch(what, value, {map, example}) do
-    unless example.error do
+    example = unless example.error do
       error = %AssertionError{message: format_catch(what, value)}
-      example = %Example{example | status: :failure, error: error}
+      %Example{example | status: :failure, error: error}
+    else
+      example
     end
     {map, example}
   end
 
   defp do_before(error, {map, example}) do
-    unless example.error do
+    example = unless example.error do
       error = %AssertionError{message: format_other_error(error)}
       example = %Example{example | status: :failure, error: error}
+    else
+      example
     end
     {map, example}
   end

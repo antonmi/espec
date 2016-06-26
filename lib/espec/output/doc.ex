@@ -18,9 +18,9 @@ defmodule ESpec.Output.Doc do
   def format_result(examples, times, _opts) do
     pending = Example.pendings(examples)
     string = ""
-    if Enum.any?(pending), do: string = string <> format_pending(pending)
+    string = if Enum.any?(pending), do: string <> format_pending(pending), else: string
     failed = Example.failure(examples)
-    if Enum.any?(failed), do: string = string <> format_failed(failed)
+    string = if Enum.any?(failed), do: string <> format_failed(failed), else: string
     string = string <> format_footer(examples, failed, pending)
     string = string <> format_times(times, failed, pending)
     string <> format_seed
@@ -68,7 +68,7 @@ defmodule ESpec.Output.Doc do
   defp format_footer(examples, failed, pending) do
     color = get_color(failed, pending)
     parts = ["#{Enum.count(examples)} examples", "#{Enum.count(failed)} failures"]
-    if Enum.any?(pending), do: parts = parts ++ ["#{Enum.count(pending)} pending"]
+    parts = if Enum.any?(pending), do: parts ++ ["#{Enum.count(pending)} pending"], else: parts
     "\n\n\t#{color}#{Enum.join(parts, ", ")}#{@reset}"
   end
 

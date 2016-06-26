@@ -3,11 +3,11 @@ defmodule LeakingLetTest do
 
   defmodule SomeSpec do
     use ESpec
-    describe "first" do
+    ESpec.Context.describe "first" do
       let :a, do: 1
       it do: expect a |> to(eq 1)
     end
-    describe "second" do
+    ESpec.Context.describe "second" do
       it do: expect a |> to(eq 1)
     end
     it do: expect a |> to(eq 1)
@@ -15,10 +15,10 @@ defmodule LeakingLetTest do
 
   defmodule SomeSpec2 do
     use ESpec
-    describe "second" do
+    ESpec.Context.describe "second" do
       it do: a |> should(eq 1)
     end
-    describe "first" do
+    ESpec.Context.describe "first" do
       let :a, do: 1
       it do: a |> should(eq 1)
     end
@@ -26,21 +26,21 @@ defmodule LeakingLetTest do
 
   defmodule SomeSpec3 do
     use ESpec
-    describe "example when local variable is the same as let" do
-      describe "use let val" do
+    ESpec.Context.describe "example when local variable is the same as let" do
+      ESpec.Context.describe "use let val" do
         let :result, do: 42
 
         it do: expect(result) |> to(eq 42)
       end
 
-      describe "use let name in example" do
+      ESpec.Context.describe "use let name in example" do
         it "is not okay" do
           result = 23
           expect(result) |> to(eq 23)
         end
       end
 
-      describe "use let name in pattern match" do
+      ESpec.Context.describe "use let name in pattern match" do
         it "is not okay" do
           {:ok, result} = {:ok, 123} # this still fails
           expect(result) |> to(eq 123)
