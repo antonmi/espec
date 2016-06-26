@@ -14,7 +14,6 @@ defmodule ESpec.ExampleHelpers do
   """
   defmacro example(description, opts, do: block) do
     function = random_atom(description)
-    escaped_block = Macro.escape(block)
     quote do
       context = Enum.reverse(@context)
       @examples %ESpec.Example{ description: unquote(description), module: __MODULE__, function: unquote(function),
