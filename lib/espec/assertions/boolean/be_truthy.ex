@@ -1,6 +1,6 @@
 defmodule ESpec.Assertions.Boolean.BeTruthy do
   @moduledoc """
-  Defines 'be_true' assertion.
+  Defines 'be_truthy' assertion.
 
   it do: expect(1).to be_truthy
   """

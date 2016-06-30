@@ -24,6 +24,7 @@ defmodule ESpec do
 
       import ESpec.Expect
       use ESpec.Expect
+      import ESpec.Assert 
       import ESpec.To
       import ESpec.Should
       use ESpec.Should
