@@ -1,4 +1,4 @@
-defmodule Boolean.BeFalse do
+defmodule Boolean.BeFalseTest do
   use ExUnit.Case, async: true
 
   defmodule SomeSpec do

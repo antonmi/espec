@@ -1,4 +1,4 @@
-defmodule Boolean.BeTruthy do
+defmodule Boolean.BeTruthyTest do
   use ExUnit.Case, async: true
 
   defmodule SomeSpec do

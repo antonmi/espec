@@ -37,6 +37,7 @@ ESpec is inspired by RSpec and the main idea is to be close to its perfect DSL.
 - [Shared examples](#shared-examples)
 - [Async examples](#async-examples)
 - [Matchers](#matchers)
+- [Assert and refute](#assert-and-refute)
 - [Custom matchers](#custom-matchers)
 - [described_module](#described_module)
 - [Mocks](#mocks)
@@ -461,6 +462,23 @@ expect {:ok, :the_result} |> to(be_ok_result)
 expect {:error, :an_error} |> to(be_error_result)
 ```
 
+## Assert and refute
+If you are missing ExUnit `assert` and `refute`, ESpec has such functions as aliases to `be_truthy` and `be_falsy`
+```elixir
+defmodule SomeSpec do
+  use ESpec
+  
+  it "asserts" do
+    assert "ESpec"
+    #expect "ESpec" |> to(be_truthy)
+  end
+  
+  it "refutes" do
+    refute nil
+    #expect nil |> to(be_falsy)
+  end
+end
+```
 
 ## Custom matchers
 You can define your own matchers!

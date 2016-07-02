@@ -1,17 +1,17 @@
-defmodule Boolean.BeTrueTest do
+defmodule Boolean.AssertAndRefuteTest do
   use ExUnit.Case, async: true
 
   defmodule SomeSpec do
     use ESpec, async: true
 
     context "Success" do
-      it do: expect(true).to be_true
-      it do: expect(1).to_not be_true
+      it do: ESpec.Assert.assert 1
+      it do: ESpec.Assert.refute nil
     end
 
     context "Errors" do
-      it do: expect(false).to be_true
-      it do: expect(true).to_not be_true
+      it do: ESpec.Assert.assert false
+      it do: ESpec.Assert.refute "a"
     end
   end
 
