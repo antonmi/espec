@@ -597,6 +597,34 @@ end
 
 Don't use `async: true` when using mocks!
 
+### Limitations
+
+Meck has trouble mocking certain modules, such as `erlang`, `os`, and `timer`.
+
+Also, meck does not track module-local calls. For example, this will not be tracked:
+
+```elixir
+defmodule SomeModule
+  def some_func, do: another_func
+  
+  def another_func, do: nil
+end
+```
+
+But this will:
+
+```elixir
+defmodule SomeModule
+  def some_func, do: __MODULE__.another_func
+  
+  def another_func, do: nil
+end
+```
+
+It is recommended to prefix module-local calls with `__MODULE__` when using them with meck.
+
+See [this section in the meck README](https://github.com/eproxus/meck#caveats) for a more detailed explanation.
+
 ## Doc specs
 ESpec has functionality similar to [`ExUnit.DocTest`](http://elixir-lang.org/docs/stable/ex_unit/).
 Read more about docs syntax [here](http://elixir-lang.org/docs/stable/ex_unit/)
