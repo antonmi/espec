@@ -3,6 +3,8 @@ ESpec.configure fn(config) ->
   config.finally fn(shared) -> shared.answer end
 end
 
+Code.require_file("spec/support/assertions/check_error_shared_spec.exs")
+
 path = Path.expand("../tmp/beams", __DIR__)
 File.rm_rf!(path)
 File.mkdir_p!(path)
