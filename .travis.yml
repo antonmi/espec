@@ -9,7 +9,7 @@ otp_release:
 sudo: false
 script:
   - mix test
-  - mix espec --silent
+  - mix espec
   - mix espec --format=json --out=spec.json
   - mix espec --format=html --out=spec.html
 notifications:

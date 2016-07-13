@@ -8,6 +8,6 @@ defmodule SkippedSpec do
   it [skip: "Some reason"], do: :skipped
 
   context "Skipped", skip: "Context Reason" do
-    it [skip: "Contex reason has preference"], do: :skipped
+    it [skip: "Context reason has preference"], do: :skipped
   end
 end
