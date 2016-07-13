@@ -15,13 +15,39 @@ defmodule AcceptedSpec do
 		end
 
 		context "Success" do
-			it do: expect SomeModule |> to(accepted(:func, [1, 2]))
-			it do: expect SomeModule |> to_not(accepted(:another_function, []))
+      it "checks success with `to`" do
+        message = expect(SomeModule) |> to(accepted(:func, [1, 2]))
+        expect(message) |> to(eq "`AcceptedSpec.SomeModule` accepted `:func` with `[1, 2]` in process `:any` at least once.")
+      end
+
+      it "checks success with `not_to`" do
+        message = expect(SomeModule) |> to_not(accepted(:another_function, []))
+        expect(message) |> to(eq "`AcceptedSpec.SomeModule` didn't accept `:another_function` with `[]` in process `:any` at least once.")
+      end
 		end
 
-		xcontext "Error" do
-			it do: expect(SomeModule).to_not accepted(:func, [1, 2])
-			it do: expect(SomeModule).to accepted(:another_function, [])
+		context "Error" do
+      context "with `to`" do
+        before do
+          { :shared,
+            expectation: fn -> expect(SomeModule).to accepted(:another_function, []) end,
+            message: "Expected `AcceptedSpec.SomeModule` to accept `:another_function` with `[]` in process `:any` at least once, but it accepted the function `0` times."
+          }
+        end
+
+        it_behaves_like(CheckErrorSharedSpec)
+      end
+
+      context "with `not_to`" do
+        before do
+          { :shared,
+            expectation: fn -> expect(SomeModule).to_not accepted(:func, [1, 2]) end,
+            message: "Expected `AcceptedSpec.SomeModule` not to accept `:func` with `[1, 2]` in process `:any` at least once, but it accepted the function `1` times."
+          }
+        end
+
+        it_behaves_like(CheckErrorSharedSpec)
+      end
 		end
 	end
 

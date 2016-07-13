@@ -2,7 +2,16 @@ defmodule ESpec.Assertions.BeTypeSpec do
 	use ESpec, async: true
 
 	context "Success" do
-	  it do: :atom |> should(be_atom)
+    it "checks success with `to`" do
+      message = :atom |> should(be_atom)
+      expect(message) |> to(eq "`:atom` is is `atom`.")
+    end
+
+    it "checks success with `not_to`" do
+      message = 123 |> should_not(be_atom)
+      expect(message) |> to(eq "`123` is not is `atom`.")
+    end
+
 	  it do: "binary" |> should(be_binary)
 	  it do: <<102>> |> should(be_bitstring)
 	  it do: true |> should(be_boolean)
@@ -18,21 +27,31 @@ defmodule ESpec.Assertions.BeTypeSpec do
 	  it do: make_ref |> should(be_reference)
 	  it do: {:a, :b} |> should(be_tuple)
 	  it do: fn(_a, _b) -> :ok end |> should(be_function(2))
-      it do: HashDict.new |> should(be_struct)
-      it do: HashDict.new |> should(be_struct(HashDict))
+    it do: HashDict.new |> should(be_struct)
+    it do: HashDict.new |> should(be_struct(HashDict))
 	end
 
-	xcontext "Error" do
-		it do: 1 |> should(be_atom)
-		it do: :atom |> should_not(be_atom)
+	context "Error" do
+    context "with `to`" do
+      before do
+        { :shared,
+          expectation: fn -> 1 |> should(be_atom) end,
+          message: "Expected `1` to be `atom` but it isn't."
+        }
+      end
 
-		it do: 5 |> should(be_nil)
-		it do: nil |> should_not(be_nil)
+      it_behaves_like(CheckErrorSharedSpec)
+    end
 
-		it do: fn(_a) -> :ok end |> should(be_function(2))
-		it do: fn(_a, _b) -> :ok end |> should_not(be_function(2))
+    context "with `not_to`" do
+      before do
+        { :shared,
+          expectation: fn -> :atom |> should_not(be_atom) end,
+          message: "Expected `:atom` not to be `atom` but it is."
+        }
+      end
 
-    it do: 1 |> should(be_struct)
-    it do: HashDict.new |> should_not(be_struct)
+      it_behaves_like(CheckErrorSharedSpec)
+    end
 	end
 end

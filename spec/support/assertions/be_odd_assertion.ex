@@ -8,8 +8,8 @@ defmodule BeOddAssertion do
 
   defp success_message(subject, [], _result, positive) do
     to = if positive, do: "is", else: "is not"
-    "`#{inspect subject} #{to} odd number."
-  end  
+    "`#{inspect subject}` #{to} odd number."
+  end
 
   defp error_message(subject, [], result, positive) do
     to = if positive, do: "to", else: "not to"

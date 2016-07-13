@@ -49,6 +49,6 @@ defmodule ESpec.Assertions.ThrowTerm do
   end
 
   defp error_message(subject, [data], {term, :true}, _positive) do
-    "Expected `#{inspect subject}`to throw #{inspect data}, but the `#{inspect term}` was thrown."
+    "Expected `#{inspect subject}` to throw #{inspect data}, but the `#{inspect term}` was thrown."
   end
 end
