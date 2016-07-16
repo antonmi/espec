@@ -2,7 +2,6 @@ defmodule ESpec.Assertions.BetweenSpec do
   use ESpec, async: true
 
   describe "ESpec.Assertions.Between" do
-
     context "Success" do
       it "checks success with `to`" do
         message = expect(1+1).to be_between(1, 3)

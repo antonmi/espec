@@ -37,7 +37,8 @@ ESpec is inspired by RSpec and the main idea is to be close to its perfect DSL.
 - [Shared examples](#shared-examples)
 - [Async examples](#async-examples)
 - [Matchers](#matchers)
-- [Assert and refute](#assert-and-refute)
+- [`assert` and `refute`](#assert-and-refute)
+- [`assert_receive` and `refute_receive`](#assert_receive-and-refute_receive)
 - [Custom matchers](#custom-matchers)
 - [described_module](#described_module)
 - [Mocks](#mocks)
@@ -462,20 +463,53 @@ expect {:ok, :the_result} |> to(be_ok_result)
 expect {:error, :an_error} |> to(be_error_result)
 ```
 
-## Assert and refute
+## `assert` and `refute`
 If you are missing ExUnit `assert` and `refute`, ESpec has such functions as aliases to `be_truthy` and `be_falsy`
 ```elixir
 defmodule SomeSpec do
   use ESpec
-  
+
   it "asserts" do
     assert "ESpec"
     #expect "ESpec" |> to(be_truthy)
   end
-  
+
   it "refutes" do
     refute nil
     #expect nil |> to(be_falsy)
+  end
+end
+```
+
+## `assert_receive` and `refute_receive`
+`assert_receive` (`assert_received`) and `refute_receive` (refute_received) work identically to ExUnit ones.
+
+`assert_receive` asserts that a message matching pattern was or is going to be received within timeout.
+`assert_received` asserts that a message was received and is in the current process mailbox. It is the same as `assert_receive` with 0 timeout.
+
+`refute_receive` asserts that a message matching pattern was not received and won’t be received within the timeout.
+`refute_received` asserts that a message was not received (`refute_receive` with 0 timeout).
+
+The default timeout for `assert_receive` and `refute_receive` is 100ms. You can pass custom timeout as a second argument.
+
+```elixir
+defmodule SomeSpec do
+  use ESpec
+
+  it "demonstrates assert_received" do
+    send(self(), :hello)
+    assert_received :hello
+  end
+
+  it "demonstrates assert_receive with custom timeout" do
+    parent = self()
+    spawn(fn -> :timer.sleep(200); send(parent, :hello) end)
+    assert_receive(:hello, 300)
+  end
+
+  it "demonstrates refute_receive" do
+    send(self, :another_hello)
+    refute_receive :hello_refute
   end
 end
 ```
@@ -534,9 +568,9 @@ defmodule SomeSpec do
     args = {:some, :args}
     allow SomeModule |> to(accept :func, fn(^args) -> {:ok, :success} end)
   end
-  
+
   it do: expect SomeModule.func({:some, :args}) |> to(be_ok_result)
-  
+
   it "raises exception when does not match" do
     expect(fn -> SomeModule.func({:wrong, :args}) end)
     |> to(raise_exception FunctionClauseError)
@@ -624,7 +658,7 @@ Also, meck does not track module-local calls. For example, this will not be trac
 ```elixir
 defmodule SomeModule
   def some_func, do: another_func
-  
+
   def another_func, do: nil
 end
 ```
@@ -634,7 +668,7 @@ But this will:
 ```elixir
 defmodule SomeModule
   def some_func, do: __MODULE__.another_func
-  
+
   def another_func, do: nil
 end
 ```
