@@ -796,7 +796,7 @@ mix espec --format=html --out=spec.html
 
 Request a new feature by creating an issue.
 
-Create a pull request with new features and fixes.
+Create a pull request with new features or fixes.
 
 ESpec is tested using ExUnit and ESpec. So run:
 ```sh
