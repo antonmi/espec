@@ -1,4 +1,4 @@
 defmodule SomeSpec do
-  use ESpec
+  use ESpec, async: true
 
 end

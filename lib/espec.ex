@@ -24,12 +24,14 @@ defmodule ESpec do
 
       import ESpec.Expect
       use ESpec.Expect
-      import ESpec.Assert 
+      import ESpec.Assert
       import ESpec.To
       import ESpec.Should
       use ESpec.Should
 
       import ESpec.AssertionHelpers
+      import ESpec.AssertReceive
+      import ESpec.RefuteReceive
       import ESpec.Allow
 
       import ESpec.Before
