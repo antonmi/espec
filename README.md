@@ -4,9 +4,9 @@
 
 ##### ESpec is a BDD testing framework for Elixir.
 
-It is NOT a wrapper around ExUnit but a completely new testing framework written from scratch.
-
 ESpec is inspired by RSpec and the main idea is to be close to its perfect DSL.
+
+It is NOT a wrapper around ExUnit but a completely new testing framework written from scratch.
 
 ## Features
   * Test organization with `describe`, `context`, `it`, and etc blocks.
