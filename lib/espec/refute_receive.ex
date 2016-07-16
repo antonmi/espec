@@ -13,15 +13,15 @@ defmodule ESpec.RefuteReceive do
 
   @doc "Asserts that a message matching `pattern` was not received (and won't be received) within the `timeout` period."
   defmacro refute_receive(pattern, timeout \\ @default_timeout) do
-    do_refute_receive(pattern, timeout, __CALLER__)
+    do_refute_receive(pattern, timeout)
   end
 
   @doc "Asserts a message matching `pattern` was not received (i.e. it is not in the current process' mailbox)"
   defmacro refute_received(pattern) do
-    do_refute_receive(pattern, 0, __CALLER__)
+    do_refute_receive(pattern, 0)
   end
 
-  defp do_refute_receive(pattern, timeout, caller) do
+  defp do_refute_receive(pattern, timeout) do
     binary = Macro.to_string(pattern)
     ESpec.RefuteReceive.received?(pattern, binary, timeout)
   end

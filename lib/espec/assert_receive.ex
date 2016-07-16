@@ -63,8 +63,6 @@ defmodule ESpec.AssertReceive do
   @doc false
   def mailbox_messages do
     {:messages, messages} = Process.info(self, :messages)
-    length = length(messages)
-
     Enum.take(messages, @max_mailbox_length)
   end
 
