@@ -4,9 +4,9 @@
 
 ##### ESpec is a BDD testing framework for Elixir.
 
-It is NOT a wrapper around ExUnit but a completely new testing framework written from scratch.
-
 ESpec is inspired by RSpec and the main idea is to be close to its perfect DSL.
+
+It is NOT a wrapper around ExUnit but a completely new testing framework written from scratch.
 
 ## Features
   * Test organization with `describe`, `context`, `it`, and etc blocks.
@@ -31,16 +31,16 @@ ESpec is inspired by RSpec and the main idea is to be close to its perfect DSL.
 - [Context blocks](#context-blocks)
 - [Examples](#examples)
 - [Filters](#filters)
-- ['before' and 'finally'](#before-and-finally)
-- ['shared' data](#shared-data)
-- ['let' and 'subject'](#let-and-subject)
+- [`before` and `finally`](#before-and-finally)
+- [`shared` data](#shared-data)
+- [`let` and `subject`](#let-and-subject)
 - [Shared examples](#shared-examples)
 - [Async examples](#async-examples)
 - [Matchers](#matchers)
 - [`assert` and `refute`](#assert-and-refute)
 - [`assert_receive` and `refute_receive`](#assert_receive-and-refute_receive)
 - [Custom matchers](#custom-matchers)
-- [described_module](#described_module)
+- [`described_module`](#described_module)
 - [Mocks](#mocks)
 - [Doc specs](#doc-specs)
 - [Configuration and options](#configuration-and-options)
@@ -796,7 +796,7 @@ mix espec --format=html --out=spec.html
 
 Request a new feature by creating an issue.
 
-Create a pull request with new features and fixes.
+Create a pull request with new features or fixes.
 
 ESpec is tested using ExUnit and ESpec. So run:
 ```sh
