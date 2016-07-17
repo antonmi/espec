@@ -36,11 +36,11 @@ defmodule ESpec.AssertReceive do
           quote(do: unquote(left) = received)
       end
 
-    ESpec.AssertReceive.received?(pattern, binary, vars, pins, timeout)
+    ESpec.AssertReceive.__assert_receive__(pattern, binary, vars, pins, timeout)
   end
 
   @doc false
-  def received?(pattern, binary, vars, pins, timeout \\ 100) do
+  def __assert_receive__(pattern, binary, vars, pins, timeout \\ 100) do
     quote do
       result =
         try do
@@ -53,7 +53,7 @@ defmodule ESpec.AssertReceive do
         rescue AssertReceiveError ->
           {:error, :timeout}
         end
-      args = [unquote(binary), unquote(pins), ESpec.AssertReceive.mailbox_messages]
+      args = [unquote(binary), unquote(pins), ESpec.AssertReceive.__mailbox_messages__]
       ExpectTo.to({AssertReceive, args}, {ExpectTo, result})
     end
   end
@@ -61,7 +61,7 @@ defmodule ESpec.AssertReceive do
   @max_mailbox_length 10
 
   @doc false
-  def mailbox_messages do
+  def __mailbox_messages__ do
     {:messages, messages} = Process.info(self, :messages)
     Enum.take(messages, @max_mailbox_length)
   end

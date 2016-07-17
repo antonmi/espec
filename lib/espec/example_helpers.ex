@@ -110,11 +110,29 @@ defmodule ESpec.ExampleHelpers do
   defmacro it_behaves_like(module) do
     quote do
       Enum.each unquote(module).examples, fn(example) ->
-        context = Enum.reverse(@context) ++ example.context
+        new_context = ESpec.ExampleHelpers.__assign_shared_lets__(example.context, @context)
+        context = Enum.reverse(@context) ++ new_context
         @examples %ESpec.Example{ description: example.description, module: example.module, function: example.function,
                                   opts: example.opts, file: __ENV__.file, line: __ENV__.line, context: context, shared: false }
       end
     end
+  end
+
+  @doc false
+  def __assign_shared_lets__(example_context, module_context) do
+    Enum.map(example_context, fn(context) ->
+      case context do
+        %ESpec.Let{shared: true, var: var} ->
+          module_let = Enum.find(module_context, fn(module_let) ->
+            case module_let do
+              %ESpec.Let{var: ^var, shared: false} -> module_let
+              _ -> false
+            end
+          end)
+          if module_let, do: %{module_let | shared_module: context.shared_module, shared: true}, else: context
+        _ -> context
+      end
+    end)
   end
 
   @doc "alias for include_examples"

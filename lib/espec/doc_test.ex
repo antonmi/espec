@@ -27,37 +27,36 @@ defmodule ESpec.DocTest do
   defmacro doctest(module, opts \\ []) do
     do_import = Keyword.get(opts, :import, false)
     quote do
-      ESpec.DocTest.do_doctest(unquote(module), unquote(opts), unquote(do_import))
+      ESpec.DocTest.__do_doctest__(unquote(module), unquote(opts), unquote(do_import))
     end
   end
 
   @doc false
-  defmacro do_doctest(module, opts, true) do
+  defmacro __do_doctest__(module, opts, true) do
     quote do
       import unquote(module)
-      ESpec.DocTest.create_doc_examples(unquote(module), unquote(opts))
+      ESpec.DocTest.__create_doc_examples__(unquote(module), unquote(opts))
     end
   end
 
-  @doc false
-  defmacro do_doctest(module, opts, false) do
+  defmacro __do_doctest__(module, opts, false) do
     quote do
-      ESpec.DocTest.create_doc_examples(unquote(module), unquote(opts))
+      ESpec.DocTest.__create_doc_examples__(unquote(module), unquote(opts))
     end
   end
 
   @doc false
-  defmacro create_doc_examples(module, opts) do
+  defmacro __create_doc_examples__(module, opts) do
     quote do
       examples = ESpec.DocExample.extract(unquote(module))
 
       examples = if Keyword.get(unquote(opts), :only, :false) do
-        ESpec.DocTest.filter_only(examples, unquote(opts)[:only])
+        ESpec.DocTest.__filter_only__(examples, unquote(opts)[:only])
       else
         examples
       end
       examples = if Keyword.get(unquote(opts), :except, false) do
-        ESpec.DocTest.filter_except(examples, unquote(opts)[:except])
+        ESpec.DocTest.__filter_except__(examples, unquote(opts)[:except])
       else
         examples
       end
@@ -123,12 +122,12 @@ defmodule ESpec.DocTest do
   end
 
   @doc false
-  def filter_only(examples, list) do
+  def __filter_only__(examples, list) do
     Enum.filter(examples, &Enum.member?(list, &1.fun_arity))
   end
 
   @doc false
-  def filter_except(examples, list) do
+  def __filter_except__(examples, list) do
     Enum.filter(examples, fn(ex) ->
       !Enum.member?(list, ex.fun_arity)
     end)

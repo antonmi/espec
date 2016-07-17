@@ -320,20 +320,47 @@ defmodule UseSharedSpec do
   include_examples(SharedSpec)
 end
 ```
-Be carefull with `let` and `let!` when using shared examples. You can't access `let` from 'spec module' in 'shared module'.
+You can also use 'let' variables from parent module in shared examples.
+Use `let_overridable` macro to define 'lets' which will be overridden.
+You can pass single atom, list of atoms, or keyword with default values.
+See examples below.
 ```elixir
-defmodule SomeSharedSpec do
-  use ESpec, shared: true
-  it do: expect a |> to(eq "a")
+defmodule SharedSpec do
+  use ESpec, shared: true, async: true
+
+  let_overridable a: 10, b: 20
+  let_overridable [:c, :d]
+  let_overridable :e
+
+  let :internal_value, do: :shared_spec
+
+  it "will be overridden" do
+    expect(a).to eq(1)
+    expect(c).to eq(3)
+    expect(e).to eq(5)
+  end
+
+  it "returns defaults" do
+    expect(b).to eq(20)
+    expect(d).to eq(nil)
+  end
+
+  it "does not ovveride internal 'lets'" do
+    expect(internal_value)
+  end
 end
 
 defmodule SomeSpec do
-  use ESpec
-  let :a, do: "a"
-  include_examples(SomeSharedSpec)
+  use ESpec, async: true
+
+  let :a, do: 1
+  let :c, do: 3
+  let :e, do: 5
+  let :internal_value, do: :some_spec
+
+  it_behaves_like(SharedSpec)
 end
 ```
-Elixir will not compile `SomeSharedSpec` module with error: function a/0 undefined. So use `shared` dictionary in 'before' block to set the value.
 
 ## Async examples
 There is an `async: true` option you can set for the context or for the individual example:

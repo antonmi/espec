@@ -4,7 +4,7 @@ defmodule ESpec.Let.Impl do
   @doc "This function is used by the let macro to implement lazy evaluation"
   def let_eval(module, var) do
     case agent_get({self, module, var}) do
-      {:todo, funcname} ->
+      {:todo, module, funcname} ->
         shared = agent_get({self, :shared})
         result = apply(module, funcname, [shared])
         agent_put({self, module, var}, {:done, result})
@@ -28,7 +28,8 @@ defmodule ESpec.Let.Impl do
 
   @doc "Resets stored let value and prepares for evaluation. Called by ExampleRunner."
   def run_before(let) do
-    agent_put({self, let.module, let.var}, {:todo, let.function})
+    agent_module = if let.shared, do: let.shared_module, else: let.module
+    agent_put({self, agent_module, let.var}, {:todo, let.module, let.function})
   end
 
   @doc "Clears all let values for the given module. Called by ExampleRunner."
