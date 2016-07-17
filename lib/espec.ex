@@ -17,7 +17,6 @@ defmodule ESpec do
 
       import ESpec.Context
       @context [%ESpec.Context{ description: inspect(__MODULE__), module: __MODULE__, line: __ENV__.line, opts: unquote(args) }]
-      @defined_lets []
 
       import ESpec.ExampleHelpers
       import ESpec.DocTest, only: [doctest: 1, doctest: 2]
@@ -46,7 +45,6 @@ defmodule ESpec do
   defmacro __before_compile__(_env) do
     quote do
       def examples, do: Enum.reverse(@examples)
-      def defined_lets, do: @defined_lets
     end
   end
 
