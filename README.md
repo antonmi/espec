@@ -269,7 +269,7 @@ Pay attention to how `finally` blocks are defined and evaluated.
 ## `let` and `subject`
 `let` and `let!` have the same behaviour as in RSpec. Both defines memoizable functions in 'spec module'. The value will be cached across multiple calls in the same example but not across examples. `let` is not evaluated until the first time the function it defines is invoked. Use `let!` to force the  invocation before each example.
 
-The `shared` is available in 'lets' but neither `let` nor `let!` can modify the dictionary.
+The `shared` is available in `let`s but neither `let` nor `let!` can modify the dictionary.
 ```elixir
 defmodule SomeSpec do
   use ESpec
@@ -320,8 +320,8 @@ defmodule UseSharedSpec do
   include_examples(SharedSpec)
 end
 ```
-You can also use 'let' variables from parent module in shared examples.
-Use `let_overridable` macro to define 'lets' which will be overridden.
+You can also use `let` variables from parent module in shared examples.
+Use `let_overridable` macro to define `let`s which will be overridden.
 You can pass single atom, list of atoms, or keyword with default values.
 See examples below.
 ```elixir
