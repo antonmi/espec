@@ -23,11 +23,11 @@ defmodule ESpec.RefuteReceive do
 
   defp do_refute_receive(pattern, timeout) do
     binary = Macro.to_string(pattern)
-    ESpec.RefuteReceive.received?(pattern, binary, timeout)
+    ESpec.RefuteReceive.__refute_receive__(pattern, binary, timeout)
   end
 
   @doc false
-  def received?(pattern, binary, timeout \\ 100) do
+  def __refute_receive__(pattern, binary, timeout \\ 100) do
     quote do
       result =
         receive do
