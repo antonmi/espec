@@ -57,7 +57,9 @@ defmodule ESpec.DocExample do
   defp extract_from_moduledoc({_, doc}) when doc in [false, nil], do: []
 
   defp extract_from_moduledoc({line, doc}) do
-    extract_tests(line, doc)
+    for test <- extract_tests(line, doc) do
+      %{test | fun_arity: {:moduledoc, 0}}
+    end
   end
 
   defp extract_from_doc({_, _, _, _, doc}) when doc in [false, nil], do: []
