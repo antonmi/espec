@@ -1,29 +1,27 @@
-defmodule Enum.BeEmptyTest do
+defmodule String.BeBlankTest do
   use ExUnit.Case, async: true
 
   defmodule SomeSpec do
     use ESpec
 
+    subject "qwerty"
+
     context "Success" do
-      it do: expect([]).to be_empty
-      it do: expect([1,2,3]).to_not be_empty
-      it do: expect("").to be_empty
-      it do: expect("qwerty").to_not be_empty
+      it do: "" |> should(be_blank)
+      it do: "qwerty" |> should_not(be_blank)
     end
 
     context "Error" do
-      it do: expect([]).to_not be_empty
-      it do: expect([1,2,3]).to be_empty
-      it do: expect("").to_not be_empty
-      it do: expect("qwerty").to be_empty
+      it do: "" |> should_not(be_blank)
+      it do: "qwerty" |> should(be_blank)
     end
   end
 
   setup_all do
     examples = ESpec.Runner.run_examples(SomeSpec.examples)
     { :ok,
-      success: Enum.slice(examples, 0, 3),
-      errors: Enum.slice(examples, 4, 7)
+      success: Enum.slice(examples, 0, 1),
+      errors: Enum.slice(examples, 2, 3)
     }
   end
 

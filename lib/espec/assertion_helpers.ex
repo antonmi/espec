@@ -59,6 +59,7 @@ defmodule ESpec.AssertionHelpers do
   def end_with(value), do: {Assertions.String.EndWith, value}
   def be_printable(), do: {Assertions.String.BePrintable, []}
   def be_valid_string(), do: {Assertions.String.BeValidString, []}
+  def be_blank(), do: {Assertions.String.BeBlank, []}
 
   def have_key(value), do: {Assertions.Dict.HaveKey, value}
   def have_value(value), do: {Assertions.Dict.HaveValue, value}

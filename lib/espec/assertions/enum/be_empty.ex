@@ -3,8 +3,14 @@ defmodule ESpec.Assertions.Enum.BeEmpty do
   Defines 'be_empty' assertion.
 
   it do: expect(collection).to be_empty
+  it do: expect(string).to be_empty
   """
   use ESpec.Assertions.Interface
+
+  defp match(string, _data) when is_bitstring(string) do
+    result = String.length(string)
+    {result == 0, result}
+  end
 
   defp match(enum, _data) do
     result = Enum.count(enum)

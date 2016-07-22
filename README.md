@@ -216,7 +216,7 @@ defmodule SomeSpec do
 
     finally do: "This finally will not be run. Define 'finally' before the example"
   end
-end  
+end
 ```
 Note, that `finally` blocks must be defined before the example.
 You can configure 'global' `before` and `finally` in `spec_helper.exs`:
@@ -245,7 +245,7 @@ ESpec.start
 
 ESpec.configure fn(config) ->
   config.before fn -> {:shared, answer: 42} end         # shared == %{anwser: 42}
-  config.finally fn(shared) -> IO.puts shared.answer  end    # it will print 46   
+  config.finally fn(shared) -> IO.puts shared.answer  end    # it will print 46
 end
 ```
 `some_spec.exs`:
@@ -253,7 +253,7 @@ end
 defmodule SomeSpec do
   use ESpec
 
-  before do: {:shared, answer: shared.answer + 1}          # shared == %{anwser: 43}       
+  before do: {:shared, answer: shared.answer + 1}          # shared == %{anwser: 43}
   finally do: {:shared, answer: shared.answer + 1}         # shared == %{anwser: 46}
 
   context do
@@ -280,7 +280,7 @@ defmodule SomeSpec do
 
   it do: expect a |> to(eq 1)
   it do: expect b |> to(eq 2)
-end  
+end
 ```
 `subject` and `subject!` are just aliases for `let :subject, do: smth` and `let! :subject, do: smth`. You can use `is_expected` macro (or a simple `should` expression) when `subject` is defined.
 ```elixir
@@ -438,13 +438,15 @@ expect string |> to(have_first value)  #String.first(string) == value
 ... have_last value                   #String.last(string) == value
 ... start_with value                  #String.starts_with?(string, value)
 ... end_with value                    #String.end_with?(string, value)
-... have value                        #String.contains?(string, value)    
+... have value                        #String.contains?(string, value)
 ... have_at pos, value                #String.at(string, pos) == value
-... have_length value                 #Stirng.length(string) == value
+... have_length value                 #String.length(string) == value
 ... have_size value                   #alias
 ... have_count value                  #alias
 ... be_valid_string                   #String.valid?(string)
 ... be_printable                      #String.printable?(string)
+... be_blank                          #String.length(string) == 0
+... be_empty                          #String.length(string) == 0
 ```
 #### Dict
 ```elixir
@@ -601,7 +603,7 @@ defmodule SomeSpec do
   it "raises exception when does not match" do
     expect(fn -> SomeModule.func({:wrong, :args}) end)
     |> to(raise_exception FunctionClauseError)
-  end  
+  end
 end
 ```
 Behind the scenes 'allow accept' makes the following:
@@ -649,7 +651,7 @@ defmodule SomeSpec do
   before do
     allow SomeModule |> to(accept :func, fn(a,b) -> a+b end)
     SomeModule.func(1, 2)
-  end  
+  end
 
   it do: expect SomeModule |> to(accepted :func)
   it do: expect SomeModule |> to(accepted :func, [1,2])
@@ -715,7 +717,7 @@ The functionality is implemented by two modules:
 defmodule SomeSpec do
   use ESpec
   doctest MySuperModule
-end  
+end
 ```
 There are three options (similar to `ExUnit.DocTest`):
 
@@ -724,7 +726,7 @@ There are three options (similar to `ExUnit.DocTest`):
 defmodule SomeSpec do
   use ESpec
   doctest MySuperModule, except: [fun: 1, func: 2]
-end  
+end
 ```
 `:only` — generate specs only for functions listed (list of {function, arity} tuples).
 
@@ -740,12 +742,12 @@ iex> Enum.map [1, 2, 3], fn(x) ->
 ...> end
 [2,4,6]
 """
-```  
+```
 Such examples will be converted to:
 ```elixir
 it "Example description" do
   expect input |> to(eq output)
-end  
+end
 ```
 - Examples which return complex structure so Elixir prints it as `#Name<...>.`:
 ```elixir
