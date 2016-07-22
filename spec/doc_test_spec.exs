@@ -1,4 +1,9 @@
 defmodule ESpec.DocTestTest.Mod1 do
+  @moduledoc """
+    iex> 2 + 2
+    4
+  """
+  
   @doc """
     iex> Enum.map [1, 2, 3], fn(x) ->
     ...>   x * 2
