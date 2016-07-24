@@ -1,4 +1,4 @@
-defmodule ESpec.Assertions.Dict.HaveKeySpec do
+defmodule ESpec.Assertions.Map.HaveKeySpec do
   use ESpec, async: true
 
   subject %{a: 1, b: 2}

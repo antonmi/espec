@@ -1,4 +1,4 @@
-defmodule ESpec.Assertions.Dict.HaveValue do
+defmodule ESpec.Assertions.Map.HaveValue do
   @moduledoc """
   Defines 'have_value' assertion.
 
@@ -7,7 +7,7 @@ defmodule ESpec.Assertions.Dict.HaveValue do
   use ESpec.Assertions.Interface
 
   defp match(dict, val) do
-    result = Enum.member?(Dict.values(dict), val)
+    result = Enum.member?(Map.values(dict), val)
     {result, result}
   end
 

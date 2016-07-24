@@ -1,4 +1,4 @@
-defmodule ESpec.Assertions.Dict.HaveKey do
+defmodule ESpec.Assertions.Map.HaveKey do
   @moduledoc """
   Defines 'have_key' assertion.
 
@@ -7,7 +7,7 @@ defmodule ESpec.Assertions.Dict.HaveKey do
   use ESpec.Assertions.Interface
 
   defp match(dict, val) do
-    result = Dict.has_key?(dict, val)
+    result = Map.has_key?(dict, val)
     {result, result}
   end
 

@@ -1,4 +1,4 @@
-defmodule Dict.HaveKeyTest do
+defmodule Map.HaveValueTest do
   use ExUnit.Case, async: true
 
   defmodule SomeSpec do
@@ -7,13 +7,13 @@ defmodule Dict.HaveKeyTest do
     subject %{a: 1, b: 2}
     
     context "Success" do
-      it do: should have_key :a
-      it do: should_not have_key :c
+      it do: should have_value 1
+      it do: should_not have_value 3
     end
 
     context "Error" do
-      it do: should_not have_key :a
-      it do: should have_key :c
+      it do: should_not have_value 1
+      it do: should have_value 3
     end
   end
 

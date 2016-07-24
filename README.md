@@ -448,10 +448,10 @@ expect string |> to(have_first value)  #String.first(string) == value
 ... be_blank                          #String.length(string) == 0
 ... be_empty                          #String.length(string) == 0
 ```
-#### Dict
+#### Map
 ```elixir
-expect dict |> to(have_key value)    #Dict.has_key?(value)
-expect dict |> to(have_value value)  #Enum.member?(Dict.values(dict), value)
+expect map |> to(have_key value)    #Map.has_key?(value)
+expect map |> to(have_value value)  #Enum.member?(Map.values(dict), value)
 ```
 
 #### Type checking
