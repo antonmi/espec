@@ -200,7 +200,9 @@ mix espec spec/some_spec.exs --string 'context with tag'
 ## `before` and `finally`
 `before` blocks are evaluated before the example and `finally` runs after the example.
 
-The blocks can return `{:shared, key: value, ...}` or (like in ExUnit) `{:ok, key: value, ...}`, so the keyword list will be saved in the dictionary and can be accessed in other `before` blocks, in the example, and in `finally` blocks through ['shared`](#shared):
+The blocks can return `{:shared, key: value, ...}` or (like in ExUnit) `{:ok, key: value, ...}`, so the keyword list will be saved in the dictionary and can be accessed in other `before` blocks, in the example, and in `finally` blocks through ['shared`](#shared).
+You can also use map as a second term in returned tuple: `{:shared, %{key: value, ...}}.
+Example:
 ```elixir
 defmodule SomeSpec do
   use ESpec
@@ -208,7 +210,7 @@ defmodule SomeSpec do
   before do: {:shared, a: 1}
 
   context "Context" do
-    before do: {:shared, b: shared[:a] + 1}
+    before do: {:shared, %{b: shared[:a] + 1}}
     finally do: "#{shared[:b]} == 2"
 
     it do: shared.a |> should(eq 1)

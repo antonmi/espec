@@ -24,6 +24,13 @@ defmodule BeforeSpec do
       it do: expect(shared.c).to eq("D2 before")
     end
 
+    describe "With map" do
+      before do: {:shared, %{a: 1, b: 2}}
+
+      it do: expect(shared.a).to eq(1)
+      it do: expect(shared.b).to eq(2)
+    end
+
     describe "Not valid" do
       before do: {:shared, [%{a: 1, b: 2}]}
 
@@ -54,7 +61,7 @@ defmodule BeforeSpec do
   context "many before blocks" do
     before do: { :ok, a: "a" }
     before do: { :shared, a: "aa", b: "b"}
-    before do: { :ok, a: "aaa", b: "bbb", c: "ccc"}
+    before do: { :ok, %{a: "aaa", b: "bbb", c: "ccc"}}
 
     it do: expect(shared.a).to eq("aaa")
     it do: expect(shared.b).to eq("bbb")

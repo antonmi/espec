@@ -194,8 +194,8 @@ defmodule ESpec.ExampleRunner do
 
   defp fill_dict(map, res) do
     case res do
-      {key, list} when key in @dict_keys and is_list(list) ->
-        if Keyword.keyword?(list) do
+      {key, list} when key in @dict_keys and (is_list(list) or is_map(list)) ->
+        if Keyword.keyword?(list) || is_map(list) do
           Enum.reduce(list, map, fn({k,v}, a) -> Map.put(a, k, v) end)
         else
           map
