@@ -479,9 +479,10 @@ expect function |> to(raise_exception ErrorModule, "message")
 expect function |> to(throw_term)
 expect function |> to(throw_term term)
 ```
-#### Change state
+#### Change function's return value
 Test if call of function1 change the function2 returned value to smth or from to smth
 ```elixir
+expect function1 |> to(change function2)
 expect function1 |> to(change function2, to)
 expect function1 |> to(change function2, from, to)
 ```

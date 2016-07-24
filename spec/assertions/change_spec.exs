@@ -13,6 +13,11 @@ defmodule ChangeSpec do
 
   context "Success" do
     it "checks success with `to`" do
+      message = expect(f1).to change(f2)
+      expect(message) |> to(end_with "changes the value of `&ChangeSpec.count/0`.")
+    end
+
+    it "checks success with `to`" do
       message = expect(f1).to change(f2, 1)
       expect(message) |> to(end_with "changes the value of `&ChangeSpec.count/0` to `1`.")
     end
@@ -24,6 +29,24 @@ defmodule ChangeSpec do
   end
 
   context "Error" do
+    it "checks error with `to` for change" do
+      try do
+        expect(f1).to change(f3)
+      rescue
+        error in [ESpec.AssertionError] ->
+          expect(error.message) |> to(end_with "but it didn't change.")
+      end
+    end
+
+    it "checks error with `not_to` for change" do
+      try do
+        expect(f1).not_to change(f2)
+      rescue
+        error in [ESpec.AssertionError] ->
+          expect(error.message) |> to(end_with "but it changed.")
+      end
+    end
+
     it "checks error with `to` for change_to" do
       try do
         expect(f1).to change(f2, 2)
