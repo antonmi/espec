@@ -15,6 +15,7 @@ defmodule ESpec.Configuration do
     out_file: "Output file",
     focus: "Run only examples with [focus: true]",
     order: "Run specs in the order in which they are declared",
+    sync: "Ignore async tag and run all specs synchronously",
     only: "Run only tests that match the filter",
     exclude: "Exclude tests that match the filter",
     string: "Run only examples whose full nested descriptions contain string",

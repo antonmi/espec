@@ -55,6 +55,7 @@ defmodule Mix.Tasks.Espec do
     * `--focus`      - run examples with `focus` only
     * `--silent`     - no output
     * `--order`      - run examples in the order in which they are declared
+    * `--sync`       - run all specs synchronously ignoring 'async' tag
     * `--format`     - choose formatter ('doc', 'html', 'json')
     * `--out`        - write output to a file instead of $stdout.
     * `--trace`      - alias for `--format=doc`
