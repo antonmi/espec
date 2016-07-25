@@ -21,7 +21,7 @@ defmodule ESpec.Example do
   duration - test duration.
   """
   defstruct description: "", module: nil, function: nil, opts: [],
-            file: nil, line: nil, context: [], shared: false, async: false,
+            file: nil, line: nil, context: [], shared: false,
             status: :new, result: nil, error: nil, duration: 0
 
   @doc "Context descriptions."
@@ -46,10 +46,9 @@ defmodule ESpec.Example do
   def extract_finallies(example), do: extract(example.context, ESpec.Finally)
   def extract_contexts(example), do: extract(example.context, ESpec.Context)
 
-  @doc "Extracts example options."
+  @doc "Extracts example option."
   def extract_option(example, option) do
-    contexts = ESpec.Example.extract_contexts(example)
-    opts = List.flatten(example.opts ++ Enum.reverse(Enum.map(contexts, &(&1.opts))))
+    opts = extract_options(example)
     opt = Enum.find(opts, fn({k, _v}) -> k == option end)
     if opt do
      {^option, value} = opt
@@ -57,6 +56,12 @@ defmodule ESpec.Example do
     else
       nil
     end
+  end
+
+  @doc "Extracts example options."
+  def extract_options(example) do
+    contexts = ESpec.Example.extract_contexts(example)
+    List.flatten(example.opts ++ Enum.reverse(Enum.map(contexts, &(&1.opts))))
   end
 
   def extract(context, module) do

@@ -50,8 +50,13 @@ defmodule ESpec.ExampleRunner do
     end
   end
 
+  defp initial_shared(example) do
+    Example.extract_options(example)
+    |> Enum.into(%{})
+  end
+
   defp before_example_actions(example) do
-    {%{}, example}
+    {initial_shared(example), example}
     |> run_config_before
     |> run_befores_and_lets
   end
@@ -111,7 +116,11 @@ defmodule ESpec.ExampleRunner do
   defp run_config_before({assigns, example}) do
     func = ESpec.Configuration.get(:before)
     if func do
-      fun = fn -> {fill_dict(assigns, func.()), example} end
+      fun = if is_function(func, 1) do
+        fn -> {fill_dict(assigns, func.(assigns)), example} end
+      else
+        fn -> {fill_dict(assigns, func.()), example} end
+      end
       call_with_rescue(fun, {assigns, example})
     else
       {assigns, example}

@@ -20,24 +20,10 @@ defmodule EspecInitTest do
 
   test "check files" do
     assert File.regular?(Path.join(@tmp_path, "spec/spec_helper.exs"))
-    assert File.regular?(Path.join(@tmp_path, "spec/example_spec.exs"))
-  end
-
-  @tag skip_examples: true
-  test "skip of examples" do
-    assert File.regular?(Path.join(@tmp_path, "spec/spec_helper.exs"))
-    refute File.regular?(Path.join(@tmp_path, "spec/example_spec.exs"))
   end
 
   test "spec_helper content" do
     {:ok, content} = File.read(Path.join(@tmp_path, "spec/spec_helper.exs"))
     assert content =~ "ESpec.config"
-  end
-
-  test "example_spec content" do
-    {:ok, content} = File.read(Path.join(@tmp_path, "spec/example_spec.exs"))
-    assert content =~ "use ESpec"
-    assert content =~ "describe"
-    assert content =~ "it"
   end
 end

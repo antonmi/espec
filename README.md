@@ -65,7 +65,7 @@ Then run:
 ```sh
 MIX_ENV=test mix espec.init
 ```
-The task creates `spec/spec_helper.exs` and `spec/example_spec.exs`.
+The task creates `spec/spec_helper.exs`
 
 Set `preferred_cli_env` for `espec` in the `mix.exs` file:
 
@@ -223,14 +223,24 @@ end
 Note, that `finally` blocks must be defined before the example.
 You can configure 'global' `before` and `finally` in `spec_helper.exs`:
 ```elixir
-ESpec.start
-
 ESpec.configure fn(config) ->
-  config.before fn -> {:shared, answer: 42} end  #can assign values in dictionary
+  config.before fn(tags) -> {:shared, answer: 42, tags: tags} end  #can assign values in dictionary
   config.finally fn(shared) -> shared.answer  end     #can access assigns
 end
 ```
 These functions will be called before and after each example which ESpec runs.
+
+`config.before` accepts example tags as an argument. So all example tags (including tags from parent contexts) are available in `config.before`. This allows you to run some specific pre-configuration based on tags.
+```elixir
+ESpec.configure fn(config) ->
+  config.before fn(tags) ->
+    if tags[:async] || tags[:custom_tag] == :do_like_async
+      PrepareAsyncExecution.setup
+    end
+    {:shared, tags: tags}
+  end
+end
+```
 
 ## 'shared' data
 `shared` is used to share data between spec blocks. You can access data by `shared.some_key` or `shared[:some_key]`.
