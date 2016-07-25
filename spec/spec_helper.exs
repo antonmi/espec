@@ -1,5 +1,7 @@
 ESpec.configure fn(config) ->
-  config.before fn -> {:ok, answer: 42} end
+  config.before fn(_tags) ->
+    {:ok, %{answer: 42}}
+  end
   config.finally fn(shared) -> shared.answer end
 end
 

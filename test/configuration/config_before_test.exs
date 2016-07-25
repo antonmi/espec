@@ -8,9 +8,9 @@ defmodule ConfigBeforeTest do
   end
 
   test "set before in config" do
-    assert(ESpec.Configuration.get(:before).() == {:shared, answer: 42})
+    assert(is_function ESpec.Configuration.get(:before))
   end
-  
+
   defmodule SomeSpec do
     use ESpec
 
