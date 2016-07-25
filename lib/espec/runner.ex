@@ -67,8 +67,12 @@ defmodule ESpec.Runner do
 
   @doc "Runs examples."
   def run_examples(examples) do
-    {async, sync} = partition_async(examples)
-    run_async(async) ++ run_sync(sync)
+    if Configuration.get(:sync) do
+      run_sync(examples)
+    else
+      {async, sync} = partition_async(examples)
+      run_async(async) ++ run_sync(sync)
+    end
   end
 
   @doc false
