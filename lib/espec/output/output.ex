@@ -76,6 +76,7 @@ defmodule ESpec.Output do
       format == "json" -> {ESpec.Output.Json, %{}}
       format == "html" -> {ESpec.Output.Html, %{}}
       format == "doc" -> {ESpec.Output.Doc, %{details: true}}
+      format == "pride" -> {ESpec.Output.Pride, %{}}
       true -> {ESpec.Output.Doc, %{}}
     end
   end
