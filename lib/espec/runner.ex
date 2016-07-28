@@ -198,6 +198,6 @@ defmodule ESpec.Runner do
       is_binary(conf_seed) -> String.to_integer(conf_seed)
     end
 
-    :random.seed({3172, 9814, seed})
+    :rand.seed(:exs64, {3172, 9814, seed})
   end
 end
