@@ -56,6 +56,8 @@ defmodule ESpec.AssertionHelpers do
   def have_hd(value), do: {Assertions.List.HaveHd, value}
   def have_tl(value), do: {Assertions.List.HaveTl, value}
 
+  def have_byte_size(value), do: {Assertions.Binary.HaveByteSize, value}
+
   def start_with(value), do: {Assertions.String.StartWith, value}
   def end_with(value), do: {Assertions.String.EndWith, value}
   def be_printable(), do: {Assertions.String.BePrintable, []}
