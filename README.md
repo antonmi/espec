@@ -444,6 +444,10 @@ expect list |> to(have_first value)  #List.first(list) == value
 ... have_hd value                   #hd(list) == value
 ... have_tl value                   #tl(list) == value
 ```
+#### Binary
+```elixir
+expect binary |> to(have_byte_size value) #byte_size(binary) == value
+```
 #### String
 ```elixir
 expect string |> to(have_first value)  #String.first(string) == value
