@@ -25,7 +25,7 @@ defmodule ThowTermTest do
   end
 
   setup_all do
-    examples = ESpec.Runner.run_examples(SomeSpec.examples)
+    examples = ESpec.Runner.run_examples(SomeSpec.examples, true)
     { :ok,
       success: Enum.slice(examples, 0, 2),
       errors: Enum.slice(examples, 4, 6)

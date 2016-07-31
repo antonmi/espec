@@ -19,7 +19,7 @@ defmodule PendingExampleTest do
 
   setup_all do
     ESpec.Configuration.add([focus: true])
-    examples = ESpec.Runner.run_examples(SomeSpec.examples)
+    examples = ESpec.Runner.run_examples(SomeSpec.examples, true)
     {:ok,
       ex1: Enum.at(examples, 0),
       ex2: Enum.at(examples, 1),

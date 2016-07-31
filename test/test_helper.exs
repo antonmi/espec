@@ -1,5 +1,4 @@
 ESpec.start()
-
 ExUnit.start()
 
 ESpec.configure fn(config) ->

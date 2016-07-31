@@ -7,10 +7,15 @@ defmodule ESpec.Runner do
   alias ESpec.Configuration
   alias ESpec.Example
   alias ESpec.ExampleRunner
+  alias __MODULE__.Queue
+
+  @max_async_count :erlang.system_info(:schedulers_online)
 
   @doc "Starts the `ESpec.Runner` server"
   def start do
     GenServer.start_link(__MODULE__, [], name: __MODULE__)
+    Queue.start(:input)
+    Queue.start(:output)
   end
 
   @doc "Initiate the `ESpec.Runner` server with specs and options"
@@ -33,6 +38,8 @@ defmodule ESpec.Runner do
 
   @doc false
   def handle_call(:stop, _pid, _state) do
+    Queue.stop(:input)
+    Queue.stop(:output)
     {:stop, :normal, :ok, []}
   end
 
@@ -66,8 +73,8 @@ defmodule ESpec.Runner do
   end
 
   @doc "Runs examples."
-  def run_examples(examples) do
-    if Configuration.get(:sync) do
+  def run_examples(examples, sync \\ Configuration.get(:sync)) do
+    if sync do
       run_sync(examples)
     else
       {async, sync} = partition_async(examples)
@@ -81,9 +88,24 @@ defmodule ESpec.Runner do
   end
 
   defp run_async(examples) do
-    examples
-    |> Enum.map(&Task.async(fn -> ExampleRunner.run(&1) end))
+    Enum.each(examples, &Queue.push(:input, &1))
+    do_run_async
+    Queue.all(:output)
+  end
+
+  defp do_run_async do
+    Enum.map(1..@max_async_count, fn(_) ->
+      Task.async(fn -> spawn_task end)
+    end)
     |> Enum.map(&Task.await(&1, :infinity))
+  end
+
+  defp spawn_task do
+    if example = Queue.pop(:input) do
+      example = ExampleRunner.run(example)
+      Queue.push(:output, example)
+      spawn_task
+    end
   end
 
   defp run_sync(examples), do: Enum.map(examples, &ExampleRunner.run(&1))
@@ -199,5 +221,22 @@ defmodule ESpec.Runner do
     end
 
     :rand.seed(:exs64, {3172, 9814, seed})
+  end
+
+  defmodule Queue do
+    def push(name, el), do: Agent.update(name, &[el | &1])
+
+    def pop(name) do
+      Agent.get_and_update(name, fn(state) ->
+        case state do
+          [el | tail] -> {el, tail}
+          [] -> {nil, []}
+        end
+      end)
+    end
+
+    def all(name), do: Agent.get(name, &(&1))
+    def start(name), do: Agent.start_link(fn -> [] end, name: name)
+    def stop(name), do: Agent.stop(name)
   end
 end
