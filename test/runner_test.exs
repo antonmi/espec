@@ -17,7 +17,7 @@ defmodule RunnerTest do
   end
 
   test "run_examples" do
-    examples = ESpec.Runner.run_examples(SomeSpec.examples)
+    examples = ESpec.Runner.run_examples(SomeSpec.examples, true)
     assert(List.first(examples).status == :success)
     assert(List.last(examples).status == :success)
   end

@@ -32,7 +32,7 @@ defmodule SharedSpecsTest do
   end
 
   setup_all do
-    examples = ESpec.Runner.run_examples(UseSharedSpecSpec.examples)
+    examples = ESpec.Runner.run_examples(UseSharedSpecSpec.examples, true)
     { :ok, examples: examples }
   end
 

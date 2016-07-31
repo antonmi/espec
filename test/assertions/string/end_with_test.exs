@@ -34,7 +34,7 @@ defmodule String.EndWithTest do
   end
 
   setup_all do
-    examples = ESpec.Runner.run_examples(SomeSpec.examples)
+    examples = ESpec.Runner.run_examples(SomeSpec.examples, true)
     { :ok,
       success: Enum.slice(examples, 0, 3),
       errors: Enum.slice(examples, 4, 7)

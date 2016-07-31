@@ -74,8 +74,8 @@ defmodule AssertReceiveSpec do
           assert_received :hello
         rescue
           error in [ESpec.AssertionError] ->
-            message = "Expected to receive `\":hello\"` but it doesn't.\n\tPinned variables: []\n\tProcess mailbox:\n\t"
-            expect(error.message) |> to(eq message)
+            message = "Expected to receive `\":hello\"` but it doesn't.\n\tPinned variables: []\n\tProcess mailbox:"
+            expect(error.message) |> to(start_with message)
         end
       end
 
@@ -85,8 +85,8 @@ defmodule AssertReceiveSpec do
           assert_received :hello
         rescue
           error in [ESpec.AssertionError] ->
-            message = "Expected to receive `\":hello\"` but it doesn't.\n\tPinned variables: []\n\tProcess mailbox:\n\t:another_message"
-            expect(error.message) |> to(eq message)
+            message = "Expected to receive `\":hello\"` but it doesn't.\n\tPinned variables: []\n\tProcess mailbox:"
+            expect(error.message) |> to(start_with message)
         end
       end
     end
