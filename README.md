@@ -1,6 +1,7 @@
 # ESpec
 [![Build Status](https://travis-ci.org/antonmi/espec.svg?branch=master)](https://travis-ci.org/antonmi/espec)
 [![Hex.pm](https://img.shields.io/hexpm/v/espec.svg?style=flat-square)](https://hex.pm/packages/espec)
+[![Codewake](https://www.codewake.com/badges/ask_question.svg)](https://www.codewake.com/p/espec)
 
 ##### ESpec is a BDD testing framework for Elixir.
 
