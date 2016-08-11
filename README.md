@@ -249,7 +249,7 @@ end
 
 The `shared` variable appears in your `before`, `finally`, in `config.before` and `config.finally`, in `let` and `example` blocks.
 
-`before` and `finally` blocks (including 'global') can modify the dictionay when return `{:shared, key: value}`.
+`before` and `finally` blocks (including 'global') can modify the dictionary when return `{:shared, key: value}`.
 The example bellow illustrate the life-cycle of `shared`:
 
 `spec_helper.exs`
@@ -280,7 +280,7 @@ So, 'config.finally' will print `46`.
 Pay attention to how `finally` blocks are defined and evaluated.
 
 ## `let` and `subject`
-`let` and `let!` have the same behaviour as in RSpec. Both defines memoizable functions in 'spec module'. The value will be cached across multiple calls in the same example but not across examples. `let` is not evaluated until the first time the function it defines is invoked. Use `let!` to force the  invocation before each example.
+`let` and `let!` have the same behaviour as in RSpec. Both defines memoizable functions in 'spec module'. The value will be cached across multiple calls in the same example but not across examples. `let` is not evaluated until the first time the function it defines is invoked. Use `let!` to force the invocation before each example.
 
 The `shared` is available in `let`s but neither `let` nor `let!` can modify the dictionary.
 ```elixir
@@ -358,7 +358,7 @@ defmodule SharedSpec do
     expect(d).to eq(nil)
   end
 
-  it "does not ovveride internal 'lets'" do
+  it "does not override internal 'lets'" do
     expect(internal_value)
   end
 end
