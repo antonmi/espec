@@ -25,7 +25,7 @@ defmodule ESpec.Let do
       Enum.map(keywords, &do_let(&1, nil, true))
     end
   end
-  
+
   defmacro let_overridable(var), do: do_let(var, nil, true)
 
   defp do_let(var, block, shared \\ false) do
@@ -96,6 +96,46 @@ defmodule ESpec.Let do
   """
   defmacro subject!(var, do: block) do
     quote do: let!(unquote(var), do: unquote(block))
+  end
+
+  @doc """
+  Defines 'let' for success result tuple.
+  """
+  defmacro let_ok(var, do: block) do
+    do_result_let(var, block, :ok, false)
+  end
+
+  @doc """
+  Defines 'let!' for success result tuple.
+  """
+  defmacro let_ok!(var, do: block) do
+    do_result_let(var, block, :ok, true)
+  end
+
+  @doc """
+  Defines 'let' for error result tuple.
+  """
+  defmacro let_error(var, do: block) do
+    do_result_let(var, block, :error, false)
+  end
+
+  @doc """
+  Defines 'let!' for error result tuple.
+  """
+  defmacro let_error!(var, do: block) do
+    do_result_let(var, block, :error, true)
+  end
+
+  defp do_result_let(var, block, key, bang?) do
+    new_block = quote do
+      {unquote(key), result} = unquote(block)
+      result
+    end
+    if bang? do
+      quote do: let!(unquote(var), do: unquote(new_block))
+    else
+      quote do: let(unquote(var), do: unquote(new_block))
+    end
   end
 
   @doc false
