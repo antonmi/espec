@@ -311,6 +311,13 @@ defmodule SomeSpec do
   end
 end
 ```
+There are helpers that can help you assign values from expressions that return {:ok, result} or {:error, result} tuples. For example, `File.read\1` returns {:ok, binary} or {:error, reason}.
+
+There are `let_ok` (`let_ok!`) and `let_error` (`let_error!`) functions that allow you assign values easily:
+```elixir
+let_ok :file_binary, do: File.read("file.txt")
+let_error :error_reason, do: File.read("error.txt")
+```
 ## Shared Examples
 One can reuse the examples defined in spec module.
 ```elixir
