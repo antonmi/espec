@@ -64,6 +64,14 @@ defmodule AssertReceiveSpec do
         send(self(), {:hello, :world})
         guard_world = :world
         message = assert_received {:hello, world} when world == guard_world
+        expect(world) |> to(eq guard_world)
+        expect(message) |> to(eq "Received `{:hello, :world}`.")
+      end
+
+      it "assert_receive with assigment" do
+        send(self(), {:hello, :world})
+        message = assert_receive {:hello, world}
+        expect(world) |> to(eq :world)
         expect(message) |> to(eq "Received `{:hello, :world}`.")
       end
     end

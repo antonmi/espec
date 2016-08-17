@@ -11,15 +11,15 @@ defmodule ESpec.Assertions.RefuteReceive do
   defp match(subject, pattern) do
     case subject do
       false -> {true, pattern}
-      pattern -> {false, pattern}
+      true -> {false, pattern}
     end
   end
 
   defp success_message(_subject, _pattern, result, _positive) do
-    "Have not received `#{inspect result}`."
+    "Have not received `#{result}`."
   end
 
   defp error_message(_subject, _pattern, result, _positive) do
-    "Expected not to receive `#{inspect result}`, but have received."
+    "Expected not to receive `#{result}`, but have received."
   end
 end

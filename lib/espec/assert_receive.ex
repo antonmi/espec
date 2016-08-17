@@ -43,16 +43,14 @@ defmodule ESpec.AssertReceive do
   def __assert_receive__(pattern, binary, vars, pins, timeout \\ 100) do
     quote do
       result =
-        try do
-          {received, unquote(vars)} =
-            receive do
-              unquote(pattern) -> {received, unquote(vars)}
-            after
-              unquote(timeout) -> raise AssertReceiveError
-            end
-        rescue AssertReceiveError ->
-          {:error, :timeout}
-        end
+        {received, unquote(vars)} =
+          receive do
+            unquote(pattern) -> {received, unquote(vars)}
+          after
+            unquote(timeout) ->
+              args = [unquote(binary), unquote(pins), ESpec.AssertReceive.__mailbox_messages__]
+              ExpectTo.to({AssertReceive, args}, {ExpectTo, {:error, :timeout}})
+          end
       args = [unquote(binary), unquote(pins), ESpec.AssertReceive.__mailbox_messages__]
       ExpectTo.to({AssertReceive, args}, {ExpectTo, result})
     end
