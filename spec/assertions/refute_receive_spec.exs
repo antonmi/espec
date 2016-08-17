@@ -5,26 +5,26 @@ defmodule RefuteReceiveSpec do
     context "Success" do
       it "refutes recieve with no message" do
         send(self, :another_hello)
-        message = refute_receive :hello_refute
-        expect(message) |> to(eq "Have not received `:hello_refute`.")
+        message = refute_receive :hello_refute_1
+        expect(message) |> to(eq "Have not received `:hello_refute_1`.")
       end
 
       it "refutes recieved with no message" do
         send(self, :another_hello)
-        message = refute_received :hello_refute
-        expect(message) |> to(eq "Have not received `:hello_refute`.")
+        message = refute_received :hello_refute_2
+        expect(message) |> to(eq "Have not received `:hello_refute_2`.")
       end
 
       it "refutes recieved with unbound variable" do
         send(self, :another_hello)
-        message = refute_received {_unbound, _variable}
-        expect(message) |> to(eq "Have not received `{_unbound, _variable}`.")
+        message = refute_received {_some, _unbound, _variable}
+        expect(message) |> to(eq "Have not received `{_some, _unbound, _variable}`.")
       end
 
       it "refutes recieved with _" do
         send(self, :another_hello)
-        message = refute_received {_, _}
-        expect(message) |> to(eq "Have not received `{_, _}`.")
+        message = refute_received {_, _, _, _}
+        expect(message) |> to(eq "Have not received `{_, _, _, _}`.")
       end
     end
 
