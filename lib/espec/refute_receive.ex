@@ -31,7 +31,7 @@ defmodule ESpec.RefuteReceive do
     quote do
       result =
         receive do
-          unquote(pattern) -> unquote(pattern)
+          unquote(pattern) -> true
         after
           unquote(timeout) -> false
         end
