@@ -40,6 +40,7 @@ It is NOT a wrapper around ExUnit but a completely new testing framework written
 - [Matchers](#matchers)
 - [`assert` and `refute`](#assert-and-refute)
 - [`assert_receive` and `refute_receive`](#assert_receive-and-refute_receive)
+- [`capture_io` and `capture_log`](#capture_io-and-capture_log)
 - [Custom matchers](#custom-matchers)
 - [`described_module`](#described_module)
 - [Mocks](#mocks)
@@ -85,7 +86,7 @@ MIX_ENV=test mix espec
 
 Place your `_spec.exs` files into `spec` folder. `use ESpec` in the 'spec module'.
 ```elixir
-defmodule SomeSpec do
+defmodule SyntaxExampleSpec do
   use ESpec
   it do: expect true |> to(be_true)
   it do: expect(1+1).to eq(2)
@@ -110,9 +111,9 @@ MIX_ENV=test mix help espec
 ## Context blocks
 There are three macros with the same functionality: `context`, `describe`, and `example_group`.
 
-Context can have description and options.
+Context can have description and tags.
 ```elixir
-defmodule SomeSpec do
+defmodule ContextSpec do
   use ESpec
 
   example_group do
@@ -126,16 +127,16 @@ defmodule SomeSpec do
   end
 end
 ```
-Available options are:
+Available tags are:
   * `skip: true` or `skip: "Reason"` - skips examples in the context;
   *  `focus: true` - sets focus to run with `--focus ` option.
 
 There are also `xcontext`, `xdescribe`, `xexample_group` macros to skip example groups.
 And `fcontext`, `fdescribe`, `fexample_group` for focused groups.
 
-'spec' module is also a context with module name as description. One can add options for this context after `use ESpec:`
+'spec' module is also a context with module name as description. One can add tags for this context after `use ESpec:`
 ```elixir
-defmodule SomeSpec do
+defmodule ContextTagsSpec do
   use ESpec, skip: "Skip all examples in the module"
   ...
 end
@@ -144,7 +145,8 @@ end
 
 `example`, `it`, and `specify` macros define the 'spec example'.
 ```elixir
-defmodule SomeSpec do
+defmodule ExampleAliasesSpec do
+  use ESpec
 
   example do: expect [1,2,3] |> to(have_max 3)
 
@@ -155,13 +157,13 @@ defmodule SomeSpec do
   specify "Test with options", [pending: true], do: "pending"
 end
 ```
-You can use `skip`, `pending` or `focus` options to control evaluation.
+You can use `skip`, `pending` or `focus` tags to control evaluation.
 There are also macros:
 * `xit`, `xexample`, `xspecify` - to skip;
 * `fit`, `fexample`, `fspecify`, `focus` - to focus;
 * `pending/1`, `example/1`, `it/1`, `specify/1` - for pending examples.
 ```elixir
-defmodule SomeSpec do
+defmodule ExampleTagsSpec do
   use ESpec
 
   xit "skip", do: "skipped"
@@ -177,7 +179,7 @@ The are `--only`, `--exclude` and `--string` command line options.
 
 One can tag example or context and then use `--only` or `--exclude` option to run (or exclude) tests with specific tag.
 ```elixir
-defmodule SomeSpec do
+defmodule FiltersSpec do
   use ESpec
 
   context "context with tag", context_tag: :some_tag do
@@ -205,7 +207,7 @@ The blocks can return `{:shared, key: value, ...}` or (like in ExUnit) `{:ok, ke
 You can also use map as a second term in returned tuple: `{:shared, %{key: value, ...}}.
 Example:
 ```elixir
-defmodule SomeSpec do
+defmodule BeforeAndFinallySpec do
   use ESpec
 
   before do: {:shared, a: 1}
@@ -263,7 +265,7 @@ end
 ```
 `some_spec.exs`:
 ```elixir
-defmodule SomeSpec do
+defmodule SharedBehaviorSpec do
   use ESpec
 
   before do: {:shared, answer: shared.answer + 1}          # shared == %{anwser: 43}
@@ -284,7 +286,7 @@ Pay attention to how `finally` blocks are defined and evaluated.
 
 The `shared` is available in `let`s but neither `let` nor `let!` can modify the dictionary.
 ```elixir
-defmodule SomeSpec do
+defmodule LetSpec do
   use ESpec
 
   before do: {:shared, a: 1}
@@ -297,7 +299,7 @@ end
 ```
 `subject` and `subject!` are just aliases for `let :subject, do: smth` and `let! :subject, do: smth`. You can use `is_expected` macro (or a simple `should` expression) when `subject` is defined.
 ```elixir
-defmodule SomeSpec do
+defmodule SubjectSpec do
   use ESpec
 
   subject(1+1)
@@ -370,7 +372,7 @@ defmodule SharedSpec do
   end
 end
 
-defmodule SomeSpec do
+defmodule LetOverridableSpec do
   use ESpec, async: true
 
   let :a, do: 1
@@ -520,7 +522,7 @@ expect {:error, :an_error} |> to(be_error_result)
 ## `assert` and `refute`
 If you are missing ExUnit `assert` and `refute`, ESpec has such functions as aliases to `be_truthy` and `be_falsy`
 ```elixir
-defmodule SomeSpec do
+defmodule AssertAndRefuteSpec do
   use ESpec
 
   it "asserts" do
@@ -546,8 +548,26 @@ end
 
 The default timeout for `assert_receive` and `refute_receive` is 100ms. You can pass custom timeout as a second argument.
 
+## `capture_io` and `capture_log`
+`capture_io` and `capture_log` are just copied from ExUnit and designed to test IO or Logger output:
 ```elixir
-defmodule SomeSpec do
+defmodule CaptureSpec do
+  use ESpec
+
+  it "tests capture_io" do
+    message = capture_io(fn -> IO.write "john" end)
+    message |> should(eq "john")
+  end
+
+  it "tests capture_log" do
+    message = capture_log(fn -> Logger.error "log msg" end)
+    expect message |> to(match "log msg")
+  end   
+end
+```
+
+```elixir
+defmodule AssertReceviveSpec do
   use ESpec
 
   it "demonstrates assert_received" do
@@ -591,7 +611,7 @@ end
 ESpec uses [Meck](https://github.com/eproxus/meck) to mock functions.
 You can mock the module with 'allow accept':
 ```elixir
-defmodule SomeSpec do
+defmodule MocksSpec do
   use ESpec
   context "with old syntax"
     before do: allow(SomeModule).to accept(:func, fn(a, b) -> a + b end)
@@ -607,7 +627,7 @@ end
 If you don't specify the function to return ESpec creates stubs with arity `0` and `1`:
 `fn -> end` and `fn(_) -> end`, which return `nil`.
 ```elixir
-defmodule SomeSpec do
+defmodule DefaultMocksSpec do
   use ESpec
   before do: allow SomeModule |> to(accept :func)
   it do: expect SomeModule.func |> to(be_nil)
@@ -616,7 +636,7 @@ end
 ```
 You can also use pattern matching in your mocks:
 ```elixir
-defmodule SomeSpec do
+defmodule PatternMockSpec do
   use ESpec
   before do
     args = {:some, :args}
@@ -671,7 +691,7 @@ So, the options are:
 - test the count of function calls.
 
 ```elixir
-defmodule SomeSpec do
+defmodule MockOptionsSpec do
   use ESpec
   before do
     allow SomeModule |> to(accept :func, fn(a,b) -> a+b end)
@@ -739,7 +759,7 @@ The functionality is implemented by two modules:
 `ESpec.DocExample` functions is just copy-paste of `ExUnit.Doctest` parsing functionality.
 `ESpec.DocTest` implement `doctest` macro which identical to `ExUnit` analogue.
 ```elixir
-defmodule SomeSpec do
+defmodule DoctestSpec do
   use ESpec
   doctest MySuperModule
 end
@@ -748,7 +768,7 @@ There are three options (similar to `ExUnit.DocTest`):
 
 `:except` - generate specs for all functions except those listed (list of {function, arity} tuples).
 ```elixir
-defmodule SomeSpec do
+defmodule DoctestOptionsSpec do
   use ESpec
   doctest MySuperModule, except: [fun: 1, func: 2]
 end

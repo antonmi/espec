@@ -38,6 +38,8 @@ defmodule ESpec do
       import ESpec.Let
 
       import ExUnit.CaptureIO
+      import ExUnit.CaptureLog
+
       use ESpec.DescribedModule
     end
   end
@@ -70,6 +72,7 @@ defmodule ESpec do
     ESpec.Let.Impl.start_agent
     ESpec.Mock.start_agent
     ESpec.Output.start
+    start_capture_server
   end
 
   @doc "Stops ESpec components"
@@ -79,6 +82,7 @@ defmodule ESpec do
     ESpec.Mock.stop_agent
     ESpec.Runner.stop
     ESpec.Output.stop
+    stop_capture_server
   end
 
   @doc "Returns all examples."
@@ -89,4 +93,12 @@ defmodule ESpec do
 
   defp start_specs_agent, do: Agent.start_link(fn -> [] end, name: @spec_agent_name)
   def stop_specs_agent, do: Agent.stop(@spec_agent_name)
+
+  defp start_capture_server do
+    unless GenServer.whereis(ExUnit.CaptureServer), do: ExUnit.CaptureServer.start_link()
+  end
+
+  defp stop_capture_server do
+    if GenServer.whereis(ExUnit.CaptureServer), do: GenServer.stop(ExUnit.CaptureServer)
+  end
 end
