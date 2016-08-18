@@ -1,5 +1,5 @@
-ESpec.start()
 ExUnit.start()
+ESpec.start()
 
 ESpec.configure fn(config) ->
   config.silent true
