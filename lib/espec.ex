@@ -95,10 +95,14 @@ defmodule ESpec do
   def stop_specs_agent, do: Agent.stop(@spec_agent_name)
 
   defp start_capture_server do
-    unless GenServer.whereis(ExUnit.CaptureServer), do: ExUnit.CaptureServer.start_link()
+    if Code.ensure_loaded?(ExUnit.CaptureServer) do
+      unless GenServer.whereis(ExUnit.CaptureServer), do: ExUnit.CaptureServer.start_link()
+    end
   end
 
   defp stop_capture_server do
-    if GenServer.whereis(ExUnit.CaptureServer), do: GenServer.stop(ExUnit.CaptureServer)
+    if Code.ensure_loaded?(ExUnit.CaptureServer) do
+      if GenServer.whereis(ExUnit.CaptureServer), do: GenServer.stop(ExUnit.CaptureServer)
+    end
   end
 end

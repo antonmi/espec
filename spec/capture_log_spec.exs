@@ -8,19 +8,21 @@ defmodule CaptureLogSpec do
     capture_log(fn -> Logger.error "log msg" end)
   end
 
-  it do: expect message |> to(match "log msg")
+  if Code.ensure_loaded?(ExUnit.CaptureServer) do
+    it do: expect message |> to(match "log msg")
 
-  context "with multiple concurrent captures" do
-    let :fun do
-      fn ->
-        for msg <- ["hello", "hi"] do
-          assert capture_log(fn -> Logger.error msg end) =~ msg
+    context "with multiple concurrent captures" do
+      let :fun do
+        fn ->
+          for msg <- ["hello", "hi"] do
+            assert capture_log(fn -> Logger.error msg end) =~ msg
+          end
+          Logger.debug "testing"
         end
-        Logger.debug "testing"
       end
-    end
 
-    it do: expect capture_log(fun) |> to(match "hello")
-    it do: expect capture_log(fun) |> to(match "testing")
+      it do: expect capture_log(fun) |> to(match "hello")
+      it do: expect capture_log(fun) |> to(match "testing")
+    end
   end
 end
