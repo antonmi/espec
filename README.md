@@ -547,25 +547,6 @@ end
 `refute_received` asserts that a message was not received (`refute_receive` with 0 timeout).
 
 The default timeout for `assert_receive` and `refute_receive` is 100ms. You can pass custom timeout as a second argument.
-
-## `capture_io` and `capture_log`
-`capture_io` and `capture_log` are just copied from ExUnit and designed to test IO or Logger output:
-```elixir
-defmodule CaptureSpec do
-  use ESpec
-
-  it "tests capture_io" do
-    message = capture_io(fn -> IO.write "john" end)
-    message |> should(eq "john")
-  end
-
-  it "tests capture_log" do
-    message = capture_log(fn -> Logger.error "log msg" end)
-    expect message |> to(match "log msg")
-  end   
-end
-```
-
 ```elixir
 defmodule AssertReceviveSpec do
   use ESpec
@@ -587,7 +568,23 @@ defmodule AssertReceviveSpec do
   end
 end
 ```
+## `capture_io` and `capture_log`
+`capture_io` and `capture_log` are just copied from ExUnit and designed to test IO or Logger output:
+```elixir
+defmodule CaptureSpec do
+  use ESpec
 
+  it "tests capture_io" do
+    message = capture_io(fn -> IO.write "john" end)
+    message |> should(eq "john")
+  end
+
+  it "tests capture_log" do
+    message = capture_log(fn -> Logger.error "log msg" end)
+    expect message |> to(match "log msg")
+  end   
+end
+```
 ## Custom matchers
 You can define your own matchers!
 The only functions you should implement is `match/2`, `success_message/4`, and `error_message`.
