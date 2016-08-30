@@ -20,10 +20,9 @@ defmodule ESpec.Assertions.BeCloseToSpec do
     context "Errors" do
       context "with `to`" do
         before do
-          { :shared,
+          {:shared,
             expectation: fn -> expect(2).to be_close_to(1, 0.9) end,
-            message: "Expected `2` to be close to `1` with delta `0.9`, but it isn't."
-          }
+            message: "Expected `2` to be close to `1` with delta `0.9`, but it isn't."}
         end
 
         it_behaves_like(CheckErrorSharedSpec)
@@ -31,10 +30,9 @@ defmodule ESpec.Assertions.BeCloseToSpec do
 
       context "with `not_to`" do
         before do
-          { :shared,
+          {:shared,
             expectation: fn -> expect(3).to_not be_close_to(3, 0) end,
-            message: "Expected `3` not to be close to `3` with delta `0`, but it is."
-          }
+            message: "Expected `3` not to be close to `3` with delta `0`, but it is."}
         end
 
         it_behaves_like(CheckErrorSharedSpec)

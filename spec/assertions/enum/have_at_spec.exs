@@ -19,10 +19,9 @@ defmodule ESpec.Assertions.Enum.HaveAtSpec do
   context "Error" do
     context "with `to`" do
       before do
-        { :shared,
+        {:shared,
           expectation: fn -> expect(range).to have_at(2, 2) end,
-          message: "Expected `1..3` to have `2` at `2` position, but it has `3`."
-        }
+          message: "Expected `1..3` to have `2` at `2` position, but it has `3`."}
       end
 
       it_behaves_like(CheckErrorSharedSpec)
@@ -30,10 +29,9 @@ defmodule ESpec.Assertions.Enum.HaveAtSpec do
 
     context "with `not_to`" do
       before do
-        { :shared,
+        {:shared,
           expectation: fn -> expect(range).to_not have_at(2, 3) end,
-          message: "Expected `1..3` not to have `3` at `2` position, but it has `3`."
-        }
+          message: "Expected `1..3` not to have `3` at `2` position, but it has `3`."}
       end
 
       it_behaves_like(CheckErrorSharedSpec)

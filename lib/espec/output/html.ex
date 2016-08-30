@@ -46,15 +46,28 @@ defmodule ESpec.Output.Html do
   end
 
   defp make_html({dict, values}, top? \\ false, firstli? \\ false) do
-    lis = Enum.reduce(values, "", fn(ex, acc) ->
+    values
+    |> main_lis
+    |> ul_or_lis(firstli?)
+    |> uls(dict, top?, firstli?)
+  end
+
+  defp main_lis(values) do
+    Enum.reduce(values, "", fn(ex, acc) ->
       acc <> "<li class='#{li_class(ex)}'>#{ex_desc(ex)}</li>"
     end)
-    lis = if  String.length(lis) > 0 do
+  end
+
+  defp ul_or_lis(lis, firstli?) do
+    if  String.length(lis) > 0 do
       if firstli?, do: "<ul class='tree'>" <> lis <> "</ul>", else: "<ul>" <> lis <> "</ul>"
     else
       lis
     end
-    uls = Enum.reduce(dict, lis, fn({key, d}, acc) ->
+  end
+
+  defp uls(lis, dict, top?, firstli?) do
+    Enum.reduce(dict, lis, fn({key, d}, acc) ->
       if top? do
         acc <> "<section class='context'><h3>#{key.description}</h3>" <> make_html(d, false, true) <> "</section>"
       else
@@ -66,7 +79,6 @@ defmodule ESpec.Output.Html do
         end
       end
     end)
-    uls
   end
 
   defp ex_desc(ex) do

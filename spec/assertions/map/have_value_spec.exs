@@ -18,10 +18,9 @@ defmodule ESpec.Assertions.Map.HaveValueSpec do
   context "Error" do
     context "with `to`" do
       before do
-        { :shared,
+        {:shared,
           expectation: fn -> should have_value 3 end,
-          message: "Expected `%{a: 1, b: 2}` to have value `3` but it doesn't have."
-        }
+          message: "Expected `%{a: 1, b: 2}` to have value `3` but it doesn't have."}
       end
 
       it_behaves_like(CheckErrorSharedSpec)
@@ -29,10 +28,9 @@ defmodule ESpec.Assertions.Map.HaveValueSpec do
 
     context "with `not_to`" do
       before do
-        { :shared,
+        {:shared,
           expectation: fn -> should_not have_value 1 end,
-          message: "Expected `%{a: 1, b: 2}` not to have value `1` but it has."
-        }
+          message: "Expected `%{a: 1, b: 2}` not to have value `1` but it has."}
       end
 
       it_behaves_like(CheckErrorSharedSpec)

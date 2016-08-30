@@ -157,13 +157,17 @@ defmodule ESpec.ExampleRunner do
   defp run_config_finally({assigns, example}) do
     func = ESpec.Configuration.get(:finally)
     if func do
-      fun = fn ->
-        if is_function(func, 1), do: func.(assigns), else: func.()
-        {assigns, example}
-      end
-      call_with_rescue(fun, {assigns, example})
+      run_config_finally({assigns, example}, func)
     end
     {assigns, example}
+  end
+
+  defp run_config_finally({assigns, example}, func) do
+    fun = fn ->
+      if is_function(func, 1), do: func.(assigns), else: func.()
+      {assigns, example}
+    end
+    call_with_rescue(fun, {assigns, example})
   end
 
   defp call_with_rescue(fun, {assigns, example}) do

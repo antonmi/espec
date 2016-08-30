@@ -66,7 +66,7 @@ defmodule FinallyTestWithExceptions do
 
     before do: {:ok, foo: :bar}
     finally do
-      Application.put_env(:espec, :finally_value, 100500)
+      Application.put_env(:espec, :finally_value, 100_500)
       Application.put_env(:espec, :shared_value, shared[:foo])
     end
 
@@ -86,14 +86,14 @@ defmodule FinallyTestWithExceptions do
   test "run ex1", context do
     example = ESpec.ExampleRunner.run(context[:ex1])
     assert(example.status == :failure)
-    assert(Application.get_env(:espec, :finally_value) == 100500)
+    assert(Application.get_env(:espec, :finally_value) == 100_500)
     assert(Application.get_env(:espec, :shared_value) == :bar)
   end
 
   test "run ex2", context do
     example = ESpec.ExampleRunner.run(context[:ex2])
     assert(example.status == :failure)
-    assert(Application.get_env(:espec, :finally_value) == 100500)
+    assert(Application.get_env(:espec, :finally_value) == 100_500)
     assert(Application.get_env(:espec, :shared_value) == :bar)
   end
 end

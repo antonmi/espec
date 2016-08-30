@@ -27,10 +27,9 @@ defmodule ESpec.Assertions.MatchSpec do
     context "Errors" do
       context "with `to`" do
         before do
-          { :shared,
+          {:shared,
             expectation: fn -> expect("abcd").to match(~r/e/) end,
-            message: "Expected `\"abcd\"` to match (=~) `~r/e/`, but it doesn't."
-          }
+            message: "Expected `\"abcd\"` to match (=~) `~r/e/`, but it doesn't."}
         end
 
         it_behaves_like(CheckErrorSharedSpec)
@@ -38,10 +37,9 @@ defmodule ESpec.Assertions.MatchSpec do
 
       context "with `not_to`" do
         before do
-          { :shared,
+          {:shared,
             expectation: fn -> expect("abcd").to_not match(~r/c(d)/) end,
-            message: "Expected `\"abcd\"` not to match (=~) `~r/c(d)/`, but it does."
-          }
+            message: "Expected `\"abcd\"` not to match (=~) `~r/c(d)/`, but it does."}
         end
 
         it_behaves_like(CheckErrorSharedSpec)
@@ -49,10 +47,9 @@ defmodule ESpec.Assertions.MatchSpec do
 
       context "with `to`" do
         before do
-          { :shared,
+          {:shared,
             expectation: fn -> expect("abcd").to match("ad") end,
-            message: "Expected `\"abcd\"` to match (=~) `\"ad\"`, but it doesn't."
-          }
+            message: "Expected `\"abcd\"` to match (=~) `\"ad\"`, but it doesn't."}
         end
 
         it_behaves_like(CheckErrorSharedSpec)
@@ -60,10 +57,9 @@ defmodule ESpec.Assertions.MatchSpec do
 
       context "with `not_to`" do
         before do
-          { :shared,
+          {:shared,
             expectation: fn -> expect("abcd").to_not match(~r/c(d)/) end,
-            message: "Expected `\"abcd\"` not to match (=~) `~r/c(d)/`, but it does."
-          }
+            message: "Expected `\"abcd\"` not to match (=~) `~r/c(d)/`, but it does."}
         end
 
         it_behaves_like(CheckErrorSharedSpec)

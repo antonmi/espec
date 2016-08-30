@@ -18,10 +18,9 @@ defmodule ESpec.Assertions.String.HaveLastSpec do
   context "Error" do
     context "with `to`" do
       before do
-        { :shared,
+        {:shared,
           expectation: fn -> should have_last "w" end,
-          message: "Expected `\"qwerty\"` to have last element `\"w\"` but it has `y`."
-        }
+          message: "Expected `\"qwerty\"` to have last element `\"w\"` but it has `y`."}
       end
 
       it_behaves_like(CheckErrorSharedSpec)
@@ -29,10 +28,9 @@ defmodule ESpec.Assertions.String.HaveLastSpec do
 
     context "with `not_to`" do
       before do
-        { :shared,
+        {:shared,
           expectation: fn -> should_not have_last "y" end,
-          message: "Expected `\"qwerty\"` not to have last element `\"y\"` but it has `y`."
-        }
+          message: "Expected `\"qwerty\"` not to have last element `\"y\"` but it has `y`."}
       end
 
       it_behaves_like(CheckErrorSharedSpec)

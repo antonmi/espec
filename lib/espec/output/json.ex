@@ -46,7 +46,7 @@ defmodule ESpec.Output.Json do
 
   defp one_line_description(example) do
     module = "#{example.module}" |> String.replace("Elixir.", "")
-    [ module | ESpec.Example.context_descriptions(example)] ++ [example.description]
+    [module | ESpec.Example.context_descriptions(example)] ++ [example.description]
     |> Enum.join(" ") |> String.rstrip
   end
 

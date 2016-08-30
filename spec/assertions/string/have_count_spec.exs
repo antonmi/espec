@@ -30,10 +30,9 @@ defmodule ESpec.Assertions.String.HaveCountSpec do
   context "Error" do
     context "with `to`" do
       before do
-        { :shared,
+        {:shared,
           expectation: fn -> should have_count(3) end,
-          message: "Expected `\"qwerty\"` to have `3` elements but it has `6`."
-        }
+          message: "Expected `\"qwerty\"` to have `3` elements but it has `6`."}
       end
 
       it_behaves_like(CheckErrorSharedSpec)
@@ -41,10 +40,9 @@ defmodule ESpec.Assertions.String.HaveCountSpec do
 
     context "with `not_to`" do
       before do
-        { :shared,
+        {:shared,
           expectation: fn -> should_not have_count(6) end,
-          message: "Expected `\"qwerty\"` not to have `6` elements but it has `6`."
-        }
+          message: "Expected `\"qwerty\"` not to have `6` elements but it has `6`."}
       end
 
       it_behaves_like(CheckErrorSharedSpec)

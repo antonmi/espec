@@ -21,6 +21,7 @@
 
         #deactivated
         {Credo.Check.Readability.ModuleDoc, false},
+        {Credo.Check.Refactor.PipeChainStart, false},
 
         # You can also customize the exit_status of each check.
         # If you don't want TODO comments to cause `mix credo` to fail, just

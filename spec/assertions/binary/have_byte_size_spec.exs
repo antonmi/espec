@@ -19,10 +19,9 @@ defmodule ESpec.Assertions.Binary.HaveByteSizeSpec do
   context "Error" do
     context "with `to`" do
       before do
-        { :shared,
+        {:shared,
           expectation: fn -> expect(binary).to have_byte_size(byte_count - 1) end,
-          message: "Expected `<<116, 188, 252, 155, 9>>` to have `#{byte_count - 1}` byte(s) but it has `#{byte_count}`."
-        }
+          message: "Expected `<<116, 188, 252, 155, 9>>` to have `#{byte_count - 1}` byte(s) but it has `#{byte_count}`."}
       end
 
       it_behaves_like(CheckErrorSharedSpec)
@@ -30,10 +29,9 @@ defmodule ESpec.Assertions.Binary.HaveByteSizeSpec do
 
     context "with `not_to`" do
       before do
-        { :shared,
+        {:shared,
           expectation: fn -> expect(binary).to_not have_byte_size(byte_count) end,
-          message: "Expected `<<116, 188, 252, 155, 9>>` not to have `#{byte_count}` byte(s) but it has `#{byte_count}`."
-        }
+          message: "Expected `<<116, 188, 252, 155, 9>>` not to have `#{byte_count}` byte(s) but it has `#{byte_count}`."}
       end
 
       it_behaves_like(CheckErrorSharedSpec)

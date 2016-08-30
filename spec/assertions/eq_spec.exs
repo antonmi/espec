@@ -4,12 +4,12 @@ defmodule ESpec.Assertions.EqSpec do
   describe "ESpec.Assertions.Eq" do
     context "Success" do
       it "checks success with `to`" do
-        message = expect(1+1).to eq(2.0)
+        message = expect(1 + 1).to eq(2.0)
         expect(message) |> to(eq "`2` equals `2.0`.")
       end
 
       it "checks success with `not_to`" do
-        message = expect(1+1).to_not eq(3)
+        message = expect(1 + 1).to_not eq(3)
         expect(message) |> to(eq "`2` doesn't equal `3`.")
       end
     end
@@ -17,10 +17,9 @@ defmodule ESpec.Assertions.EqSpec do
     context "Errors" do
       context "with `to`" do
         before do
-          { :shared,
-            expectation: fn -> expect(1+1).to eq(3.0) end,
-            message: "Expected `2` to equals (==) `3.0`, but it doesn't."
-          }
+          {:shared,
+            expectation: fn -> expect(1 + 1).to eq(3.0) end,
+            message: "Expected `2` to equals (==) `3.0`, but it doesn't."}
         end
 
         it_behaves_like(CheckErrorSharedSpec)
@@ -28,10 +27,9 @@ defmodule ESpec.Assertions.EqSpec do
 
       context "with `not_to`" do
         before do
-          { :shared,
-            expectation: fn -> expect(1+1).to_not eq(2) end,
-            message: "Expected `2` not to equals (==) `2`, but it does."
-          }
+          {:shared,
+            expectation: fn -> expect(1 + 1).to_not eq(2) end,
+            message: "Expected `2` not to equals (==) `2`, but it does."}
         end
 
         it_behaves_like(CheckErrorSharedSpec)
@@ -43,28 +41,27 @@ defmodule ESpec.Assertions.EqSpec do
     context "Success" do
       context "Success" do
         it "checks success with `to`" do
-          message = expect(1+1 == 2).to be true
+          message = expect(1 + 1 == 2).to be true
           expect(message) |> to(eq "`true` equals `true`.")
         end
 
         it "checks success with `not_to`" do
-          message = expect(1+1 == 1).to_not be true
+          message = expect(1 + 1 == 1).to_not be true
           expect(message) |> to(eq "`false` doesn't equal `true`.")
         end
       end
 
-      it do: expect(1+1 == 1).to be false
+      it do: expect(1 + 1 == 1).to be false
       it do: expect(nil).to be nil
-      it do: expect(1+1).to be 2
+      it do: expect(1 + 1).to be 2
     end
 
     context "Errors" do
       context "with `to`" do
         before do
-          { :shared,
-            expectation: fn -> expect(2+2).to be 5 end,
-            message: "Expected `4` to equals (==) `5`, but it doesn't."
-          }
+          {:shared,
+            expectation: fn -> expect(2 + 2).to be 5 end,
+            message: "Expected `4` to equals (==) `5`, but it doesn't."}
         end
 
         it_behaves_like(CheckErrorSharedSpec)
@@ -72,10 +69,9 @@ defmodule ESpec.Assertions.EqSpec do
 
       context "with `not_to`" do
         before do
-          { :shared,
-            expectation: fn -> expect(1+1 == 1).to_not be false end,
-            message: "Expected `false` not to equals (==) `false`, but it does."
-          }
+          {:shared,
+            expectation: fn -> expect(1 + 1 == 1).to_not be false end,
+            message: "Expected `false` not to equals (==) `false`, but it does."}
         end
 
         it_behaves_like(CheckErrorSharedSpec)

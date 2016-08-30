@@ -101,8 +101,10 @@ defmodule ESpec.Output.Doc do
 
   defp one_line_description(example) do
     module = "#{example.module}" |> String.replace("Elixir.", "")
-    [ module | Example.context_descriptions(example)] ++ [example.description]
-    |> Enum.join(" ") |> String.rstrip
+    desc = [module | Example.context_descriptions(example)] ++ [example.description]
+    desc
+    |> Enum.join(" ")
+    |> String.rstrip
   end
 
   defp trace_description(example) do
@@ -110,11 +112,7 @@ defmodule ESpec.Output.Doc do
     ex_desc = if String.length(example.description) > 0 do
       "#{color}#{example.description}#{@reset}"
     else
-      if example.status == :failure do
-        "#{color}#{example.error.message}#{@reset}"
-      else
-        "#{color}#{inspect example.result}#{@reset}"
-      end
+      status_message(example, color)
     end
     array = Example.context_descriptions(example) ++ [ex_desc]
     {result, _} = Enum.reduce(array, {"", ""}, fn(description, acc) ->
@@ -122,6 +120,14 @@ defmodule ESpec.Output.Doc do
       {d <> w <> "#{description}" <> "\n", w <> "  "}
     end)
     result
+  end
+
+  defp status_message(example, color) do
+    if example.status == :failure do
+      "#{color}#{example.error.message}#{@reset}"
+    else
+      "#{color}#{inspect example.result}#{@reset}"
+    end
   end
 
   defp color_for_status(status), do: Keyword.get(@status_colors, status)

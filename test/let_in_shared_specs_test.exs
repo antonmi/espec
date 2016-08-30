@@ -34,7 +34,7 @@ defmodule LetSharedSpecsTest do
   setup_all do
 
     examples = ESpec.Runner.run_examples(UseSharedSpecSpec.examples, true)
-    { :ok, examples: examples }
+    {:ok, examples: examples}
   end
 
   test "Examples should pass", context do

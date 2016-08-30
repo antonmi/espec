@@ -18,10 +18,9 @@ defmodule ESpec.Assertions.List.HaveLastSpec do
   context "Error" do
     context "with `to`" do
       before do
-        { :shared,
+        {:shared,
           expectation: fn -> should have_last 2 end,
-          message: "Expected `[1, 2, 3]` to have last element `2` but it has `3`."
-        }
+          message: "Expected `[1, 2, 3]` to have last element `2` but it has `3`."}
       end
 
       it_behaves_like(CheckErrorSharedSpec)
@@ -29,10 +28,9 @@ defmodule ESpec.Assertions.List.HaveLastSpec do
 
     context "with `not_to`" do
       before do
-        { :shared,
+        {:shared,
           expectation: fn -> should_not have_last 3 end,
-          message: "Expected `[1, 2, 3]` not to have last element `3` but it has `3`."
-        }
+          message: "Expected `[1, 2, 3]` not to have last element `3` but it has `3`."}
       end
 
       it_behaves_like(CheckErrorSharedSpec)

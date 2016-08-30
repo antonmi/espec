@@ -211,6 +211,7 @@ defmodule ESpec.DocExample do
   end
 
   # Finally, parse expected_acc.
+  @lint false
   defp extract_tests([expected|lines], line, expr_acc, expected_acc, [test=%{exprs: exprs}|t]=acc, newtest) do
     if expected =~ ~r/^#[A-Z][\w\.]*<.*>$/ do
       expected = expected_acc <> "\n" <> inspect(expected)
@@ -238,7 +239,7 @@ defmodule ESpec.DocExample do
   end
 
   defp reverse_last_test([]), do: []
-  defp reverse_last_test([test=%{exprs: exprs} | t]) do
+  defp reverse_last_test([test = %{exprs: exprs} | t]) do
     test = %{test | exprs: Enum.reverse(exprs)}
     [test | t]
   end

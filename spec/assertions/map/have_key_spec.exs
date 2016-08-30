@@ -18,10 +18,9 @@ defmodule ESpec.Assertions.Map.HaveKeySpec do
   context "Error" do
     context "with `to`" do
       before do
-        { :shared,
+        {:shared,
           expectation: fn -> should have_key :c end,
-          message: "Expected `%{a: 1, b: 2}` to have key `:c` but it doesn't have."
-        }
+          message: "Expected `%{a: 1, b: 2}` to have key `:c` but it doesn't have."}
       end
 
       it_behaves_like(CheckErrorSharedSpec)
@@ -29,10 +28,9 @@ defmodule ESpec.Assertions.Map.HaveKeySpec do
 
     context "with `not_to`" do
       before do
-        { :shared,
+        {:shared,
           expectation: fn -> should_not have_key :a end,
-          message: "Expected `%{a: 1, b: 2}` not to have key `:a` but it has."
-        }
+          message: "Expected `%{a: 1, b: 2}` not to have key `:a` but it has."}
       end
 
       it_behaves_like(CheckErrorSharedSpec)

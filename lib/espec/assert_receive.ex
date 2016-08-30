@@ -93,8 +93,8 @@ defmodule ESpec.AssertReceive do
         {:ok, acc}
       {name, meta, context}, acc when is_atom(name) and is_atom(context) ->
         {:ok, [{name, [generated: true] ++ meta, context} | acc]}
-      node, acc ->
-        {node, acc}
+      any_node, acc ->
+        {any_node, acc}
     end)
     |> elem(1)
   end

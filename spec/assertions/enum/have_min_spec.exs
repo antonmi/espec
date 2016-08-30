@@ -18,10 +18,9 @@ defmodule ESpec.Assertions.Enum.HaveMinSpec do
   context "Error" do
     context "with `to`" do
       before do
-        { :shared,
+        {:shared,
           expectation: fn -> expect(range).to have_min(2) end,
-          message: "Expected the minimum value of `1..3` to be `2` but the minimum is `1`."
-        }
+          message: "Expected the minimum value of `1..3` to be `2` but the minimum is `1`."}
       end
 
       it_behaves_like(CheckErrorSharedSpec)
@@ -29,10 +28,9 @@ defmodule ESpec.Assertions.Enum.HaveMinSpec do
 
     context "with `not_to`" do
       before do
-        { :shared,
+        {:shared,
           expectation: fn -> expect(range).to_not have_min(1) end,
-          message: "Expected the minimum value of `1..3` not to be `1` but the minimum is `1`."
-        }
+          message: "Expected the minimum value of `1..3` not to be `1` but the minimum is `1`."}
       end
 
       it_behaves_like(CheckErrorSharedSpec)

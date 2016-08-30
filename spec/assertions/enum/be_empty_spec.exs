@@ -31,10 +31,9 @@ defmodule ESpec.Assertions.Enum.BeEmptySpec do
     context "testing a collection" do
       context "with `to`" do
         before do
-          { :shared,
+          {:shared,
             expectation: fn -> expect([1,2,3]).to be_empty end,
-            message: "Expected `[1, 2, 3]` to be empty, but it has `3` elements."
-          }
+            message: "Expected `[1, 2, 3]` to be empty, but it has `3` elements."}
         end
 
         it_behaves_like(CheckErrorSharedSpec)
@@ -42,10 +41,9 @@ defmodule ESpec.Assertions.Enum.BeEmptySpec do
 
       context "with `not_to`" do
         before do
-          { :shared,
+          {:shared,
             expectation: fn -> expect([]).to_not be_empty end,
-            message: "Expected `[]` not to be empty, but it is."
-          }
+            message: "Expected `[]` not to be empty, but it is."}
         end
 
         it_behaves_like(CheckErrorSharedSpec)
@@ -55,10 +53,9 @@ defmodule ESpec.Assertions.Enum.BeEmptySpec do
     context "testing a string" do
       context "with `to`" do
         before do
-          { :shared,
+          {:shared,
             expectation: fn -> expect("qwerty").to be_empty end,
-            message: "Expected `\"qwerty\"` to be empty, but it has `6` elements."
-          }
+            message: "Expected `\"qwerty\"` to be empty, but it has `6` elements."}
         end
 
         it_behaves_like(CheckErrorSharedSpec)
@@ -66,10 +63,9 @@ defmodule ESpec.Assertions.Enum.BeEmptySpec do
 
       context "with `not_to`" do
         before do
-          { :shared,
+          {:shared,
             expectation: fn -> expect("").to_not be_empty end,
-            message: "Expected `\"\"` not to be empty, but it is."
-          }
+            message: "Expected `\"\"` not to be empty, but it is."}
         end
 
         it_behaves_like(CheckErrorSharedSpec)

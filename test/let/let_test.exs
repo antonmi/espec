@@ -9,7 +9,7 @@ defmodule LetTest do
 
     context "Context" do
       let :a, do: 20
-      let :f, do: fn(x) -> x*2 end
+      let :f, do: fn(x) -> x * 2 end
 
       it do: "a = #{a}"
       it do: "f.(2) = #{f.(2)}"

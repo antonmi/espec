@@ -18,10 +18,9 @@ defmodule ESpec.Assertions.String.StartWithSpec do
   context "Error" do
     context "with `to`" do
       before do
-        { :shared,
+        {:shared,
           expectation: fn -> should start_with "ert" end,
-          message: "Expected `\"qwerty\"` to start with `ert` but it starts with `qwe...`."
-        }
+          message: "Expected `\"qwerty\"` to start with `ert` but it starts with `qwe...`."}
       end
 
       it_behaves_like(CheckErrorSharedSpec)
@@ -29,10 +28,9 @@ defmodule ESpec.Assertions.String.StartWithSpec do
 
     context "with `not_to`" do
       before do
-        { :shared,
+        {:shared,
           expectation: fn -> should_not start_with "qwe" end,
-          message: "Expected `\"qwerty\"` not to start with `qwe` but it starts with `qwe`."
-        }
+          message: "Expected `\"qwerty\"` not to start with `qwe` but it starts with `qwe`."}
       end
 
       it_behaves_like(CheckErrorSharedSpec)
@@ -57,10 +55,9 @@ defmodule ESpec.Assertions.String.StartWithSpec do
     context "Error" do
       context "with `to`" do
         before do
-          { :shared,
+          {:shared,
             expectation: fn -> should start_with "e" end,
-            message: "Expected `\"q\"` to start with `e` but it starts with `q...`."
-          }
+            message: "Expected `\"q\"` to start with `e` but it starts with `q...`."}
         end
 
         it_behaves_like(CheckErrorSharedSpec)
@@ -68,10 +65,9 @@ defmodule ESpec.Assertions.String.StartWithSpec do
 
       context "with `not_to`" do
         before do
-          { :shared,
+          {:shared,
             expectation: fn -> should_not start_with "q" end,
-            message: "Expected `\"q\"` not to start with `q` but it starts with `q`."
-          }
+            message: "Expected `\"q\"` not to start with `q` but it starts with `q`."}
         end
 
         it_behaves_like(CheckErrorSharedSpec)

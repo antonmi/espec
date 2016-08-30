@@ -24,28 +24,40 @@ defmodule ESpec.Assertions.Accepted do
   defp get_count(subject, func, args, pid) do
     Enum.count(:meck.history(subject), fn(el) ->
       cond do
-        pid == :any && args == :any ->
-          case el do
-            {_, {^subject, ^func, _}, _return} -> true
-            _ -> false
-          end
-        pid == :any ->
-          case el do
-            {_, {^subject, ^func, ^args}, _return} -> true
-            _ -> false
-          end
-        args == :any ->
-          case el do
-            {^pid, {^subject, ^func, _}, _return} -> true
-            _ -> false
-          end
-        true ->
-          case el do
-            {^pid, {^subject, ^func, ^args}, _return} -> true
-            _  -> false
-          end
+        pid == :any && args == :any -> check_any_any(el, subject, func)
+        pid == :any -> check_any_pid(el, subject, func, args)
+        args == :any -> check_any_args(el, subject, func, pid)
+        true -> check_else(el, subject, func, pid, args)
       end
     end)
+  end
+
+  defp check_any_any(el, subject, func) do
+    case el do
+      {_, {^subject, ^func, _}, _return} -> true
+      _ -> false
+    end
+  end
+
+  defp check_any_pid(el, subject, func, args) do
+    case el do
+      {_, {^subject, ^func, ^args}, _return} -> true
+      _ -> false
+    end
+  end
+
+  defp check_any_args(el, subject, func, pid) do
+    case el do
+      {^pid, {^subject, ^func, _}, _return} -> true
+      _ -> false
+    end
+  end
+
+  defp check_else(el, subject, func, pid, args) do
+    case el do
+      {^pid, {^subject, ^func, ^args}, _return} -> true
+      _  -> false
+    end
   end
 
   defp success_message(subject, [func, args, opts], _result, positive) do

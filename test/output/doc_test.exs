@@ -41,7 +41,7 @@ defmodule Output.DocTest do
   end
 
   test "format_result", context do
-    times = {{1436, 865768, 500000}, {1436, 865768, 500100}, {1436, 865768, 500200}}
+    times = {{1_436, 865_768, 500_000}, {1_436, 865_768, 500_100}, {1_436, 865_768, 500_200}}
     output = ESpec.Output.Doc.format_result(context[:examples], times, %{})
     assert String.match?(output, ~r/Output\.DocTest\.SomeSpec/)
     assert String.match?(output, ~r/Temporarily skipped with: `xit`/)

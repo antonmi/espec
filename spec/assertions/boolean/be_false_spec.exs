@@ -17,10 +17,9 @@ defmodule ESpec.Assertions.Boolean.BeFalseSpec do
   context "Errors" do
     context "with `to`" do
       before do
-        { :shared,
+        {:shared,
           expectation: fn -> expect(true).to be_false end,
-          message: "Expected `true` to be false but it isn't."
-        }
+          message: "Expected `true` to be false but it isn't."}
       end
 
       it_behaves_like(CheckErrorSharedSpec)
@@ -28,10 +27,9 @@ defmodule ESpec.Assertions.Boolean.BeFalseSpec do
 
     context "with `not_to`" do
       before do
-        { :shared,
+        {:shared,
           expectation: fn -> expect(false).not_to be_false end,
-          message: "Expected `false` not to be false but it is."
-        }
+          message: "Expected `false` not to be false but it is."}
       end
 
       it_behaves_like(CheckErrorSharedSpec)

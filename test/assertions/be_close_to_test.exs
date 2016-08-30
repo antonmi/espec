@@ -19,10 +19,9 @@ defmodule BeCloseToTest do
 
   setup_all do
     examples = ESpec.Runner.run_examples(SomeSpec.examples, true)
-    { :ok,
+    {:ok,
       success: Enum.slice(examples, 0, 3),
-      errors: Enum.slice(examples, 4, 5)
-    }
+      errors: Enum.slice(examples, 4, 5)}
   end
 
   test "Success", context do

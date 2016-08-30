@@ -47,22 +47,22 @@ defmodule ESpec.Output do
     {:stop, :normal, :ok, []}
   end
 
-  defp do_example_info(example, {formatter, opts}) do
+  defp do_example_info(example, {result_formatter, opts}) do
     unless silent? do
       if output_to_file? do
-        IO.write out_file, formatter.format_example(example, opts)
+        IO.write out_file, result_formatter.format_example(example, opts)
       else
-        IO.write formatter.format_example(example, opts)
+        IO.write result_formatter.format_example(example, opts)
       end
     end
   end
 
-  defp do_print_result(examples, {formatter, opts}) do
+  defp do_print_result(examples, {result_formatter, opts}) do
     unless silent? do
       if output_to_file? do
-        IO.write out_file, formatter.format_result(examples, get_times, opts)
+        IO.write out_file, result_formatter.format_result(examples, get_times, opts)
       else
-        IO.write formatter.format_result(examples, get_times, opts)
+        IO.write result_formatter.format_result(examples, get_times, opts)
       end
     end
   end

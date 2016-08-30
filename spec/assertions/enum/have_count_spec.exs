@@ -23,10 +23,9 @@ defmodule ESpec.Assertions.Enum.HaveCountSpec do
   context "Error" do
     context "with `to`" do
       before do
-        { :shared,
+        {:shared,
           expectation: fn -> expect(range).to have_count(2) end,
-          message: "Expected `1..3` to have `2` elements but it has `3`."
-        }
+          message: "Expected `1..3` to have `2` elements but it has `3`."}
       end
 
       it_behaves_like(CheckErrorSharedSpec)
@@ -34,10 +33,9 @@ defmodule ESpec.Assertions.Enum.HaveCountSpec do
 
     context "with `not_to`" do
       before do
-        { :shared,
+        {:shared,
           expectation: fn -> expect(range).to_not have_count(3) end,
-          message: "Expected `1..3` not to have `3` elements but it has `3`."
-        }
+          message: "Expected `1..3` not to have `3` elements but it has `3`."}
       end
 
       it_behaves_like(CheckErrorSharedSpec)

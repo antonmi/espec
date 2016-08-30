@@ -15,12 +15,11 @@ defmodule Output.JsonTest do
       examples: examples,
       success_example: Enum.at(examples, 0),
       failed_example: Enum.at(examples, 1),
-      pending_example: Enum.at(examples, 2)
-    }
+      pending_example: Enum.at(examples, 2)}
   end
 
   test "format_result", context do
-    times = {{1436, 865768, 500000}, {1436, 865768, 500100}, {1436, 865768, 500200}}
+    times = {{1_436, 865_768, 500_000}, {1_436, 865_768, 500_100}, {1_436, 865_768, 500_200}}
     output = ESpec.Output.Json.format_result(context[:examples], times, %{})
     assert String.match?(output, ~r/"examples"/)
     assert String.match?(output, ~r/"description"/)
