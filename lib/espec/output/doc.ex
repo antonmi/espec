@@ -89,7 +89,7 @@ defmodule ESpec.Output.Doc do
     end
   end
 
-  defp us_to_sec(us), do: div(us, 10000) / 100
+  defp us_to_sec(us), do: div(us, 10_000) / 100
 
   defp get_color(failed, pending) do
     if Enum.any?(failed) do

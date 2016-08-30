@@ -7,7 +7,7 @@ defmodule ESpec.Assertions.Boolean.BeFalsy do
   use ESpec.Assertions.Interface
 
   defp match(subject, _val) do
-    result = unless subject, do: true, else: false
+    result = if subject, do: false, else: true
     {result, result}
   end
 

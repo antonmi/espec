@@ -23,6 +23,7 @@ defmodule ESpec.Mixfile do
   defp deps do
     [
       {:meck, "~> 0.8.4"},
+      {:credo, "0.4.9", only: :dev},
       # Docs
       {:earmark, "~> 1.0.1", only: [:docs, :dev]},
       {:ex_doc, "~> 0.13.0", only: [:docs, :dev]}

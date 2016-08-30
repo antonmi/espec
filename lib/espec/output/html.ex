@@ -94,7 +94,7 @@ defmodule ESpec.Output.Html do
     }
   end
 
-  defp us_to_sec(us), do: div(us, 10000) / 100
+  defp us_to_sec(us), do: div(us, 10_000) / 100
 
   defp get_seed do
     if ESpec.Configuration.get(:order) do

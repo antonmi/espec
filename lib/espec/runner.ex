@@ -224,6 +224,9 @@ defmodule ESpec.Runner do
   end
 
   defmodule Queue do
+    @moduledoc """
+    Implements queue.
+    """
     def push(name, el), do: Agent.update(name, &[el | &1])
 
     def pop(name) do

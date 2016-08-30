@@ -1,4 +1,7 @@
 defmodule ESpec.Let.Impl do
+  @moduledoc """
+  'let' implementation is here.
+  """
   @agent_name :espec_let_agent
 
   @doc "This function is used by the let macro to implement lazy evaluation"

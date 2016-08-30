@@ -1,4 +1,5 @@
-defmodule ESpec.DocTestTest.Multiline do
+module =
+  defmodule ESpec.DocTestTest.Multiline do
   @doc """
   iex> a = Enum.map [1, 2, 3], fn(x) ->
   ...>   x * 2
@@ -22,12 +23,17 @@ defmodule ESpec.DocTestTest.Multiline do
     10
   """
   def fff, do: :fff
-end |> ExUnit.TestHelpers.write_beam
+end
 
-defmodule ESpec.DocTestTest.MulteLineDocSpec do
+ExUnit.TestHelpers.write_beam(module)
+
+module =
+  defmodule ESpec.DocTestTest.MulteLineDocSpec do
   use ESpec
   doctest ESpec.DocTestTest.Multiline
-end |> ExUnit.TestHelpers.write_beam
+end
+
+ExUnit.TestHelpers.write_beam(module)
 
 
 defmodule ESpec.MultiLineDocTest do

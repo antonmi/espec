@@ -42,7 +42,7 @@ defmodule ESpec.Output.Json do
     }
   end
 
-  defp us_to_sec(us), do: div(us, 10000) / 100
+  defp us_to_sec(us), do: div(us, 10_000) / 100
 
   defp one_line_description(example) do
     module = "#{example.module}" |> String.replace("Elixir.", "")
