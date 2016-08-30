@@ -18,10 +18,9 @@ defmodule ESpec.Assertions.String.HaveAt do
   context "Error" do
     context "with `to`" do
       before do
-        { :shared,
+        {:shared,
           expectation: fn -> should have_at(2, "q") end,
-          message: "Expected `\"qwerty\"` to have `\"q\"` at `2` position, but it has `e`."
-        }
+          message: "Expected `\"qwerty\"` to have `\"q\"` at `2` position, but it has `e`."}
       end
 
       it_behaves_like(CheckErrorSharedSpec)
@@ -29,10 +28,9 @@ defmodule ESpec.Assertions.String.HaveAt do
 
     context "with `not_to`" do
       before do
-        { :shared,
+        {:shared,
           expectation: fn -> should_not have_at(2, "e") end,
-          message: "Expected `\"qwerty\"` not to have `\"e\"` at `2` position, but it has `e`."
-        }
+          message: "Expected `\"qwerty\"` not to have `\"e\"` at `2` position, but it has `e`."}
       end
 
       it_behaves_like(CheckErrorSharedSpec)

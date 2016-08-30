@@ -26,13 +26,12 @@ defmodule ExampleRunnerTest do
   end
 
   setup_all do
-    { :ok,
+    {:ok,
       ex1: Enum.at(SomeSpec.examples, 0),
       ex2: Enum.at(SomeSpec.examples, 1),
       ex3: Enum.at(SomeSpec.examples, 2),
       ex4: Enum.at(SomeSpec.examples, 3),
-      ex5: Enum.at(SomeSpec.examples, 4)
-    }
+      ex5: Enum.at(SomeSpec.examples, 4)}
   end
 
   test "run success examples", context do

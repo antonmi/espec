@@ -35,10 +35,9 @@ defmodule CustomAssertionSpec do
 
     context "with `to`" do
       before do
-        { :shared,
+        {:shared,
           expectation: fn -> should be_divisor_of(6) end,
-          message: "Expected `5` to be the divisor of `6`, but the remainder is '1'."
-        }
+          message: "Expected `5` to be the divisor of `6`, but the remainder is '1'."}
       end
 
       it_behaves_like(CheckErrorSharedSpec)
@@ -46,10 +45,9 @@ defmodule CustomAssertionSpec do
 
     context "with `not_to`" do
       before do
-        { :shared,
+        {:shared,
           expectation: fn -> should_not be_divisor_of(5) end,
-          message: "Expected `5` not to be the divisor of `5`, but the remainder is '0'."
-        }
+          message: "Expected `5` not to be the divisor of `5`, but the remainder is '0'."}
       end
 
       it_behaves_like(CheckErrorSharedSpec)
@@ -57,10 +55,9 @@ defmodule CustomAssertionSpec do
 
     context "with `to`" do
       before do
-        { :shared,
+        {:shared,
           expectation: fn -> 2 |> should(be_odd) end,
-          message: "Expected `2` to be the odd number, but the remainder is '0'."
-        }
+          message: "Expected `2` to be the odd number, but the remainder is '0'."}
       end
 
       it_behaves_like(CheckErrorSharedSpec)
@@ -68,10 +65,9 @@ defmodule CustomAssertionSpec do
 
     context "with `not_to`" do
       before do
-        { :shared,
+        {:shared,
           expectation: fn -> should_not be_odd end,
-          message: "Expected `5` not to be the odd number, but the remainder is '1'."
-        }
+          message: "Expected `5` not to be the odd number, but the remainder is '1'."}
       end
 
       it_behaves_like(CheckErrorSharedSpec)

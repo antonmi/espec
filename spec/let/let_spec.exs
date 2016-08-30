@@ -3,7 +3,7 @@ defmodule LetSpec do
 
   describe "let!" do
     let!(:f) do
-      fn(x) -> x*2 end
+      fn(x) -> x * 2 end
     end
 
     it do: expect(f.(2)).to eq(4)
@@ -64,7 +64,7 @@ defmodule LetSpec do
 
   describe "let" do
     let(:f) do
-      fn(x) -> x*2 end
+      fn(x) -> x * 2 end
     end
 
     it do: expect(f.(2)).to eq(4)

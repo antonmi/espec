@@ -18,10 +18,9 @@ defmodule ESpec.Assertions.String.Have do
   context "Error" do
     context "with `to`" do
       before do
-        { :shared,
+        {:shared,
           expectation: fn -> should have("zx") end,
-          message: "Expected `\"qwerty\"` to have `\"zx\"`, but it has not."
-        }
+          message: "Expected `\"qwerty\"` to have `\"zx\"`, but it has not."}
       end
 
       it_behaves_like(CheckErrorSharedSpec)
@@ -29,10 +28,9 @@ defmodule ESpec.Assertions.String.Have do
 
     context "with `not_to`" do
       before do
-        { :shared,
+        {:shared,
           expectation: fn -> should_not have("qwe") end,
-          message: "Expected `\"qwerty\"` not to have `\"qwe\"`, but it has."
-        }
+          message: "Expected `\"qwerty\"` not to have `\"qwe\"`, but it has."}
       end
 
       it_behaves_like(CheckErrorSharedSpec)

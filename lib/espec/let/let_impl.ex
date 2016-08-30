@@ -1,4 +1,7 @@
 defmodule ESpec.Let.Impl do
+  @moduledoc """
+  'let' implementation is here.
+  """
   @agent_name :espec_let_agent
 
   @doc "This function is used by the let macro to implement lazy evaluation"
@@ -35,7 +38,7 @@ defmodule ESpec.Let.Impl do
   @doc "Clears all let values for the given module. Called by ExampleRunner."
   def clear_lets(module) do
     me = self
-    Agent.update(@agent_name, fn (map)->
+    Agent.update(@agent_name, fn(map) ->
       keys_to_remove = Map.keys(map) |> Enum.filter(&match?({^me, ^module, _}, &1))
       Map.drop(map, keys_to_remove)
     end)

@@ -3,7 +3,7 @@ defmodule ESpec.Assertions.ThrowTermSpec do
 
   describe "ESpec.Assertions.RaiseException" do
     let :func1, do: fn -> throw(:some_term) end
-    let :func2, do: fn -> 1+1 end
+    let :func2, do: fn -> 1 + 1 end
     let :func3, do: fn -> throw({:throw, :some, :tuple}) end
 
     context "Success" do

@@ -18,10 +18,9 @@ defmodule ESpec.Assertions.List.HaveTlSpec do
   context "Error" do
     context "with `to`" do
       before do
-        { :shared,
+        {:shared,
           expectation: fn -> should have_tl [1,2] end,
-          message: "Expected `[1, 2, 3]` to have `tl` `[1, 2]` but it has `[2, 3]`."
-        }
+          message: "Expected `[1, 2, 3]` to have `tl` `[1, 2]` but it has `[2, 3]`."}
       end
 
       it_behaves_like(CheckErrorSharedSpec)
@@ -29,10 +28,9 @@ defmodule ESpec.Assertions.List.HaveTlSpec do
 
     context "with `not_to`" do
       before do
-        { :shared,
+        {:shared,
           expectation: fn -> should_not have_tl [2,3] end,
-          message: "Expected `[1, 2, 3]` not to have `tl` `[2, 3]` but it has `[2, 3]`."
-        }
+          message: "Expected `[1, 2, 3]` not to have `tl` `[2, 3]` but it has `[2, 3]`."}
       end
 
       it_behaves_like(CheckErrorSharedSpec)

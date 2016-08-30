@@ -23,10 +23,9 @@ defmodule BeTest do
 
   setup_all do
     examples = ESpec.Runner.run_examples(SomeSpec.examples, true)
-    { :ok,
+    {:ok,
       success: Enum.slice(examples, 0, 5),
-      errors: Enum.slice(examples, 6, 7)
-    }
+      errors: Enum.slice(examples, 6, 7)}
   end
 
   test "Success", context do

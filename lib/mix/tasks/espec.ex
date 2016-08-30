@@ -18,12 +18,14 @@ defmodule Mix.Tasks.Espec do
       fn() ->
         Mix.shell.info "\nGenerating cover results ... "
         File.mkdir_p!(output)
-        Enum.each :cover.modules, fn(mod) ->
-          case :cover.analyse_to_file(mod, '#{output}/#{mod}.html', [:html]) do
-            {:ok, _} -> nil
-            {:error, error} -> Mix.shell.info "#{error} while generating cover results for #{mod}"
-          end
-        end
+        Enum.each(:cover.modules, fn(mod) -> cover_function(mod, output) end)
+      end
+    end
+
+    defp cover_function(mod, output) do
+      case :cover.analyse_to_file(mod, '#{output}/#{mod}.html', [:html]) do
+        {:ok, _} -> nil
+        {:error, error} -> Mix.shell.info "#{error} while generating cover results for #{mod}"
       end
     end
   end

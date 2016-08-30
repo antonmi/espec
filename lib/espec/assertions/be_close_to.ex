@@ -8,7 +8,7 @@ defmodule ESpec.Assertions.BeCloseTo do
 
   defp match(subject, data) do
     [value, delta] = data
-    result = abs(subject-value) <= delta
+    result = abs(subject - value) <= delta
     {result, result}
   end
 

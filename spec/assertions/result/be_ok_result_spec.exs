@@ -20,10 +20,9 @@ defmodule ESpec.Assertions.BeOkResultSpec do
     context "Errors" do
       context "with `to`" do
         before do
-          { :shared,
+          {:shared,
             expectation: fn -> expect(error_result) |> to(be_ok_result) end,
-            message: "Expected `{:error, :reason}` to be a success result but it is not."
-          }
+            message: "Expected `{:error, :reason}` to be a success result but it is not."}
         end
 
         it_behaves_like(CheckErrorSharedSpec)
@@ -31,10 +30,9 @@ defmodule ESpec.Assertions.BeOkResultSpec do
 
       context "with `not_to`" do
         before do
-          { :shared,
+          {:shared,
             expectation: fn -> expect(ok_result) |> not_to(be_ok_result) end,
-            message: "Expected `{:ok, :result}` not to be a success result but it is."
-          }
+            message: "Expected `{:ok, :result}` not to be a success result but it is."}
         end
 
         it_behaves_like(CheckErrorSharedSpec)

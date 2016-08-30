@@ -46,6 +46,7 @@ defmodule ESpec.DocTest do
   end
 
   @doc false
+  @lint false
   defmacro __create_doc_examples__(module, opts) do
     quote do
       examples = ESpec.DocExample.extract(unquote(module))
@@ -69,7 +70,7 @@ defmodule ESpec.DocTest do
         description = "Doctest for #{unquote(module)}.#{fun}/#{arity} (#{index})"
         function = :"#{ESpec.Support.word_chars(description)}_#{index}"
 
-        @examples %ESpec.Example{ description: description, module: __MODULE__, function: function,
+        @examples %ESpec.Example{description: description, module: __MODULE__, function: function,
                                   opts: [], file: __ENV__.file, line: __ENV__.line, context: context,
                                   shared: false}
 

@@ -16,7 +16,8 @@ defmodule ESpec do
       @before_compile ESpec
 
       import ESpec.Context
-      @context [%ESpec.Context{ description: inspect(__MODULE__), module: __MODULE__, line: __ENV__.line, opts: unquote(args) }]
+      @context [%ESpec.Context{description: inspect(__MODULE__),
+                  module: __MODULE__, line: __ENV__.line, opts: unquote(args)}]
 
       import ESpec.ExampleHelpers
       import ESpec.DocTest, only: [doctest: 1, doctest: 2]

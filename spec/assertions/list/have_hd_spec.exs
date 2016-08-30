@@ -18,10 +18,9 @@ defmodule ESpec.Assertions.List.HaveHdSpec do
   context "Error" do
     context "with `to`" do
       before do
-        { :shared,
+        {:shared,
           expectation: fn -> should have_hd 2 end,
-          message: "Expected `[1, 2, 3]` to have `hd` `2` but it has `1`."
-        }
+          message: "Expected `[1, 2, 3]` to have `hd` `2` but it has `1`."}
       end
 
       it_behaves_like(CheckErrorSharedSpec)
@@ -29,10 +28,9 @@ defmodule ESpec.Assertions.List.HaveHdSpec do
 
     context "with `not_to`" do
       before do
-        { :shared,
+        {:shared,
           expectation: fn -> should_not have_hd 1 end,
-          message: "Expected `[1, 2, 3]` not to have `hd` `1` but it has `1`."
-        }
+          message: "Expected `[1, 2, 3]` not to have `hd` `1` but it has `1`."}
       end
 
       it_behaves_like(CheckErrorSharedSpec)

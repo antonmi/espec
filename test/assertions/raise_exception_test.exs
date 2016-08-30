@@ -5,7 +5,7 @@ defmodule RaiseExceptionTest do
     use ESpec
 
     let :func1, do: fn -> raise(ArithmeticError) end
-    let :func2, do: fn -> 1+1 end
+    let :func2, do: fn -> 1 + 1 end
     let :func3, do: fn -> List.first(:a) end
 
     context "Success" do
@@ -38,10 +38,9 @@ defmodule RaiseExceptionTest do
 
   setup_all do
     examples = ESpec.Runner.run_examples(SomeSpec.examples, true)
-    { :ok,
+    {:ok,
       success: Enum.slice(examples, 0, 7),
-      errors: Enum.slice(examples, 8, 15)
-    }
+      errors: Enum.slice(examples, 8, 15)}
   end
 
   test "Success", context do

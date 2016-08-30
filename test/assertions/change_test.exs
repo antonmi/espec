@@ -28,10 +28,9 @@ defmodule ChangeTest do
 
   setup_all do
     examples = ESpec.Runner.run_examples(SomeSpec.examples, true)
-    { :ok,
+    {:ok,
       success: Enum.slice(examples, 0, 2),
-      errors: Enum.slice(examples, 3, 5)
-    }
+      errors: Enum.slice(examples, 3, 5)}
   end
 
   test "Success", context do

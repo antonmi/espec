@@ -89,7 +89,7 @@ Place your `_spec.exs` files into `spec` folder. `use ESpec` in the 'spec module
 defmodule SyntaxExampleSpec do
   use ESpec
   it do: expect true |> to(be_true)
-  it do: expect(1+1).to eq(2)
+  it do: expect(1 + 1).to eq(2)
   it do: (1..3) |> should(have 2)
 end
 ```
@@ -302,12 +302,12 @@ end
 defmodule SubjectSpec do
   use ESpec
 
-  subject(1+1)
+  subject(1 + 1)
   it do: is_expected |> to(eq 2)
   it do: should eq 2
 
   context "with block" do
-    subject do: 2+2
+    subject do: 2 + 2
     it do: is_expected |> to_not(eq 2)
     it do: should_not eq 2
   end
@@ -656,7 +656,7 @@ Behind the scenes 'allow accept' makes the following:
 Find the explanation aboute the `:non_strict` and `:passthrough` options [here](https://github.com/eproxus/meck/blob/master/src/meck.erl).
 The default options (`[:non_strict, :passthrough]`) can be overridden:
 ```elixir
-allow SomeModule) |> to(accept :func, fn(a,b) -> a+b end, [:non_strict, :unstick])
+allow SomeModule) |> to(accept :func, fn(a,b) -> a + b end, [:non_strict, :unstick])
 ```
 All the mocked modules are unloaded whith `:meck.unload(modules)` after each example.
 
@@ -691,7 +691,7 @@ So, the options are:
 defmodule MockOptionsSpec do
   use ESpec
   before do
-    allow SomeModule |> to(accept :func, fn(a,b) -> a+b end)
+    allow SomeModule |> to(accept :func, fn(a,b) -> a + b end)
     SomeModule.func(1, 2)
   end
 

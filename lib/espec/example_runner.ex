@@ -157,13 +157,17 @@ defmodule ESpec.ExampleRunner do
   defp run_config_finally({assigns, example}) do
     func = ESpec.Configuration.get(:finally)
     if func do
-      fun = fn ->
-        if is_function(func, 1), do: func.(assigns), else: func.()
-        {assigns, example}
-      end
-      call_with_rescue(fun, {assigns, example})
+      run_config_finally({assigns, example}, func)
     end
     {assigns, example}
+  end
+
+  defp run_config_finally({assigns, example}, func) do
+    fun = fn ->
+      if is_function(func, 1), do: func.(assigns), else: func.()
+      {assigns, example}
+    end
+    call_with_rescue(fun, {assigns, example})
   end
 
   defp call_with_rescue(fun, {assigns, example}) do
@@ -177,21 +181,21 @@ defmodule ESpec.ExampleRunner do
   end
 
   defp do_catch(what, value, {map, example}) do
-    example = unless example.error do
+    example = if example.error do
+      example
+    else
       error = %AssertionError{message: format_catch(what, value)}
       %Example{example | status: :failure, error: error}
-    else
-      example
     end
     {map, example}
   end
 
   defp do_before(error, {map, example}) do
-    example = unless example.error do
+    example = if example.error do
+      example
+    else
       error = %AssertionError{message: format_other_error(error)}
       example = %Example{example | status: :failure, error: error}
-    else
-      example
     end
     {map, example}
   end

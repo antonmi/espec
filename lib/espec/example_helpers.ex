@@ -16,9 +16,9 @@ defmodule ESpec.ExampleHelpers do
     function = random_atom(description)
     quote do
       context = Enum.reverse(@context)
-      @examples %ESpec.Example{ description: unquote(description), module: __MODULE__, function: unquote(function),
-                                opts: unquote(opts), file: __ENV__.file, line: __ENV__.line, context: context,
-                                shared: @shared}
+      @examples %ESpec.Example{description: unquote(description), module: __MODULE__, function: unquote(function),
+                               opts: unquote(opts), file: __ENV__.file, line: __ENV__.line, context: context,
+                               shared: @shared}
 
       def unquote(function)(var!(shared)) do
         var!(shared)
@@ -112,8 +112,8 @@ defmodule ESpec.ExampleHelpers do
       Enum.each unquote(module).examples, fn(example) ->
         new_context = ESpec.ExampleHelpers.__assign_shared_lets__(example.context, @context)
         context = Enum.reverse(@context) ++ new_context
-        @examples %ESpec.Example{ description: example.description, module: example.module, function: example.function,
-                                  opts: example.opts, file: __ENV__.file, line: __ENV__.line, context: context, shared: false }
+        @examples %ESpec.Example{description: example.description, module: example.module, function: example.function,
+                                 opts: example.opts, file: __ENV__.file, line: __ENV__.line, context: context, shared: false}
       end
     end
   end
@@ -122,17 +122,20 @@ defmodule ESpec.ExampleHelpers do
   def __assign_shared_lets__(example_context, module_context) do
     Enum.map(example_context, fn(context) ->
       case context do
-        %ESpec.Let{shared: true, var: var} ->
-          module_let = Enum.find(module_context, fn(module_let) ->
-            case module_let do
-              %ESpec.Let{var: ^var, shared: false} -> module_let
-              _ -> false
-            end
-          end)
-          if module_let, do: %{module_let | shared_module: context.shared_module, shared: true}, else: context
+        %ESpec.Let{shared: true, var: var} -> assign_shared(context, module_context, var)
         _ -> context
       end
     end)
+  end
+
+  defp assign_shared(context, module_context, var) do
+    module_let = Enum.find(module_context, fn(module_let) ->
+      case module_let do
+        %ESpec.Let{var: ^var, shared: false} -> module_let
+        _ -> false
+      end
+    end)
+    if module_let, do: %{module_let | shared_module: context.shared_module, shared: true}, else: context
   end
 
   @doc "alias for include_examples"

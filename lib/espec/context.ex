@@ -20,7 +20,7 @@ defmodule ESpec.Context do
   defmacro context(description, opts, do: block) do
     quote do
       tail = @context
-      head =  %ESpec.Context{ description: unquote(description), module: __MODULE__, line: __ENV__.line, opts: unquote(opts) }
+      head =  %ESpec.Context{description: unquote(description), module: __MODULE__, line: __ENV__.line, opts: unquote(opts)}
       @context [head | tail]
       unquote(block)
       @context tail

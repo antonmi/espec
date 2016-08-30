@@ -12,13 +12,13 @@ defmodule BeforeTest do
       it do: "#{shared[:a]} and #{shared[:b]} is defined"
 
       ESpec.Context.describe "Describe" do
-        before do: {:ok, b: fn(a) -> a*2 end}
+        before do: {:ok, b: fn(a) -> a * 2 end}
         it do: "#{shared[:b].(10)} == 20"
       end
     end
 
     context "'shared is available" do
-      before do: {:ok, b: shared[:a] + 1 }
+      before do: {:ok, b: shared[:a] + 1}
       it do: "b = #{shared[:b]}"
     end
 

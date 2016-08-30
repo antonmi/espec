@@ -218,12 +218,16 @@ defmodule ESpec.Runner do
     seed = cond do
       is_number(conf_seed) -> conf_seed
       is_binary(conf_seed) -> String.to_integer(conf_seed)
+      true -> :no_way
     end
 
     :rand.seed(:exs64, {3172, 9814, seed})
   end
 
   defmodule Queue do
+    @moduledoc """
+    Implements queue.
+    """
     def push(name, el), do: Agent.update(name, &[el | &1])
 
     def pop(name) do

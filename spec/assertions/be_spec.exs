@@ -23,10 +23,9 @@ defmodule ESpec.Assertions.BeSpec do
     context "Errors" do
       context "with `to`" do
         before do
-          { :shared,
+          {:shared,
             expectation: fn -> expect(2).to be :>, 3 end,
-            message: "Expected `2 > 3` to be `true` but got `false`."
-          }
+            message: "Expected `2 > 3` to be `true` but got `false`."}
         end
 
         it_behaves_like(CheckErrorSharedSpec)
@@ -34,10 +33,9 @@ defmodule ESpec.Assertions.BeSpec do
 
       context "with `not_to`" do
         before do
-          { :shared,
+          {:shared,
             expectation: fn -> expect(1).to_not be :==, 1.0 end,
-            message: "Expected `1 == 1.0` to be `false` but got `true`."
-          }
+            message: "Expected `1 == 1.0` to be `false` but got `true`."}
         end
 
         it_behaves_like(CheckErrorSharedSpec)
