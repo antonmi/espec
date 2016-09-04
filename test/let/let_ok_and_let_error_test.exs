@@ -11,16 +11,16 @@ defmodule LetOkAndLetErrorTest do
       let_ok :ok_result, do: ok_fun()
       let_ok! :ok_result!, do: ok_fun()
 
-      it do: expect(ok_result).to eq(10)
-      it do: expect(ok_result!).to eq(10)
+      it do: expect(ok_result()).to eq(10)
+      it do: expect(ok_result!()).to eq(10)
     end
 
     context "let_error and let_error!" do
       let_error :error_result, do: error_fun()
       let_error! :error_result!, do: error_fun()
 
-      it do: expect(error_result).to eq(20)
-      it do: expect(error_result!).to eq(20)
+      it do: expect(error_result()).to eq(20)
+      it do: expect(error_result!()).to eq(20)
     end
   end
 

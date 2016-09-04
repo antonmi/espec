@@ -7,13 +7,13 @@ defmodule LeakingSubjectTest do
     ESpec.Context.describe "first" do
       subject do: []
 
-      it "is empty by default", do: should be_empty
+      it "is empty by default", do: should be_empty()
     end
 
     ESpec.Context.describe "second" do
-      it do: should be_empty
-      it do: is_expected |> to(be_empty)
-      it do: is_expected.to be_empty
+      it do: should be_empty()
+      it do: is_expected() |> to(be_empty())
+      it do: is_expected().to be_empty()
     end
   end
 

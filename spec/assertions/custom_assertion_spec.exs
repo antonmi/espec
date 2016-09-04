@@ -20,12 +20,12 @@ defmodule CustomAssertionSpec do
     end
 
     it "checks success with `to`" do
-      message = should(be_odd)
+      message = should(be_odd())
       expect(message) |> to(eq "`3` is odd number.")
     end
 
     it "checks success with `not_to`" do
-      message = 2 |> should_not(be_odd)
+      message = 2 |> should_not(be_odd())
       expect(message) |> to(eq "`2` is not odd number.")
     end
   end
@@ -56,7 +56,7 @@ defmodule CustomAssertionSpec do
     context "with `to`" do
       before do
         {:shared,
-          expectation: fn -> 2 |> should(be_odd) end,
+          expectation: fn -> 2 |> should(be_odd()) end,
           message: "Expected `2` to be the odd number, but the remainder is '0'."}
       end
 
@@ -66,7 +66,7 @@ defmodule CustomAssertionSpec do
     context "with `not_to`" do
       before do
         {:shared,
-          expectation: fn -> should_not be_odd end,
+          expectation: fn -> should_not be_odd() end,
           message: "Expected `5` not to be the odd number, but the remainder is '1'."}
       end
 

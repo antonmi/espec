@@ -15,8 +15,8 @@ defmodule CustonAssertionTest do
       it do: should(be_divisor_of 6)
       it do: should_not(be_divisor_of 5)
 
-      it do: should be_odd
-      it do: 2 |> should_not(be_odd)
+      it do: should be_odd()
+      it do: 2 |> should_not(be_odd())
     end
 
     context "Error" do
@@ -25,8 +25,8 @@ defmodule CustonAssertionTest do
       it do: should be_divisor_of(6)
       it do: should_not be_divisor_of(5)
 
-      it do: should_not be_odd
-      it do: 2 |> should(be_odd)
+      it do: should_not be_odd()
+      it do: 2 |> should(be_odd())
     end
 
   end

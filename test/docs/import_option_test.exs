@@ -1,6 +1,6 @@
 defmodule ESpec.DocTestTest.Mod3 do
   @doc """
-    iex> some_fun
+    iex> some_fun()
     :some_fun
   """
   def some_fun, do: :some_fun

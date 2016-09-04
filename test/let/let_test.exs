@@ -5,20 +5,20 @@ defmodule LetTest do
     use ESpec
 
     let :a, do: 10
-    it do: "a = #{a}"
+    it do: "a = #{a()}"
 
     context "Context" do
       let :a, do: 20
       let :f, do: fn(x) -> x * 2 end
 
-      it do: "a = #{a}"
-      it do: "f.(2) = #{f.(2)}"
+      it do: "a = #{a()}"
+      it do: "f.(2) = #{f().(2)}"
     end
 
     context "Use 'shared'" do
       before do: {:ok, x: 1}
       let :y, do: shared[:x] + 1
-      it do: "y = #{y}"
+      it do: "y = #{y()}"
     end
   end
 

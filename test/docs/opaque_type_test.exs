@@ -1,7 +1,7 @@
 defmodule ESpec.DocTestTest.Mod5 do
   @doc """
-    iex> Enum.into([a: 10, b: 20], HashDict.new)
-    #HashDict<[b: 20, a: 10]>
+    iex> Enum.into([a: 10, b: 20], Map.new)
+    %{a: 10, b: 20}
   """
   def f, do: :f
 end |> ExUnit.TestHelpers.write_beam
