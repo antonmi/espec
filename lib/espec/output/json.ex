@@ -11,7 +11,7 @@ defmodule ESpec.Output.Json do
       format_pending(pending), format_failed(failed), format_success(Example.success(examples))
     ] |> List.flatten
     summary = format_summary(examples, pending, failed, times)
-    string = EEx.eval_file(template_path, [examples: list, summary: summary])
+    string = EEx.eval_file(template_path(), [examples: list, summary: summary])
     String.replace(string, "\n", "")
   end
 
@@ -34,7 +34,7 @@ defmodule ESpec.Output.Json do
   def format_summary(examples, pending, failed, {start_loading_time, finish_loading_time, finish_specs_time}) do
     load_time = :timer.now_diff(finish_loading_time, start_loading_time)
     spec_time = :timer.now_diff(finish_specs_time, finish_loading_time)
-    seed = get_seed
+    seed = get_seed()
     {
       Enum.count(examples), Enum.count(failed), Enum.count(pending),
       us_to_sec(load_time + spec_time), us_to_sec(load_time), us_to_sec(spec_time),

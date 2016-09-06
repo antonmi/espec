@@ -15,7 +15,7 @@ defmodule ESpec.Before do
   defines a function with random name which will be called when example is run.
   """
   defmacro before(do: block) do
-    function = random_before_name
+    function = random_before_name()
     quote do
       tail = @context
       head =  %ESpec.Before{module: __MODULE__, function: unquote(function)}

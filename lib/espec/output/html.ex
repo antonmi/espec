@@ -8,7 +8,7 @@ defmodule ESpec.Output.Html do
     tree = context_tree(examples)
     html = make_html(tree, true)
     summary = format_summary(examples, times)
-    string = EEx.eval_file(template_path, [examples: html, summary: summary])
+    string = EEx.eval_file(template_path(), [examples: html, summary: summary])
     String.replace(string, "\n", "")
   end
 
@@ -98,7 +98,7 @@ defmodule ESpec.Output.Html do
     failed = Example.failure(examples)
     load_time = :timer.now_diff(finish_loading_time, start_loading_time)
     spec_time = :timer.now_diff(finish_specs_time, finish_loading_time)
-    seed = get_seed
+    seed = get_seed()
     {
       Enum.count(examples), Enum.count(failed), Enum.count(pending),
       us_to_sec(load_time + spec_time), us_to_sec(load_time), us_to_sec(spec_time),
