@@ -563,7 +563,7 @@ defmodule AssertReceviveSpec do
   end
 
   it "demonstrates refute_receive" do
-    send(self, :another_hello)
+    send(self(), :another_hello)
     refute_receive :hello_refute
   end
 end

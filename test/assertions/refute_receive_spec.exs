@@ -6,19 +6,19 @@ defmodule AssertReceiveTest do
 
     context "Success" do
       it "refute_receive" do
-        send(self, :another_hello)
+        send(self(), :another_hello)
         ESpec.RefuteReceive.refute_receive :hello_refute 
       end
 
       it "refute_received" do
-        send(self, :another_hello)
+        send(self(), :another_hello)
         ESpec.RefuteReceive.refute_received :hello_refute
       end
     end
 
     context "Errors" do
       it "refute_received" do
-        send(self, :hello_refute_1)
+        send(self(), :hello_refute_1)
         ESpec.RefuteReceive.refute_received :hello_refute_1
       end
     end

@@ -46,7 +46,7 @@ defmodule ESpec.ExampleRunner do
         error = %AssertionError{message: format_other_error(other_error)}
         do_rescue(example, assigns, start_time, error)
     after
-      unload_mocks
+      unload_mocks()
     end
   end
 

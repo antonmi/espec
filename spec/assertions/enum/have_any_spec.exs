@@ -8,12 +8,12 @@ defmodule ESpec.Assertions.Enum.HaveAnySpec do
 
   context "Success" do
     it "checks success with `to`" do
-      message = expect(range).to have_any(positive)
+      message = expect(range()).to have_any(positive())
       expect(message) |> to(end_with "returns `true` for at least one element in `1..3`.")
     end
 
     it "checks success with `not_to`" do
-      message = expect(range).to_not have_any(negative)
+      message = expect(range()).to_not have_any(negative())
       expect(message) |> to(end_with "doesn't return `true` for any element in `1..3`.")
     end
   end
@@ -21,7 +21,7 @@ defmodule ESpec.Assertions.Enum.HaveAnySpec do
   context "Error" do
     it "checks error with `to`" do
       try do
-        expect(range).to have_any(negative)
+        expect(range()).to have_any(negative())
       rescue
         error in [ESpec.AssertionError] ->
           expect(error.message)
@@ -31,7 +31,7 @@ defmodule ESpec.Assertions.Enum.HaveAnySpec do
 
     it "checks error with `not_to`" do
       try do
-        expect(range).to_not have_any(positive)
+        expect(range()).to_not have_any(positive())
       rescue
         error in [ESpec.AssertionError] ->
           expect(error.message)

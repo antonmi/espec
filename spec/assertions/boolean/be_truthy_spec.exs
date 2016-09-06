@@ -3,12 +3,12 @@ defmodule ESpec.Assertions.Boolean.BeTruthySpec do
 
   context "Success" do
     it "checks success with `to`" do
-      message = expect(1).to be_truthy
+      message = expect(1).to be_truthy()
       expect(message) |> to(eq "`1` is truthy.")
     end
 
     it "checks success with `not_to`" do
-      message = expect(nil).to_not be_truthy
+      message = expect(nil).to_not be_truthy()
       expect(message) |> to(eq "`nil` is not truthy.")
     end
   end
@@ -17,7 +17,7 @@ defmodule ESpec.Assertions.Boolean.BeTruthySpec do
     context "with `to`" do
       before do
         {:shared,
-          expectation: fn -> expect(false).to be_truthy end,
+          expectation: fn -> expect(false).to be_truthy() end,
           message: "Expected `false` to be truthy but it isn't."}
       end
 
@@ -27,7 +27,7 @@ defmodule ESpec.Assertions.Boolean.BeTruthySpec do
     context "with `not_to`" do
       before do
         {:shared,
-          expectation: fn -> expect(true).to_not be_truthy end,
+          expectation: fn -> expect(true).to_not be_truthy() end,
           message: "Expected `true` not to be truthy but it is."}
       end
 

@@ -47,7 +47,7 @@ defmodule ESpec.Runner do
     examples = if Configuration.get(:order) do
       run_in_order(specs, opts)
     else
-      seed_random!
+      seed_random!()
       run_in_random(specs, opts)
     end
     Configuration.add([finish_specs_time: :os.timestamp])
@@ -89,13 +89,13 @@ defmodule ESpec.Runner do
 
   defp run_async(examples) do
     Enum.each(examples, &Queue.push(:input, &1))
-    do_run_async
+    do_run_async()
     Queue.all(:output)
   end
 
   defp do_run_async do
     Enum.map(1..@max_async_count, fn(_) ->
-      Task.async(fn -> spawn_task end)
+      Task.async(fn -> spawn_task() end)
     end)
     |> Enum.map(&Task.await(&1, :infinity))
   end
@@ -104,7 +104,7 @@ defmodule ESpec.Runner do
     if example = Queue.pop(:input) do
       example = ExampleRunner.run(example)
       Queue.push(:output, example)
-      spawn_task
+      spawn_task()
     end
   end
 
