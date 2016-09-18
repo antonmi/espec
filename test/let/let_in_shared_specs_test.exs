@@ -31,10 +31,17 @@ defmodule LetSharedSpecsTest do
     include_examples(SharedSpec)
   end
 
-  setup_all do
+  defmodule UseLetSharedAsKeywordSpec do
+    use ESpec
 
-    examples = ESpec.Runner.run_examples(UseSharedSpecSpec.examples, true)
-    {:ok, examples: examples}
+    it_behaves_like(SharedSpec, a: 1, c: 3, qqq: :www)
+    include_examples(SharedSpec, a: 1, c: 3, qqq: :www)
+  end
+
+  setup_all do
+    examples1 = ESpec.Runner.run_examples(UseSharedSpecSpec.examples, true)
+    examples2 = ESpec.Runner.run_examples(UseLetSharedAsKeywordSpec.examples, true)
+    {:ok, examples: examples1 ++ examples2}
   end
 
   test "Examples should pass", context do
