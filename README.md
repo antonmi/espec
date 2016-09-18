@@ -291,6 +291,7 @@ Pay attention to how `finally` blocks are defined and evaluated.
 `let` and `let!` have the same behaviour as in RSpec. Both defines memoizable functions in 'spec module'. The value will be cached across multiple calls in the same example but not across examples. `let` is not evaluated until the first time the function it defines is invoked. Use `let!` to force the invocation before each example.
 
 The `shared` is available in `let`s but neither `let` nor `let!` can modify the dictionary.
+
 ```elixir
 defmodule LetSpec do
   use ESpec
@@ -304,6 +305,7 @@ defmodule LetSpec do
 end
 ```
 You can pass a keyword list to `let` or `let!` to define several 'lets' at once:
+```elixir
 defmodule LetSpec do
   use ESpec
 
@@ -313,7 +315,7 @@ defmodule LetSpec do
   it do: expect b() |> to(eq 2)
 end
 ```
-`subject` and `subject!` are just aliases for `let :subject, do: smth` and `let! :subject, do: smth`. You can use `is_expected` macro (or a simple `should` expression) when `subject` is defined.
+Note, `subject` and `subject!` are just aliases for `let :subject, do: smth` and `let! :subject, do: smth`. You can use `is_expected` macro (or a simple `should` expression) when `subject` is defined.
 ```elixir
 defmodule SubjectSpec do
   use ESpec
