@@ -17,6 +17,15 @@ defmodule ESpec.Let do
   """
   defmacro let(var, do: block), do: do_let(var, block)
 
+  @doc "Allows to define several 'lets' at once"
+  defmacro let(keyword) when is_list keyword do
+    if Keyword.keyword?(keyword) do
+      Enum.map(keyword, fn{var, block} -> do_let(var, block) end)
+    else
+      raise "Argument must be a Keyword"
+    end
+  end
+
   @doc "Defines overridable lets in shared examples"
   defmacro let_overridable(keywords) when is_list keywords do
     if Keyword.keyword?(keywords) do
@@ -59,6 +68,14 @@ defmodule ESpec.Let do
     quote do
       let unquote(var), do: unquote(block)
       before do: unquote(var)()
+    end
+  end
+
+  @doc "Allows to define several 'lets' at once"
+  defmacro let!(keyword) when is_list keyword do
+    quote do
+      let unquote(keyword)
+      before unquote(keyword)
     end
   end
 

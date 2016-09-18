@@ -297,6 +297,16 @@ defmodule LetSpec do
   it do: expect b() |> to(eq 2)
 end
 ```
+You can pass a keyword list to `let` or `let!` to define several 'lets' at once:
+defmodule LetSpec do
+  use ESpec
+
+  let a: 1, b: 2
+
+  it do: expect a() |> to(eq 1)
+  it do: expect b() |> to(eq 2)
+end
+```
 `subject` and `subject!` are just aliases for `let :subject, do: smth` and `let! :subject, do: smth`. You can use `is_expected` macro (or a simple `should` expression) when `subject` is defined.
 ```elixir
 defmodule SubjectSpec do

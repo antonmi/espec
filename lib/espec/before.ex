@@ -14,7 +14,18 @@ defmodule ESpec.Before do
   Adds %ESpec.Before structs to the @context and
   defines a function with random name which will be called when example is run.
   """
-  defmacro before(do: block) do
+  defmacro before(do: block), do: do_before(block)
+
+  @doc false
+  defmacro before(keyword) when is_list keyword do
+    if Keyword.keyword?(keyword) do
+      Enum.map(keyword, fn{_var, block} -> do_before(block) end)
+    else
+      raise "Argument must be a Keyword"
+    end
+  end
+
+  defp do_before(block) do
     function = random_before_name()
     quote do
       tail = @context
