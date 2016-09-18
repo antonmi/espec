@@ -18,7 +18,7 @@ defmodule BeforeTest do
     end
 
     context "'shared is available" do
-      before do: {:ok, b: shared[:a] + 1}
+      before b: shared[:a] + 1
       it do: "b = #{shared[:b]}"
     end
 
