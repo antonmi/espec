@@ -385,12 +385,9 @@ end
 defmodule LetOverridableSpec do
   use ESpec, async: true
 
-  let :a, do: 1
-  let :c, do: 3
-  let :e, do: 5
   let :internal_value, do: :some_spec
 
-  it_behaves_like(SharedSpec)
+  it_behaves_like(SharedSpec, a: 1, c: 3, e: 5)
 end
 ```
 

@@ -107,8 +107,10 @@ defmodule ESpec.ExampleHelpers do
   end
 
   @doc "Defines examples using another module."
-  defmacro it_behaves_like(module) do
+  defmacro it_behaves_like(module, lets \\ []) when is_list lets do
     quote do
+      let unquote(lets)
+
       Enum.each unquote(module).examples, fn(example) ->
         new_context = ESpec.ExampleHelpers.__assign_shared_lets__(example.context, @context)
         context = Enum.reverse(@context) ++ new_context
@@ -139,8 +141,8 @@ defmodule ESpec.ExampleHelpers do
   end
 
   @doc "alias for include_examples"
-  defmacro include_examples(module) do
-    quote do: it_behaves_like(unquote(module))
+  defmacro include_examples(module, lets \\ []) when is_list lets do
+    quote do: it_behaves_like(unquote(module), unquote(lets))
   end
 
   defp random_atom(arg) do

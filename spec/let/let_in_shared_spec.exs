@@ -39,3 +39,10 @@ defmodule UseLetSharedSpecSpec do
   it_behaves_like(LetInSharedWithSpec)
   include_examples(LetInSharedWithSpec)
 end
+
+defmodule UseLetSharedAsKeywordSpecSpec do
+  use ESpec
+
+  it_behaves_like(LetInSharedWithSpec, a: 1, c: 3, qqq: :www)
+  include_examples(LetInSharedWithSpec, a: 1, c: 3, qqq: :www)
+end
