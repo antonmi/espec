@@ -16,10 +16,10 @@ defmodule ESpec.Before do
   """
   defmacro before(do: block), do: do_before(block)
 
-  @doc false
-  defmacro before(keyword) when is_list keyword do
-    if Keyword.keyword?(keyword) do
-      Enum.map(keyword, fn{_var, block} -> do_before(block) end)
+  @doc "Allows to add keyword list or map to the shared dictionary"
+  defmacro before(keyword) when is_list (keyword) do
+    if Keyword.keyword?(keyword)do
+      do_before({:shared, keyword})
     else
       raise "Argument must be a Keyword"
     end

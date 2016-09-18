@@ -31,6 +31,15 @@ defmodule BeforeSpec do
       it do: expect(shared.b).to eq(2)
     end
 
+    describe "With keyword" do
+      before a: 1, b: 2
+      before c: shared[:b] + 1
+
+      it do: expect(shared.a).to eq(1)
+      it do: expect(shared.b).to eq(2)
+      it do: expect(shared.c).to eq(3)
+    end
+
     describe "Not valid" do
       before do: {:shared, [%{a: 1, b: 2}]}
 

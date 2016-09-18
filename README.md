@@ -224,6 +224,12 @@ defmodule BeforeAndFinallySpec do
 end
 ```
 Note, that `finally` blocks must be defined before the example.
+There is also a short form of 'before' macro which allows to fill in shared dictionary:
+```elixir
+before a: 1, b: 2
+# which is equivalent to
+before do: {shared: a: 1, b: 2}
+```
 You can configure 'global' `before` and `finally` in `spec_helper.exs`:
 ```elixir
 ESpec.configure fn(config) ->
@@ -289,7 +295,7 @@ The `shared` is available in `let`s but neither `let` nor `let!` can modify the 
 defmodule LetSpec do
   use ESpec
 
-  before do: {:shared, a: 1}
+  before a: 1
   let! :a, do: shared.a
   let :b, do: shared.a + 1
 
@@ -346,7 +352,7 @@ You can use the examples with `it_behaves_like` or its alias `include_examples` 
 defmodule UseSharedSpec do
   use ESpec
 
-  before do: {:ok, hello: "world!"}
+  before hello: "world!"
   it_behaves_like(SharedSpec)
   #or
   include_examples(SharedSpec)
