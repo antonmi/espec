@@ -91,7 +91,7 @@ defmodule AcceptedSpec do
     end
 
     it "not accepted with another pid" do
-      expect(SomeModule).to_not accepted(:func, [10, 20], pid: self)
+      expect(SomeModule).to_not accepted(:func, [10, 20], pid: self())
     end
 
     it "accepted with :any" do

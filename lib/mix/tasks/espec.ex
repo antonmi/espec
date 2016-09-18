@@ -99,7 +99,7 @@ defmodule Mix.Tasks.Espec do
   def run(args) do
     {opts, files, _} = OptionParser.parse(args)
 
-    check_env!
+    check_env!()
     Mix.Task.run "loadpaths", args
 
     if Keyword.get(opts, :compile, true), do: Mix.Task.run("compile", args)
@@ -116,7 +116,7 @@ defmodule Mix.Tasks.Espec do
     Mix.shell.print_app
     Mix.Task.run "app.start", args
 
-    ensure_espec_loaded!
+    ensure_espec_loaded!()
     set_configuration(opts)
 
     ESpec.start
@@ -154,7 +154,7 @@ defmodule Mix.Tasks.Espec do
   end
 
   defp check_env! do
-    if elixir_version < "1.3.0" do
+    if elixir_version() < "1.3.0" do
       unless System.get_env("MIX_ENV") || Mix.env == :test do
         Mix.raise "espec is running on environment #{Mix.env}.\n" <>
                   "It is recommended to run espec in test environment.\n" <>

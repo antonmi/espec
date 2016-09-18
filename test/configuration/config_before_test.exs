@@ -19,7 +19,7 @@ defmodule ConfigBeforeTest do
     context "with before and let" do
       before do: {:ok, answer: shared[:answer] + 1}
       let :answer, do: shared[:answer] + 1
-      it do: "answer is #{answer}"
+      it do: "answer is #{answer()}"
     end
   end
 

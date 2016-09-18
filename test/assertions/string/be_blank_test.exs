@@ -7,13 +7,13 @@ defmodule String.BeBlankTest do
     subject "qwerty"
 
     context "Success" do
-      it do: "" |> should(be_blank)
-      it do: "qwerty" |> should_not(be_blank)
+      it do: "" |> should(be_blank())
+      it do: "qwerty" |> should_not(be_blank())
     end
 
     context "Error" do
-      it do: "" |> should_not(be_blank)
-      it do: "qwerty" |> should(be_blank)
+      it do: "" |> should_not(be_blank())
+      it do: "qwerty" |> should(be_blank())
     end
   end
 

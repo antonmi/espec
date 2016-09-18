@@ -13,17 +13,17 @@ defmodule ChangeSpec do
 
   context "Success" do
     it "checks success with `to`" do
-      message = expect(f1).to change(f2)
+      message = expect(f1()).to change(f2())
       expect(message) |> to(end_with "changes the value of `&ChangeSpec.count/0`.")
     end
 
     it "checks success with `to`" do
-      message = expect(f1).to change(f2, 1)
+      message = expect(f1()).to change(f2(), 1)
       expect(message) |> to(end_with "changes the value of `&ChangeSpec.count/0` to `1`.")
     end
 
     it "checks success with `to`" do
-      message = expect(f1).to change(f2, 0, 1)
+      message = expect(f1()).to change(f2(), 0, 1)
       expect(message) |> to(end_with "changes the value of `&ChangeSpec.count/0` from `0` to `1`.")
     end
   end
@@ -31,7 +31,7 @@ defmodule ChangeSpec do
   context "Error" do
     it "checks error with `to` for change" do
       try do
-        expect(f1).to change(f3)
+        expect(f1()).to change(f3())
       rescue
         error in [ESpec.AssertionError] ->
           expect(error.message) |> to(end_with "but it didn't change.")
@@ -40,7 +40,7 @@ defmodule ChangeSpec do
 
     it "checks error with `not_to` for change" do
       try do
-        expect(f1).not_to change(f2)
+        expect(f1()).not_to change(f2())
       rescue
         error in [ESpec.AssertionError] ->
           expect(error.message) |> to(end_with "but it changed.")
@@ -49,7 +49,7 @@ defmodule ChangeSpec do
 
     it "checks error with `to` for change_to" do
       try do
-        expect(f1).to change(f2, 2)
+        expect(f1()).to change(f2(), 2)
       rescue
         error in [ESpec.AssertionError] ->
           expect(error.message) |> to(end_with "to change the value of `&ChangeSpec.count/0` to `2`, but was changed to `1`")
@@ -58,7 +58,7 @@ defmodule ChangeSpec do
 
     it "checks error with `to` for change_to" do
       try do
-        expect(f3).to change(f2, 2)
+        expect(f3()).to change(f2(), 2)
       rescue
         error in [ESpec.AssertionError] ->
           expect(error.message) |> to(end_with "to change the value of `&ChangeSpec.count/0` to `2`, but was not changed")
@@ -67,7 +67,7 @@ defmodule ChangeSpec do
 
     it "checks error with `to` for change_to" do
       try do
-        expect(f3).to change(f2, 0)
+        expect(f3()).to change(f2(), 0)
       rescue
         error in [ESpec.AssertionError] ->
           expect(error.message) |> to(end_with "to change the value of `&ChangeSpec.count/0` to `0`, but the initial value is `0`")
@@ -76,7 +76,7 @@ defmodule ChangeSpec do
 
     it "checks error with `to` for change_from_to" do
       try do
-        expect(f1).to change(f2, 0, 2)
+        expect(f1()).to change(f2(), 0, 2)
       rescue
         error in [ESpec.AssertionError] ->
           expect(error.message) |> to(end_with "to change the value of `&ChangeSpec.count/0` from `0` to `2`, but the value is `1`.")
@@ -85,7 +85,7 @@ defmodule ChangeSpec do
 
     it "checks error with `to` for change_from_to" do
       try do
-        expect(f1).to change(f2, 1, 2)
+        expect(f1()).to change(f2(), 1, 2)
       rescue
         error in [ESpec.AssertionError] ->
           expect(error.message) |> to(end_with "to change the value of `&ChangeSpec.count/0` from `1` to `2`, but the initial value is `0`.")
@@ -94,7 +94,7 @@ defmodule ChangeSpec do
 
     it "checks error with `to` for change_from_to" do
       try do
-        expect(f3).to change(f2, 0, 2)
+        expect(f3()).to change(f2(), 0, 2)
       rescue
         error in [ESpec.AssertionError] ->
           expect(error.message) |> to(end_with "to change the value of `&ChangeSpec.count/0` from `0` to `2`, but the value is `0`.")

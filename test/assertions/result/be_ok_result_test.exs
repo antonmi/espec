@@ -8,13 +8,13 @@ defmodule List.BeOkResultTest do
     let :error_result, do: {:error, :reason}
 
     context "Success" do
-      it do: expect ok_result |> to(be_ok_result)
-      it do: expect error_result |> not_to(be_ok_result)
+      it do: expect ok_result() |> to(be_ok_result())
+      it do: expect error_result() |> not_to(be_ok_result())
     end
 
     context "Errors" do
-      it do: expect ok_result |> not_to(be_ok_result)
-      it do: expect error_result |> to(be_ok_result)
+      it do: expect ok_result() |> not_to(be_ok_result())
+      it do: expect error_result() |> to(be_ok_result())
     end
   end
 

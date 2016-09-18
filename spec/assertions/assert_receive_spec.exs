@@ -24,7 +24,7 @@ defmodule AssertReceiveSpec do
       end
 
       it "checks all the inbox" do
-        for i <- 1..20, do: send(self, {:message, i})
+        for i <- 1..20, do: send(self(), {:message, i})
         send(self(), :hello)
         message = assert_received :hello
         expect(message) |> to(eq "Received `:hello`.")

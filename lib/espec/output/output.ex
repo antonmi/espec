@@ -7,12 +7,12 @@ defmodule ESpec.Output do
   alias ESpec.Configuration
   @doc "Starts server."
   def start do
-    GenServer.start_link(__MODULE__, [formatter: formatter], name: __MODULE__)
+    GenServer.start_link(__MODULE__, [formatter: formatter()], name: __MODULE__)
   end
 
   @doc "Initiates server with configuration options and formatter"
   def init(args) do
-    if output_to_file?, do: create_out_file!
+    if output_to_file?(), do: create_out_file!()
     state = %{opts: Configuration.all, formatter: args[:formatter]}
     {:ok, state}
   end
@@ -23,7 +23,7 @@ defmodule ESpec.Output do
   @doc "Generates suite info"
   def print_result(examples) do
    result = GenServer.call(__MODULE__, {:print_result, examples}, :infinity)
-   if output_to_file?, do: close_out_file
+   if output_to_file?(), do: close_out_file()
    result
   end
 
@@ -48,9 +48,9 @@ defmodule ESpec.Output do
   end
 
   defp do_example_info(example, {result_formatter, opts}) do
-    unless silent? do
-      if output_to_file? do
-        IO.write out_file, result_formatter.format_example(example, opts)
+    unless silent?() do
+      if output_to_file?() do
+        IO.write out_file(), result_formatter.format_example(example, opts)
       else
         IO.write result_formatter.format_example(example, opts)
       end
@@ -58,11 +58,11 @@ defmodule ESpec.Output do
   end
 
   defp do_print_result(examples, {result_formatter, opts}) do
-    unless silent? do
-      if output_to_file? do
-        IO.write out_file, result_formatter.format_result(examples, get_times, opts)
+    unless silent?() do
+      if output_to_file?() do
+        IO.write out_file(), result_formatter.format_result(examples, get_times(), opts)
       else
-        IO.write result_formatter.format_result(examples, get_times, opts)
+        IO.write result_formatter.format_result(examples, get_times(), opts)
       end
     end
   end
@@ -80,15 +80,15 @@ defmodule ESpec.Output do
     end
   end
 
-  defp output_to_file?, do: out_path
+  defp output_to_file?, do: out_path()
 
   defp create_out_file! do
-    File.mkdir_p!(Path.dirname(out_path))
-    {:ok, file} = File.open(out_path, [:write])
+    File.mkdir_p!(Path.dirname(out_path()))
+    {:ok, file} = File.open(out_path(), [:write])
     Configuration.add([out_file: file])
   end
 
-  defp close_out_file, do: File.close(out_file)
+  defp close_out_file, do: File.close(out_file())
 
   defp out_file, do: Configuration.get(:out_file)
   defp out_path, do: Configuration.get(:out)

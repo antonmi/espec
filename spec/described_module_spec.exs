@@ -6,6 +6,6 @@ defmodule TheSpecModuleSpec do
   use ESpec
 
   it do: expect @described_module |> to(eq Elixir.TheSpecModule)
-  it do: expect described_module |> to(eq Elixir.TheSpecModule)
-  it do: expect described_module.test |> to(eq :test)
+  it do: expect described_module() |> to(eq Elixir.TheSpecModule)
+  it do: expect described_module().test |> to(eq :test)
 end

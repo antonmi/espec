@@ -8,9 +8,9 @@ defmodule ESpec.Mixfile do
      name: "ESpec",
      version: @version,
      elixir: ">= 1.1.0",
-     description: description,
-     package: package,
-     deps: deps,
+     description: description(),
+     package: package(),
+     deps: deps(),
      source_url: "https://github.com/antonmi/espec",
      preferred_cli_env: [espec: :test]
    ]

@@ -5,22 +5,22 @@ defmodule LeakingLetTest do
     use ESpec
     ESpec.Context.describe "first" do
       let :a, do: 1
-      it do: expect a |> to(eq 1)
+      it do: expect a() |> to(eq 1)
     end
     ESpec.Context.describe "second" do
-      it do: expect a |> to(eq 1)
+      it do: expect a() |> to(eq 1)
     end
-    it do: expect a |> to(eq 1)
+    it do: expect a() |> to(eq 1)
   end
 
   defmodule SomeSpec2 do
     use ESpec
     ESpec.Context.describe "second" do
-      it do: a |> should(eq 1)
+      it do: a() |> should(eq 1)
     end
     ESpec.Context.describe "first" do
       let :a, do: 1
-      it do: a |> should(eq 1)
+      it do: a() |> should(eq 1)
     end
   end
 
@@ -30,7 +30,7 @@ defmodule LeakingLetTest do
       ESpec.Context.describe "use let val" do
         let :result, do: 42
 
-        it do: expect(result) |> to(eq 42)
+        it do: expect(result()) |> to(eq 42)
       end
 
       ESpec.Context.describe "use let name in example" do

@@ -16,10 +16,10 @@ defmodule TagsInConfigBeforeTest do
       let :tags, do: shared[:tags]
 
       it "passes tags to config before", example_tag: 3 do
-        expect(tags.async).to eq(false)
-        expect(tags.some_tag).to eq(1)
-        expect(tags.another_tag).to eq(2)
-        expect(tags.example_tag).to eq(3)
+        expect(tags().async).to eq(false)
+        expect(tags().some_tag).to eq(1)
+        expect(tags().another_tag).to eq(2)
+        expect(tags().example_tag).to eq(3)
       end
     end
   end

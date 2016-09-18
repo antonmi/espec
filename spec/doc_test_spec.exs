@@ -3,7 +3,7 @@ defmodule ESpec.DocTestTest.Mod1 do
     iex> 2 + 2
     4
   """
-  
+
   @doc """
     iex> Enum.map [1, 2, 3], fn(x) ->
     ...>   x * 2
@@ -13,8 +13,8 @@ defmodule ESpec.DocTestTest.Mod1 do
     iex> 2 + 2
     4
 
-    iex> Enum.into([a: 10, b: 20], HashDict.new)
-    #HashDict<[b: 20, a: 10]>
+    iex> Enum.into([a: 10, b: 20], Map.new)
+    %{a: 10, b: 20}
 
     iex> ESpec.DocTestTest.Mod1.f
     :f

@@ -23,7 +23,7 @@ defmodule ESpec.Output.Doc do
     string = if Enum.any?(failed), do: string <> format_failed(failed), else: string
     string = string <> format_footer(examples, failed, pending)
     string = string <> format_times(times, failed, pending)
-    string <> format_seed
+    string <> format_seed()
   end
 
   @doc "Formats an example result."

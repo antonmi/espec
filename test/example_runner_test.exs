@@ -12,7 +12,7 @@ defmodule ExampleRunnerTest do
     context "Context" do
       let :a, do: 20
 
-      it do: "a = #{a}"
+      it do: "a = #{a()}"
     end
 
     context "errors" do

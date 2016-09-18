@@ -12,14 +12,14 @@ defmodule LetBangWithBeforesTest do
       it "has run before example" do
         value = Application.get_env(:espec, :letbang_value, "")
         expect value |> to(eq "let!")
-        expect test |> to(eq 456)
+        expect test() |> to(eq 456)
       end
 
       context "when overridden, is used by before" do
         let! :test, do: "initial"
 
         before do
-          expect test |> to(eq "overridden")
+          expect test() |> to(eq "overridden")
         end
 
         context "some context" do
@@ -29,7 +29,7 @@ defmodule LetBangWithBeforesTest do
           end
 
           it "equals 131" do
-            expect test |> to(eq "overridden")
+            expect test() |> to(eq "overridden")
           end
         end
       end

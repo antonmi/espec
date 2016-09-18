@@ -14,15 +14,15 @@ defmodule ChangeTest do
     let :f2, do: &ChangeTest.SomeSpec.count/0
 
     context "Success" do
-      it "change", do: expect(f1).to change(f2)
-      it "change_to", do: expect(f1).to change(f2, 1)
-      it "change_from_to", do: expect(f1).to change(f2, 0, 1)
+      it "change", do: expect(f1()).to change(f2())
+      it "change_to", do: expect(f1()).to change(f2(), 1)
+      it "change_from_to", do: expect(f1()).to change(f2(), 0, 1)
     end
 
     context "Error" do
-      it "change", do: expect(f1).not_to change(f2)
-      it "change_to", do: expect(f1).to change(f2, 2)
-      it "change_from_to", do: expect(f1).to change(f2, 0, 2)
+      it "change", do: expect(f1()).not_to change(f2())
+      it "change_to", do: expect(f1()).to change(f2(), 2)
+      it "change_from_to", do: expect(f1()).to change(f2(), 0, 2)
     end
   end
 

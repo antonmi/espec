@@ -14,7 +14,7 @@ defmodule ESpec.Finally do
   defines random function with random name which will be called when example is run.
   """
   defmacro finally(do: block) do
-    function = random_finally_name
+    function = random_finally_name()
     quote do
       tail = @context
       head =  %ESpec.Finally{module: __MODULE__, function: unquote(function)}

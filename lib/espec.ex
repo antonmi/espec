@@ -69,21 +69,21 @@ defmodule ESpec do
   @doc "Starts ESpec. Starts agents to store specs, mocks, cache 'let' values, etc."
   def start do
     {:ok, _} = Application.ensure_all_started(:espec)
-    start_specs_agent
+    start_specs_agent()
     ESpec.Let.Impl.start_agent
     ESpec.Mock.start_agent
     ESpec.Output.start
-    start_capture_server
+    start_capture_server()
   end
 
   @doc "Stops ESpec components"
   def stop do
-    stop_specs_agent
+    stop_specs_agent()
     ESpec.Let.Impl.stop_agent
     ESpec.Mock.stop_agent
     ESpec.Runner.stop
     ESpec.Output.stop
-    stop_capture_server
+    stop_capture_server()
   end
 
   @doc "Returns all examples."

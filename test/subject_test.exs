@@ -5,21 +5,21 @@ defmodule SubjectTest do
     use ESpec
 
     subject(10)
-    it do: "subject = #{subject}"
+    it do: "subject = #{subject()}"
 
     context "Redefine" do
       subject! do: 10 + 10
-      it do: "subject = #{subject}"
+      it do: "subject = #{subject()}"
     end
 
     context "Function" do
       subject fn -> 5 end
 
-      it do: expect(subject.()).to eq(5)
-      it do: subject.() |> should(eq 5)
+      it do: expect(subject().()).to eq(5)
+      it do: subject().() |> should(eq 5)
 
-      it do: is_expected.to_not raise_exception
-      it do: should_not raise_exception
+      it do: is_expected().to_not raise_exception()
+      it do: should_not raise_exception()
     end
   end
 

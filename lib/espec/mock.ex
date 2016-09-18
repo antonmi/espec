@@ -26,14 +26,14 @@ defmodule ESpec.Mock do
         end
     end
     :meck.expect(module, name, function)
-    agent_put({module, self})
+    agent_put({module, self()})
   end
 
   @doc "Unloads modules at the end of example"
   def unload do
-    modules = agent_get(self) |> Enum.map(fn{m, _p} -> m end)
+    modules = agent_get(self()) |> Enum.map(fn{m, _p} -> m end)
     :meck.unload(modules)
-    agent_del(self)
+    agent_del(self())
   end
 
   @doc "Starts Agent to save mocked modules."

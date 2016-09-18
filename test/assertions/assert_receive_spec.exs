@@ -31,9 +31,9 @@ defmodule AssertReceiveTest do
 
       it "refute received when message is somewhere in mailbox" do
         try do
-          for i <- 1..10, do: send(self, {:message, i})
-          send(self, :hello_refute)
-          for i <- 1..10, do: send(self, {:message, i})
+          for i <- 1..10, do: send(self(), {:message, i})
+          send(self(), :hello_refute)
+          for i <- 1..10, do: send(self(), {:message, i})
           refute_received :hello_refute
         rescue
           error in [ESpec.AssertionError] ->
