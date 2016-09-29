@@ -46,7 +46,7 @@ It is NOT a wrapper around ExUnit but a completely new testing framework written
 - [Mocks](#mocks)
 - [Doc specs](#doc-specs)
 - [Configuration and options](#configuration-and-options)
-- [Changelog][#changelog]
+- [Changelog](#changelog)
 - [Contributing](#contributing)
 
 ## Installation
