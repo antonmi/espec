@@ -46,6 +46,7 @@ It is NOT a wrapper around ExUnit but a completely new testing framework written
 - [Mocks](#mocks)
 - [Doc specs](#doc-specs)
 - [Configuration and options](#configuration-and-options)
+- [Changelog][#changelog]
 - [Contributing](#contributing)
 
 ## Installation
@@ -877,6 +878,39 @@ You may use `--format` with `--out` option to write output to the file.
 ```sh
 mix espec --format=html --out=spec.html
 ```
+
+## Changelog
+  * 0.2.0:
+    - Basic functionality (contexts, 'before' and 'let', mocking, basic matchers)
+  * 0.3.0:
+	   - Tags for examples and contexts
+	   - 'config.before' and 'config.finally'
+  * 0.4.0:
+    - Lots of internal changes
+   	- Shared examples
+  * 0.5.0:
+    - 'count', 'pid' and 'args' options in 'accepted' assetion
+   	- 'async' option for parallel execution
+  * 0.6.0:
+   	- String and Dictionary matchers
+    - Doctests
+  * 0.7.0:
+   	- Mocking options
+   	- Html and Json outputs
+   	- capture_io
+  * 0.8.0:
+   	- 'only' and 'exclude' options
+    - 'double_underscore' replaced by 'shared'
+  * 1.0.0:
+    - 'let' implementation rewritten completely 
+    - 'assert_receive' and 'refute_receive'
+    - 'let_overridable' for shared examples
+    - 'let_ok' and 'let_error'
+    - new syntax with pipe
+  * 1.1.0:
+   	- capture_log
+   	- 'let' and 'before' with keyword
+    
 ## Contributing
 ##### Contributions are welcome and appreciated!
 
