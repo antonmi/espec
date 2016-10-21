@@ -225,6 +225,8 @@ defmodule BeforeAndFinallySpec do
 end
 ```
 Note, that `finally` blocks must be defined before the example.
+Also note that `finally` blocks are executed in reverse order. Please see 'spec/before_finally_order_spec.exs' to figure out details.
+
 There is also a short form of 'before' macro which allows to fill in shared dictionary:
 ```elixir
 before a: 1, b: 2

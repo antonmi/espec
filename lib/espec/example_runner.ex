@@ -145,6 +145,7 @@ defmodule ESpec.ExampleRunner do
 
   defp run_finallies({assigns, example}) do
     Example.extract_finallies(example)
+    |> Enum.reverse
     |> Enum.reduce({assigns, example}, fn(finally, {map, example}) ->
       fun = fn ->
         assigns =  apply(finally.module, finally.function, [map])

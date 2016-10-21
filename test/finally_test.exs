@@ -5,12 +5,13 @@ defmodule FinallyTest do
     use ESpec
 
     before do: {:ok, a: 1}
+
+    finally do: Application.put_env(:espec, :finally_a, shared[:b])
+
     finally do
-      Application.put_env(:espec, :finally_a, 1)
+      Application.put_env(:espec, :finally_b, 1)
       {:ok, b: shared[:a] + 1}
     end
-
-    finally do: Application.put_env(:espec, :finally_b, shared[:b])
 
     it do: "some test"
 
@@ -40,8 +41,8 @@ defmodule FinallyTest do
 
   test "run ex1", context do
     ESpec.ExampleRunner.run(context[:ex1])
-    assert(Application.get_env(:espec, :finally_a) == 1)
-    assert(Application.get_env(:espec, :finally_b) == 2)
+    assert(Application.get_env(:espec, :finally_a) == 2)
+    assert(Application.get_env(:espec, :finally_b) == 1)
     assert(Application.get_env(:espec, :finally_c) == nil)
   end
 
