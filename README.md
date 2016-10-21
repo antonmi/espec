@@ -56,7 +56,7 @@ Add `espec` to dependencies in the `mix.exs` file:
 ```elixir
 def deps do
   ...
-  {:espec, "~> 1.1.0", only: :test},
+  {:espec, "~> 1.1.1", only: :test},
   #{:espec, github: "antonmi/espec", only: :test}, to get the latest version
   ...
 end
@@ -891,7 +891,7 @@ mix espec --format=html --out=spec.html
     - Lots of internal changes
    	- Shared examples
   * 0.5.0:
-    - 'count', 'pid' and 'args' options in 'accepted' assetion
+    - 'count', 'pid' and 'args' options in 'accepted' assertion
    	- 'async' option for parallel execution
   * 0.6.0:
    	- String and Dictionary matchers
@@ -912,6 +912,8 @@ mix espec --format=html --out=spec.html
   * 1.1.0:
    	- capture_log
    	- 'let' and 'before' with keyword
+  * 1.1.1:
+   	- Fix 'finally' execution order
     
 ## Contributing
 ##### Contributions are welcome and appreciated!
