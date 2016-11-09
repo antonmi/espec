@@ -196,7 +196,7 @@ defmodule ESpec.ExampleRunner do
       example
     else
       error = %AssertionError{message: format_other_error(error)}
-      example = %Example{example | status: :failure, error: error}
+      %Example{example | status: :failure, error: error}
     end
     {map, example}
   end
