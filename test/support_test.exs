@@ -9,6 +9,11 @@ defmodule SupportTest do
 
   test "word_chars" do
     string = ESpec.Support.word_chars("123  $@$#%$ ok")
-    assert string ==  "____________ok"
+    assert string ==  "___ok"
+  end
+
+  test "word_chars with unicode" do
+    string = ESpec.Support.word_chars("áéíóúàèìòùäëïöü ok")
+    assert string == "aeiouaeiouaeiou_ok"
   end
 end
