@@ -15,6 +15,9 @@ defmodule ExampleTest do
       "it is with name"
     end
 
+    example "example with unicode letters áéíóúàèìòùäëïöü" do
+    end
+
     specify do: "another example"
     specify "name", do: "another example"
     specify "name", [], do: "another example"
@@ -25,12 +28,13 @@ defmodule ExampleTest do
       ex1: Enum.at(SomeSpec.examples, 0),
       ex2: Enum.at(SomeSpec.examples, 1),
       ex3: Enum.at(SomeSpec.examples, 2),
-      ex4: Enum.at(SomeSpec.examples, 3)
+      ex4: Enum.at(SomeSpec.examples, 3),
+      unicode: Enum.at(SomeSpec.examples, 4)
     }
   end
 
   test "check SomeSpec.examples length" do
-    assert(length(SomeSpec.examples) == 7)
+    assert(length(SomeSpec.examples) == 8)
   end
 
   test "check ex1", context do
@@ -67,5 +71,9 @@ defmodule ExampleTest do
 
   test "ex4 opts", context do
     assert(context[:ex4].opts == [c: 3])
+  end
+
+  test "check unicode example", context do
+    assert(context[:unicode].description == "example with unicode letters áéíóúàèìòùäëïöü")
   end
 end
