@@ -6,17 +6,25 @@ defmodule ESpec.AllowTo do
   alias ESpec.Mock
 
   @doc "Makes specific mock with ESpec.Mock.expect/3."
-  def to(mock, {__MODULE__, module}) do
-    case mock do
-      {:accept, name, function} when is_atom(name) -> Mock.expect(module, name, function, [])
-      {:accept, name, function, meck_options} when is_atom(name) and is_list(meck_options) ->
-        Mock.expect(module, name, function, meck_options)
-      {:accept, list} when is_list(list) -> mock_list(module, list)
-      {:accept, list, meck_options} when is_list(list) and is_list(meck_options) -> mock_list(module, list, meck_options)
-      {:accept, name} when is_atom(name) ->
-        Mock.expect(module, name, fn -> nil end, [])
-        Mock.expect(module, name, fn(_) -> nil end, [])
-    end
+  def to({:accept, name, function}, {__MODULE__, module}) when is_atom(name) do
+    Mock.expect(module, name, function, [])
+  end
+
+  def to({:accept, name, function, meck_options}, {__MODULE__, module}) when is_atom(name) and is_list(meck_options) do
+    Mock.expect(module, name, function, meck_options)
+  end
+
+  def to({:accept, list}, {__MODULE__, module}) when is_list(list) do
+    mock_list(module, list)
+  end
+
+  def to({:accept, list, meck_options}, {__MODULE__, module}) when is_list(list) and is_list(meck_options) do
+    mock_list(module, list, meck_options)
+  end
+
+  def to({:accept, name}, {__MODULE__, module}) when is_atom(name) do
+    Mock.expect(module, name, fn -> nil end, [])
+    Mock.expect(module, name, fn(_) -> nil end, [])
   end
 
   defp mock_list(module, list, meck_options \\ []) do
