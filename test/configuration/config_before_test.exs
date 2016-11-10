@@ -2,8 +2,8 @@ defmodule ConfigBeforeTest do
   use ExUnit.Case, async: true
 
   ESpec.configure fn(c) ->
-    c.before fn ->
-      {:shared, answer: 42}
+    c.before fn(tags) ->
+      {:shared, %{answer: 42, tags: tags}}
     end
   end
 
