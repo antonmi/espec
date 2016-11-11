@@ -56,7 +56,7 @@ Add `espec` to dependencies in the `mix.exs` file:
 ```elixir
 def deps do
   ...
-  {:espec, "~> 1.1.1", only: :test},
+  {:espec, "~> 1.1.2", only: :test},
   #{:espec, github: "antonmi/espec", only: :test}, to get the latest version
   ...
 end
@@ -914,6 +914,8 @@ mix espec --format=html --out=spec.html
    	- 'let' and 'before' with keyword
   * 1.1.1:
    	- Fix 'finally' execution order
+  * 1.1.2:
+   	- Added support for unicode characters in example names
     
 ## Contributing
 ##### Contributions are welcome and appreciated!

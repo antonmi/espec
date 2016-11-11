@@ -1,7 +1,7 @@
 defmodule ESpec.Mixfile do
   use Mix.Project
 
-  @version "1.1.1"
+  @version "1.1.2"
 
   def project do
     [app: :espec,
@@ -25,8 +25,8 @@ defmodule ESpec.Mixfile do
       {:meck, "~> 0.8.4"},
       {:credo, "~> 0.4", only: :dev},
       # Docs
-      {:earmark, "~> 1.0.1", only: [:docs, :dev]},
-      {:ex_doc, "~> 0.13.0", only: [:docs, :dev]}
+      {:earmark, "~> 1.0.3", only: [:docs, :dev]},
+      {:ex_doc, "~> 0.14.3", only: [:docs, :dev]}
     ]
   end
 
