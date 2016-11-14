@@ -34,6 +34,7 @@ defmodule ESpec do
       import ESpec.RefuteReceive
       import ESpec.Allow
 
+      import ESpec.BeforeAndAfterAll
       import ESpec.Before
       import ESpec.Finally
       import ESpec.Let

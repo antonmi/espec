@@ -43,7 +43,7 @@ defmodule XcontextTest do
   end
 
   test "check success and pending" do
-    results = ESpec.Runner.run_examples(SomeSpec.examples, true)
+    results = ESpec.SuiteRunner.run_examples(SomeSpec.examples, true)
     assert(length(Enum.filter(results, &(&1.status == :success))) == 1)
     assert(length(Enum.filter(results, &(&1.status == :pending))) == 9)
   end

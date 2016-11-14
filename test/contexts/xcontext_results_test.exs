@@ -18,7 +18,7 @@ defmodule XcontextResultsTest do
   end
 
   setup_all do
-    examples = ESpec.Runner.run_examples(SomeSpec.examples, true)
+    examples = ESpec.SuiteRunner.run_examples(SomeSpec.examples, true)
     {:ok,
       ex1: Enum.at(examples, 0),
       ex2: Enum.at(examples, 1),

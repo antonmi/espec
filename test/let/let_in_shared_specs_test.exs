@@ -39,8 +39,8 @@ defmodule LetSharedSpecsTest do
   end
 
   setup_all do
-    examples1 = ESpec.Runner.run_examples(UseSharedSpecSpec.examples, true)
-    examples2 = ESpec.Runner.run_examples(UseLetSharedAsKeywordSpec.examples, true)
+    examples1 = ESpec.SuiteRunner.run_examples(UseSharedSpecSpec.examples, true)
+    examples2 = ESpec.SuiteRunner.run_examples(UseLetSharedAsKeywordSpec.examples, true)
     {:ok, examples: examples1 ++ examples2}
   end
 
