@@ -9,7 +9,10 @@ defmodule CaptureLogSpec do
   end
 
   if Code.ensure_loaded?(ExUnit.CaptureServer) do
-    it do: expect message() |> to(match "log msg")
+    it "has 'log msg' message" do
+      expect message() |> to(match "log msg")
+      :ok
+    end
 
     context "with multiple concurrent captures" do
       let :fun do
@@ -21,8 +24,15 @@ defmodule CaptureLogSpec do
         end
       end
 
-      it do: expect capture_log(fun()) |> to(match "hello")
-      it do: expect capture_log(fun()) |> to(match "testing")
+      it "has 'hello' in logs" do
+        expect capture_log(fun()) |> to(match "hello")
+        :ok
+      end
+
+      it "has 'testing' in logs" do
+        expect capture_log(fun()) |> to(match "testing")
+        :ok
+      end
     end
   end
 end
