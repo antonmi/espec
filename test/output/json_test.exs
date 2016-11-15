@@ -10,7 +10,7 @@ defmodule Output.JsonTest do
   end
 
   setup_all do
-    examples = ESpec.Runner.run_examples(SomeSpec.examples, true)
+    examples = ESpec.SuiteRunner.run_examples(SomeSpec.examples, true)
     {:ok,
       examples: examples,
       success_example: Enum.at(examples, 0),

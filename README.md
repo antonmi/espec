@@ -33,6 +33,7 @@ It is NOT a wrapper around ExUnit but a completely new testing framework written
 - [Examples](#examples)
 - [Filters](#filters)
 - [`before` and `finally`](#before-and-finally)
+- [`before_all` and `after_all`](#before_all-and-after_all)
 - [`shared` data](#shared-data)
 - [`let` and `subject`](#let-and-subject)
 - [Shared examples](#shared-examples)
@@ -253,6 +254,25 @@ ESpec.configure fn(config) ->
   end
 end
 ```
+## `before_all` and `after_all`
+There are hooks that evaluate before and after all the examples in a module. Use this hooks for complex system setup and tear down.
+```elixir
+defmodule BeforeAllSpec do
+  use ESpec
+
+  before_all do
+    RocketLauncher.start_the_system!
+  end
+
+  it do: ...
+  it do: ...
+
+  after_all do
+    RocketLauncher.stop_the_system!
+  end
+end
+```
+Note, `before_all` and `after_all` hooks do not set `shared` data and do not have access to them. Also note that you can define only one `before_all` and one `after_all` hook in a spec module.
 
 ## 'shared' data
 `shared` is used to share data between spec blocks. You can access data by `shared.some_key` or `shared[:some_key]`.
@@ -904,7 +924,7 @@ mix espec --format=html --out=spec.html
    	- 'only' and 'exclude' options
     - 'double_underscore' replaced by 'shared'
   * 1.0.0:
-    - 'let' implementation rewritten completely 
+    - 'let' implementation rewritten completely
     - 'assert_receive' and 'refute_receive'
     - 'let_overridable' for shared examples
     - 'let_ok' and 'let_error'
@@ -916,7 +936,7 @@ mix espec --format=html --out=spec.html
    	- Fix 'finally' execution order
   * 1.1.2:
    	- Added support for unicode characters in example names
-    
+
 ## Contributing
 ##### Contributions are welcome and appreciated!
 

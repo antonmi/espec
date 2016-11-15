@@ -16,7 +16,7 @@ defmodule BeBetweenTest do
   end
 
   setup_all do
-    examples = ESpec.Runner.run_examples(SomeSpec.examples, true)
+    examples = ESpec.SuiteRunner.run_examples(SomeSpec.examples, true)
     {:ok,
       success: Enum.slice(examples, 0, 1),
       errors: Enum.slice(examples, 2, 3)}
