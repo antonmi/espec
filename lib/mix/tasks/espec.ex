@@ -119,14 +119,7 @@ defmodule Mix.Tasks.Espec do
     ensure_espec_loaded!()
     set_configuration(opts)
 
-    ESpec.start
-    parse_spec_files(project, files)
-
-    success = ESpec.run
-
-    if cover, do: cover.()
-
-    ESpec.stop
+    success = run_espec(project, files, cover)
 
     System.at_exit(fn(_) -> unless success, do: exit({:shutdown, 1}) end)
   end
@@ -143,13 +136,26 @@ defmodule Mix.Tasks.Espec do
     end
   end
 
+  defp run_espec(project, files, cover) do
+    ESpec.start
+    parse_spec_files(project, files)
+    success = ESpec.run
+
+    if cover, do: cover.()
+    ESpec.stop
+
+    success
+  end
+
   defp require_spec_helper(dir) do
     file = Path.join(dir, "spec_helper.exs")
 
     if File.exists?(file) do
-      Code.require_file file
+      Code.require_file(file)
+      true
     else
-      Mix.raise "Cannot run tests because spec helper file #{inspect file} does not exist"
+      IO.inspect("Cannot run tests because spec helper file `#{file}` does not exist.")
+      false
     end
   end
 
@@ -184,20 +190,20 @@ defmodule Mix.Tasks.Espec do
     spec_paths = project[:spec_paths] || ["spec"]
     spec_pattern =  project[:spec_pattern] || "*_spec.exs"
 
-    Enum.each(spec_paths, &require_spec_helper(&1))
+    if Enum.all?(spec_paths, &require_spec_helper(&1)) do
+      files_with_opts = if Enum.any?(files), do: parse_files(files), else: []
 
-    files_with_opts = if Enum.any?(files), do: parse_files(files), else: []
+      spec_files =
+        if Enum.any?(files) do
+          files = files_with_opts |> Enum.map(fn {f,_} -> f end)
+          Mix.Utils.extract_files(files, spec_pattern)
+        else
+          Mix.Utils.extract_files(spec_paths, spec_pattern)
+        end
 
-    spec_files =
-      if Enum.any?(files) do
-        files = files_with_opts |> Enum.map(fn {f,_} -> f end)
-        Mix.Utils.extract_files(files, spec_pattern)
-      else
-        Mix.Utils.extract_files(spec_paths, spec_pattern)
-      end
-
-    Kernel.ParallelRequire.files(spec_files)
-    ESpec.Configuration.add(file_opts: files_with_opts)
-    ESpec.Configuration.add(finish_loading_time: :os.timestamp)
+      Kernel.ParallelRequire.files(spec_files)
+      ESpec.Configuration.add(file_opts: files_with_opts)
+      ESpec.Configuration.add(finish_loading_time: :os.timestamp)
+    end
   end
 end
