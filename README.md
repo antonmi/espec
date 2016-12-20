@@ -648,12 +648,12 @@ You can mock the module with 'allow accept':
 ```elixir
 defmodule MocksSpec do
   use ESpec
-  context "with old syntax"
+  context "with old syntax" do
     before do: allow(SomeModule).to accept(:func, fn(a, b) -> a + b end)
     it do: expect SomeModule.func(1, 2) |> to(eq 3)
   end
 
-  context "with new syntax"
+  context "with new syntax" do
     before do: allow SomeModule |> to(accept :func, fn(a, b) -> a + b end)
     it do: expect SomeModule.func(1, 2) |> to(eq 3)
   end
