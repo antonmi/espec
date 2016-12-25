@@ -100,8 +100,7 @@ defmodule ESpec.Output.Doc do
   end
 
   defp one_line_description(example) do
-    module = "#{example.module}" |> String.replace("Elixir.", "")
-    desc = [module | Example.context_descriptions(example)] ++ [example.description]
+    desc = Example.context_descriptions(example) ++ [example.description]
     desc
     |> Enum.join(" ")
     |> String.rstrip
