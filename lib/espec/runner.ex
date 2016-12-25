@@ -95,6 +95,7 @@ defmodule ESpec.Runner do
 
     def all(name), do: Agent.get(name, &(&1))
     def start(name), do: Agent.start_link(fn -> [] end, name: name)
+    def clear(name), do: Agent.update(name, fn(_) -> [] end)
     def stop(name), do: Agent.stop(name)
   end
 end

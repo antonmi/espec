@@ -15,14 +15,14 @@ defmodule ESpec.SuiteRunner do
   """
   def run(module, opts, shuffle \\ true) do
     run_before_all(module)
-    results = run_module_examples(module, opts, shuffle)
+    examples = run_module_examples(module, opts, shuffle)
     run_after_all(module)
-
-    results
+    examples
   end
 
   defp run_module_examples(module, opts, shuffle) do
     examples_to_run = filter(module.examples |> Enum.reverse, opts)
+
     if shuffle do
       run_examples(Enum.shuffle(examples_to_run))
     else
@@ -58,6 +58,7 @@ defmodule ESpec.SuiteRunner do
   end
 
   defp run_async(examples) do
+    Queue.clear(:output)
     Enum.each(examples, &Queue.push(:input, &1))
     do_run_async()
     Queue.all(:output)
