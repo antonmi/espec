@@ -40,6 +40,11 @@ defmodule ESpec.Runner do
     {:stop, :normal, :ok, []}
   end
 
+  @doc false
+  def handle_info(_msg, state) do
+    {:noreply, state}
+  end
+
   defp do_run(specs, opts) do
     examples = if Configuration.get(:order) do
       run_suites(specs, opts, false)
