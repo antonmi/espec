@@ -6,7 +6,6 @@ defmodule ESpec.Output.Doc do
   @red IO.ANSI.red
   @cyan IO.ANSI.cyan
   @yellow IO.ANSI.yellow
-  @blue IO.ANSI.blue
   @reset IO.ANSI.reset
 
   @status_colors [success: @green, failure: @red, pending: @yellow]
