@@ -6,8 +6,6 @@ defmodule ESpec.Assertions.RefuteReceive do
   """
   use ESpec.Assertions.Interface
 
-  @join_sym "\n\t"
-
   defp match(subject, pattern) do
     case subject do
       false -> {true, pattern}

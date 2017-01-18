@@ -2,7 +2,6 @@ defmodule ESpec.ExpectTo do
   @moduledoc """
     Defines `to` and `to_not` functions which call specific 'assertion'
   """
-  @agent_name :espec_expect_to_agent
 
   @doc "Calls specific asserion."
   def to({module, data}, {__MODULE__, subject}) do
