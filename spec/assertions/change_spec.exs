@@ -1,8 +1,8 @@
 defmodule ChangeSpec do
   use ESpec
 
-  def add(value), do: Agent.update(:some_spec_agent, &(Set.put(&1, value)))
-  def count, do: length(Agent.get(:some_spec_agent, &(&1)) |> Set.to_list)
+  def add(value), do: Agent.update(:some_spec_agent, &(MapSet.put(&1, value)))
+  def count, do: length(Agent.get(:some_spec_agent, &(&1)) |> MapSet.to_list)
 
   before do: Agent.start_link(fn -> MapSet.new end, name: :some_spec_agent)
   finally do: Agent.stop(:some_spec_agent)
