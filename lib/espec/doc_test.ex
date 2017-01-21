@@ -46,7 +46,6 @@ defmodule ESpec.DocTest do
   end
 
   @doc false
-  @lint false
   defmacro __create_doc_examples__(module, opts) do
     quote do
       examples = ESpec.DocExample.extract(unquote(module))
