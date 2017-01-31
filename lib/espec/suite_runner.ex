@@ -114,12 +114,10 @@ defmodule ESpec.SuiteRunner do
 
   defp get_closest(arr, value) do
     arr = Enum.sort(arr)
-    diff = abs(value - hd(arr))
-    {_d, el} = Enum.reduce(arr, {diff, hd(arr)}, fn(el, {d, e}) ->
-      diff = abs(value - el)
-      if diff < d, do: {diff, el}, else: {d, e}
-    end)
-    el
+    line = arr
+      |> Enum.reverse
+      |> Enum.find(fn(l) -> l <= value end)
+    if line, do: line, else: hd(arr)
   end
 
   defp opts_for_file(file, opts_list) do
