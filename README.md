@@ -287,7 +287,7 @@ The example bellow illustrate the life-cycle of `shared`:
 ESpec.start
 
 ESpec.configure fn(config) ->
-  config.before fn -> {:shared, answer: 42} end         # shared == %{anwser: 42}
+  config.before fn -> {:shared, answer: 42} end         # shared == %{answer: 42}
   config.finally fn(shared) -> IO.puts shared.answer  end    # it will print 46
 end
 ```
@@ -296,12 +296,12 @@ end
 defmodule SharedBehaviorSpec do
   use ESpec
 
-  before do: {:shared, answer: shared.answer + 1}          # shared == %{anwser: 43}
-  finally do: {:shared, answer: shared.answer + 1}         # shared == %{anwser: 46}
+  before do: {:shared, answer: shared.answer + 1}          # shared == %{answer: 43}
+  finally do: {:shared, answer: shared.answer + 1}         # shared == %{answer: 46}
 
   context do
-    before do: {:shared, answer: shared.answer + 1}        # shared == %{anwser: 44}
-    finally do: {:shared, answer: shared.answer + 1}       # shared == %{anwser: 45}
+    before do: {:shared, answer: shared.answer + 1}        # shared == %{answer: 44}
+    finally do: {:shared, answer: shared.answer + 1}       # shared == %{answer: 45}
     it do: shared.answer |> should(eq 44)
   end
 end
@@ -904,23 +904,23 @@ mix espec --format=html --out=spec.html
   * 0.2.0:
     - Basic functionality (contexts, 'before' and 'let', mocking, basic matchers)
   * 0.3.0:
-	   - Tags for examples and contexts
-	   - 'config.before' and 'config.finally'
+     - Tags for examples and contexts
+     - 'config.before' and 'config.finally'
   * 0.4.0:
     - Lots of internal changes
-   	- Shared examples
+    - Shared examples
   * 0.5.0:
     - 'count', 'pid' and 'args' options in 'accepted' assertion
-   	- 'async' option for parallel execution
+    - 'async' option for parallel execution
   * 0.6.0:
-   	- String and Dictionary matchers
+    - String and Dictionary matchers
     - Doctests
   * 0.7.0:
-   	- Mocking options
-   	- Html and Json outputs
-   	- capture_io
+    - Mocking options
+    - Html and Json outputs
+    - capture_io
   * 0.8.0:
-   	- 'only' and 'exclude' options
+    - 'only' and 'exclude' options
     - 'double_underscore' replaced by 'shared'
   * 1.0.0:
     - 'let' implementation rewritten completely
@@ -929,12 +929,12 @@ mix espec --format=html --out=spec.html
     - 'let_ok' and 'let_error'
     - new syntax with pipe
   * 1.1.0:
-   	- capture_log
-   	- 'let' and 'before' with keyword
+    - capture_log
+    - 'let' and 'before' with keyword
   * 1.1.1:
-   	- Fix 'finally' execution order
+    - Fix 'finally' execution order
   * 1.1.2:
-   	- Added support for unicode characters in example names
+    - Added support for unicode characters in example names
   * 1.2.0:
     - before_all and after_all callbacks
   * 1.2.1:
