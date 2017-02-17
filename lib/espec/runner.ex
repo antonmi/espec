@@ -3,46 +3,25 @@ defmodule ESpec.Runner do
   Defines functions which runs the examples.
   Uses GenServer behavior.
   """
-  use GenServer
   alias ESpec.Configuration
   alias ESpec.Example
   alias __MODULE__.Queue
 
   @doc "Starts the `ESpec.Runner` server"
   def start do
-    GenServer.start_link(__MODULE__, [], name: __MODULE__)
     Queue.start(:input)
     Queue.start(:output)
   end
 
-  @doc "Initiate the `ESpec.Runner` server with specs and options"
-  def init(_args) do
-    state = %{specs: ESpec.specs, opts: Configuration.all}
-    {:ok, state}
-  end
-
   @doc "Runs all examples."
-  def run, do: GenServer.call(__MODULE__, :run, :infinity)
-
-  @doc false
-  def stop, do: GenServer.call(__MODULE__, :stop)
-
-  @doc false
-  def handle_call(:run, _pid, state) do
-    result = do_run(state[:specs], state[:opts])
-    {:reply, result, state}
+  def run do
+    do_run(ESpec.specs, Configuration.all)
   end
 
   @doc false
-  def handle_call(:stop, _pid, _state) do
+  def stop do
     Queue.stop(:input)
     Queue.stop(:output)
-    {:stop, :normal, :ok, []}
-  end
-
-  @doc false
-  def handle_info(_msg, state) do
-    {:noreply, state}
   end
 
   defp do_run(specs, opts) do
