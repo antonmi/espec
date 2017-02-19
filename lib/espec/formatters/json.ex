@@ -1,10 +1,10 @@
-defmodule ESpec.Output.Json do
+defmodule ESpec.Formatters.Json do
   @moduledoc """
   Generates json output.
   """
   alias ESpec.Example
 
-  use ESpec.Output.Common
+  use ESpec.Formatters.Base
 
   @doc "Formats the final result."
   def format_result(examples, durations, _opts) do

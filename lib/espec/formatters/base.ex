@@ -1,4 +1,4 @@
-defmodule ESpec.Output.Common do
+defmodule ESpec.Formatters.Base do
   defmacro __using__(_opts) do
     quote  do
       use GenEvent

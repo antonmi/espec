@@ -1,10 +1,10 @@
-defmodule ESpec.Output.Html do
+defmodule ESpec.Formatters.Html do
   @moduledoc """
   Generates html output.
   """
   alias ESpec.Example
 
-  use ESpec.Output.Common
+  use ESpec.Formatters.Base
 
   @doc "Format the final result."
   def format_result(examples, durations, _opts) do

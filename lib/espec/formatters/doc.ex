@@ -1,4 +1,4 @@
-defmodule ESpec.Output.Doc do
+defmodule ESpec.Formatters.Doc do
   @moduledoc """
   Generates plain colored text output.
   """
@@ -13,7 +13,7 @@ defmodule ESpec.Output.Doc do
 
   alias ESpec.Example
 
-  use ESpec.Output.Common
+  use ESpec.Formatters.Base
 
   @doc "Formats an example result."
   def format_example(example, opts) do
