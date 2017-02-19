@@ -8,16 +8,16 @@ defmodule ESpec.Output do
 
   @doc "Starts server."
   def start do
-    {:ok, gen_event_pid} = GenEvent.start_link([])
-    GenServer.start_link(__MODULE__, %{formatters: formatters(), gen_event_pid: gen_event_pid}, name: __MODULE__)
+    GenServer.start_link(__MODULE__, %{formatters: formatters()}, name: __MODULE__)
   end
 
   @doc "Initiates server with configuration options and formatter"
   def init(args) do
-    Enum.each(args[:formatters], fn({formatter_module, opts}) ->
-      GenEvent.add_handler(args[:gen_event_pid], formatter_module, opts)
+    pids = Enum.map(args[:formatters], fn({formatter_module, opts}) ->
+      {:ok, pid} = GenServer.start_link(formatter_module, opts)
+      pid
     end)
-    state = %{opts: Configuration.all, formatter: args[:formatter], gen_event_pid: args[:gen_event_pid]}
+    state = %{opts: Configuration.all, formatter: args[:formatter], formatter_pids: pids}
     {:ok, state}
   end
 
@@ -38,7 +38,7 @@ defmodule ESpec.Output do
   @doc false
   def handle_cast({:example_finished, example}, state) do
     unless silent?() do
-      GenEvent.notify(state[:gen_event_pid], {:example_finished, example})
+      Enum.each(state[:formatter_pids], &GenServer.cast(&1, {:example_finished, example}))
     end
     {:noreply, state}
   end
@@ -46,14 +46,14 @@ defmodule ESpec.Output do
   @doc false
   def handle_call({:final_result, examples}, _pid, state) do
     unless silent?() do
-      GenEvent.notify(state[:gen_event_pid], {:final_result, examples, get_durations()})
+      Enum.each(state[:formatter_pids], &GenServer.cast(&1, {:final_result, examples, get_durations()}))
     end
     {:reply, :ok, state}
   end
 
   @doc false
   def handle_call(:stop, _pid, state) do
-    GenEvent.stop(state[:gen_event_pid])
+    Enum.each(state[:formatter_pids], &GenServer.stop(&1))
     {:stop, :normal, :ok, []}
   end
 

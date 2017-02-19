@@ -1,7 +1,7 @@
 defmodule ESpec.Formatters.Base do
   defmacro __using__(_opts) do
     quote  do
-      use GenEvent
+      use GenServer
       import ESpec.Formatters.WriteOutput
 
       def init(opts) do
@@ -15,19 +15,19 @@ defmodule ESpec.Formatters.Base do
       end
       defoverridable [init: 1]
 
-      def handle_event({:example_finished, example}, opts) do
+      def handle_cast({:example_finished, example}, opts) do
         output = format_example(example, opts)
         write_output(output, opts[:out_file])
-        {:ok, opts}
+        {:noreply, opts}
       end
 
-      def handle_event({:final_result, examples, durations}, opts) do
+      def handle_cast({:final_result, examples, durations}, opts) do
         output = format_result(examples, durations, opts)
         write_output(output, opts[:out_file])
         if opts[:out_path], do: close_out_file(opts[:out_path])
-        {:ok, opts}
+        {:noreply, opts}
       end
-      defoverridable [handle_event: 2]
+      defoverridable [handle_cast: 2]
     end
   end
 end

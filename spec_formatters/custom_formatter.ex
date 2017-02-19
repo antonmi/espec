@@ -6,13 +6,13 @@ defmodule ESpec.CustomFormatter do
     {:ok, opts}
   end
 
-  def handle_event({:example_finished, example}, opts) do
+  def handle_cast({:example_finished, example}, opts) do
     IO.inspect("example_finished: #{inspect example}")
-    {:ok, opts}
+    {:noreply, opts}
   end
 
-  def handle_event({:final_result, examples, _durations}, opts) do
+  def handle_cast({:final_result, examples, _durations}, opts) do
     IO.inspect("final_result: #{inspect examples}")
-    {:ok, opts}
+    {:noreply, opts}
   end
 end

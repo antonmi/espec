@@ -903,8 +903,8 @@ end
 ESpec design allows custom formatters of test results.
 The custom formatter is a module which `use ESpec.Formatters.Base` and implement 3 functions:
 - `init/1`
-- `handle_event/2` for `example_finished` event
-- `handle_event/2` for `final_result` event
+- `handle_cast/2` for `example_finished` event
+- `handle_cast/2` for `final_result` event
 
 Take a look at `lib/espec/formatters` and `spec_formatters` folders to see examples
 
