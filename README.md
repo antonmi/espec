@@ -57,7 +57,7 @@ Add `espec` to dependencies in the `mix.exs` file:
 ```elixir
 def deps do
   ...
-  {:espec, "~> 1.2.2", only: :test},
+  {:espec, "~> 1.3.0", only: :test},
   #{:espec, github: "antonmi/espec", only: :test}, to get the latest version
   ...
 end
@@ -949,7 +949,9 @@ Take a look at `lib/espec/formatters` and `spec_formatters` folders to see examp
     - removed module name duplication in example description
     - fix statistic output for async examples
   * 1.2.2:
-    - Elixir 1.4.0 warnings ware fixed  
+    - Elixir 1.4.0 warnings ware fixed
+  * 1.3.0
+    - Formatters were refactored to support custom ones
 
 ## Contributing
 ##### Contributions are welcome and appreciated!
