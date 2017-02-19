@@ -15,13 +15,13 @@ defmodule ESpec.Formatters.Base do
       end
       defoverridable [init: 1]
 
-      def handle_event({:example_info, example}, opts) do
+      def handle_event({:example_finished, example}, opts) do
         output = format_example(example, opts)
         write_output(output, opts[:out_file])
         {:ok, opts}
       end
 
-      def handle_event({:print_result, examples, durations}, opts) do
+      def handle_event({:final_result, examples, durations}, opts) do
         output = format_result(examples, durations, opts)
         write_output(output, opts[:out_file])
         if opts[:out_path], do: close_out_file(opts[:out_path])

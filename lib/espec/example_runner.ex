@@ -74,7 +74,7 @@ defmodule ESpec.ExampleRunner do
 
     duration = duration_in_ms(start_time, :os.timestamp)
     example = %Example{example | status: :success, result: result, duration: duration}
-    Output.example_info(example)
+    Output.example_finished(example)
     example
   end
 
@@ -82,7 +82,7 @@ defmodule ESpec.ExampleRunner do
     duration = duration_in_ms(start_time, :os.timestamp)
     error = %AssertionError{message: format_catch(what, value)}
     example = %Example{example | status: :failure, error: error, duration: duration}
-    Output.example_info(example)
+    Output.example_finished(example)
     after_example_actions(assigns, example)
     example
   end
@@ -90,7 +90,7 @@ defmodule ESpec.ExampleRunner do
   defp do_rescue(example, assigns, start_time, error, perform_after_example \\ true) do
     duration = duration_in_ms(start_time, :os.timestamp)
     example = %Example{example | status: :failure, error: error, duration: duration}
-    Output.example_info(example)
+    Output.example_finished(example)
     if perform_after_example, do: after_example_actions(assigns, example)
     example
   end
@@ -103,13 +103,13 @@ defmodule ESpec.ExampleRunner do
 
   defp run_skipped(example) do
     example = %Example{example | status: :pending, result: Example.skip_message(example)}
-    Output.example_info(example)
+    Output.example_finished(example)
     example
   end
 
   defp run_pending(example) do
     example = %Example{example | status: :pending, result: Example.pending_message(example)}
-    Output.example_info(example)
+    Output.example_finished(example)
     example
   end
 

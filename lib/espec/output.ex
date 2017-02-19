@@ -22,13 +22,13 @@ defmodule ESpec.Output do
   end
 
   @doc "Generates example info."
-  def example_info(example) do
-    GenServer.cast(__MODULE__, {:example_info, example})
+  def example_finished(example) do
+    GenServer.cast(__MODULE__, {:example_finished, example})
   end
 
   @doc "Generates suite info"
-  def print_result(examples) do
-   result = GenServer.call(__MODULE__, {:print_result, examples}, :infinity)
+  def final_result(examples) do
+   result = GenServer.call(__MODULE__, {:final_result, examples}, :infinity)
    result
   end
 
@@ -36,17 +36,17 @@ defmodule ESpec.Output do
   def stop, do: GenServer.call(__MODULE__, :stop)
 
   @doc false
-  def handle_cast({:example_info, example}, state) do
+  def handle_cast({:example_finished, example}, state) do
     unless silent?() do
-      GenEvent.notify(state[:gen_event_pid], {:example_info, example})
+      GenEvent.notify(state[:gen_event_pid], {:example_finished, example})
     end
     {:noreply, state}
   end
 
   @doc false
-  def handle_call({:print_result, examples}, _pid, state) do
+  def handle_call({:final_result, examples}, _pid, state) do
     unless silent?() do
-      GenEvent.notify(state[:gen_event_pid], {:print_result, examples, get_durations()})
+      GenEvent.notify(state[:gen_event_pid], {:final_result, examples, get_durations()})
     end
     {:reply, :ok, state}
   end

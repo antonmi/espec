@@ -32,7 +32,7 @@ defmodule ESpec.Runner do
       run_suites(specs, opts)
     end
     Configuration.add([finish_specs_time: :os.timestamp])
-    ESpec.Output.print_result(examples)
+    ESpec.Output.final_result(examples)
     !Enum.any?(Example.failure(examples))
   end
 
