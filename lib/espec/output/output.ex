@@ -5,25 +5,29 @@ defmodule ESpec.Output do
   """
   use GenServer
   alias ESpec.Configuration
+
   @doc "Starts server."
   def start do
-    GenServer.start_link(__MODULE__, [formatter: formatter()], name: __MODULE__)
+    {:ok, gen_event_pid} = GenEvent.start_link([])
+    GenServer.start_link(__MODULE__, %{formatter: formatter(), gen_event_pid: gen_event_pid}, name: __MODULE__)
   end
 
   @doc "Initiates server with configuration options and formatter"
   def init(args) do
-    if output_to_file?(), do: create_out_file!()
-    state = %{opts: Configuration.all, formatter: args[:formatter]}
+    {formatter_module, opts} = args[:formatter]
+    GenEvent.add_handler(args[:gen_event_pid], formatter_module, Map.put(opts, :out_path, out_path()))
+    state = %{opts: Configuration.all, formatter: args[:formatter], gen_event_pid: args[:gen_event_pid]}
     {:ok, state}
   end
 
   @doc "Generates example info."
-  def example_info(example), do: GenServer.cast(__MODULE__, {:example_info, example})
+  def example_info(example) do
+    GenServer.cast(__MODULE__, {:example_info, example})
+  end
 
   @doc "Generates suite info"
   def print_result(examples) do
    result = GenServer.call(__MODULE__, {:print_result, examples}, :infinity)
-   if output_to_file?(), do: close_out_file()
    result
   end
 
@@ -32,39 +36,24 @@ defmodule ESpec.Output do
 
   @doc false
   def handle_cast({:example_info, example}, state) do
-    do_example_info(example, state[:formatter])
+    unless silent?() do
+      GenEvent.notify(state[:gen_event_pid], {:example_info, example})
+    end
     {:noreply, state}
   end
 
   @doc false
   def handle_call({:print_result, examples}, _pid, state) do
-    do_print_result(examples, state[:formatter])
+    unless silent?() do
+      GenEvent.notify(state[:gen_event_pid], {:print_result, examples, get_durations()})
+    end
     {:reply, :ok, state}
   end
 
   @doc false
-  def handle_call(:stop, _pid, _state) do
+  def handle_call(:stop, _pid, state) do
+    GenEvent.stop(state[:gen_event_pid])
     {:stop, :normal, :ok, []}
-  end
-
-  defp do_example_info(example, {result_formatter, opts}) do
-    unless silent?() do
-      if output_to_file?() do
-        IO.write out_file(), result_formatter.format_example(example, opts)
-      else
-        IO.write result_formatter.format_example(example, opts)
-      end
-    end
-  end
-
-  defp do_print_result(examples, {result_formatter, opts}) do
-    unless silent?() do
-      if output_to_file?() do
-        IO.write out_file(), result_formatter.format_result(examples, get_times(), opts)
-      else
-        IO.write result_formatter.format_result(examples, get_times(), opts)
-      end
-    end
   end
 
   defp silent?, do: Configuration.get(:silent)
@@ -80,20 +69,9 @@ defmodule ESpec.Output do
     end
   end
 
-  defp output_to_file?, do: out_path()
-
-  defp create_out_file! do
-    File.mkdir_p!(Path.dirname(out_path()))
-    {:ok, file} = File.open(out_path(), [:write])
-    Configuration.add([out_file: file])
-  end
-
-  defp close_out_file, do: File.close(out_file())
-
-  defp out_file, do: Configuration.get(:out_file)
   defp out_path, do: Configuration.get(:out)
 
-  defp get_times do
+  defp get_durations do
     {
       Configuration.get(:start_loading_time),
       Configuration.get(:finish_loading_time),

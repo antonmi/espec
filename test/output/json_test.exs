@@ -19,8 +19,8 @@ defmodule Output.JsonTest do
   end
 
   test "format_result", context do
-    times = {{1_436, 865_768, 500_000}, {1_436, 865_768, 500_100}, {1_436, 865_768, 500_200}}
-    output = ESpec.Output.Json.format_result(context[:examples], times, %{})
+    durations = {{1_436, 865_768, 500_000}, {1_436, 865_768, 500_100}, {1_436, 865_768, 500_200}}
+    output = ESpec.Output.Json.format_result(context[:examples], durations, %{})
     assert String.match?(output, ~r/"examples"/)
     assert String.match?(output, ~r/"description"/)
     assert String.match?(output, ~r/Output\.JsonTest\.SomeSpec/)

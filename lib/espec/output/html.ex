@@ -3,11 +3,14 @@ defmodule ESpec.Output.Html do
   Generates html output.
   """
   alias ESpec.Example
+
+  use ESpec.Output.Common
+
   @doc "Format the final result."
-  def format_result(examples, times, _opts) do
+  def format_result(examples, durations, _opts) do
     tree = context_tree(examples)
     html = make_html(tree, true)
-    summary = format_summary(examples, times)
+    summary = format_summary(examples, durations)
     string = EEx.eval_file(template_path(), [examples: html, summary: summary])
     String.replace(string, "\n", "")
   end

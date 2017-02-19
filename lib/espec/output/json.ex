@@ -3,14 +3,17 @@ defmodule ESpec.Output.Json do
   Generates json output.
   """
   alias ESpec.Example
+
+  use ESpec.Output.Common
+
   @doc "Formats the final result."
-  def format_result(examples, times, _opts) do
+  def format_result(examples, durations, _opts) do
     pending = Example.pendings(examples)
     failed = Example.failure(examples)
     list = [
       format_pending(pending), format_failed(failed), format_success(Example.success(examples))
     ] |> List.flatten
-    summary = format_summary(examples, pending, failed, times)
+    summary = format_summary(examples, pending, failed, durations)
     string = EEx.eval_file(template_path(), [examples: list, summary: summary])
     String.replace(string, "\n", "")
   end
