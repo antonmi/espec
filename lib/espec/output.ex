@@ -9,13 +9,14 @@ defmodule ESpec.Output do
   @doc "Starts server."
   def start do
     {:ok, gen_event_pid} = GenEvent.start_link([])
-    GenServer.start_link(__MODULE__, %{formatter: formatter(), gen_event_pid: gen_event_pid}, name: __MODULE__)
+    GenServer.start_link(__MODULE__, %{formatters: formatters(), gen_event_pid: gen_event_pid}, name: __MODULE__)
   end
 
   @doc "Initiates server with configuration options and formatter"
   def init(args) do
-    {formatter_module, opts} = args[:formatter]
-    GenEvent.add_handler(args[:gen_event_pid], formatter_module, Map.put(opts, :out_path, out_path()))
+    Enum.each(args[:formatters], fn({formatter_module, opts}) ->
+      GenEvent.add_handler(args[:gen_event_pid], formatter_module, opts)
+    end)
     state = %{opts: Configuration.all, formatter: args[:formatter], gen_event_pid: args[:gen_event_pid]}
     {:ok, state}
   end
@@ -58,18 +59,21 @@ defmodule ESpec.Output do
 
   defp silent?, do: Configuration.get(:silent)
 
-  defp formatter do
-    format = Configuration.get(:format)
-    format = if Configuration.get(:trace), do: "doc", else: format
-    cond do
-      format == "json" -> {ESpec.Formatters.Json, %{}}
-      format == "html" -> {ESpec.Formatters.Html, %{}}
-      format == "doc" -> {ESpec.Formatters.Doc, %{details: true}}
-      true -> {ESpec.Formatters.Doc, %{}}
+  defp formatters do
+    case Configuration.get(:formatters) do
+      nil -> [default_formatter()]
+      [] -> [default_formatter()]
+      formatters -> formatters
     end
   end
 
-  defp out_path, do: Configuration.get(:out)
+  defp default_formatter do
+    if Configuration.get(:trace) do
+      {ESpec.Formatters.Doc, %{details: true}}
+    else
+      {ESpec.Formatters.Doc, %{}}
+    end
+  end
 
   defp get_durations do
     {

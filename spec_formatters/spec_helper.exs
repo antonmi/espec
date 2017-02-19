@@ -1,0 +1,7 @@
+ESpec.configure fn(config) ->
+  config.formatters [
+    {ESpec.Formatters.Json, %{out_path: "results.html"}},
+    {ESpec.Formatters.Html, %{out_path: "results.json"}},
+    {ESpec.Formatters.Doc, %{details: true, out_path: "results.txt"}}
+  ]
+end
