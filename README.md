@@ -46,6 +46,7 @@ It is NOT a wrapper around ExUnit but a completely new testing framework written
 - [Mocks](#mocks)
 - [Doc specs](#doc-specs)
 - [Configuration and options](#configuration-and-options)
+- [Formatters](#formatters)
 - [Changelog](#changelog)
 - [Contributing](#contributing)
 
@@ -879,26 +880,33 @@ ESpec, like ExUnit, uses very simple wrapper around OTP's cover. But you can ove
 
 Take a look to [coverex](https://github.com/alfert/coverex) as a perfect example.
 
-#### Output formats
-There are three formatters in ESpec: 'doc', 'json' and 'html'.
+## Formatters
+There are three formatters in ESpec: 
+- ESpec.Formatters.Doc
+- ESpec.Formatters.Json
+- ESpec.Formatters.Html
 
-Example:
-```sh
-mix espec --format=doc
+By default ESpec uses 'Doc' with empty options.
+In order to use another one, you must specify formatters in 'ESpec.config'
+
+For example:
+```elixir
+ESpec.configure fn(config) ->
+  config.formatters [
+    {ESpec.Formatters.Json, %{out_path: "results.json"}},
+    {ESpec.Formatters.Html, %{out_path: "results.html"}},
+    {ESpec.YouCustomFormatter, %{a: 1, b: 2}},
+  ]
+end
 ```
-The 'doc' format will print detailed description of example and its context.
 
-`--trace` option is an alias for `--format=doc`.
-```sh
-mix espec --trace
-```
+ESpec design allows custom formatters of test results.
+The custom formatter is a module which `use ESpec.Formatters.Base` and implement 3 functions:
+- `init/1`
+- `handle_cast/2` for `example_finished` event
+- `handle_cast/2` for `final_result` event
 
-'html' and 'json' formatters prepare pretty HTML and JSON outputs.
-
-You may use `--format` with `--out` option to write output to the file.
-```sh
-mix espec --format=html --out=spec.html
-```
+Take a look at `lib/espec/formatters` and `spec_formatters` folders to see examples
 
 ## Changelog
   * 0.2.0:
@@ -941,7 +949,7 @@ mix espec --format=html --out=spec.html
     - removed module name duplication in example description
     - fix statistic output for async examples
   * 1.2.2:
-    - Elixir 1.4.0 warnings ware fixed
+    - Elixir 1.4.0 warnings ware fixed  
 
 ## Contributing
 ##### Contributions are welcome and appreciated!

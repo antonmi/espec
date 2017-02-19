@@ -1,4 +1,4 @@
-defmodule ESpec.Output.Doc do
+defmodule ESpec.Formatters.Doc do
   @moduledoc """
   Generates plain colored text output.
   """
@@ -13,17 +13,7 @@ defmodule ESpec.Output.Doc do
 
   alias ESpec.Example
 
-  @doc "Formats the final result."
-  def format_result(examples, times, _opts) do
-    pending = Example.pendings(examples)
-    string = ""
-    string = if Enum.any?(pending), do: string <> format_pending(pending), else: string
-    failed = Example.failure(examples)
-    string = if Enum.any?(failed), do: string <> format_failed(failed), else: string
-    string = string <> format_footer(examples, failed, pending)
-    string = string <> format_times(times, failed, pending)
-    string <> format_seed()
-  end
+  use ESpec.Formatters.Base
 
   @doc "Formats an example result."
   def format_example(example, opts) do
@@ -34,6 +24,18 @@ defmodule ESpec.Output.Doc do
     else
       "#{color}#{symbol}#{@reset}"
     end
+  end
+
+  @doc "Formats the final result."
+  def format_result(examples, durations, _opts) do
+    pending = Example.pendings(examples)
+    string = ""
+    string = if Enum.any?(pending), do: string <> format_pending(pending), else: string
+    failed = Example.failure(examples)
+    string = if Enum.any?(failed), do: string <> format_failed(failed), else: string
+    string = string <> format_footer(examples, failed, pending)
+    string = string <> format_times(durations, failed, pending)
+    string <> format_seed()
   end
 
   defp format_failed(failed) do

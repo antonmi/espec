@@ -1,4 +1,4 @@
-defmodule Output.JsonTest do
+defmodule Formatters.JsonTest do
   use ExUnit.Case, async: true
 
   defmodule SomeSpec do
@@ -19,11 +19,11 @@ defmodule Output.JsonTest do
   end
 
   test "format_result", context do
-    times = {{1_436, 865_768, 500_000}, {1_436, 865_768, 500_100}, {1_436, 865_768, 500_200}}
-    output = ESpec.Output.Json.format_result(context[:examples], times, %{})
+    durations = {{1_436, 865_768, 500_000}, {1_436, 865_768, 500_100}, {1_436, 865_768, 500_200}}
+    output = ESpec.Formatters.Json.format_result(context[:examples], durations, %{})
     assert String.match?(output, ~r/"examples"/)
     assert String.match?(output, ~r/"description"/)
-    assert String.match?(output, ~r/Output\.JsonTest\.SomeSpec/)
+    assert String.match?(output, ~r/Formatters\.JsonTest\.SomeSpec/)
     assert String.match?(output, ~r/Temporarily skipped with: `xit`/)
   end
 end

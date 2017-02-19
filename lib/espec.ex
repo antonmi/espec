@@ -64,6 +64,7 @@ defmodule ESpec do
   @doc "Runs the examples"
   def run do
     ESpec.Runner.start
+    ESpec.Output.start
     ESpec.Runner.run
   end
 
@@ -73,7 +74,6 @@ defmodule ESpec do
     start_specs_agent()
     ESpec.Let.Impl.start_agent
     ESpec.Mock.start_agent
-    ESpec.Output.start
     start_capture_server()
   end
 

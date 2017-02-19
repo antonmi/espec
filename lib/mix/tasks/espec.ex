@@ -58,9 +58,8 @@ defmodule Mix.Tasks.Espec do
     * `--silent`     - no output
     * `--order`      - run examples in the order in which they are declared
     * `--sync`       - run all specs synchronously ignoring 'async' tag
-    * `--format`     - choose formatter ('doc', 'html', 'json')
     * `--out`        - write output to a file instead of $stdout.
-    * `--trace`      - alias for `--format=doc`
+    * `--trace`      - detailed output
     * `--cover`      - enable code coverage
     * `--only`       - run only tests that match the filter `--only some:tag`
     * `--exclude`    - exclude tests that match the filter `--exclude some:tag`
