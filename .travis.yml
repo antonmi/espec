@@ -10,7 +10,7 @@ sudo: false
 script:
   - mix test
   - mix espec
-  - mix espec spec_formatters/before_spec.exs
+  - mix espec spec_formatters/test_spec.exs
 notifications:
   recipients:
     - anton.mishchuk@gmail.com
