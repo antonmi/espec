@@ -629,6 +629,12 @@ The only functions you should implement is `match/2`, `success_message/4`, and `
 Read the [wiki page](https://github.com/antonmi/espec/wiki/Custom-matchers) for detailed instructions.
 There is an example in [custom_assertion_spec.exs](https://github.com/antonmi/espec/blob/master/spec/assertions/custom_assertion_spec.exs).
 
+#### Extensions
+There are community supported projects with sets of mathers:
+- [test_that_json_espec](https://github.com/facto/test_that_json_espec)
+- [espec_json_api_matchers](https://github.com/MYOB-Technology/espec_json_api_matchers)
+- [bamboo_espec](https://github.com/facto/bamboo_espec)
+
 ## described_module
 If you keep the naming convention 'module TheModuleSpec is spec for TheModule' you can access tested module by `described_module()` helper.
 ```elixir
@@ -909,6 +915,7 @@ The custom formatter is a module which `use ESpec.Formatters.Base` and implement
 Take a look at `lib/espec/formatters` and `spec_formatters` folders to see examples
 
 #### Other formatters
+There are community supported formatters:
 - [espec_junit_formatter](https://github.com/mwean/espec_junit_formatter)
 
 ## Changelog
