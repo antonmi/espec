@@ -908,6 +908,9 @@ The custom formatter is a module which `use ESpec.Formatters.Base` and implement
 
 Take a look at `lib/espec/formatters` and `spec_formatters` folders to see examples
 
+#### Other formatters
+- [espec_junit_formatter](https://github.com/mwean/espec_junit_formatter)
+
 ## Changelog
   * 0.2.0:
     - Basic functionality (contexts, 'before' and 'let', mocking, basic matchers)
