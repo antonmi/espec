@@ -88,7 +88,11 @@ defmodule ESpec.Formatters.Html do
     res = if String.length(ex.description) > 0 do
       ex.description
     else
-      if ex.status == :failure, do: ex.error.message, else: ex.result
+      if ex.status == :failure do
+        ex.error.message |> String.replace("\n", "<br>")
+      else
+        ex.result
+      end
     end
     res = "#{res} (#{ex.duration} ms)"
     String.replace(res, "\"", "'")

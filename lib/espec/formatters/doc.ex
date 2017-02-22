@@ -41,7 +41,7 @@ defmodule ESpec.Formatters.Doc do
   defp format_failed(failed) do
     res = failed |> Enum.with_index
     |> Enum.map(fn({example, index}) ->
-      do_format_example(example, example.error.message, index)
+      do_format_example(example, example.error.message |> String.replace("\n", "\n\t  "), index)
     end)
     Enum.join(res, "\n")
   end

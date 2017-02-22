@@ -3,12 +3,12 @@ defmodule ESpec.StructDiff do
 
   def diff(a, b) when a == b, do: %{}
   def diff(a, b) when is_list(a) and is_list(b) and length(a) == length(b) do
-    diff_enumerables(a, b) |> simplify(a,b)
+    diff_enumerables(a, b) |> simplify(b)
   end
   def diff(a, b) when is_tuple(a) and is_tuple(b) do
     al = a |> Tuple.to_list
     bl = b |> Tuple.to_list
-    diff_enumerables(al, bl) |> simplify(a,b)
+    diff_enumerables(al, bl) |> simplify(b)
   end
   def diff(a, b) when is_map(a) and is_map(b) do
     a_keys = a |> Map.keys |> MapSet.new
@@ -25,9 +25,9 @@ defmodule ESpec.StructDiff do
     |> Enum.reduce(res, fn k, acc ->
       acc |> Map.merge(diff(a[k], b[k]) |> wrap_ctx(k))
     end)
-    |> simplify(a,b)
+    |> simplify(b)
   end
-  def diff(a, b) when a != b, do: %{:!= => {a, b}}
+  def diff(a, b) when a != b, do: %{:!= => b}
 
   def format(diffmap, prefix\\"") when is_map(diffmap) do
     [format_lines(diffmap)]
@@ -36,9 +36,9 @@ defmodule ESpec.StructDiff do
     |> Enum.join
   end
 
-  def format_lines({:!=, {a, b}}), do: "#{inspect(a)} != #{inspect(b)}"
-  def format_lines({:+, l}),       do: "has extra: #{inspect l}"
-  def format_lines({:-, l}),       do: "missing: #{inspect l}"
+  def format_lines({:!=, b}), do: "got: `#{inspect(b)}`"
+  def format_lines({:+, l}),  do: "has extra: `#{inspect l}`"
+  def format_lines({:-, l}),  do: "missing: `#{inspect l}`"
   def format_lines({ctx, diffmap}) when is_map(diffmap) do
     ["at #{key(ctx)}:"]
     ++ (format_lines(diffmap) |> indent)
@@ -71,8 +71,8 @@ defmodule ESpec.StructDiff do
     end
   end
 
-  defp simplify(edits, _, _) when map_size(edits) < 4, do: edits
-  defp simplify(_, a, b), do: %{:!= => {a, b}}
+  defp simplify(edits, _) when map_size(edits) < 4, do: edits
+  defp simplify(_, b), do: %{:!= => b}
 
   defp key([]), do: ''
   defp key([k|t]), do: "[#{inspect k}]#{key t}"
