@@ -63,7 +63,7 @@ defmodule ESpec.Output do
     case Configuration.get(:formatters) do
       nil -> [default_formatter()]
       [] -> [default_formatter()]
-      formatters -> formatters
+      list_of_formatters -> list_of_formatters
     end
   end
 

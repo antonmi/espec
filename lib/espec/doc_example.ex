@@ -150,46 +150,46 @@ defmodule ESpec.DocExample do
   end
 
   # End of input and we've still got a test pending.
-  defp extract_tests([], _, expr_acc, expected_acc, [test=%{exprs: exprs}|t], _) do
+  defp extract_tests([], _, expr_acc, expected_acc, [test = %{exprs: exprs}|t], _) do
     test = %{test | exprs: [{expr_acc, {:test, expected_acc}} | exprs]}
     Enum.reverse(reverse_last_test([test|t]))
   end
 
   # We've encountered the next test on an adjacent line. Put them into one group.
-  defp extract_tests([<< "iex>", _ :: binary>>|_] = list, line, expr_acc, expected_acc, [test=%{exprs: exprs}|t], newtest) when expr_acc != "" and expected_acc != "" do
+  defp extract_tests([<< "iex>", _ :: binary >> | _] = list, line, expr_acc, expected_acc, [test = %{exprs: exprs} | t], newtest) when expr_acc != "" and expected_acc != "" do
     test = %{test | exprs: [{expr_acc, {:test, expected_acc}} | exprs]}
     extract_tests(list, line, "", "", [test|t], newtest)
   end
 
   # Store expr_acc and start a new test case.
-  defp extract_tests([<< "iex>", string :: binary>>|lines], line, "", expected_acc, acc, true) do
+  defp extract_tests([<< "iex>", string :: binary >> | lines], line, "", expected_acc, acc, true) do
     acc = reverse_last_test(acc)
     test = %{line: line, fun_arity: nil, exprs: []}
     extract_tests(lines, line, string, expected_acc, [test|acc], false)
   end
 
   # Store expr_acc.
-  defp extract_tests([<< "iex>", string :: binary>>|lines], line, "", expected_acc, acc, false) do
+  defp extract_tests([<< "iex>", string :: binary >> | lines], line, "", expected_acc, acc, false) do
     extract_tests(lines, line, string, expected_acc, acc, false)
   end
 
   # Still gathering expr_acc. Synonym for the next clause.
-  defp extract_tests([<< "iex>", string :: binary>>|lines], line, expr_acc, expected_acc, acc, newtest) do
+  defp extract_tests([<< "iex>", string :: binary >> | lines], line, expr_acc, expected_acc, acc, newtest) do
     extract_tests(lines, line, expr_acc <> "\n" <> string, expected_acc, acc, newtest)
   end
 
   # Still gathering expr_acc. Synonym for the previous clause.
-  defp extract_tests([<< "...>", string :: binary>>|lines], line, expr_acc, expected_acc, acc, newtest) when expr_acc != "" do
+  defp extract_tests([<< "...>", string :: binary >> | lines], line, expr_acc, expected_acc, acc, newtest) when expr_acc != "" do
     extract_tests(lines, line, expr_acc <> "\n" <> string, expected_acc, acc, newtest)
   end
 
   # Expression numbers are simply skipped.
-  defp extract_tests([<< "iex(", _ :: 8, string :: binary>>|lines], line, expr_acc, expected_acc, acc, newtest) do
+  defp extract_tests([<< "iex(", _ :: 8, string :: binary >>|lines], line, expr_acc, expected_acc, acc, newtest) do
     extract_tests(["iex" <> skip_iex_number(string)|lines], line, expr_acc, expected_acc, acc, newtest)
   end
 
   # Expression numbers are simply skipped redux.
-  defp extract_tests([<< "...(", _ :: 8, string :: binary>>|lines], line, expr_acc, expected_acc, acc, newtest) do
+  defp extract_tests([<< "...(", _ :: 8, string :: binary >> | lines], line, expr_acc, expected_acc, acc, newtest) do
     extract_tests(["..." <> skip_iex_number(string)|lines], line, expr_acc, expected_acc, acc, newtest)
   end
 
@@ -199,19 +199,19 @@ defmodule ESpec.DocExample do
   end
 
   # Encountered an empty line, store pending test
-  defp extract_tests([""|lines], line, expr_acc, expected_acc, [test=%{exprs: exprs}|t], _) do
+  defp extract_tests([""|lines], line, expr_acc, expected_acc, [test = %{exprs: exprs}|t], _) do
     test = %{test | exprs: [{expr_acc, {:test, expected_acc}} | exprs]}
     extract_tests(lines, line,  "", "", [test|t], true)
   end
 
   # Exception test.
-  defp extract_tests([<< "** (", string :: binary >>|lines], line, expr_acc, "", [test=%{exprs: exprs}|t], newtest) do
+  defp extract_tests([<< "** (", string :: binary >> | lines], line, expr_acc, "", [test = %{exprs: exprs} | t], newtest) do
     test = %{test | exprs: [{expr_acc, extract_error(string, "")} | exprs]}
     extract_tests(lines, line,  "", "", [test|t], newtest)
   end
 
   # Finally, parse expected_acc.
-  defp extract_tests([expected|lines], line, expr_acc, expected_acc, [test=%{exprs: exprs}|t]=acc, newtest) do
+  defp extract_tests([expected | lines], line, expr_acc, expected_acc, [test = %{exprs: exprs} | t] = acc, newtest) do
     if expected =~ ~r/^#[A-Z][\w\.]*<.*>$/ do
       expected = expected_acc <> "\n" <> inspect(expected)
       test = %{test | exprs: [{expr_acc, {:inspect, expected}} | exprs]}
