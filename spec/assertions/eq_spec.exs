@@ -35,12 +35,6 @@ defmodule ESpec.Assertions.EqSpec do
         it_behaves_like(CheckErrorSharedSpec)
       end
 
-      # context "with complex `to`" do
-      #   subject do: %{a: 2, b: 3, c: 4}
-
-      #   it do: should eq %{a: 2, b: 4}
-      # end
-
       context "with `not_to`" do
         before do
           {:shared,
