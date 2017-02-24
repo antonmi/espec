@@ -1,15 +1,22 @@
 defmodule ESpec.StructDiff do
+  @max_diffs_to_show 5
   def format_diff(a, b, prefix\\''), do: diff(a,b) |> format(prefix)
 
   def diff(a, b) when a == b, do: %{}
   def diff(a, b) when is_list(a) and is_list(b) and length(a) == length(b) do
     diff_enumerables(a, b) |> simplify(b)
   end
-  def diff(a, b) when is_tuple(a) and is_tuple(b) do
-    al = a |> Tuple.to_list
-    bl = b |> Tuple.to_list
-    diff_enumerables(al, bl) |> simplify(b)
+  def diff(a, b) when is_list(a) and is_list(b) and length(a) < length(b) do
+    diff(append_nils(a, b), b)
   end
+  def diff(a, b) when is_list(a) and is_list(b) and length(a) > length(b) do
+    diff(a, append_nils(b, a))
+  end
+
+  def diff(a, b) when is_tuple(a) and is_tuple(b) do
+    diff(Tuple.to_list(a), Tuple.to_list(b))
+  end
+
   def diff(a, b) when is_map(a) and is_map(b) do
     a_keys = a |> Map.keys |> MapSet.new
     b_keys = b |> Map.keys |> MapSet.new
@@ -28,6 +35,11 @@ defmodule ESpec.StructDiff do
     |> simplify(b)
   end
   def diff(a, b) when a != b, do: %{:!= => b}
+
+  def append_nils(shorter, longer) do
+    length_diff = length(longer) - length(shorter)
+    shorter ++ Enum.map(1..length_diff, fn(_) -> nil end)
+  end
 
   def format(diffmap, prefix\\"") when is_map(diffmap) do
     [format_lines(diffmap)]
@@ -71,7 +83,7 @@ defmodule ESpec.StructDiff do
     end
   end
 
-  defp simplify(edits, _) when map_size(edits) < 4, do: edits
+  defp simplify(edits, _) when map_size(edits) <= @max_diffs_to_show, do: edits
   defp simplify(_, b), do: %{:!= => b}
 
   defp key([]), do: ''

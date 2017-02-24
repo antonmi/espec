@@ -30,6 +30,6 @@ defmodule ESpec.Assertions.Eq do
     "#{expected} (==) `#{inspect data}`, but #{but}"
   end
 
-  defp format_diff([line|[]]), do: line
+  defp format_diff([line]), do: line
   defp format_diff(lines), do: ([""] ++ lines) |> Enum.join("\n")
 end
