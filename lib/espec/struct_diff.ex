@@ -1,6 +1,6 @@
 defmodule ESpec.StructDiff do
   @max_diffs_to_show 5
-  def format_diff(a, b, prefix\\''), do: diff(a,b) |> format(prefix)
+  def format_diff(a, b, prefix \\ ''), do: diff(a,b) |> format(prefix)
 
   def diff(a, b) when a == b, do: %{}
   def diff(a, b) when is_list(a) and is_list(b) and length(a) == length(b) do
@@ -41,7 +41,7 @@ defmodule ESpec.StructDiff do
     shorter ++ Enum.map(1..length_diff, fn(_) -> nil end)
   end
 
-  def format(diffmap, prefix\\"") when is_map(diffmap) do
+  def format(diffmap, prefix \\ "") when is_map(diffmap) do
     [format_lines(diffmap)]
     |> List.flatten
     |> Enum.map(&"#{prefix}#{&1}\n")
@@ -78,7 +78,7 @@ defmodule ESpec.StructDiff do
   defp wrap_ctx(edits, key) do
     case edits |> Map.keys do
       []                  -> %{}
-      [k] when is_list(k) -> %{[key]++k => edits[k]}
+      [k] when is_list(k) -> %{[key] ++ k => edits[k]}
       _                   -> %{[key] => edits}
     end
   end
