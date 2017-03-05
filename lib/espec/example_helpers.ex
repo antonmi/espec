@@ -13,28 +13,34 @@ defmodule ESpec.ExampleHelpers do
   Sends `shared`' variable to the example block.
   """
   defmacro example(description, opts, do: block) do
-    function = random_atom(description)
-    quote do
+    block =
+      quote do
+        unquote(block)
+      end
+      |> Macro.escape(unquote: true)
+
+    quote bind_quoted: [description: description, opts: opts, block: block] do
+      f_name = random_atom(description)
       context = Enum.reverse(@context)
-      @examples %ESpec.Example{description: unquote(description), module: __MODULE__, function: unquote(function),
-                               opts: unquote(opts), file: __ENV__.file, line: __ENV__.line, context: context,
+      @examples %ESpec.Example{description: description, module: __MODULE__, function: f_name,
+                               opts: opts, file: __ENV__.file, line: __ENV__.line, context: context,
                                shared: @shared}
 
-      def unquote(function)(var!(shared)) do
+      def unquote(f_name)(var!(shared)) do
         var!(shared)
         unquote(block)
       end
     end
   end
 
-  @doc "Example with description only."
-  defmacro example(description, do: block) when is_binary(description) do
-    quote do: example(unquote(description), [], do: unquote(block))
-  end
-
   @doc "Example options only"
   defmacro example(opts, do: block) when is_list(opts) do
     quote do: example("", unquote(opts), do: unquote(block))
+  end
+
+  @doc "Example with description only."
+  defmacro example(description, do: block) do
+    quote do: example(unquote(description), [], do: unquote(block))
   end
 
   @doc "Defines the simplest example."
@@ -145,7 +151,7 @@ defmodule ESpec.ExampleHelpers do
     quote do: it_behaves_like(unquote(module), unquote(lets))
   end
 
-  defp random_atom(arg) do
+  def random_atom(arg) do
     String.to_atom("example_#{ESpec.Support.word_chars(arg)}_#{ESpec.Support.random_string}")
   end
 end
