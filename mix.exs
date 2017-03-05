@@ -30,9 +30,7 @@ defmodule ESpec.Mixfile do
   end
 
   defp description do
-    """
-       BDD testing framework for Elixir inspired by RSpec.
-    """
+    "BDD testing framework for Elixir inspired by RSpec."
   end
 
   defp package do
