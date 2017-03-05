@@ -19,6 +19,7 @@ It is NOT a wrapper around ExUnit but a completely new testing framework written
   * `before` and `finally` blocks (like RSpec `before` and `after`).
   * `let`, `let!` and `subject`.
   * Shared examples.
+  * Generated examples.
   * Async examples.
   * Mocks with Meck.
   * Doc specs.
@@ -36,6 +37,7 @@ It is NOT a wrapper around ExUnit but a completely new testing framework written
 - [`shared` data](#shared-data)
 - [`let` and `subject`](#let-and-subject)
 - [Shared examples](#shared-examples)
+- [Generated examples](#generated-examples)
 - [Async examples](#async-examples)
 - [Matchers](#matchers)
 - [`assert` and `refute`](#assert-and-refute)
@@ -421,6 +423,24 @@ defmodule LetOverridableSpec do
   it_behaves_like(SharedSpec, a: 1, c: 3, e: 5)
 end
 ```
+
+## Generated examples
+Examples can be generated from code "templates". This should help with making the code more DRY:
+```elixir
+defmodule GeneratedExamplesSpec do
+  use ESpec, async: true
+
+  subject(24)
+
+  Enum.map 2..4, fn(n) ->
+    it "is divisible by #{n}" do
+      expect(rem(subject(), unquote(n))).to be(0)
+    end
+  end
+end
+```
+
+Please mind the `unquote` call above - if you forget to `unquote` the `n` variable the compiler will show some warnings about it missing and eventually stop with an error: `undefined function n/0`.
 
 ## Async examples
 There is an `async: true` option you can set for the context or for the individual example:
@@ -887,7 +907,7 @@ ESpec, like ExUnit, uses very simple wrapper around OTP's cover. But you can ove
 Take a look to [coverex](https://github.com/alfert/coverex) as a perfect example.
 
 ## Formatters
-There are three formatters in ESpec: 
+There are three formatters in ESpec:
 - ESpec.Formatters.Doc
 - ESpec.Formatters.Json
 - ESpec.Formatters.Html
