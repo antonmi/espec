@@ -57,7 +57,7 @@ Add `espec` to dependencies in the `mix.exs` file:
 ```elixir
 def deps do
   ...
-  {:espec, "~> 1.3.0", only: :test},
+  {:espec, "~> 1.3.1", only: :test},
   #{:espec, github: "antonmi/espec", only: :test}, to get the latest version
   ...
 end
@@ -962,6 +962,8 @@ There are community supported formatters:
     - Elixir 1.4.0 warnings ware fixed
   * 1.3.0
     - Formatters were refactored to support custom ones
+  * 1.3.1
+    - Structure diffs were added to 'eq' matcher
 
 ## Contributing
 ##### Contributions are welcome and appreciated!
