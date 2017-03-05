@@ -25,7 +25,6 @@ defmodule ESpec.Mixfile do
       {:meck, "0.8.4"},
       {:credo, "0.5.0", only: [:dev, :test]},
       # Docs
-      {:earmark, "1.1.1", only: [:docs, :dev]},
       {:ex_doc, "0.15.0", only: [:docs, :dev]}
     ]
   end
