@@ -178,7 +178,7 @@ defmodule ExampleTagsSpec do
 end
 ```
 
-##Filters
+## Filters
 The are `--only`, `--exclude` and `--string` command line options.
 
 One can tag example or context and then use `--only` or `--exclude` option to run (or exclude) tests with specific tag.
