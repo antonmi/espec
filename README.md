@@ -283,7 +283,7 @@ Note, `before_all` and `after_all` hooks do not set `shared` data and do not hav
 The `shared` variable appears in your `before`, `finally`, in `config.before` and `config.finally`, in `let` and `example` blocks.
 
 `before` and `finally` blocks (including 'global') can modify the dictionary when return `{:shared, key: value}`.
-The example bellow illustrate the life-cycle of `shared`:
+The example below illustrates the life-cycle of `shared`:
 
 `spec_helper.exs`
 ```elixir
@@ -411,7 +411,7 @@ defmodule SharedSpec do
   end
 
   it "does not override internal 'lets'" do
-    expect(internal_value())
+    expect(internal_value()).to eq(:shared_spec)
   end
 end
 
@@ -717,12 +717,12 @@ Behind the scenes 'allow accept' makes the following:
 :meck.new(module, [:non_strict, :passthrough])
 :meck.expect(module, name, function)
 ```
-Find the explanation aboute the `:non_strict` and `:passthrough` options [here](https://github.com/eproxus/meck/blob/master/src/meck.erl).
+Find the explanation about the `:non_strict` and `:passthrough` options [here](https://github.com/eproxus/meck/blob/master/src/meck.erl).
 The default options (`[:non_strict, :passthrough]`) can be overridden:
 ```elixir
 allow SomeModule |> to(accept :func, fn(a,b) -> a + b end, [:non_strict, :unstick])
 ```
-All the mocked modules are unloaded whith `:meck.unload(modules)` after each example.
+All the mocked modules are unloaded with `:meck.unload(modules)` after each example.
 
 You can also pass a list of atom-function pairs to the `accept` function:
 ```elixir
@@ -836,7 +836,7 @@ end
 ```
 `:only` — generate specs only for functions listed (list of {function, arity} tuples).
 
-And `:import` to test a function defined in the module without referring to the module name.Default is `false`. Use this option with care because you can clash with another modules.
+And `:import` to test a function defined in the module without referring to the module name.Default is `false`. Use this option with care because you can clash with other modules.
 
 There are three types of specs can be generated based on docs.
 
