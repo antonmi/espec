@@ -85,6 +85,24 @@ defmodule StructDiffSpec do
       end
     end
 
+    context "for structs" do
+      defstruct a: nil, b: nil, c: nil, d: nil
+
+      let :a, do: %__MODULE__{a: 1, b: 2, c: 3}
+
+      context "with additional keys" do
+        let :b, do: %__MODULE__{a: 1, b: 2, c: 3, d: 4}
+
+        it do: should eq %{[:d] => %{!=: 4}}
+      end
+
+      context "with missing keys" do
+        let :b, do: %__MODULE__{a: 1, c: 3}
+
+        it do: should eq %{[:b] => %{!=: nil}}
+      end
+    end
+
     context "for complex example" do
       let :a, do: %{
         users: ["richmond", "kate", "stephen"],
