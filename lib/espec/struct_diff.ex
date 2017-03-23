@@ -30,7 +30,9 @@ defmodule ESpec.StructDiff do
 
     MapSet.intersection(a_keys, b_keys)
     |> Enum.reduce(res, fn k, acc ->
-      acc |> Map.merge(diff(a[k], b[k]) |> wrap_ctx(k))
+      a_val = Map.fetch!(a, k)
+      b_val = Map.fetch!(b, k)
+      acc |> Map.merge(diff(a_val, b_val) |> wrap_ctx(k))
     end)
     |> simplify(b)
   end
