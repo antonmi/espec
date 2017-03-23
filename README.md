@@ -59,7 +59,7 @@ Add `espec` to dependencies in the `mix.exs` file:
 ```elixir
 def deps do
   ...
-  {:espec, "~> 1.3.2", only: :test},
+  {:espec, "~> 1.3.3", only: :test},
   #{:espec, github: "antonmi/espec", only: :test}, to get the latest version
   ...
 end
@@ -986,6 +986,8 @@ There are community supported formatters:
     - Structure diffs were added to 'eq' matcher
   * 1.3.2
     - Generated examples were added
+  * 1.3.3
+    - Bug fix structure diff were fixed  
 
 ## Contributing
 ##### Contributions are welcome and appreciated!
