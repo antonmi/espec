@@ -102,30 +102,28 @@ defmodule ESpec.SuiteRunner do
     filtered = Enum.reduce(grouped_by_file, [], fn({file, exs}, acc) ->
       opts = opts_for_file(file, file_opts)
       line = Keyword.get(opts, :line)
-      if line do
-        block_filtered = filtered_examples_within_block(exs, line)
-        if Enum.empty?(block_filtered) do
-          closest = get_closest(Enum.map(exs, &(&1.line)), line)
-          acc ++ Enum.filter(exs, &(&1.line == closest))
-        else
-          acc ++ block_filtered
-        end
-      else
-        acc ++ exs
-      end
+      if line, do: examples_for_line(exs, line, acc), else: acc ++ exs
     end)
     filtered
   end
 
+  defp examples_for_line(exs, line, acc) do
+    block_filtered = filtered_examples_within_block(exs, line)
+    if Enum.empty?(block_filtered) do
+      closest = get_closest(Enum.map(exs, &(&1.line)), line)
+      acc ++ Enum.filter(exs, &(&1.line == closest))
+    else
+      acc ++ block_filtered
+    end
+  end
+
   defp filtered_examples_within_block(examples, line) do
-    examples
-    |> Enum.filter(fn(ex) ->
-         ex
-         |> Map.get(:context)
-         |> Enum.filter(fn(c) -> c.__struct__ == ESpec.Context end)
-         |> Enum.map(fn(c) -> c.line end)
-         |> Enum.member?(line)
-      end)
+    Enum.filter(examples, fn(ex) ->
+      ex
+      |> Example.extract_contexts
+      |> Enum.map(fn(c) -> c.line end)
+      |> Enum.member?(line)
+    end)
   end
 
   defp get_closest(arr, value) do
@@ -160,17 +158,21 @@ defmodule ESpec.SuiteRunner do
   defp filter_only(examples, only, reverse \\ false) do
     [key, value] = extract_opts(only)
     Enum.filter(examples, fn(example) ->
-      contexts = Example.extract_contexts(example)
-      key = String.to_atom(key)
-      example_tag_value = example.opts[key]
-      context_tag_values = Enum.map(contexts, &(&1.opts[key]))
-      tag_values =  Enum.filter([example_tag_value | context_tag_values], &(&1))
+      tag_values = filter_tag_value(example, key)
       if reverse do
         if Enum.empty?(tag_values), do: true, else: !is_any_with_tag?(tag_values, value)
       else
         is_any_with_tag?(tag_values, value)
       end
     end)
+  end
+
+  defp filter_tag_value(example, key) do
+    contexts = Example.extract_contexts(example)
+    key = String.to_atom(key)
+    example_tag_value = example.opts[key]
+    context_tag_values = Enum.map(contexts, &(&1.opts[key]))
+    Enum.filter([example_tag_value | context_tag_values], &(&1))
   end
 
   defp is_any_with_tag?(tag_values, value) do

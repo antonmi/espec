@@ -23,7 +23,7 @@ defmodule ESpec.Formatters.Html do
   defp context_tree(examples) do
     examples
     |> Enum.reduce({Map.new, []}, fn(ex, acc) ->
-      contexts = Enum.filter(ex.context, &(&1.__struct__ == ESpec.Context))
+      contexts = Example.extract_contexts(ex)
       put_deep(acc, contexts, ex)
     end)
   end

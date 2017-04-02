@@ -25,9 +25,9 @@ defmodule ESpec.Example do
             status: :new, result: nil, error: nil, duration: 0
 
   @doc "Context descriptions."
-  def context_descriptions(%__MODULE__{context: context, description: _description, function: _function}) do
-    context
-    |> Enum.filter(fn(struct) -> struct.__struct__ == ESpec.Context end)
+  def context_descriptions(example) do
+    example
+    |> extract_contexts
     |> Enum.map(&(&1.description))
   end
 
