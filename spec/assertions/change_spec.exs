@@ -26,6 +26,11 @@ defmodule ChangeSpec do
       message = expect(f1()).to change(f2(), 0, 1)
       expect(message) |> to(end_with "changes the value of `&ChangeSpec.count/0` from `0` to `1`.")
     end
+
+    it "checks success with `by`" do
+      message = expect(f1()).to change(f2(), [by: 1])
+      expect(message) |> to(end_with "changes by the value of `&ChangeSpec.count/0` by `1`.")
+    end
   end
 
   context "Error" do
@@ -98,6 +103,24 @@ defmodule ChangeSpec do
       rescue
         error in [ESpec.AssertionError] ->
           expect(error.message) |> to(end_with "to change the value of `&ChangeSpec.count/0` from `0` to `2`, but the value is `0`.")
+      end
+    end
+
+    it "checks error with `by` for change_by" do
+      try do
+        expect(f1()).to change(f2(), [by: 2])
+      rescue
+        error in [ESpec.AssertionError] ->
+          expect(error.message) |> to(end_with "to change the value of `&ChangeSpec.count/0` by `2`, but was changed by `1`")
+      end
+    end
+
+    it "checks error with `by` for change_by" do
+      try do
+        expect(f3()).to change(f2(), [by: 2])
+      rescue
+        error in [ESpec.AssertionError] ->
+          expect(error.message) |> to(end_with "to change the value of `&ChangeSpec.count/0` by `2`, but was not changed")
       end
     end
   end
