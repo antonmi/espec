@@ -32,7 +32,8 @@ defmodule ESpec.AssertionHelpers do
   def throw_term(), do: {Assertions.ThrowTerm, []}
 
   def change(func) when is_function(func), do: {Assertions.Change, [func]}
-  def change(func, value) when is_function(func), do: {Assertions.ChangeTo, [func, value]}
+  def change(func, value) when is_function(func) and is_integer(value), do: {Assertions.ChangeTo, [func, value]}
+  def change(func, value) when is_function(func) and is_list(value), do: {Assertions.ChangeBy, [func, value]}
   def change(func, before, value) when is_function(func), do: {Assertions.ChangeFromTo, [func, before, value]}
 
   def have_all(func) when is_function(func), do: {Assertions.Enum.HaveAll, func}
