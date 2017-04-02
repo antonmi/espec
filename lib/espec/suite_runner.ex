@@ -103,13 +103,29 @@ defmodule ESpec.SuiteRunner do
       opts = opts_for_file(file, file_opts)
       line = Keyword.get(opts, :line)
       if line do
-        closest = get_closest(Enum.map(exs, &(&1.line)), line)
-        acc ++ Enum.filter(exs, &(&1.line == closest))
+        block_filtered = filtered_examples_within_block(exs, line)
+        if Enum.empty?(block_filtered) do
+          closest = get_closest(Enum.map(exs, &(&1.line)), line)
+          acc ++ Enum.filter(exs, &(&1.line == closest))
+        else
+          acc ++ block_filtered
+        end
       else
         acc ++ exs
       end
     end)
     filtered
+  end
+
+  defp filtered_examples_within_block(examples, line) do
+    examples
+    |> Enum.filter(fn(ex) ->
+         ex
+         |> Map.get(:context)
+         |> Enum.filter(fn(c) -> c.__struct__ == ESpec.Context end)
+         |> Enum.map(fn(c) -> c.line end)
+         |> Enum.member?(line)
+      end)
   end
 
   defp get_closest(arr, value) do
