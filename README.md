@@ -569,7 +569,7 @@ Test if call of function1 change the function2 returned value to smth or from to
 expect function1 |> to(change function2)
 expect function1 |> to(change function2, to)
 expect function1 |> to(change function2, from, to)
-expect function1 |> to(change function2, [by: value])
+expect function1 |> to(change function2, by: value)
 ```
 #### Check result
 Test if function returns `{:ok, result}` or `{:error, reason}` tuple
