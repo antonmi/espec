@@ -569,6 +569,7 @@ Test if call of function1 change the function2 returned value to smth or from to
 expect function1 |> to(change function2)
 expect function1 |> to(change function2, to)
 expect function1 |> to(change function2, from, to)
+expect function1 |> to(change function2, by: value)
 ```
 #### Check result
 Test if function returns `{:ok, result}` or `{:error, reason}` tuple
@@ -989,7 +990,7 @@ There are community supported formatters:
   * 1.3.3
     - Bug fix structure diff were fixed
   * 1.3.4
-    - Line number option for contexts 
+    - Line number option for contexts
 
 ## Contributing
 ##### Contributions are welcome and appreciated!

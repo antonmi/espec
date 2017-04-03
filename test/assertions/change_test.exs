@@ -17,20 +17,22 @@ defmodule ChangeTest do
       it "change", do: expect(f1()).to change(f2())
       it "change_to", do: expect(f1()).to change(f2(), 1)
       it "change_from_to", do: expect(f1()).to change(f2(), 0, 1)
+      it "change_by", do: expect(f1()).to change(f2(), by: 1)
     end
 
     context "Error" do
       it "change", do: expect(f1()).not_to change(f2())
       it "change_to", do: expect(f1()).to change(f2(), 2)
       it "change_from_to", do: expect(f1()).to change(f2(), 0, 2)
+      it "change_by", do: expect(f1()).to change(f2(), by: 2)
     end
   end
 
   setup_all do
     examples = ESpec.SuiteRunner.run_examples(SomeSpec.examples, true)
     {:ok,
-      success: Enum.slice(examples, 0, 2),
-      errors: Enum.slice(examples, 3, 5)}
+      success: Enum.slice(examples, 0, 3),
+      errors: Enum.slice(examples, 4, 6)}
   end
 
   test "Success", context do
