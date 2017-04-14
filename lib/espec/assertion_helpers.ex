@@ -45,6 +45,9 @@ defmodule ESpec.AssertionHelpers do
   def have_min(value), do: {Assertions.Enum.HaveMin, value}
   def have_min_by(func, value) when is_function(func), do: {Assertions.Enum.HaveMinBy, [func, value]}
 
+  def match_list(value) when is_list(value), do: {Assertions.ContainExactly, value}
+  def contain_exactly(value) when is_list(value), do: {Assertions.ContainExactly, value}
+
   def have(val), do: {Assertions.EnumString.Have, val}
   def have_at(pos, val) when is_number(pos), do: {Assertions.EnumString.HaveAt, [pos, val]}
 
@@ -67,7 +70,6 @@ defmodule ESpec.AssertionHelpers do
 
   def have_key(value), do: {Assertions.Map.HaveKey, value}
   def have_value(value), do: {Assertions.Map.HaveValue, value}
-  def eq_dict(value), do: {Assertions.Map.EqDict, value}
 
   Enum.each @elixir_types, fn(type) ->
     def unquote(String.to_atom("be_#{type}"))() do

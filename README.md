@@ -511,6 +511,8 @@ expect list |> to(have_first value)  # List.first(list) == value
 ... have_last value                  # List.last(list) == value
 ... have_hd value                    # hd(list) == value
 ... have_tl value                    # tl(list) == value
+... contain_exactly value            # Keyword.equals?(list, value)
+... match_list value                 # alias for contain_exactly
 ```
 #### Binary
 ```elixir

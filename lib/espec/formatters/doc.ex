@@ -41,20 +41,21 @@ defmodule ESpec.Formatters.Doc do
   defp format_failed(failed) do
     res = failed |> Enum.with_index
     |> Enum.map(fn({example, index}) ->
-      do_format_example(example, example.error.message |> String.replace("\n", "\n\t  "), index)
-    end)
+        do_format_failed_example(example, index)
+      end)
     Enum.join(res, "\n")
   end
 
   defp format_pending(pending) do
-    res = pending |> Enum.with_index
+    pending
+    |> Enum.with_index
     |> Enum.map(fn({example, index}) ->
-      do_format_example(example, example.result, index)
+      do_format_pending_example(example, example.result, index)
     end)
-    Enum.join(res, "\n")
+    |> Enum.join("\n")
   end
 
-  defp do_format_example(example, info, index) do
+  defp do_format_pending_example(example, info, index) do
     color = color_for_status(example.status)
     description = one_line_description(example)
     [
@@ -65,6 +66,46 @@ defmodule ESpec.Formatters.Doc do
     ]
     |> Enum.join("\n")
   end
+
+  defp do_format_failed_example(example, index) do
+    color = color_for_status(example.status)
+    description = one_line_description(example)
+    error_message =
+      example.error.message
+      |> String.replace("\n", "\n\t  ")
+
+    Enum.join([
+      "\n",
+      "\t#{index + 1}) #{description}",
+      "\t#{@cyan}#{example.file}:#{example.line}#{@reset}",
+      "\t#{color}#{error_message}#{@reset}"
+    ], "\n") <>
+    do_format_error_result_field(example.error.result)
+  end
+
+  defp do_format_error_result_field({l, r}) do
+    [
+      "",
+      "\t  #{@cyan}expected:#{@reset} #{colorize_diff(r)}",
+      "\t  #{@cyan}actual:#{@reset}   #{colorize_diff(l)}"
+    ]
+    |> Enum.join("\n")
+  end
+  defp do_format_error_result_field(_), do: ""
+
+  defp colorize_diff([{:eq, text} | rest]) do
+    text <> colorize_diff(rest)
+  end
+  defp colorize_diff([{:ins, text} | rest]) do
+    "#{@green}#{text}#{@reset}" <> colorize_diff(rest)
+  end
+  defp colorize_diff([{:del, text} | rest]) do
+    "#{@red}#{text}#{@reset}" <> colorize_diff(rest)
+  end
+  defp colorize_diff([{:ins_whitespace, length} | rest]) do
+    String.duplicate(" ", length) <> colorize_diff(rest)
+  end
+  defp colorize_diff([]), do: ""
 
   defp format_footer(examples, failed, pending) do
     color = get_color(failed, pending)
