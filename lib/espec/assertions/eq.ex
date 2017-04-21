@@ -6,8 +6,6 @@ defmodule ESpec.Assertions.Eq do
   """
   use ESpec.Assertions.Interface
 
-  alias ESpec.StructDiff
-
   defp match(subject, value) do
     result = subject == value
     {result, result}
@@ -20,16 +18,12 @@ defmodule ESpec.Assertions.Eq do
 
   defp error_message(subject, data, _result, positive) do
     expected = if positive, do: "Expected", else: "Didn't expect"
-    but = if positive do
-      StructDiff.diff(data, subject)
-      |> StructDiff.format_lines
-      |> format_diff
-    else
-      "got it"
-    end
-    "#{expected} (==) `#{inspect data}`, but #{but}"
-  end
 
-  defp format_diff([line]), do: line
-  defp format_diff(lines), do: ([""] ++ lines) |> Enum.join("\n")
+    if positive do
+      {"#{expected} (==) `#{inspect data}`, but got: `#{inspect subject}`",
+        %{diff_fn: fn() -> ESpec.Diff.diff(subject, data) end}}
+    else
+      "#{expected} (==) `#{inspect data}`, but got it"
+    end
+  end
 end

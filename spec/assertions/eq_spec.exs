@@ -29,7 +29,7 @@ defmodule ESpec.Assertions.EqSpec do
         before do
           {:shared,
             expectation: fn -> expect(%{a: 2, b: 3, c: 4}).to eq(%{a: 2, b: 4}) end,
-            message: "Expected (==) `%{a: 2, b: 4}`, but \nhas extra: `[:c]`\nat [:b]:\n  got: `3`"}
+            message: "Expected (==) `%{a: 2, b: 4}`, but got: `%{a: 2, b: 3, c: 4}`"}
         end
 
         it_behaves_like(CheckErrorSharedSpec)

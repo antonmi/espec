@@ -20,7 +20,7 @@ defmodule ESpec.Assertions.String.EndWithSpec do
       before do
         {:shared,
           expectation: fn -> should end_with "ert" end,
-          message: "Expected `\"qwerty\"` to end with `ert` but it ends with `...rty`."}
+          message: "Expected `\"qwerty\"` to end with `ert` but it ends with `rty`."}
       end
 
       it_behaves_like(CheckErrorSharedSpec)
@@ -57,7 +57,7 @@ defmodule ESpec.Assertions.String.EndWithSpec do
         before do
           {:shared,
             expectation: fn -> should end_with "e" end,
-            message: "Expected `\"q\"` to end with `e` but it ends with `...q`."}
+            message: "Expected `\"q\"` to end with `e` but it ends with `q`."}
         end
 
         it_behaves_like(CheckErrorSharedSpec)

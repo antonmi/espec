@@ -915,6 +915,17 @@ There are three formatters in ESpec:
 - ESpec.Formatters.Json
 - ESpec.Formatters.Html
 
+The Doc formatter tries to help you read the failed tests results by doing diffs
+between the expected and actual values in some cases (the eq and eql assertions,
+for example). If you don't want this you can disable it like this:
+```elixir
+ESpec.configure fn(config) ->
+  config.formatters [
+    {ESpec.Formatters.Doc, %{diff_enabled?: false}}
+  ]
+end
+```
+
 By default ESpec uses 'Doc' with empty options.
 In order to use another one, you must specify formatters in 'ESpec.config'
 

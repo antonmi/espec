@@ -18,8 +18,19 @@ defmodule ESpec.Assertions.Interface do
       end
 
       defp raise_error(subject, data, result, positive) do
-        raise ESpec.AssertionError, subject: subject, data: data, result: result,
-        asserion: __MODULE__, message: error_message(subject, data, result, positive)
+        e = error_message(subject, data, result, positive)
+        {message, extra} =
+          case e do
+            {_, _} -> e
+            _ -> {e, nil}
+          end
+        raise ESpec.AssertionError,
+                subject: subject,
+                data: data,
+                result: result,
+                asserion: __MODULE__,
+                message: message,
+                extra:  extra
       end
     end
   end

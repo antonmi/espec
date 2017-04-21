@@ -60,7 +60,7 @@ defmodule ExampleTest do
     assert(example.status == :failure)
     assert(example.error.subject == true)
     assert(example.error.data == false)
-    assert(example.error.result == false)
+    assert(example.error.result != nil)
     assert(example.error.asserion == ESpec.Assertions.Eq)
     assert(example.duration > 0)
   end

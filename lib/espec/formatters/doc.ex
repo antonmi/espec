@@ -27,21 +27,21 @@ defmodule ESpec.Formatters.Doc do
   end
 
   @doc "Formats the final result."
-  def format_result(examples, durations, _opts) do
+  def format_result(examples, durations, opts) do
     pending = Example.pendings(examples)
     string = ""
     string = if Enum.any?(pending), do: string <> format_pending(pending), else: string
     failed = Example.failure(examples)
-    string = if Enum.any?(failed), do: string <> format_failed(failed), else: string
+    string = if Enum.any?(failed), do: string <> format_failed(failed, opts), else: string
     string = string <> format_footer(examples, failed, pending)
     string = string <> format_times(durations, failed, pending)
     string <> format_seed()
   end
 
-  defp format_failed(failed) do
+  defp format_failed(failed, opts) do
     res = failed |> Enum.with_index
     |> Enum.map(fn({example, index}) ->
-        do_format_failed_example(example, index)
+        do_format_failed_example(example, index, opts)
       end)
     Enum.join(res, "\n")
   end
@@ -67,7 +67,7 @@ defmodule ESpec.Formatters.Doc do
     |> Enum.join("\n")
   end
 
-  defp do_format_failed_example(example, index) do
+  defp do_format_failed_example(example, index, opts) do
     color = color_for_status(example.status)
     description = one_line_description(example)
     error_message =
@@ -80,10 +80,15 @@ defmodule ESpec.Formatters.Doc do
       "\t#{@cyan}#{example.file}:#{example.line}#{@reset}",
       "\t#{color}#{error_message}#{@reset}"
     ], "\n") <>
-    do_format_error_result_field(example.error.result)
+    if Map.get(opts, :diff_enabled?, true), do: do_format_diff(example.error), else: ""
   end
 
-  defp do_format_error_result_field({l, r}) do
+  defp do_format_diff(%ESpec.AssertionError{extra: %{diff_fn: f}}) when is_function(f, 0) do
+    format_diff(f.())
+  end
+  defp do_format_diff(_), do: ""
+
+  defp format_diff({l, r}) do
     [
       "",
       "\t  #{@cyan}expected:#{@reset} #{colorize_diff(r)}",
@@ -91,7 +96,6 @@ defmodule ESpec.Formatters.Doc do
     ]
     |> Enum.join("\n")
   end
-  defp do_format_error_result_field(_), do: ""
 
   defp colorize_diff([{:eq, text} | rest]) do
     text <> colorize_diff(rest)

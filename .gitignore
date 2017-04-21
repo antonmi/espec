@@ -6,3 +6,7 @@
 erl_crash.dump
 *.ez
 .idea
+results.html
+results.json
+results.txt
+results-no-diff.txt
