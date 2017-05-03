@@ -50,8 +50,7 @@ defmodule ESpec.Let.Impl do
   end
 
   defp agent_get(key) do
-    dict = Agent.get(@agent_name, &(&1))
-    Map.get(dict, key)
+    Agent.get(@agent_name, fn(state) -> Map.get(state, key) end)
   end
 
   defp agent_put(key, value), do: Agent.update(@agent_name, &(Map.put(&1, key, value)))
