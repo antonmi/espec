@@ -17,13 +17,13 @@ defmodule ESpec.Assertions.Eq do
   end
 
   defp error_message(subject, data, _result, positive) do
-    expected = if positive, do: "Expected", else: "Didn't expect"
-
+    to = if positive, do: "to", else: "not to"
+    but = if positive, do: "doesn't", else: "does"
+    m = "Expected `#{inspect subject}` #{to} equal (==) `#{inspect data}`, but it #{but}."
     if positive do
-      {"#{expected} (==) `#{inspect data}`, but got: `#{inspect subject}`",
-        %{diff_fn: fn() -> ESpec.Diff.diff(subject, data) end}}
+      {m, %{diff_fn: fn() -> ESpec.Diff.diff(subject, data) end}}
     else
-      "#{expected} (==) `#{inspect data}`, but got it"
+      m
     end
   end
 end

@@ -26,8 +26,8 @@ defmodule GeneratedExamplesTest do
 
     assert(Enum.map(examples, fn(e) -> e.error.message end) ==
       Enum.map(3..1, fn(idx) ->
-        ["Expected (==) `-1`, but got: `#{idx}`",
-         "Expected (==) `0`, but got: `#{idx}`"]
+        ["Expected `#{idx}` to equal (==) `-1`, but it doesn't.",
+         "Expected `#{idx}` to equal (==) `0`, but it doesn't."]
       end)
       |> List.flatten)
   end

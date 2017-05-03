@@ -30,7 +30,7 @@ defmodule Formatters.DocTest do
     output = ESpec.Formatters.Doc.format_example(context[:failed_example], %{})
     assert output == "\e[31mF\e[0m"
     output = ESpec.Formatters.Doc.format_example(context[:failed_example], %{details: true})
-    assert output == "Formatters.DocTest.SomeSpec\n  \e[31mExpected (==) `2`, but got: `1`\e[0m\n"
+    assert output == "Formatters.DocTest.SomeSpec\n  \e[31mExpected `1` to equal (==) `2`, but it doesn't.\e[0m\n"
   end
 
   test "format_example pending_example", context do
@@ -45,7 +45,7 @@ defmodule Formatters.DocTest do
     output = ESpec.Formatters.Doc.format_result(context[:examples], durations, %{})
     assert String.match?(output, ~r/Formatters\.DocTest\.SomeSpec/)
     assert String.match?(output, ~r/Temporarily skipped with: `xit`/)
-    assert String.match?(output, ~r/Expected \(==\) `2`, but got: `1`/)
+    assert String.match?(output, ~r/Expected `1` to equal \(==\) `2`, but it doesn't\./)
     assert String.match?(output, ~r/3 examples, 1 failures, 1 pending/)
   end
 end

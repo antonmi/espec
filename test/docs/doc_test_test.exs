@@ -56,7 +56,7 @@ defmodule ESpec.Docs.DocTestTest do
     ex = ESpec.ExampleRunner.run(context[:ex3])
     assert ex.description =~ "Doctest for Elixir.ESpec.DocTestTest.Mod1.f/0"
     assert ex.status == :failure
-    assert ex.error.message == "Expected (==) `5`, but got: `4`"
+    assert ex.error.message == "Expected `4` to equal (==) `5`, but it doesn't."
   end
 
   test "ex4", context do
