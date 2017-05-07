@@ -18,6 +18,11 @@ defmodule ESpec.Assertions.List.HaveHd do
 
   defp error_message(list, val, result, positive) do
     to = if positive, do: "to", else: "not to"
-    "Expected `#{inspect list}` #{to} have `hd` `#{val}` but it has `#{result}`."
+    m = "Expected `#{inspect list}` #{to} have `hd` `#{inspect val}` but it has `#{result}`."
+    if positive and not is_binary(list) do
+      {m, %{diff_fn: fn() -> ESpec.Diff.diff(hd(list), val) end}}
+    else
+      m
+    end
   end
 end

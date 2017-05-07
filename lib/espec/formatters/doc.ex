@@ -27,34 +27,35 @@ defmodule ESpec.Formatters.Doc do
   end
 
   @doc "Formats the final result."
-  def format_result(examples, durations, _opts) do
+  def format_result(examples, durations, opts) do
     pending = Example.pendings(examples)
     string = ""
     string = if Enum.any?(pending), do: string <> format_pending(pending), else: string
     failed = Example.failure(examples)
-    string = if Enum.any?(failed), do: string <> format_failed(failed), else: string
+    string = if Enum.any?(failed), do: string <> format_failed(failed, opts), else: string
     string = string <> format_footer(examples, failed, pending)
     string = string <> format_times(durations, failed, pending)
     string <> format_seed()
   end
 
-  defp format_failed(failed) do
+  defp format_failed(failed, opts) do
     res = failed |> Enum.with_index
     |> Enum.map(fn({example, index}) ->
-      do_format_example(example, example.error.message |> String.replace("\n", "\n\t  "), index)
-    end)
+        do_format_failed_example(example, index, opts)
+      end)
     Enum.join(res, "\n")
   end
 
   defp format_pending(pending) do
-    res = pending |> Enum.with_index
+    pending
+    |> Enum.with_index
     |> Enum.map(fn({example, index}) ->
-      do_format_example(example, example.result, index)
+      do_format_pending_example(example, example.result, index)
     end)
-    Enum.join(res, "\n")
+    |> Enum.join("\n")
   end
 
-  defp do_format_example(example, info, index) do
+  defp do_format_pending_example(example, info, index) do
     color = color_for_status(example.status)
     description = one_line_description(example)
     [
@@ -65,6 +66,50 @@ defmodule ESpec.Formatters.Doc do
     ]
     |> Enum.join("\n")
   end
+
+  defp do_format_failed_example(example, index, opts) do
+    color = color_for_status(example.status)
+    description = one_line_description(example)
+    error_message =
+      example.error.message
+      |> String.replace("\n", "\n\t  ")
+
+    Enum.join([
+      "\n",
+      "\t#{index + 1}) #{description}",
+      "\t#{@cyan}#{example.file}:#{example.line}#{@reset}",
+      "\t#{color}#{error_message}#{@reset}"
+    ], "\n") <>
+    if Map.get(opts, :diff_enabled?, true), do: do_format_diff(example.error), else: ""
+  end
+
+  defp do_format_diff(%ESpec.AssertionError{extra: %{diff_fn: f}}) when is_function(f, 0) do
+    format_diff(f.())
+  end
+  defp do_format_diff(_), do: ""
+
+  defp format_diff({l, r}) do
+    [
+      "",
+      "\t  #{@cyan}expected:#{@reset} #{colorize_diff(r)}",
+      "\t  #{@cyan}actual:#{@reset}   #{colorize_diff(l)}"
+    ]
+    |> Enum.join("\n")
+  end
+
+  defp colorize_diff([{:eq, text} | rest]) do
+    text <> colorize_diff(rest)
+  end
+  defp colorize_diff([{:ins, text} | rest]) do
+    "#{@green}#{text}#{@reset}" <> colorize_diff(rest)
+  end
+  defp colorize_diff([{:del, text} | rest]) do
+    "#{@red}#{text}#{@reset}" <> colorize_diff(rest)
+  end
+  defp colorize_diff([{:ins_whitespace, length} | rest]) do
+    String.duplicate(" ", length) <> colorize_diff(rest)
+  end
+  defp colorize_diff([]), do: ""
 
   defp format_footer(examples, failed, pending) do
     color = get_color(failed, pending)

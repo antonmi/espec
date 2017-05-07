@@ -21,7 +21,7 @@ defmodule ESpec.Assertions.EqlSpec do
         before do
           {:shared,
             expectation: fn -> expect(1 + 1).to eql(2.0) end,
-            message: "Expected `2` to equals (===) `2.0`, but it doesn't."}
+            message: "Expected `2` to equal (===) `2.0`, but it doesn't."}
         end
 
         it_behaves_like(CheckErrorSharedSpec)
@@ -31,7 +31,7 @@ defmodule ESpec.Assertions.EqlSpec do
         before do
           {:shared,
             expectation: fn -> expect(1 + 1).to_not eql(2) end,
-            message: "Expected `2` not to equals (===) `2`, but it does."}
+            message: "Expected `2` not to equal (===) `2`, but it does."}
         end
 
         it_behaves_like(CheckErrorSharedSpec)

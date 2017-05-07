@@ -11,10 +11,17 @@ defmodule ESpec.Assertions.String.EndWith do
     if result do
       {result, val}
     else
-      length = String.length(string)
-      split_at = if length > 3, do: length - 3, else: 0
-      {_, last3} = String.split_at(string, split_at)
-      {result, "...#{last3}"}
+      val = if is_list(val), do: List.first(val), else: val
+
+      length_l = String.length(string)
+      length_r = String.length(val)
+
+      if length_l <= length_r do
+        {result, string}
+      else
+        {_, ends} = String.split_at(string, length_l - length_r)
+        {result, ends}
+      end
     end
   end
 
@@ -25,7 +32,12 @@ defmodule ESpec.Assertions.String.EndWith do
 
   defp error_message(string, val, result, positive) do
     to = if positive, do: "to", else: "not to"
-    "Expected `#{inspect string}` #{to} end with `#{val}` but it ends with `#{result}`."
+    m = "Expected `#{inspect string}` #{to} end with `#{val}` but it ends with `#{result}`."
+    if positive do
+      {m, %{diff_fn: fn() -> ESpec.Diff.diff(result, val) end}}
+    else
+      m
+    end
   end
 
 end

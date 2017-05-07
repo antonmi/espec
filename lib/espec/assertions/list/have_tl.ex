@@ -18,6 +18,11 @@ defmodule ESpec.Assertions.List.HaveTl do
 
   defp error_message(list, val, result, positive) do
     to = if positive, do: "to", else: "not to"
-    "Expected `#{inspect list}` #{to} have `tl` `#{inspect val}` but it has `#{inspect result}`."
+    m = "Expected `#{inspect list}` #{to} have `tl` `#{inspect val}` but it has `#{inspect result}`."
+    if positive and not is_binary(list) do
+      {m, %{diff_fn: fn() -> ESpec.Diff.diff(tl(list), val) end}}
+    else
+      m
+    end
   end
 end

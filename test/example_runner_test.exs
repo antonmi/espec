@@ -44,7 +44,7 @@ defmodule ExampleRunnerTest do
   test "run failed example", context do
     example = ESpec.ExampleRunner.run(context[:ex3])
     assert example.status == :failure
-    assert example.error.message == "Expected (==) `2`, but got: `1`"
+    assert example.error.message == "Expected `1` to equal (==) `2`, but it doesn't."
   end
 
   test "run failed example with runtime error", context do
