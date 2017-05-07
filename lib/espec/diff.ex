@@ -1,23 +1,21 @@
 defmodule ESpec.Diff do
   def diff(expected, actual) do
     diff = ExUnit.Diff.script(actual, expected)
-    if is_nil(diff) do
-      {[eq: inspect(expected)], [eq: inspect(actual)]}
-    else
-      diff
-      |> List.flatten
-      |> split_flattened_diff(false)
-    end
+    format_diff(diff, {actual, expected}, false)
   end
 
   def diff_with_aligned_eq(expected, actual) do
     diff = ExUnit.Diff.script(actual, expected)
+    format_diff(diff, {actual, expected}, true)
+  end
+
+  defp format_diff(diff, {actual, expected}, align_eq) do
     if is_nil(diff) do
       {[eq: inspect(expected)], [eq: inspect(actual)]}
     else
       diff
       |> List.flatten
-      |> split_flattened_diff(true)
+      |> split_flattened_diff(align_eq)
     end
   end
 
