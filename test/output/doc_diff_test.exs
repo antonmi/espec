@@ -65,6 +65,19 @@ defmodule Formatters.DocDiffTest do
     assert String.contains?(output, "\n\t  \e[36mactual:\e[0m   1\n")
   end
 
+  test "failed eq with very long string" do
+    defmodule SomeSpecEqLongString do
+      use ESpec
+
+      it do: expect(String.duplicate("external", 1000)).to eq(String.duplicate("expected", 1000))
+    end
+
+    output = output(SomeSpecEqLongString.examples)
+
+    assert String.contains?(output, "\n\t  \e[36mexpected:\e[0m \"#{String.duplicate("expected", 1000)}\"\n")
+    assert String.contains?(output, "\n\t  \e[36mactual:\e[0m   \"#{String.duplicate("external", 1000)}\"\n")
+  end
+
   test "failed negative eq without diff" do
     defmodule SomeSpecNotEq do
       use ESpec
