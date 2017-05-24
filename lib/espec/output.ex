@@ -6,6 +6,9 @@ defmodule ESpec.Output do
   use GenServer
   alias ESpec.Configuration
 
+  @red IO.ANSI.red
+  @reset IO.ANSI.reset
+
   @doc "Starts server."
   def start do
     GenServer.start_link(__MODULE__, %{formatters: formatters()}, name: __MODULE__)
@@ -32,8 +35,42 @@ defmodule ESpec.Output do
    result
   end
 
+  defp display_stop_timeout_message(timeout) do
+    IO.puts "\n  #{@red}Sorry, but the formatters did not have enough time to finish their work."
+    IO.puts "  The most time consuming are (most probably) the diffs in the Doc formatter (shown for the failed examples)."
+    IO.puts "  You could try to:"
+    IO.puts "  * run less (failed) examples (please see the doc on --exclude and --focus)"
+    IO.puts "  * increase the formatters timeout (the current value is #{inspect(timeout)})"
+    IO.puts "      \# spec_helper.exs"
+    IO.puts "      ESpec.configure fn(config) ->"
+    IO.puts "        config.formatters_timeout 30_000 \# or :infinity to wait until done"
+    IO.puts "      end"
+    IO.puts "  * disable the diffs for the Doc formatter"
+    IO.puts "      \# spec_helper.exs"
+    IO.puts "      ESpec.configure fn(config) ->"
+    IO.puts "        config.formatters ["
+    IO.puts "          \# ..."
+    IO.puts "          {ESpec.Formatters.Doc, %{diff_enabled?: false}}"
+    IO.puts "          \# ..."
+    IO.puts "        ]"
+    IO.puts "      end#{@reset}"
+  end
+
   @doc false
-  def stop, do: GenServer.call(__MODULE__, :stop)
+  def stop do
+    timeout = Configuration.get(:formatters_timeout)
+    try do
+      if is_nil(timeout) do
+        GenServer.call(__MODULE__, :stop)
+      else
+        GenServer.call(__MODULE__, :stop, timeout)
+      end
+    catch
+      :exit, {:timeout, {GenServer, :call, [ESpec.Output, :stop, timeout]}} = reason ->
+        display_stop_timeout_message(timeout)
+        exit(reason)
+    end
+  end
 
   @doc false
   def handle_cast({:example_finished, example}, state) do

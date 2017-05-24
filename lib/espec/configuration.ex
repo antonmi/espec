@@ -22,7 +22,9 @@ defmodule ESpec.Configuration do
     test: "For test purpose",
     start_loading_time: "Starts loading files",
     finish_loading_time: "Finished loading",
-    finish_specs_time: "Finished specs"
+    finish_specs_time: "Finished specs",
+    formatters_timeout: "How long to wait for the formatters to " <>
+                   "finish formatting (defaults to the GenServer call timeout)"
   ]
 
   @doc """
