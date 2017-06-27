@@ -1,12 +1,21 @@
 defmodule ESpec.Diff do
   def diff(expected, actual) do
-    diff = ExUnit.Diff.script(actual, expected)
+    diff = edit_script(actual, expected)
     format_diff(diff, {actual, expected}, false)
   end
 
   def diff_with_aligned_eq(expected, actual) do
-    diff = ExUnit.Diff.script(actual, expected)
+    diff = edit_script(actual, expected)
     format_diff(diff, {actual, expected}, true)
+  end
+
+  # shamelessly copied from ex_unit/formatter
+  defp edit_script(left, right) do
+    task = Task.async(ExUnit.Diff, :script, [left, right])
+    case Task.yield(task, 1_500) || Task.shutdown(task, :brutal_kill) do
+      {:ok, script} -> script
+      nil -> nil
+    end
   end
 
   defp format_diff(diff, {actual, expected}, align_eq) do
