@@ -59,7 +59,7 @@ Add `espec` to dependencies in the `mix.exs` file:
 ```elixir
 def deps do
   ...
-  {:espec, "~> 1.4.0", only: :test},
+  {:espec, "~> 1.4.1", only: :test},
   #{:espec, github: "antonmi/espec", only: :test}, to get the latest version
   ...
 end
@@ -1008,7 +1008,9 @@ There are community supported formatters:
     - Pretty diffs for failed specs
     - 'let' agent fix
     - 'contain_exactly', 'match_list' and 'change_by' assertions
-    - Elixir 1.2 is no longer supported 
+    - Elixir 1.2 is no longer supported
+  * 1.4.1
+    - Configurable timeouts for output formatters
 
 ## Contributing
 ##### Contributions are welcome and appreciated!
