@@ -38,24 +38,32 @@ defmodule ESpec.To do
   end
 
   @doc "Special case for `is_expected` when `subject` present."
-  def to({ExpectTo, subject}, {module, data}), do: to(subject, {module, data})
+  def to({ExpectTo, subject, stacktrace}, {module, data}) do
+    ExpectTo.to({module, data}, {ExpectTo, subject, stacktrace})
+  end
 
   @doc "Wrapper for `ESpec.ExpectTo.to`."
   def to(subject, {module, data}) do
-    ExpectTo.to({module, data}, {ExpectTo, subject})
+    ExpectTo.to({module, data}, {ExpectTo, subject, ESpec.Expect.pruned_stacktrace()})
   end
 
   @doc "Special case for `is_expected` when `subject` present."
-  def to_not({ExpectTo, subject}, {module, data}), do: to_not(subject, {module, data})
+  def to_not({ExpectTo, subject, stacktrace}, {module, data}) do
+    ExpectTo.to_not({module, data}, {ExpectTo, subject, stacktrace})
+  end
 
   @doc "Wrapper for `ESpec.ExpectTo.to_not`."
   def to_not(subject, {module, data}) do
-    ExpectTo.to_not({module, data}, {ExpectTo, subject})
+    ExpectTo.to_not({module, data}, {ExpectTo, subject, ESpec.Expect.pruned_stacktrace()})
   end
 
   @doc "Special case for `is_expected` when `subject` present."
-  def not_to({ExpectTo, subject}, {module, data}), do: not_to(subject, {module, data})
+  def not_to({ExpectTo, subject, stacktrace}, {module, data}) do
+    to_not({ExpectTo, subject, stacktrace}, {module, data})
+  end
 
   @doc "Wrapper for `ESpec.ExpectTo.not_to`."
-  def not_to(subject, {module, data}), do: to_not(subject, {module, data})
+  def not_to(subject, {module, data}) do
+    to_not(subject, {module, data})
+  end
 end

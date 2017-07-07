@@ -36,7 +36,7 @@ defmodule ESpec.RefuteReceive do
           unquote(timeout) -> false
         end
 
-      ExpectTo.to({RefuteReceive, unquote(binary)}, {ExpectTo, result})
+      ExpectTo.to({RefuteReceive, unquote(binary)}, {ExpectTo, result, nil})
     end
   end
 end

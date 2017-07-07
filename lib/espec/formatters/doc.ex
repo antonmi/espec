@@ -77,10 +77,60 @@ defmodule ESpec.Formatters.Doc do
     Enum.join([
       "\n",
       "\t#{index + 1}) #{description}",
-      "\t#{@cyan}#{example.file}:#{example.line}#{@reset}",
+      "\t#{@cyan}#{do_format_stacktrace(example)}#{@reset}",
       "\t#{color}#{error_message}#{@reset}"
     ], "\n") <>
     if Map.get(opts, :diff_enabled?, true), do: do_format_diff(example.error), else: ""
+  end
+
+  defp do_format_stacktrace(example) do
+    list =
+      example
+      |> do_format_stacktrace_list()
+      |> Enum.reverse()
+
+    line = "#{Path.relative_to_cwd(example.file)}:#{example.line}"
+
+    if Enum.empty?(list) do
+      line
+    else
+      ["#{line}: (example)" | list]
+      |> Enum.reverse()
+      |> Enum.join("\n\t")
+    end
+  end
+
+  defp do_format_stacktrace_list(example) do
+    if is_nil(example.error.stacktrace) do
+      []
+    else
+      example.error.stacktrace
+      |> remove_example_if_first(example)
+      |> Enum.map(fn({module, function, arity, [file: file, line: line]} = item) ->
+        if in_this_example?(example, item)  do
+          "#{file}:#{line}: (inside example)"
+        else
+          "#{file}:#{line}: #{module}.#{function}/#{arity}"
+        end
+      end)
+    end
+  end
+
+  defp in_this_example?(example, {module, function, arity, [file: file, line: _line]}) do
+    module == example.module && function == example.function &&
+      arity == 1 &&
+      file == String.to_char_list(Path.relative_to_cwd(example.file))
+  end
+
+  defp remove_example_if_first([], _example) do
+    []
+  end
+  defp remove_example_if_first([{_, _, _, [file: _, line: line]} = first | rest] = trace, example) do
+    if in_this_example?(example, first) && line == example.line do
+      rest
+    else
+      trace
+    end
   end
 
   defp do_format_diff(%ESpec.AssertionError{extra: %{diff_fn: f}}) when is_function(f, 0) do
