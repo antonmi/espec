@@ -20,7 +20,10 @@ defmodule ESpec.Diff do
 
   defp format_diff(diff, {actual, expected}, align_eq) do
     if is_nil(diff) do
-      {[eq: inspect(expected)], [eq: inspect(actual)]}
+      {
+        [eq: inspect(expected, printable_limit: :infinity)],
+        [eq: inspect(actual, printable_limit: :infinity)]
+      }
     else
       diff
       |> List.flatten
