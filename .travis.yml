@@ -3,9 +3,11 @@ elixir:
   - 1.3.4
   - 1.4.0
   - 1.4.5
+  - 1.5.0
 otp_release:
   - 18.3
   - 19.2
+  - 20.0
 sudo: false
 script:
   - mix test
