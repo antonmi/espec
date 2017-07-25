@@ -43,15 +43,15 @@ defmodule ESpec.DocExample do
   end
 
   defp item_to_struct({lhs, {:test, rhs}}, fun_arity, line) do
-    %__MODULE__{lhs: String.strip(lhs), rhs: String.strip(rhs), fun_arity: fun_arity, line: line, type: :test}
+    %__MODULE__{lhs: String.trim(lhs), rhs: String.trim(rhs), fun_arity: fun_arity, line: line, type: :test}
   end
 
   defp item_to_struct({lhs, {:error, error_module, error_message}}, fun_arity, line) do
-    %__MODULE__{lhs: String.strip(lhs), rhs: {error_module, error_message}, fun_arity: fun_arity, line: line, type: :error}
+    %__MODULE__{lhs: String.trim(lhs), rhs: {error_module, error_message}, fun_arity: fun_arity, line: line, type: :error}
   end
 
   defp item_to_struct({lhs, {:inspect, string}}, fun_arity, line) do
-    %__MODULE__{lhs: String.strip(lhs), rhs: string, fun_arity: fun_arity, line: line, type: :inspect}
+    %__MODULE__{lhs: String.trim(lhs), rhs: string, fun_arity: fun_arity, line: line, type: :inspect}
   end
 
   defp extract_from_moduledoc({_, doc}) when doc in [false, nil], do: []
@@ -87,7 +87,7 @@ defmodule ESpec.DocExample do
   @dot_prompt ["...>", "...("]
 
   defp adjust_indent([line|rest], adjusted_lines, indent, :text) do
-    case String.starts_with?(String.lstrip(line), @iex_prompt) do
+    case String.starts_with?(String.trim_leading(line), @iex_prompt) do
       true  -> adjust_indent([line|rest], adjusted_lines, get_indent(line, indent), :prompt)
       false -> adjust_indent(rest, adjusted_lines, indent, :text)
     end
@@ -96,7 +96,7 @@ defmodule ESpec.DocExample do
   defp adjust_indent([line|rest], adjusted_lines, indent, check) when check in [:prompt, :after_prompt] do
     stripped_line = strip_indent(line, indent)
 
-    case String.lstrip(line) do
+    case String.trim_leading(line) do
       "" ->
         raise Error, message: "expected non-blank line to follow iex> prompt"
       ^stripped_line ->
@@ -118,7 +118,7 @@ defmodule ESpec.DocExample do
     cond do
       stripped_line == "" ->
         adjust_indent(rest, [stripped_line|adjusted_lines], 0, :text)
-      String.starts_with?(String.lstrip(line), @iex_prompt) ->
+      String.starts_with?(String.trim_leading(line), @iex_prompt) ->
         adjust_indent([line|rest], adjusted_lines, indent, :prompt)
       true ->
         adjust_indent(rest, [stripped_line|adjusted_lines], indent, :code)
@@ -222,7 +222,7 @@ defmodule ESpec.DocExample do
   end
 
   defp extract_error(<< ")", t :: binary >>, acc) do
-    {:error, Module.concat([acc]), String.strip(t)}
+    {:error, Module.concat([acc]), String.trim(t)}
   end
 
   defp extract_error(<< h, t :: binary >>, acc) do

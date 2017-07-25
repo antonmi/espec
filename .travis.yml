@@ -7,7 +7,12 @@ elixir:
 otp_release:
   - 18.3
   - 19.2
-  - 20.0
+matrix:
+  include:
+    - elixir: 1.4.5
+      otp_release: 20.0
+    - elixir: 1.5.0
+      otp_release: 20.0
 sudo: false
 script:
   - mix test

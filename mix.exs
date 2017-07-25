@@ -7,7 +7,7 @@ defmodule ESpec.Mixfile do
     [app: :espec,
      name: "ESpec",
      version: @version,
-     elixir: ">= 1.1.0",
+     elixir: ">= 1.3.4",
      description: description(),
      package: package(),
      deps: deps(),
@@ -23,9 +23,9 @@ defmodule ESpec.Mixfile do
   defp deps do
     [
       {:meck, "0.8.4"},
-      {:credo, "0.5.0", only: [:dev, :test]},
+      {:credo, "0.8.4", only: [:dev, :test]},
       # Docs
-      {:ex_doc, "0.15.0", only: [:docs, :dev]}
+      {:ex_doc, "0.16.2", only: [:docs, :dev]}
     ]
   end
 
