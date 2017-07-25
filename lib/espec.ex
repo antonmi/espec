@@ -46,6 +46,19 @@ defmodule ESpec do
     end
   end
 
+  defmacrop version_safe_start_capture_server do
+    case Version.match?(System.version, ">= 1.5.0") do
+      true ->
+        quote do
+          ExUnit.CaptureServer.start_link([])
+        end
+      _ ->
+        quote do
+          ExUnit.CaptureServer.start_link()
+        end
+    end
+  end
+
   defmacro __before_compile__(_env) do
     quote do
       def examples, do: Enum.reverse(@examples)
@@ -98,7 +111,7 @@ defmodule ESpec do
 
   defp start_capture_server do
     if Code.ensure_loaded?(ExUnit.CaptureServer) do
-      unless GenServer.whereis(ExUnit.CaptureServer), do: ExUnit.CaptureServer.start_link()
+      unless GenServer.whereis(ExUnit.CaptureServer), do: version_safe_start_capture_server()
     end
   end
 
