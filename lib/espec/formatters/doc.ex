@@ -149,7 +149,7 @@ defmodule ESpec.Formatters.Doc do
     desc = Example.context_descriptions(example) ++ [example.description]
     desc
     |> Enum.join(" ")
-    |> String.rstrip
+    |> String.trim_trailing
   end
 
   defp trace_description(example) do
