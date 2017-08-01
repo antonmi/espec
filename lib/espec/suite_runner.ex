@@ -21,7 +21,7 @@ defmodule ESpec.SuiteRunner do
   end
 
   defp run_module_examples(module, opts, shuffle) do
-    examples_to_run = filter(module.examples |> Enum.reverse, opts)
+    examples_to_run = filter(module.examples, opts)
 
     if shuffle do
       run_examples(Enum.shuffle(examples_to_run))
@@ -177,10 +177,13 @@ defmodule ESpec.SuiteRunner do
 
   defp is_any_with_tag?(tag_values, value) do
     Enum.any?(tag_values, fn(tag) ->
-      if is_atom(tag) do
-        if value, do: Atom.to_string(tag) == value, else: tag
-      else
-        if value, do: tag == value, else: tag
+      cond do
+        is_atom(tag) ->
+          if value, do: Atom.to_string(tag) == value, else: tag
+        is_integer(tag) ->
+          if value, do: Integer.to_string(tag) == value, else: tag
+        true ->
+          if value, do: tag == value, else: tag
       end
     end)
   end
