@@ -119,7 +119,7 @@ defmodule ESpec.Formatters.Doc do
   defp in_this_example?(example, {module, function, arity, [file: file, line: _line]}) do
     module == example.module && function == example.function &&
       arity == 1 &&
-      file == String.to_char_list(Path.relative_to_cwd(example.file))
+      file == String.to_charlist(Path.relative_to_cwd(example.file))
   end
 
   defp remove_example_if_first([], _example) do
