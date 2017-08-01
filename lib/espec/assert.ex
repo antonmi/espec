@@ -8,8 +8,8 @@ defmodule ESpec.Assert do
   alias ESpec.Assertions.Boolean.BeFalsy
 
   @doc "Calls be_truthy assertion"
-  def assert(value), do: ExpectTo.to({BeTruthy, []}, {ExpectTo, value})
+  def assert(value), do: ExpectTo.to({BeTruthy, []}, {ExpectTo, value, nil})
 
   @doc "Calls be_falsy assertion"
-  def refute(value), do: ExpectTo.to({BeFalsy, []}, {ExpectTo, value})
+  def refute(value), do: ExpectTo.to({BeFalsy, []}, {ExpectTo, value, nil})
 end

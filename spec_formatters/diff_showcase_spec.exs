@@ -51,4 +51,27 @@ defmodule DiffShowcaseSpec do
   it "shows end_with" do
     expect("very big party").to end_with("sleep")
   end
+
+  defp inside_function(x) do
+    Process.alive?(self()) # some code
+    expect(x).to be(3)
+    Process.alive?(self()) # some more code
+  end
+
+  defp inside_function_wrapper(2.09 = x) do
+    expect(x).to be(3)
+  end
+  defp inside_function_wrapper(x) do
+    Process.alive?(self()) # some code
+    inside_function(x)
+    Process.alive?(self()) # some more code
+  end
+
+  it "shows a stacktrace for a function" do
+    inside_function_wrapper(2.09)
+  end
+
+  it "shows a stacktrace for a function in a function" do
+    inside_function_wrapper(3.90)
+  end
 end

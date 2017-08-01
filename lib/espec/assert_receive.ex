@@ -49,10 +49,10 @@ defmodule ESpec.AssertReceive do
           after
             unquote(timeout) ->
               args = [unquote(binary), unquote(pins), ESpec.AssertReceive.__mailbox_messages__]
-              ExpectTo.to({AssertReceive, args}, {ExpectTo, {:error, :timeout}})
+              ExpectTo.to({AssertReceive, args}, {ExpectTo, {:error, :timeout}, ESpec.Expect.pruned_stacktrace()})
           end
       args = [unquote(binary), unquote(pins), ESpec.AssertReceive.__mailbox_messages__]
-      ExpectTo.to({AssertReceive, args}, {ExpectTo, result})
+      ExpectTo.to({AssertReceive, args}, {ExpectTo, result, ESpec.Expect.pruned_stacktrace()})
     end
   end
 

@@ -20,7 +20,7 @@ defmodule ESpec.Assertions.ContainExactly do
   defp sort_collection(collection), do: collection
 
   defp diff(subject, data) do
-    ESpec.Diff.diff_with_aligned_eq(
+    ESpec.Diff.diff(
       sort_collection(subject),
       sort_collection(data)
     )

@@ -17,7 +17,16 @@ defmodule ESpec.Assertions.Interface do
         end
       end
 
-      defp raise_error(subject, data, result, positive) do
+      def assert(subject, data, positive, stacktrace) do
+        case match(subject, data) do
+          {false, result} when positive -> raise_error(subject, data, result, positive, stacktrace)
+          {true, result} when not positive -> raise_error(subject, data, result, positive, stacktrace)
+          {true, result} when positive -> success_message(subject, data, result, positive)
+          {false, result} when not positive -> success_message(subject, data, result, positive)
+        end
+      end
+
+      defp raise_error(subject, data, result, positive, stacktrace \\ nil) do
         e = error_message(subject, data, result, positive)
         {message, extra} =
           case e do
@@ -30,7 +39,8 @@ defmodule ESpec.Assertions.Interface do
                 result: result,
                 asserion: __MODULE__,
                 message: message,
-                extra:  extra
+                extra:  extra,
+                stacktrace: stacktrace
       end
     end
   end
