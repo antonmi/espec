@@ -34,6 +34,7 @@ defmodule Mix.Tasks.Espec do
 
   @shortdoc "Runs specs"
   @preferred_cli_env :test
+  alias ESpec.Configuration
 
   @moduledoc """
   Runs the specs.
@@ -58,7 +59,6 @@ defmodule Mix.Tasks.Espec do
     * `--silent`     - no output
     * `--order`      - run examples in the order in which they are declared
     * `--sync`       - run all specs synchronously ignoring 'async' tag
-    * `--out`        - write output to a file instead of $stdout.
     * `--trace`      - detailed output
     * `--cover`      - enable code coverage
     * `--only`       - run only tests that match the filter `--only some:tag`
@@ -95,8 +95,12 @@ defmodule Mix.Tasks.Espec do
   @cover [output: "cover", tool: Cover]
   @recursive true
 
+  @switches [focus: :boolean, silent: :boolean, order: :boolean,
+             sync: :boolean, trace: :boolean, cover: :boolean,
+             only: :string, exclude: :string, string: :string, seed: :integer]
+
   def run(args) do
-    {opts, files, _} = OptionParser.parse(args)
+    {opts, files} = OptionParser.parse!(args, strict: @switches)
 
     check_env!()
     Mix.Task.run "loadpaths", args
@@ -116,6 +120,7 @@ defmodule Mix.Tasks.Espec do
     Mix.Task.run "app.start", args
 
     ensure_espec_loaded!()
+
     set_configuration(opts)
 
     success = run_espec(project, files, cover)
@@ -181,8 +186,8 @@ defmodule Mix.Tasks.Espec do
   end
 
   defp set_configuration(opts) do
-    ESpec.Configuration.add(start_loading_time: :os.timestamp)
-    ESpec.Configuration.add(opts)
+    Configuration.add(start_loading_time: :os.timestamp)
+    Configuration.add(opts)
   end
 
   defp parse_spec_files(project, files) do
@@ -201,8 +206,8 @@ defmodule Mix.Tasks.Espec do
         end
 
       Kernel.ParallelRequire.files(spec_files)
-      ESpec.Configuration.add(file_opts: files_with_opts)
-      ESpec.Configuration.add(finish_loading_time: :os.timestamp)
+      Configuration.add(file_opts: files_with_opts)
+      Configuration.add(finish_loading_time: :os.timestamp)
     end
   end
 end

@@ -25,9 +25,9 @@ defmodule GeneratedExamplesTest do
     examples = ESpec.SuiteRunner.run(SomeSpec, %{}, false)
 
     assert(Enum.map(examples, fn(e) -> e.error.message end) ==
-      Enum.map(3..1, fn(idx) ->
-        ["Expected `#{idx}` to equal (==) `-1`, but it doesn't.",
-         "Expected `#{idx}` to equal (==) `0`, but it doesn't."]
+      Enum.map(1..3, fn(idx) ->
+        ["Expected `#{idx}` to equal (==) `0`, but it doesn't.",
+         "Expected `#{idx}` to equal (==) `-1`, but it doesn't."]
       end)
       |> List.flatten)
   end
