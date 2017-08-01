@@ -22,7 +22,7 @@ defmodule Formatters.DocDiffTest do
     output = output(SomeSpecContainsExactly.examples)
 
     assert String.contains?(output, "\n\t  \e[36mexpected:\e[0m [1, \e[31m22\e[0m, 48]\n")
-    assert String.contains?(output, "\n\t  \e[36mactual:\e[0m   [1, \e[32m5\e[0m , 48]\n")
+    assert String.contains?(output, "\n\t  \e[36mactual:\e[0m   [1, \e[32m5\e[0m, 48]\n")
   end
 
   #
