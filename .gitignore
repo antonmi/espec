@@ -6,6 +6,7 @@
 erl_crash.dump
 *.ez
 .idea
+.vscode
 results.html
 results.json
 results.txt
