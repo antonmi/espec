@@ -17,6 +17,62 @@ defmodule ESpec.Assertions.BeCloseToSpec do
       it do: expect(5.5).to be_close_to(5.3, 0.21)
     end
 
+    context "Success with Date with a granularity of years" do
+      it "checks success with `to`" do
+        message = expect(~D[2017-08-07]).to be_close_to(~D[2018-08-07], {:years, 1})
+        expect(message) |> to(eq "`~D[2017-08-07]` is close to `~D[2018-08-07]` with delta `{:years, 1}`.")
+      end
+
+      it "checks success with `not_to`" do
+        message = expect(~D[2017-08-07]).to_not be_close_to(~D[2020-08-07], {:years, 2})
+        expect(message) |> to(eq "`~D[2017-08-07]` is not close to `~D[2020-08-07]` with delta `{:years, 2}`.")
+      end
+
+      it do: expect(~D[2017-08-07]).to be_close_to(~D[2020-08-07], {:years, 3})
+    end
+
+    context "Success with Date with a granularity of months" do
+      it "checks success with `to`" do
+        message = expect(~D[2017-08-07]).to be_close_to(~D[2017-09-07], {:months, 1})
+        expect(message) |> to(eq "`~D[2017-08-07]` is close to `~D[2017-09-07]` with delta `{:months, 1}`.")
+      end
+
+      it "checks success with `not_to`" do
+        message = expect(~D[2017-08-07]).to_not be_close_to(~D[2020-08-07], {:months, 2})
+        expect(message) |> to(eq "`~D[2017-08-07]` is not close to `~D[2020-08-07]` with delta `{:months, 2}`.")
+      end
+
+      it do: expect(~D[2017-08-07]).to be_close_to(~D[2017-01-07], {:months, 7})
+    end
+
+    context "Success with Date with a granularity of weeks" do
+      it "checks success with `to`" do
+        message = expect(~D[2017-08-07]).to be_close_to(~D[2017-08-14], {:weeks, 1})
+        expect(message) |> to(eq "`~D[2017-08-07]` is close to `~D[2017-08-14]` with delta `{:weeks, 1}`.")
+      end
+
+      it "checks success with `not_to`" do
+        message = expect(~D[2017-08-07]).to_not be_close_to(~D[2020-08-07], {:weeks, 2})
+        expect(message) |> to(eq "`~D[2017-08-07]` is not close to `~D[2020-08-07]` with delta `{:weeks, 2}`.")
+      end
+
+      it do: expect(~D[2017-08-07]).to be_close_to(~D[2017-08-14], {:weeks, 1})
+    end
+
+    context "Success with Date with a granularity of days" do
+      it "checks success with `to`" do
+        message = expect(~D[2017-08-07]).to be_close_to(~D[2017-08-06], {:days, 1})
+        expect(message) |> to(eq "`~D[2017-08-07]` is close to `~D[2017-08-06]` with delta `{:days, 1}`.")
+      end
+
+      it "checks success with `not_to`" do
+        message = expect(~D[2017-08-07]).to_not be_close_to(~D[2017-08-19], {:days, 1})
+        expect(message) |> to(eq "`~D[2017-08-07]` is not close to `~D[2017-08-19]` with delta `{:days, 1}`.")
+      end
+
+      it do: expect(~D[2017-08-07]).to be_close_to(~D[2017-10-07], {:days, 61})
+    end
+
     context "Errors" do
       context "with `to`" do
         before do
