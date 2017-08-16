@@ -12,6 +12,24 @@ defmodule ESpec.AssertionHelpers do
   def eq(value), do: {Assertions.Eq, value}
   def eql(value), do: {Assertions.Eql, value}
   def be(value), do: {Assertions.Eq, value}
+  def be_dated(operator, value) when operator in [:before, :after, :before_or_at, :after_or_at, :at, :not_at] do
+    {Assertions.Calendar.BeDated, [operator, value]}
+  end
+  def be_timed(operator, value) when operator in [:before, :after, :before_or_at, :after_or_at, :at, :not_at] do
+    {Assertions.Calendar.BeTimed, [operator, value]}
+  end
+  def be_naively(operator, value) when operator in [:before, :after, :before_or_at, :after_or_at, :at, :not_at] do
+    {Assertions.Calendar.BeNaively, [operator, value]}
+  end
+  def be_awarely(operator, value) when operator in [:before, :after, :before_or_at, :after_or_at, :at, :not_at] do
+    {Assertions.Calendar.BeAwarely, [operator, value]}
+  end
+
+  def be_dated_between(min, max), do: {Assertions.Calendar.BeDatedBetween, [min, max]}
+  def be_timed_between(min, max), do: {Assertions.Calendar.BeTimedBetween, [min, max]}
+  def be_naively_between(min, max), do: {Assertions.Calendar.BeNaivelyBetween, [min, max]}
+  def be_awarely_between(min, max), do: {Assertions.Calendar.BeAwarelyBetween, [min, max]}
+
   def be(operator, value), do: {Assertions.Be, [operator,  value]}
   def be_between(min, max), do: {Assertions.BeBetween, [min, max]}
   def be_close_to(value, delta), do: {Assertions.BeCloseTo, [value, delta]}
