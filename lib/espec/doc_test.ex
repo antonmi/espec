@@ -96,7 +96,7 @@ defmodule ESpec.DocTest do
               str = """
               def #{function}(shared) do
                 shared[:key]
-                expect(fn -> Code.eval_string(#{lhs}) end).to raise_exception(#{error_module}, "#{error_message}")
+                expect(fn -> Code.eval_string(#{lhs}) end).to raise_exception(#{error_module}, ~s'#{error_message}')
               end
               """
               {str, binding}

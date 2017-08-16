@@ -28,6 +28,9 @@ defmodule ESpec.DocTestTest.Mod1 do
     iex> dict = Enum.into([a: 10, b: 20], Map.new)
     iex> Map.get(dict, :a)
     10
+
+    iex> raise ArgumentError, message: ~S'Check for "string"'
+    ** (ArgumentError) Check for "string"
   """
   def f, do: :f
 end |> ESpec.TestHelpers.write_beam
