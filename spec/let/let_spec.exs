@@ -32,6 +32,30 @@ defmodule LetSpec do
       end
     end
 
+    context "only runs once per example", async: false do
+      defp get_value do
+        value = Application.get_env(:espec, :letbang_value_once, "initial call")
+
+        Application.put_env(:espec, :letbang_value_once, "subsequent calls")
+
+        value
+      end
+
+      finally do: Application.delete_env(:espec, :letbang_value_once)
+
+      context "as `let! :value, do: get_value()`" do
+        let! :value, do: get_value()
+
+        it do: expect value() |> to(eq "initial call")
+      end
+
+      context "as `let! value: get_value()`" do
+        let! value: get_value()
+
+        it do: expect value() |> to(eq "initial call")
+      end
+    end
+
     context "when overridden, is used by before" do
       let! :test, do: "initial"
 
