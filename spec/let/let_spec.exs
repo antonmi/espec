@@ -32,7 +32,7 @@ defmodule LetSpec do
       end
     end
 
-    context "only runs once per example" do
+    context "only runs once per example", async: false do
       defp get_value do
         value = Application.get_env(:espec, :letbang_value_once, "initial call")
 
