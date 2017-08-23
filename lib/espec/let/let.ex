@@ -73,9 +73,19 @@ defmodule ESpec.Let do
 
   @doc "Allows to define several 'lets' at once"
   defmacro let!(keyword) when is_list keyword do
+    before_block =
+      keyword
+      |> Keyword.keys()
+      |> Enum.map(fn key ->
+        quote do: unquote(key)()
+      end)
+
     quote do
       let unquote(keyword)
-      before unquote(keyword)
+
+      before do
+        unquote(before_block)
+      end
     end
   end
 
