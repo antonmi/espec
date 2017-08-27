@@ -1,4 +1,4 @@
-defimpl ESpec.Protocol, for: Date do
+defimpl ESpec.DateTimeProtocol, for: Date do
   @moduledoc """
   This module represents all functions specific to creating/manipulating/comparing Dates (year/month/day)
   """

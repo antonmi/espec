@@ -1,4 +1,4 @@
-defprotocol ESpec.Protocol do
+defprotocol ESpec.DateTimeProtocol do
   @moduledoc """
   This protocol defines the API for functions which take a `Date`,
   `NaiveDateTime`, or `DateTime` as input.

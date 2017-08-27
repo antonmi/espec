@@ -73,6 +73,104 @@ defmodule ESpec.Assertions.BeCloseToSpec do
       it do: expect(~D[2017-08-07]).to be_close_to(~D[2017-10-07], {:days, 61})
     end
 
+    context "Success with NaiveDateTime with a granularity of years" do
+      it "checks success with `to`" do
+        message = expect(~N[2017-08-07 01:10:10]).to be_close_to(~N[2018-08-07 01:10:10], {:years, 1})
+        expect(message) |> to(eq "`~N[2017-08-07 01:10:10]` is close to `~N[2018-08-07 01:10:10]` with delta `{:years, 1}`.")
+      end
+
+      it "checks success with `not_to`" do
+        message = expect(~N[2017-08-07 01:10:10]).to_not be_close_to(~N[2020-08-07 01:10:10], {:years, 2})
+        expect(message) |> to(eq "`~N[2017-08-07 01:10:10]` is not close to `~N[2020-08-07 01:10:10]` with delta `{:years, 2}`.")
+      end
+
+      it do: expect(~N[2017-08-07 01:10:10]).to be_close_to(~N[2020-08-07 01:10:10], {:years, 3})
+    end
+
+    context "Success with NaiveDateTime with a granularity of months" do
+      it "checks success with `to`" do
+        message = expect(~N[2017-08-07 01:10:10]).to be_close_to(~N[2017-09-07 01:10:10], {:months, 1})
+        expect(message) |> to(eq "`~N[2017-08-07 01:10:10]` is close to `~N[2017-09-07 01:10:10]` with delta `{:months, 1}`.")
+      end
+
+      it "checks success with `not_to`" do
+        message = expect(~N[2017-08-07 01:10:10]).to_not be_close_to(~N[2020-08-07 01:10:10], {:months, 2})
+        expect(message) |> to(eq "`~N[2017-08-07 01:10:10]` is not close to `~N[2020-08-07 01:10:10]` with delta `{:months, 2}`.")
+      end
+
+      it do: expect(~N[2017-08-07 01:10:10]).to be_close_to(~N[2017-01-07 01:10:10], {:months, 7})
+    end
+
+    context "Success with NaiveDateTime with a granularity of weeks" do
+      it "checks success with `to`" do
+        message = expect(~N[2017-08-07 01:10:10]).to be_close_to(~N[2017-08-14 01:10:10], {:weeks, 1})
+        expect(message) |> to(eq "`~N[2017-08-07 01:10:10]` is close to `~N[2017-08-14 01:10:10]` with delta `{:weeks, 1}`.")
+      end
+
+      it "checks success with `not_to`" do
+        message = expect(~N[2017-08-07 01:10:10]).to_not be_close_to(~N[2020-08-07 01:10:10], {:weeks, 2})
+        expect(message) |> to(eq "`~N[2017-08-07 01:10:10]` is not close to `~N[2020-08-07 01:10:10]` with delta `{:weeks, 2}`.")
+      end
+
+      it do: expect(~N[2017-08-07 01:10:10]).to be_close_to(~N[2017-08-14 01:10:10], {:weeks, 1})
+    end
+
+    context "Success with NaiveDateTime with a granularity of days" do
+      it "checks success with `to`" do
+        message = expect(~N[2017-08-07 01:10:10]).to be_close_to(~N[2017-08-06 01:10:10], {:days, 1})
+        expect(message) |> to(eq "`~N[2017-08-07 01:10:10]` is close to `~N[2017-08-06 01:10:10]` with delta `{:days, 1}`.")
+      end
+
+      it "checks success with `not_to`" do
+        message = expect(~N[2017-08-07 01:10:10]).to_not be_close_to(~N[2017-08-19 01:10:10], {:days, 1})
+        expect(message) |> to(eq "`~N[2017-08-07 01:10:10]` is not close to `~N[2017-08-19 01:10:10]` with delta `{:days, 1}`.")
+      end
+
+      it do: expect(~N[2017-08-07 01:10:10]).to be_close_to(~N[2017-10-07 01:10:10], {:days, 61})
+    end
+
+    context "Success with NaiveDateTime with a granularity of hours" do
+      it "checks success with `to`" do
+        message = expect(~N[2017-08-07 01:10:10]).to be_close_to(~N[2017-08-07 02:10:10], {:hours, 1})
+        expect(message) |> to(eq "`~N[2017-08-07 01:10:10]` is close to `~N[2017-08-07 02:10:10]` with delta `{:hours, 1}`.")
+      end
+
+      it "checks success with `not_to`" do
+        message = expect(~N[2017-08-07 01:10:10]).to_not be_close_to(~N[2017-08-19 01:10:10], {:hours, 1})
+        expect(message) |> to(eq "`~N[2017-08-07 01:10:10]` is not close to `~N[2017-08-19 01:10:10]` with delta `{:hours, 1}`.")
+      end
+
+      it do: expect(~N[2017-08-07 01:10:10]).to be_close_to(~N[2017-08-07 02:10:10], {:hours, 1})
+    end
+
+    context "Success with NaiveDateTime with a granularity of minutes" do
+      it "checks success with `to`" do
+        message = expect(~N[2017-08-07 01:10:10]).to be_close_to(~N[2017-08-07 01:50:10], {:minutes, 40})
+        expect(message) |> to(eq "`~N[2017-08-07 01:10:10]` is close to `~N[2017-08-07 01:50:10]` with delta `{:minutes, 40}`.")
+      end
+
+      it "checks success with `not_to`" do
+        message = expect(~N[2017-08-07 01:10:10]).to_not be_close_to(~N[2017-08-07 01:51:10], {:minutes, 40})
+        expect(message) |> to(eq "`~N[2017-08-07 01:10:10]` is not close to `~N[2017-08-07 01:51:10]` with delta `{:minutes, 40}`.")
+      end
+
+      it do: expect(~N[2017-08-07 01:10:10]).to be_close_to(~N[2017-08-07 01:50:10], {:minutes, 40})
+    end
+
+    context "Success with NaiveDateTime with a granularity of seconds" do
+      it "checks success with `to`" do
+        message = expect(~N[2017-08-07 01:10:10]).to be_close_to(~N[2017-08-07 01:10:11], {:seconds, 1})
+        expect(message) |> to(eq "`~N[2017-08-07 01:10:10]` is close to `~N[2017-08-07 01:10:11]` with delta `{:seconds, 1}`.")
+      end
+
+      it "checks success with `not_to`" do
+        message = expect(~N[2017-08-07 01:10:10]).to_not be_close_to(~N[2017-08-07 01:10:12], {:seconds, 1})
+        expect(message) |> to(eq "`~N[2017-08-07 01:10:10]` is not close to `~N[2017-08-07 01:10:12]` with delta `{:seconds, 1}`.")
+      end
+
+      it do: expect(~N[2017-08-07 01:10:10]).to be_close_to(~N[2017-08-07 01:10:11], {:seconds, 1})
+    end
+
     context "Errors" do
       context "with `to`" do
         before do
