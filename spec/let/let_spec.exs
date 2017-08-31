@@ -112,7 +112,7 @@ defmodule LetSpec do
     it do: b() |> should(eq 2)
   end
 
-  describe "let is lazy and memoizes" do
+  describe "let is lazy and memorizes" do
     let :a do
       value = Application.get_env(:espec, :let_value, "") <> ".let"
       Application.put_env(:espec, :let_value, value)
@@ -124,5 +124,29 @@ defmodule LetSpec do
       expect(a()).to eq("initial.let")
       expect(a()).to eq("initial.let")
     end
+  end
+
+  describe "let_ok extracts the value from an {:ok, result}" do
+    let_ok :a, do: {:ok, 1}
+    let_ok! :b, do: {:ok, 2}
+    let_ok c: {:ok, 3}
+    let_ok d: {:ok, 4}
+
+    it do: a() |> should(eq 1)
+    it do: b() |> should(eq 2)
+    it do: c() |> should(eq 3)
+    it do: d() |> should(eq 4)
+  end
+
+  describe "let_error extracts the value from an {:error, result}" do
+    let_error :a, do: {:error, 1}
+    let_error! :b, do: {:error, 2}
+    let_error c: {:error, 3}
+    let_error d: {:error, 4}
+
+    it do: a() |> should(eq 1)
+    it do: b() |> should(eq 2)
+    it do: c() |> should(eq 3)
+    it do: d() |> should(eq 4)
   end
 end
