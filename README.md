@@ -424,9 +424,9 @@ defmodule LetOverridableSpec do
 end
 ```
 
-### Shared Examples in seperate files
+### Shared Examples in separate files
 
-When trying to use a shared example which is defined in a seperate file, you will probably encounter an error telling you, that the module containing the shared examples does not exist.
+When trying to use a shared example which is defined in a separate file, you will probably encounter an error telling you, that the module containing the shared examples does not exist.
 
 There are two ways of counteracting this, you can either explicitly import the file containing the shared examples in your `spec_helper.exs` file:
 
