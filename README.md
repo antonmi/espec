@@ -424,6 +424,44 @@ defmodule LetOverridableSpec do
 end
 ```
 
+### Shared Examples in seperate files
+
+When trying to use a shared example which is defined in a seperate file, you will probably encounter an error telling you, that the module containing the shared examples does not exist.
+
+There are two ways of counteracting this, you can either explicitly import the file containing the shared examples in your `spec_helper.exs` file:
+
+```elixir
+Code.require_file("path/to/your_shared_spec.exs")
+```
+
+Or you ensure that the file(s) are being compiled when testing. For this you can use the `elixirc_paths` setting in your project configuration (in your `mix.exs` file).
+You could, for example, create a `spec/shared/` folder which contains all your shared examples, in that case your configuration could look like this:
+
+```elixir
+defmodule YourApp.Mixfile do
+  use Mix.Project
+
+  def project do
+    [
+      app: :your_app,
+      version: "0.1.0",
+      elixir: "~> 1.5",
+      elixirc_paths: elixirc_paths(Mix.env),
+      start_permanent: Mix.env == :prod,
+      preferred_cli_env: [espec: :test],
+      deps: deps()
+    ]
+  end
+
+  def elixirc_paths(:test), do: ["lib", "spec/shared"]
+  def elixirc_paths(_), do: ["lib"]
+
+  # Some other stuff ...
+end
+```
+
+This will tell the elixir compile to compile all files contained in `spec/shared` and will make your shared examples available in your actual specs.
+
 ## Generated examples
 Examples can be generated from code "templates". This should help with making the code more DRY:
 ```elixir
@@ -643,7 +681,7 @@ defmodule CaptureSpec do
   it "tests capture_log" do
     message = capture_log(fn -> Logger.error "log msg" end)
     expect message |> to(match "log msg")
-  end   
+  end
 end
 ```
 ## Custom matchers
