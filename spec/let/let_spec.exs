@@ -112,7 +112,7 @@ defmodule LetSpec do
     it do: b() |> should(eq 2)
   end
 
-  describe "let is lazy and memoizes" do
+  describe "let is lazy and memorizes" do
     let :a do
       value = Application.get_env(:espec, :let_value, "") <> ".let"
       Application.put_env(:espec, :let_value, value)
@@ -123,6 +123,82 @@ defmodule LetSpec do
       Application.put_env(:espec, :let_value, "initial")
       expect(a()).to eq("initial.let")
       expect(a()).to eq("initial.let")
+    end
+  end
+
+  describe "let_ok extracts the value from an {:ok, result}" do
+    let_ok :a, do: {:ok, "a"}
+    let_ok b: {:ok, "b"}
+
+    it do: a() |> should(eq "a")
+    it do: b() |> should(eq "b")
+
+    context "let_ok! forces evaluation before examples" do
+      let_ok! :c do
+        Application.put_env(:espec, :let_okbang_value, "let_ok!")
+
+        {:ok, "c"}
+      end
+
+      it "has run before example" do
+        value = Application.get_env(:espec, :let_okbang_value, "")
+        expect value |> to(eq "let_ok!")
+        expect c() |> to(eq "c")
+      end
+
+      context "with a keyword list" do
+        let_ok! [
+          d: Application.put_env(
+            :espec,
+            :let_okbang_keyword_value,
+            "let_ok! keyword"
+          ) && {:ok, "d"}
+        ]
+
+        it "has run before example" do
+          value = Application.get_env(:espec, :let_okbang_keyword_value, "")
+          expect value |> to(eq "let_ok! keyword")
+          expect d() |> to(eq "d")
+        end
+      end
+    end
+  end
+
+  describe "let_error extracts the value from an {:error, result}" do
+    let_error :a, do: {:error, "a"}
+    let_error b: {:error, "b"}
+
+    it do: a() |> should(eq "a")
+    it do: b() |> should(eq "b")
+
+    context "let_error! forces evaluation before examples" do
+      let_error! :c do
+        Application.put_env(:espec, :let_errorbang_value, "let_error!")
+
+        {:error, "c"}
+      end
+
+      it "has run before example" do
+        value = Application.get_env(:espec, :let_errorbang_value, "")
+        expect value |> to(eq "let_error!")
+        expect c() |> to(eq "c")
+      end
+
+      context "with a keyword list" do
+        let_error! [
+          d: Application.put_env(
+            :espec,
+            :let_errorbang_keyword_value,
+            "let_error! keyword"
+          ) && {:error, "d"}
+        ]
+
+        it "has run before example" do
+          value = Application.get_env(:espec, :let_errorbang_keyword_value, "")
+          expect value |> to(eq "let_error! keyword")
+          expect d() |> to(eq "d")
+        end
+      end
     end
   end
 end
