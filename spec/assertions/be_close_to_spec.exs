@@ -171,6 +171,62 @@ defmodule ESpec.Assertions.BeCloseToSpec do
       it do: expect(~N[2017-08-07 01:10:10]).to be_close_to(~N[2017-08-07 01:10:11], {:seconds, 1})
     end
 
+    context "Success with Time with a granularity of hours" do
+      it "checks success with `to`" do
+        message = expect(~T[01:10:10]).to be_close_to(~T[02:10:10], {:hours, 1})
+        expect(message) |> to(eq "`~T[01:10:10]` is close to `~T[02:10:10]` with delta `{:hours, 1}`.")
+      end
+
+      it "checks success with `not_to`" do
+        message = expect(~T[01:10:10]).to_not be_close_to(~T[03:10:10], {:hours, 1})
+        expect(message) |> to(eq "`~T[01:10:10]` is not close to `~T[03:10:10]` with delta `{:hours, 1}`.")
+      end
+
+      it do: expect(~T[01:10:10]).to be_close_to(~T[02:10:10], {:hours, 1})
+    end
+
+    context "Success with Time with a granularity of minutes" do
+      it "checks success with `to`" do
+        message = expect(~T[01:10:10]).to be_close_to(~T[01:50:10], {:minutes, 40})
+        expect(message) |> to(eq "`~T[01:10:10]` is close to `~T[01:50:10]` with delta `{:minutes, 40}`.")
+      end
+
+      it "checks success with `not_to`" do
+        message = expect(~T[01:10:10]).to_not be_close_to(~T[01:51:10], {:minutes, 40})
+        expect(message) |> to(eq "`~T[01:10:10]` is not close to `~T[01:51:10]` with delta `{:minutes, 40}`.")
+      end
+
+      it do: expect(~T[01:10:10]).to be_close_to(~T[01:50:10], {:minutes, 40})
+    end
+
+    context "Success with Time with a granularity of seconds" do
+      it "checks success with `to`" do
+        message = expect(~T[01:10:10]).to be_close_to(~T[01:10:11], {:seconds, 1})
+        expect(message) |> to(eq "`~T[01:10:10]` is close to `~T[01:10:11]` with delta `{:seconds, 1}`.")
+      end
+
+      it "checks success with `not_to`" do
+        message = expect(~T[01:10:10]).to_not be_close_to(~T[01:10:12], {:seconds, 1})
+        expect(message) |> to(eq "`~T[01:10:10]` is not close to `~T[01:10:12]` with delta `{:seconds, 1}`.")
+      end
+
+      it do: expect(~T[01:10:10]).to be_close_to(~T[01:10:11], {:seconds, 1})
+    end
+
+    context "Success with Time with a granularity of microseconds" do
+      it "checks success with `to`" do
+        message = expect(~T[01:10:10.000001]).to be_close_to(~T[01:10:10.000002], {:microseconds, 1})
+        expect(message) |> to(eq "`~T[01:10:10.000001]` is close to `~T[01:10:10.000002]` with delta `{:microseconds, 1}`.")
+      end
+
+      it "checks success with `not_to`" do
+        message = expect(~T[01:10:10.000001]).to_not be_close_to(~T[01:10:11.000002], {:microseconds, 1})
+        expect(message) |> to(eq "`~T[01:10:10.000001]` is not close to `~T[01:10:11.000002]` with delta `{:microseconds, 1}`.")
+      end
+
+      it do: expect(~T[01:10:10.000001]).to be_close_to(~T[01:10:10.000002], {:microseconds, 1})
+    end
+
     context "Errors" do
       context "with `to`" do
         before do
