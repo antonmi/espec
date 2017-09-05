@@ -3,6 +3,7 @@ defprotocol ESpec.DateTimeProtocol do
   This protocol defines the API for functions which take a `Date`,
   `NaiveDateTime`, or `DateTime` as input.
   """
+  alias ESpec.Types
 
   @doc """
   Convert a date/time value to gregorian seconds (seconds since start of year zero)

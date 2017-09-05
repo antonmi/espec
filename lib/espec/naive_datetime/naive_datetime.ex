@@ -4,11 +4,13 @@ defimpl ESpec.DateTimeProtocol, for: NaiveDateTime do
   """
   @epoch_seconds :calendar.datetime_to_gregorian_seconds({{1970,1,1},{0,0,0}})
 
-  @spec to_gregorian_seconds(NaiveDateTime.t) :: non_neg_integer
   def to_gregorian_seconds(naive_datetime), do: to_seconds(naive_datetime, :zero)
 
   @spec to_gregorian_microseconds(NaiveDateTime.t) :: non_neg_integer
-  def to_gregorian_microseconds(naive_datetime), do: (to_seconds(naive_datetime, :zero) * (1_000*1_000))
+  def to_gregorian_microseconds(%NaiveDateTime{microsecond: {us,_}} = naive_datetime) do
+    s = to_seconds(naive_datetime, :zero)
+    (s*(1_000*1_000)) + us
+  end
 
   defp to_seconds(%NaiveDateTime{year: y, month: m, day: d, hour: h, minute: mm, second: s}, :zero),
     do: :calendar.datetime_to_gregorian_seconds({{y,m,d},{h,mm,s}})
