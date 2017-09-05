@@ -11,9 +11,6 @@ defimpl ESpec.DateTimeProtocol, for: DateTime do
 
   @epoch_seconds :calendar.datetime_to_gregorian_seconds({{1970,1,1},{0,0,0}})
 
-#  @spec to_gregorian_seconds(DateTime.t) :: non_neg_integer
-#  def to_gregorian_seconds(date), do: to_seconds(date, :zero)
-
   @spec to_gregorian_microseconds(DateTime.t) :: non_neg_integer
   def to_gregorian_microseconds(%DateTime{microsecond: {us,_}} = date) do
     s = to_seconds(date, :zero)
