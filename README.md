@@ -59,7 +59,7 @@ Add `espec` to dependencies in the `mix.exs` file:
 ```elixir
 def deps do
   ...
-  {:espec, "~> 1.4.5", only: :test},
+  {:espec, "~> 1.4.6", only: :test},
   #{:espec, github: "antonmi/espec", only: :test}, to get the latest version
   ...
 end
@@ -1058,6 +1058,10 @@ There are community supported formatters:
   * 1.4.5
      - Update 'meck' to fix issue with elrang 20 mocks
      - Fixed options passing
+  * 1.4.6
+     - Fix doctests (allow "strings")
+     - allow keywords in `let_ok` and `let_error`
+     - Fix `before` to ignore not enumerables  
 
 ## Contributing
 ##### Contributions are welcome and appreciated!
