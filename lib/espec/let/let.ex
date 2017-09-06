@@ -133,10 +133,32 @@ defmodule ESpec.Let do
   end
 
   @doc """
+  Allows to define several 'let_ok's at once
+  """
+  defmacro let_ok(keyword) when is_list keyword do
+    if Keyword.keyword?(keyword) do
+      Enum.map(keyword, fn{var, block} -> do_result_let(var, block, :ok, false) end)
+    else
+      raise "Argument must be a Keyword"
+    end
+  end
+
+  @doc """
   Defines 'let!' for success result tuple.
   """
   defmacro let_ok!(var, do: block) do
     do_result_let(var, block, :ok, true)
+  end
+
+  @doc """
+  Allows to define several 'let_ok!'s at once
+  """
+  defmacro let_ok!(keyword) when is_list keyword do
+    if Keyword.keyword?(keyword) do
+      Enum.map(keyword, fn{var, block} -> do_result_let(var, block, :ok, true) end)
+    else
+      raise "Argument must be a Keyword"
+    end
   end
 
   @doc """
@@ -147,10 +169,32 @@ defmodule ESpec.Let do
   end
 
   @doc """
+  Allows to define several 'let_error's at once
+  """
+  defmacro let_error(keyword) when is_list keyword do
+    if Keyword.keyword?(keyword) do
+      Enum.map(keyword, fn{var, block} -> do_result_let(var, block, :error, false) end)
+    else
+      raise "Argument must be a Keyword"
+    end
+  end
+
+  @doc """
   Defines 'let!' for error result tuple.
   """
   defmacro let_error!(var, do: block) do
     do_result_let(var, block, :error, true)
+  end
+
+  @doc """
+  Allows to define several 'let_error!'s at once
+  """
+  defmacro let_error!(keyword) when is_list keyword do
+    if Keyword.keyword?(keyword) do
+      Enum.map(keyword, fn{var, block} -> do_result_let(var, block, :error, true) end)
+    else
+      raise "Argument must be a Keyword"
+    end
   end
 
   defp do_result_let(var, block, key, bang?) do
