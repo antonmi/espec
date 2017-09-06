@@ -46,6 +46,12 @@ defmodule BeforeSpec do
       it do: expect(shared.a).to eq("top before")
       it do: expect(shared.b).to eq("D1 before")
     end
+
+    describe "Ignore if map is not enumerable" do
+      before do: {:ok, %ESpec.Before{}}
+
+      it do: expect(shared.a).to eq("top before")
+    end
   end
 
   context "function in 'shared'" do
