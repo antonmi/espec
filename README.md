@@ -858,8 +858,8 @@ ESpec has functionality similar to [`ExUnit.DocTest`](http://elixir-lang.org/doc
 Read more about docs syntax [here](http://elixir-lang.org/docs/stable/ex_unit/)
 The functionality is implemented by two modules:
 `ESpec.DocExample` parses module documentation and `ESpec.DocTest` creates 'spec' examples for it.
-`ESpec.DocExample` functions is just copy-paste of `ExUnit.Doctest` parsing functionality.
-`ESpec.DocTest` implement `doctest` macro which identical to `ExUnit` analogue.
+`ESpec.DocExample` functions are just copy-pasted from `ExUnit.Doctest` parsing functionality.
+`ESpec.DocTest` implements `doctest` macro which is identical to `ExUnit`.
 ```elixir
 defmodule DoctestSpec do
   use ESpec
@@ -1061,7 +1061,7 @@ There are community supported formatters:
   * 1.4.6
      - Fix doctests (allow "strings")
      - allow keywords in `let_ok` and `let_error`
-     - Fix `before` to ignore not enumerables  
+     - Fix `before` to ignore not enumerables
 
 ## Contributing
 ##### Contributions are welcome and appreciated!

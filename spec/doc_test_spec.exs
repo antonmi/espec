@@ -28,17 +28,43 @@ defmodule ESpec.DocTestTest.Mod1 do
     iex> dict = Enum.into([a: 10, b: 20], Map.new)
     iex> Map.get(dict, :a)
     10
-
-    iex> raise ArgumentError, message: ~S'Check for "string"'
-    ** (ArgumentError) Check for "string"
   """
   def f, do: :f
+end |> ESpec.TestHelpers.write_beam
+
+defmodule ESpec.DocTestTest.ExceptionInterpolation do
+  @moduledoc """
+    iex> raise ArgumentError, message: ~S'Check for "string"'
+    ** (ArgumentError) Check for "string"
+
+    iex> raise ArgumentError, message: "Check for 'string'"
+    ** (ArgumentError) Check for 'string'
+
+    iex> raise ArgumentError, message: "Check for |string|"
+    ** (ArgumentError) Check for |string|
+
+    iex> raise ArgumentError, message: "Check for /string/"
+    ** (ArgumentError) Check for /string/
+
+    iex> raise ArgumentError, message: "Check for (string)"
+    ** (ArgumentError) Check for (string)
+
+    iex> raise ArgumentError, message: "Check for [string]"
+    ** (ArgumentError) Check for [string]
+
+    iex> raise ArgumentError, message: "Check for {string}"
+    ** (ArgumentError) Check for {string}
+
+    iex> raise ArgumentError, message: "Check for <string>"
+    ** (ArgumentError) Check for <string>
+  """
 end |> ESpec.TestHelpers.write_beam
 
 defmodule DocTestSpec do
   use ESpec
 
   doctest ESpec.DocTestTest.Mod1
+  doctest ESpec.DocTestTest.ExceptionInterpolation
 
   it do: expect(ESpec.DocTestTest.Mod1.f).to eq(:f)
 end
