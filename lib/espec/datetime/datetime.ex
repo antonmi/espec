@@ -14,13 +14,21 @@ defimpl ESpec.DateTimeProtocol, for: DateTime do
   def to_comparison_units(%{std_offset: std_offset, utc_offset: utc_offset} = datetime) do
     microseconds = datetime
                    |> to_iso_days()
-                   |> Calendar.ISO.iso_days_to_unit(:microsecond)
+                   |> Calendar.ISO.Extension.iso_days_to_unit(:microsecond)
     offset_microseconds = System.convert_time_unit(std_offset + utc_offset, :second, :microsecond)
     (microseconds - offset_microseconds)
   end
 
-  defp to_iso_days(%{calendar: calendar, year: year, month: month, day: day,
-                     hour: hour, minute: minute, second: second, microsecond: microsecond}) do
-    calendar.naive_datetime_to_iso_days(year, month, day, hour, minute, second, microsecond)
+  cond do
+    System.version >= "1.5.0" ->
+      defp to_iso_days(%{calendar: calendar, year: year, month: month, day: day,
+                         hour: hour, minute: minute, second: second, microsecond: microsecond}) do
+        calendar.naive_datetime_to_iso_days(year, month, day, hour, minute, second, microsecond)
+      end
+    true ->
+      defp to_iso_days(%{calendar: _calendar, year: year, month: month, day: day,
+                         hour: hour, minute: minute, second: second, microsecond: microsecond}) do
+        Calendar.ISO.Extension.naive_datetime_to_iso_days(year, month, day, hour, minute, second, microsecond)
+      end
   end
 end
