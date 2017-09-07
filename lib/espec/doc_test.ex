@@ -92,6 +92,7 @@ defmodule ESpec.DocTest do
               {str, new_binding}
             ex.type == :error ->
               {error_module, error_message} = ex.rhs
+              # Render the exception message as binary, to allow all characters
               error_message = <<0>> <> error_message
               lhs = ex.lhs
               str = """
