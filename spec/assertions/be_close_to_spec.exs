@@ -366,6 +366,22 @@ defmodule ESpec.Assertions.BeCloseToSpec do
       it do: expect(datetime1()).to be_close_to(datetime2(), {:microseconds, 2})
     end
 
+    context "Success with DateTime with utc and std offsets to represent time zone differences" do
+      let :datetime_pst, do: %DateTime{year: 2017, month: 3, day: 15, hour: 1, minute: 30, second: 30, microsecond: {1, 6}, std_offset: 1*3600, utc_offset: -8*3600, zone_abbr: "PST", time_zone: "America/Los_Angeles"}
+      let :datetime_est, do: %DateTime{year: 2017, month: 3, day: 15, hour: 6, minute: 30, second: 30, microsecond: {1, 6}, std_offset: 1*3600, utc_offset: -5*3600, zone_abbr: "EST", time_zone: "America/New_York"}
+      it "checks success with `to`" do
+        message = expect(datetime_pst()).to be_close_to(datetime_est(), {:hours, 2})
+        expect(message) |> to(eq "`#{inspect datetime_pst()}` is close to `#{inspect datetime_est()}` with delta `{:hours, 2}`.")
+      end
+
+      it "checks success with `not_to`" do
+        message = expect(datetime_pst()).to_not be_close_to(datetime_est(), {:hours, 1})
+        expect(message) |> to(eq "`#{inspect datetime_pst()}` is not close to `#{inspect datetime_est()}` with delta `{:hours, 1}`.")
+      end
+
+      it do: expect(datetime_pst()).to be_close_to(datetime_est(), {:hours, 2})
+    end
+
     context "Errors" do
       context "with `to`" do
         before do

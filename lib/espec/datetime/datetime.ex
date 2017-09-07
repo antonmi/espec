@@ -11,58 +11,16 @@ defimpl ESpec.DateTimeProtocol, for: DateTime do
 
   @epoch_seconds :calendar.datetime_to_gregorian_seconds({{1970,1,1},{0,0,0}})
 
-  @spec to_gregorian_microseconds(DateTime.t) :: non_neg_integer
-  def to_gregorian_microseconds(%DateTime{microsecond: {us,_}} = date) do
-    s = to_seconds(date, :zero)
-    (s*(1_000*1_000)) + us
+  def to_comparison_units(%{std_offset: std_offset, utc_offset: utc_offset} = datetime) do
+    microseconds = datetime
+                   |> to_iso_days()
+                   |> Calendar.ISO.iso_days_to_unit(:microsecond)
+    offset_microseconds = System.convert_time_unit(std_offset + utc_offset, :second, :microsecond)
+    (microseconds - offset_microseconds)
   end
 
-  @spec to_seconds(DateTime.t, :epoch | :zero) :: integer | {:error, atom}
-  defp to_seconds(%DateTime{} = date, :epoch) do
-    case to_seconds(date, :zero) do
-      {:error, _} = err -> err
-      secs -> secs - @epoch_seconds
-    end
-  end
-  defp to_seconds(%DateTime{} = date, :zero) do
-    total_offset = total_offset(date.std_offset, date.utc_offset) * -1
-    date = %{date | :time_zone => "Etc/UTC", :zone_abbr => "UTC", :std_offset => 0, :utc_offset => 0}
-    date = shift(date, seconds: total_offset)
-    utc_to_secs(date)
-  end
-  defp to_seconds(_, _), do: {:error, :badarg}
-
-  defp utc_to_secs(%DateTime{:year => y, :month => m, :day => d, :hour => h, :minute => mm, :second => s}) do
-    :calendar.datetime_to_gregorian_seconds({{y,m,d},{h,mm,s}})
-  end
-
-  defp total_offset(std_offset, utc_offset) do
-    utc_offset + std_offset
-  end
-
-  @doc """
-  Shifts the given DateTime based on a series of options.
-
-  See docs for Timex.shift/2 for details.
-  """
-  @spec shift(DateTime.t, list({atom(), term})) :: DateTime.t | {:error, term}
-  def shift(%DateTime{} = datetime, shifts) when is_list(shifts) do
-    apply_shifts(datetime, shifts)
-  end
-  defp apply_shifts(datetime, []), do: datetime
-  defp apply_shifts(datetime, [{unit, 0} | rest]) when is_atom(unit),
-    do: apply_shifts(datetime, rest)
-  defp apply_shifts(datetime, [{unit, value} | rest]) when is_atom(unit) and is_integer(value) do
-    shifted = shift_by(datetime, value, unit)
-    apply_shifts(shifted, rest)
-  end
-  defp apply_shifts({:error, _} = err, _), do: err
-
-  defp shift_by(
-    %DateTime{year: y, month: m, day: d,
-              hour: h, minute: mm, second: s},
-              value, :seconds) do
-    :calendar.datetime_to_gregorian_seconds({{y,m,d},{h,mm,s}}) + value
-    |> :calendar.gregorian_seconds_to_datetime
+  defp to_iso_days(%{calendar: calendar, year: year, month: month, day: day,
+                     hour: hour, minute: minute, second: second, microsecond: microsecond}) do
+    calendar.naive_datetime_to_iso_days(year, month, day, hour, minute, second, microsecond)
   end
 end

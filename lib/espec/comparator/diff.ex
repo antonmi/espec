@@ -13,7 +13,7 @@ defmodule ESpec.Comparator.Diff do
     do_diff(a, b, granularity)
   end
   def diff(a, b, granularity) do
-    case {Delegator.to_gregorian_microseconds(a), Delegator.to_gregorian_microseconds(b)} do
+    case {Delegator.to_comparison_units(a), Delegator.to_comparison_units(b)} do
       {{:error, _} = err, _} -> err
       {_, {:error, _} = err} -> err
       {au, bu} when is_integer(au) and is_integer(bu) -> diff(au, bu, granularity)

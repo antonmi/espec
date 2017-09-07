@@ -2,8 +2,8 @@ defimpl ESpec.DateTimeProtocol, for: Time do
   @moduledoc """
   This module represents all functions specific to creating/manipulating/comparing Times (year/month/day)
   """
-  @epoch_seconds :calendar.datetime_to_gregorian_seconds({{1970,1,1},{0,0,0}})
 
+  def to_comparison_units(date), do: to_gregorian_microseconds(date)
 
   @spec to_gregorian_microseconds(Time.t) :: non_neg_integer
   def to_gregorian_microseconds(time), do: (to_microseconds(time, :zero))
