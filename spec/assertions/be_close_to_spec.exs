@@ -241,11 +241,11 @@ defmodule ESpec.Assertions.BeCloseToSpec do
       it do: expect(~T[01:10:10.000001]).to be_close_to(~T[01:10:10.000002], {:microseconds, 1})
     end
 
-    let :datetime1, do: DateTime.from_naive!(~N[2017-08-07 01:10:10.000001], "Etc/UTC")
-    let :datetime3, do: DateTime.from_naive!(~N[2020-08-07 01:10:10.000001], "Etc/UTC")
+    let :datetime1, do: DateTime.Extension.from_naive!(~N[2017-08-07 01:10:10.000001], "Etc/UTC")
+    let :datetime3, do: DateTime.Extension.from_naive!(~N[2020-08-07 01:10:10.000001], "Etc/UTC")
 
     context "Success with DateTime with a granularity of years" do
-      let :datetime2, do: DateTime.from_naive!(~N[2018-08-07 01:10:10.000001], "Etc/UTC")
+      let :datetime2, do: DateTime.Extension.from_naive!(~N[2018-08-07 01:10:10.000001], "Etc/UTC")
 
       it "checks success with `to`" do
         message = expect(datetime1()).to be_close_to(datetime2(), {:years, 1})
@@ -261,7 +261,7 @@ defmodule ESpec.Assertions.BeCloseToSpec do
     end
 
     context "Success with DateTime with a granularity of months" do
-      let :datetime2, do: DateTime.from_naive!(~N[2017-09-07 01:10:10.000001], "Etc/UTC")
+      let :datetime2, do: DateTime.Extension.from_naive!(~N[2017-09-07 01:10:10.000001], "Etc/UTC")
       it "checks success with `to`" do
         message = expect(datetime1()).to be_close_to(datetime2(), {:months, 1})
         expect(message) |> to(eq "`#{inspect datetime1()}` is close to `#{inspect datetime2()}` with delta `{:months, 1}`.")
@@ -276,7 +276,7 @@ defmodule ESpec.Assertions.BeCloseToSpec do
     end
 
     context "Success with DateTime with a granularity of weeks" do
-      let :datetime2, do: DateTime.from_naive!(~N[2017-08-14 01:10:10.000001], "Etc/UTC")
+      let :datetime2, do: DateTime.Extension.from_naive!(~N[2017-08-14 01:10:10.000001], "Etc/UTC")
       it "checks success with `to`" do
         message = expect(datetime1()).to be_close_to(datetime2(), {:weeks, 1})
         expect(message) |> to(eq "`#{inspect datetime1()}` is close to `#{inspect datetime2()}` with delta `{:weeks, 1}`.")
@@ -291,8 +291,8 @@ defmodule ESpec.Assertions.BeCloseToSpec do
     end
 
     context "Success with DateTime with a granularity of days" do
-      let :datetime2, do: DateTime.from_naive!(~N[2017-08-06 01:10:10.000001], "Etc/UTC")
-      let :datetime4, do: DateTime.from_naive!(~N[2017-10-07 01:10:10.000001], "Etc/UTC")
+      let :datetime2, do: DateTime.Extension.from_naive!(~N[2017-08-06 01:10:10.000001], "Etc/UTC")
+      let :datetime4, do: DateTime.Extension.from_naive!(~N[2017-10-07 01:10:10.000001], "Etc/UTC")
       it "checks success with `to`" do
         message = expect(datetime1()).to be_close_to(datetime2(), {:days, 1})
         expect(message) |> to(eq "`#{inspect datetime1()}` is close to `#{inspect datetime2()}` with delta `{:days, 1}`.")
@@ -307,7 +307,7 @@ defmodule ESpec.Assertions.BeCloseToSpec do
     end
 
     context "Success with DateTime with a granularity of hours" do
-      let :datetime2, do: DateTime.from_naive!(~N[2017-08-07 02:10:10.000001], "Etc/UTC")
+      let :datetime2, do: DateTime.Extension.from_naive!(~N[2017-08-07 02:10:10.000001], "Etc/UTC")
       it "checks success with `to`" do
         message = expect(datetime1()).to be_close_to(datetime2(), {:hours, 1})
         expect(message) |> to(eq "`#{inspect datetime1()}` is close to `#{inspect datetime2()}` with delta `{:hours, 1}`.")
@@ -322,7 +322,7 @@ defmodule ESpec.Assertions.BeCloseToSpec do
     end
 
     context "Success with DateTime with a granularity of minutes" do
-      let :datetime2, do: DateTime.from_naive!(~N[2017-08-07 01:50:10.000001], "Etc/UTC")
+      let :datetime2, do: DateTime.Extension.from_naive!(~N[2017-08-07 01:50:10.000001], "Etc/UTC")
       it "checks success with `to`" do
         message = expect(datetime1()).to be_close_to(datetime2(), {:minutes, 40})
         expect(message) |> to(eq "`#{inspect datetime1()}` is close to `#{inspect datetime2()}` with delta `{:minutes, 40}`.")
@@ -337,7 +337,7 @@ defmodule ESpec.Assertions.BeCloseToSpec do
     end
 
     context "Success with DateTime with a granularity of seconds" do
-      let :datetime2, do: DateTime.from_naive!(~N[2017-08-07 01:10:12.000001], "Etc/UTC")
+      let :datetime2, do: DateTime.Extension.from_naive!(~N[2017-08-07 01:10:12.000001], "Etc/UTC")
       it "checks success with `to`" do
         message = expect(datetime1()).to be_close_to(datetime2(), {:seconds, 2})
         expect(message) |> to(eq "`#{inspect datetime1()}` is close to `#{inspect datetime2()}` with delta `{:seconds, 2}`.")
@@ -352,7 +352,7 @@ defmodule ESpec.Assertions.BeCloseToSpec do
     end
 
     context "Success with DateTime with a granularity of microseconds" do
-      let :datetime2, do: DateTime.from_naive!(~N[2017-08-07 01:10:10.000003], "Etc/UTC")
+      let :datetime2, do: DateTime.Extension.from_naive!(~N[2017-08-07 01:10:10.000003], "Etc/UTC")
       it "checks success with `to`" do
         message = expect(datetime1()).to be_close_to(datetime2(), {:microseconds, 2})
         expect(message) |> to(eq "`#{inspect datetime1()}` is close to `#{inspect datetime2()}` with delta `{:microseconds, 2}`.")

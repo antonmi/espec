@@ -14,8 +14,8 @@ defimpl ESpec.DateTimeProtocol, for: DateTime do
   def to_comparison_units(%{std_offset: std_offset, utc_offset: utc_offset} = datetime) do
     microseconds = datetime
                    |> to_iso_days()
-                   |> Calendar.ISO.Extension.iso_days_to_unit(:microsecond)
-    offset_microseconds = System.convert_time_unit(std_offset + utc_offset, :second, :microsecond)
+                   |> Calendar.ISO.Extension.iso_days_to_unit(:microseconds)
+    offset_microseconds = System.convert_time_unit(std_offset + utc_offset, :seconds, :microseconds)
     (microseconds - offset_microseconds)
   end
 

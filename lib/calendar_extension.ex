@@ -129,9 +129,9 @@ defmodule Calendar.ISO.Extension do
   defp days_in_previous_years(0), do: 0
   defp days_in_previous_years(year) do
     previous_year = year - 1
-    Integer.floor_div(previous_year, 4) -
-      Integer.floor_div(previous_year, 100) +
-      Integer.floor_div(previous_year, 400) +
+    Integer.Extension.floor_div(previous_year, 4) -
+      Integer.Extension.floor_div(previous_year, 100) +
+      Integer.Extension.floor_div(previous_year, 400) +
       previous_year * @days_per_nonleap_year + @days_per_leap_year
   end
 
@@ -139,6 +139,6 @@ defmodule Calendar.ISO.Extension do
   def iso_days_to_unit({days, {parts, ppd}}, unit) do
     day_microseconds = days * @parts_per_day
     microseconds = div(parts * @parts_per_day, ppd)
-    System.convert_time_unit(day_microseconds + microseconds, :microsecond, unit)
+    System.convert_time_unit(day_microseconds + microseconds, :microseconds, unit)
   end
 end
