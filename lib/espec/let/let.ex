@@ -38,15 +38,17 @@ defmodule ESpec.Let do
   defmacro let_overridable(var), do: do_let(var, nil, true)
 
   defp do_let(var, block, shared \\ false) do
-    function = ESpec.Let.Impl.random_let_name
+    block = Macro.escape((quote do: unquote(block)), unquote: true)
 
-    quote do
-      if unquote(shared) && !@shared do
-        raise ESpec.LetError, ESpec.Let.__overridable_error_message__(unquote(var), __MODULE__)
+    quote bind_quoted: [block: block, var: var, shared: shared] do
+      function = ESpec.Let.Impl.random_let_name
+
+      if shared && !@shared do
+        raise ESpec.LetError, ESpec.Let.__overridable_error_message__(var, __MODULE__)
       end
 
       tail = @context
-      head = %ESpec.Let{var: unquote(var), module: __MODULE__, shared_module: __MODULE__, function: unquote(function), shared: unquote(shared)}
+      head = %ESpec.Let{var: var, module: __MODULE__, shared_module: __MODULE__, function: function, shared: shared}
 
       def unquote(function)(var!(shared)) do
         var!(shared)
@@ -55,7 +57,7 @@ defmodule ESpec.Let do
 
       @context [head | tail]
 
-      unless Module.defines?(__MODULE__, {unquote(var), 0}, :def) do
+      unless Module.defines?(__MODULE__, {var, 0}, :def) do
         def unquote(var)() do
           ESpec.Let.Impl.let_eval(__MODULE__, unquote(var))
         end
