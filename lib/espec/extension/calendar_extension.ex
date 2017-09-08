@@ -145,4 +145,11 @@ defmodule Calendar.ISO.Extension do
     microseconds = div(parts * @parts_per_day, ppd)
     System.convert_time_unit(day_microseconds + microseconds, :microseconds, unit)
   end
+
+  @doc false
+  # Note: A method to call naive_datetime_to_iso_days, which Elixir 1.5.1 has, but 1.3.4 does not
+  def to_iso_days(%{calendar: _calendar, year: year, month: month, day: day,
+                     hour: hour, minute: minute, second: second, microsecond: microsecond}) do
+    Calendar.ISO.Extension.naive_datetime_to_iso_days(year, month, day, hour, minute, second, microsecond)
+  end
 end
