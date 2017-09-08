@@ -1,4 +1,8 @@
 defmodule Calendar.ISO.Extension do
+  @moduledoc """
+  A module to extend the calendar implementation that follows to ISO8601 with methods found in
+  Elixir 1.5.1. This is to allow ESpec to support Elixir >= 1.3.4 more easily.
+  """
 
   @type year :: 0..9999
   @type month :: 1..12

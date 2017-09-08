@@ -1,7 +1,7 @@
 defmodule DateTime.Extension do
   @moduledoc """
-  A datetime implementation with a time zone.
-  This is really a module that backports methods available in the DateTime module of Elixir 1.5.1
+  A module to extend the calendar implementation that follows to ISO8601 with methods found in
+  Elixir 1.5.1. This is to allow ESpec to support Elixir >= 1.3.4 more easily.
   """
 
   defstruct [:year, :month, :day, :hour, :minute, :second, :time_zone,
