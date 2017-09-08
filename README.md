@@ -514,6 +514,20 @@ Can be used with `:>`, `:<`, `:>=`, `:<=`, and etc.
 expect actual |> to(be operator, value)
 ```
 Passes if `apply(Kernel, operator, [actual, value]) == true`
+
+#### Patterns
+```elixir
+expect actual |> to(match_pattern {:ok, _}) # {:ok, _} = actual
+```
+It's not possible to call functions in the pattern and use the return value as
+pattern (`{:ok, function()}`), this obviously means no `let` functions. If you
+neeed to use the return value of a function, use a variable:
+
+```elixir
+value = function()
+
+expect actual |> to(match_pattern {:ok, ^value})
+```
 #### Booleans
 ```elixir
 expect actual |> to(be_true())

@@ -17,6 +17,14 @@ defmodule ESpec.AssertionHelpers do
   def be_close_to(value, delta), do: {Assertions.BeCloseTo, [value, delta]}
   def match(value), do: {Assertions.Match, value}
 
+  defmacro match_pattern(pattern) do
+    pattern = Macro.escape(pattern)
+
+    quote do
+      {Assertions.MatchPattern, [unquote(pattern), __ENV__, binding()]}
+    end
+  end
+
   def be_true, do: {Assertions.Boolean.BeTrue, []}
   def be_false, do: {Assertions.Boolean.BeFalse, []}
   def be_truthy, do: {Assertions.Boolean.BeTruthy, []}
