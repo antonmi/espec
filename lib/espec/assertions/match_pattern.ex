@@ -1,0 +1,38 @@
+defmodule ESpec.Assertions.MatchPattern do
+  @moduledoc """
+  Defines 'match_pattern' (=) assertion.
+
+  it do: expect(actual).to match_pattern(expected)
+  """
+  use ESpec.Assertions.Interface
+
+  defp match(subject, [pattern, env, vars]) do
+    pattern = Macro.expand(pattern, env)
+    vars =
+      for {key, value} <- vars do
+        quote do: unquote(Macro.var(key, nil)) = unquote(Macro.escape(value))
+      end
+
+    result_quote =
+      quote do
+        unquote_splicing(vars)
+
+        match?(unquote(pattern), unquote(subject))
+      end
+
+    {result, _} = Code.eval_quoted(result_quote)
+
+    {result, result}
+  end
+
+  defp success_message(subject, data, _result, positive) do
+    to = if positive, do: "matches", else: "doesn't match"
+    "`#{inspect subject}` #{to} pattern (=) `#{inspect data}`."
+  end
+
+  defp error_message(subject, data, _result, positive) do
+    to = if positive, do: "to", else: "not to"
+    but = if positive, do: "doesn't", else: "does"
+    "Expected `#{inspect subject}` #{to} match pattern (=) `#{inspect data}`, but it #{but}."
+  end
+end
