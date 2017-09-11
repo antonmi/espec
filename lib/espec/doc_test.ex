@@ -92,14 +92,11 @@ defmodule ESpec.DocTest do
               {str, new_binding}
             ex.type == :error ->
               {error_module, error_message} = ex.rhs
-              # Render the exception message as binary, to allow all characters
-              error_message = <<0>> <> error_message
               lhs = ex.lhs
               str = """
               def #{function}(shared) do
                 shared[:key]
-                <<0>> <> message = #{inspect error_message}
-                expect(fn -> Code.eval_string(#{lhs}) end).to raise_exception(#{error_module}, message)
+                expect(fn -> Code.eval_string(#{lhs}) end).to raise_exception(#{error_module}, #{inspect error_message})
               end
               """
               {str, binding}
