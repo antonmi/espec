@@ -57,6 +57,9 @@ defmodule ESpec.DocTestTest.ExceptionInterpolation do
 
     iex> raise ArgumentError, message: "Check for <string>"
     ** (ArgumentError) Check for <string>
+
+    iex> raise ArgumentError, message: "Check for a very, very, very, very, very, very, very, very, very, very, very, very, very, very, very long string"
+    ** (ArgumentError) Check for a very, very, very, very, very, very, very, very, very, very, very, very, very, very, very long string
   """
 end |> ESpec.TestHelpers.write_beam
 
