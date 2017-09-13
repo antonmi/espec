@@ -8,19 +8,10 @@ defmodule ESpec.Assertions.MatchPattern do
 
   defp match(subject, [pattern, env, vars]) do
     pattern = Macro.expand(pattern, env)
-    vars =
-      for {key, value} <- vars do
-        quote do: unquote(Macro.var(key, nil)) = unquote(Macro.escape(value))
-      end
-
     result_quote =
-      quote do
-        unquote_splicing(vars)
+      quote do: match?(unquote(pattern), unquote(Macro.escape(subject)))
 
-        match?(unquote(pattern), unquote(subject))
-      end
-
-    {result, _} = Code.eval_quoted(result_quote)
+    {result, _} = Code.eval_quoted(result_quote, vars, env)
 
     {result, result}
   end

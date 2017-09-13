@@ -8,9 +8,11 @@ defmodule MatchPatternTest do
       ESpec.Context.describe "ESpec.Assertions.MatchPattern" do
         it do: expect({:ok, 1}).to match_pattern({:ok, 1})
         it do: expect({:ok, 1}).to match_pattern({:ok, _})
+        it do: expect( %{"foo" => :bar}).to match_pattern(%{"foo" => _bar})
 
         it do: expect({:ok, 1}).to_not match_pattern({:ok, 2})
         it do: expect({:ok, 1}).to_not match_pattern({:error, _})
+        it do: expect(%{}).to_not match_pattern(%{"foo" => _bar})
 
         context "with pinned variables" do
           it do
@@ -31,9 +33,11 @@ defmodule MatchPatternTest do
     context "Errors" do
       it do: expect({:ok, 1}).to_not match_pattern({:ok, 1})
       it do: expect({:ok, 1}).to_not match_pattern({:ok, _})
+      it do: expect(%{"foo" => :bar}).to_not match_pattern(%{"foo" => _bar})
 
       it do: expect({:ok, 1}).to match_pattern({:ok, 2})
       it do: expect({:ok, 1}).to match_pattern({:error, _})
+      it do: expect(%{}).to match_pattern(%{"foo" => _bar})
 
       context "with pinned variables" do
         it do
@@ -48,14 +52,22 @@ defmodule MatchPatternTest do
           expect({:ok, 1}).to_not match_pattern(^pattern)
         end
       end
+
+      context "with let functions" do
+        let foo: "bar"
+
+        it do
+          expect("bar") |> to(match_pattern foo())
+        end
+      end
     end
   end
 
   setup_all do
     examples = ESpec.SuiteRunner.run_examples(SomeSpec.examples, true)
     {:ok,
-      success: Enum.slice(examples, 0, 6),
-      errors: Enum.slice(examples, 7, 13)}
+      success: Enum.slice(examples, 0, 8),
+      errors: Enum.slice(examples, 9, 18)}
   end
 
   test "Success", context do
