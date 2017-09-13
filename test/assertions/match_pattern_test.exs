@@ -57,8 +57,6 @@ defmodule MatchPatternTest do
         let foo: "bar"
 
         it do
-          bar = :baz
-
           expect("bar") |> to(match_pattern foo())
         end
       end
