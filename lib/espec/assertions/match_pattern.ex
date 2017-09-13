@@ -15,6 +15,8 @@ defmodule ESpec.Assertions.MatchPattern do
 
     result_quote =
       quote do
+        import unquote(env.module)
+
         unquote_splicing(vars)
 
         match?(unquote(pattern), unquote(Macro.escape(subject)))

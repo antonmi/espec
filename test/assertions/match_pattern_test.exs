@@ -52,6 +52,16 @@ defmodule MatchPatternTest do
           expect({:ok, 1}).to_not match_pattern(^pattern)
         end
       end
+
+      context "with let functions" do
+        let foo: "bar"
+
+        it do
+          bar = :baz
+
+          expect("bar") |> to(match_pattern foo())
+        end
+      end
     end
   end
 
@@ -59,7 +69,7 @@ defmodule MatchPatternTest do
     examples = ESpec.SuiteRunner.run_examples(SomeSpec.examples, true)
     {:ok,
       success: Enum.slice(examples, 0, 8),
-      errors: Enum.slice(examples, 9, 17)}
+      errors: Enum.slice(examples, 9, 18)}
   end
 
   test "Success", context do
