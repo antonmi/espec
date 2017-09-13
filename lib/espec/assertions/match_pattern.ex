@@ -17,7 +17,7 @@ defmodule ESpec.Assertions.MatchPattern do
       quote do
         unquote_splicing(vars)
 
-        match?(unquote(pattern), unquote(subject))
+        match?(unquote(pattern), unquote(Macro.escape(subject)))
       end
 
     {result, _} = Code.eval_quoted(result_quote)
