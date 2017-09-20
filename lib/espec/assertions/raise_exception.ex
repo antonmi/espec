@@ -72,7 +72,10 @@ defmodule ESpec.Assertions.RaiseException do
 
   defp error_message(subject, [module], err_module, positive) do
     if positive do
-      "Expected #{inspect subject} to raise the `#{module}` exception, but nothing was raised."
+      case err_module do
+        {false, nil} -> "Expected #{inspect subject} to raise the `#{module}` exception, but nothing was raised."
+        err_module -> "Expected #{inspect subject} to raise the `#{module}` exception, but `#{err_module}` was raised instead."
+      end
     else
       "Expected #{inspect subject} not to raise the `#{module}` exception, but the `#{err_module}` exception was raised."
     end

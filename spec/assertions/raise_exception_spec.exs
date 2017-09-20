@@ -5,6 +5,7 @@ defmodule ESpec.Assertions.RaiseExceptionSpec do
     let :func1, do: fn -> raise(ArithmeticError) end
     let :func2, do: fn -> 1 + 1 end
     let :func3, do: fn -> List.first(:a) end
+    let :func4, do: fn -> raise(ArgumentError) end
 
     context "Success" do
       it "checks success with `to`" do
@@ -64,6 +65,15 @@ defmodule ESpec.Assertions.RaiseExceptionSpec do
         rescue
           error in [ESpec.AssertionError] ->
             expect(error.message) |> to(end_with "to raise the `Elixir.ArithmeticError` exception, but nothing was raised.")
+        end
+      end
+
+      it "checks error with `to`" do
+        try do
+          expect(func4()).to raise_exception(ArithmeticError)
+        rescue
+          error in [ESpec.AssertionError] ->
+            expect(error.message) |> to(end_with "to raise the `Elixir.ArithmeticError` exception, but `Elixir.ArgumentError` was raised instead.")
         end
       end
 
