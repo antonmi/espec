@@ -86,6 +86,15 @@ defmodule ESpec.Assertions.RaiseExceptionSpec do
         end
       end
 
+      it "checks error with `to`" do
+        try do
+          expect(func4()).to raise_exception(ArithmeticError, "bad argument in arithmetic expression")
+        rescue
+          error in [ESpec.AssertionError] ->
+            expect(error.message) |> to(end_with "to raise the `Elixir.ArithmeticError` exception with the message `bad argument in arithmetic expression`, but the `Elixir.ArgumentError` exception was raised with the message `argument error`.")
+        end
+      end
+
       it "checks error with `not_to`" do
         try do
           expect(func1()).not_to raise_exception()
