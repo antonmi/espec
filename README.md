@@ -207,7 +207,7 @@ mix espec spec/some_spec.exs --string 'context with tag'
 ## `before` and `finally`
 `before` blocks are evaluated before the example and `finally` runs after the example.
 
-The blocks can return `{:shared, key: value, ...}` or (like in ExUnit) `{:ok, key: value, ...}`, so the keyword list will be saved in the dictionary and can be accessed in other `before` blocks, in the example, and in `finally` blocks through [`shared`](#shared).
+The blocks can return `{:shared, key: value, ...}` or (like in ExUnit) `{:ok, key: value, ...}`, so the keyword list will be saved in the dictionary and can be accessed in other `before` blocks, in the example, and in `finally` blocks through [`shared`](#shared-data).
 You can also use a map as a second term in returned tuple: `{:shared, %{key: value, ...}}`.
 
 Example:
