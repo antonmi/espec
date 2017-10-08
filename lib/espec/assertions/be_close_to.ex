@@ -5,10 +5,11 @@ defmodule ESpec.Assertions.BeCloseTo do
   it do: expect(2).to be_close_to(1, 3)
   """
   use ESpec.Assertions.Interface
-  alias ESpec.Comparator.Diff
+
+  alias ESpec.DatesTimes.Comparator
 
   defp match(subject, [value, {granularity, delta}] = data) do
-    result = abs(Diff.diff(subject, value, granularity)) <= delta
+    result = abs(Comparator.diff(subject, value, granularity)) <= delta
     {result, result}
   end
 

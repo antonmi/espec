@@ -5,9 +5,9 @@ defmodule ESpec.Delegator do
   """
 
   @doc """
-  Convert a date/time value to gregorian microseconds (microseconds since start of year zero)
+  Convert a date/time value to (gregorian) microseconds
+  (microseconds since start of year zero if gregorian)
   """
-  #@spec to_gregorian_microseconds(Types.valid_datetime) :: non_neg_integer | {:error, term}
-  #defdelegate to_gregorian_microseconds(datetime), to: ESpec.DateTimeProtocol
-  defdelegate to_comparison_units(datetime), to: ESpec.DateTimeProtocol
+  @spec to_comparison_units(Types.valid_datetime) :: non_neg_integer | {:error, term}
+  defdelegate to_comparison_units(datetime), to: ESpec.DatesTimes.DateTimeProtocol
 end

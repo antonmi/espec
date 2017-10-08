@@ -1,4 +1,4 @@
-defmodule ESpec.Comparator.Diff do
+defmodule ESpec.DatesTimes.Comparator do
   @moduledoc false
 
   alias ESpec.Delegator
@@ -20,20 +20,26 @@ defmodule ESpec.Comparator.Diff do
     end
   end
 
-  defp do_diff(a, a, type),      do: zero(type)
-  defp do_diff(a, b, :microseconds), do: a - b
-  defp do_diff(a, b, :milliseconds), do: div(a - b, 1_000)
-  defp do_diff(a, b, :seconds),      do: div(a - b, 1_000*1_000)
-  defp do_diff(a, b, :minutes),      do: div(a - b, 1_000*1_000*60)
-  defp do_diff(a, b, :hours),        do: div(a - b, 1_000*1_000*60*60)
-  defp do_diff(a, b, :days),         do: div(a - b, 1_000*1_000*60*60*24)
-  defp do_diff(a, b, :weeks),        do: div(a - b, 1_000*1_000*60*60*24*7)
-  defp do_diff(a, b, :months) do
-    diff_months(a, b)
-  end
-  defp do_diff(a, b, :years) do
-    diff_years(a, b)
-  end
+  defp do_diff(a, a, type),
+    do: zero(type)
+  defp do_diff(a, b, :microseconds),
+    do: a - b
+  defp do_diff(a, b, :milliseconds),
+    do: div(a - b, 1_000)
+  defp do_diff(a, b, :seconds),
+    do: div(a - b, 1_000*1_000)
+  defp do_diff(a, b, :minutes),
+    do: div(a - b, 1_000*1_000*60)
+  defp do_diff(a, b, :hours),
+    do: div(a - b, 1_000*1_000*60*60)
+  defp do_diff(a, b, :days),
+    do: div(a - b, 1_000*1_000*60*60*24)
+  defp do_diff(a, b, :weeks),
+    do: div(a - b, 1_000*1_000*60*60*24*7)
+  defp do_diff(a, b, :months),
+    do: diff_months(a, b)
+  defp do_diff(a, b, :years),
+    do: diff_years(a, b)
   defp do_diff(_, _, granularity) when not granularity in @units,
     do: {:error, {:invalid_granularity, granularity}}
 

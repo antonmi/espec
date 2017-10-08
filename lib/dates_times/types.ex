@@ -1,4 +1,4 @@
-defmodule ESpec.Types do
+defmodule ESpec.DatesTimes.Types do
 
   # Date types
   @type year :: Calendar.year

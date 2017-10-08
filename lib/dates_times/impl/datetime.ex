@@ -1,4 +1,4 @@
-defimpl ESpec.DateTimeProtocol, for: DateTime do
+defimpl ESpec.DatesTimes.DateTimeProtocol, for: DateTime do
   @moduledoc """
   A type which represents a date and time with timezone information (optional, UTC will
   be assumed for date/times with no timezone information provided).
