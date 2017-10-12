@@ -29,7 +29,7 @@ It is NOT a wrapper around ExUnit but a completely new testing framework written
 ## Contents
 - [Installation](#installation)
 - [Run specs](#run-specs)
-- [Context blocks](#context-blocks)
+- [Context blocks and tags](#context-blocks-and-tags)
 - [Examples](#examples)
 - [Filters](#filters)
 - [`before` and `finally`](#before-and-finally)
@@ -112,7 +112,7 @@ Read the help:
 MIX_ENV=test mix help espec
 ```
 
-## Context blocks
+## Context blocks and tags
 There are three macros with the same functionality: `context`, `describe`, and `example_group`.
 
 Context can have description and tags.
