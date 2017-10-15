@@ -16,25 +16,27 @@ defmodule ESpec.Assertions.PID.BeAliveSpec do
     end
   end
 
-  # context "Errors" do
-  #   context "with `to`" do
-  #     before do
-  #       {:shared,
-  #         expectation: fn -> expect(true).to be_false() end,
-  #         message: "Expected `true` to be false but it isn't."}
-  #     end
-  #
-  #     it_behaves_like(CheckErrorSharedSpec)
-  #   end
-  #
-  #   context "with `not_to`" do
-  #     before do
-  #       {:shared,
-  #         expectation: fn -> expect(false).not_to be_false() end,
-  #         message: "Expected `false` not to be false but it is."}
-  #     end
-  #
-  #     it_behaves_like(CheckErrorSharedSpec)
-  #   end
-  # end
+  context "Errors" do
+    context "with `to`" do
+      before do
+        pid = spawn fn -> 1 + 2 end
+        {:shared,
+          expectation: fn -> expect(pid).to be_alive() end,
+          message: "Expected `#{inspect(pid)}` to be alive but it isn't."}
+      end
+
+      it_behaves_like(CheckErrorSharedSpec)
+    end
+
+    context "with `not_to`" do
+      before do
+        pid = self()
+        {:shared,
+          expectation: fn -> expect(pid).not_to be_alive() end,
+          message: "Expected `#{inspect(pid)}` not to be alive but it is."}
+      end
+
+      it_behaves_like(CheckErrorSharedSpec)
+    end
+  end
 end
