@@ -79,6 +79,8 @@ defmodule ESpec.AssertionHelpers do
   def have_key(value), do: {Assertions.Map.HaveKey, value}
   def have_value(value), do: {Assertions.Map.HaveValue, value}
 
+  def be_alive(), do: {Assertions.PID.BeAlive, []}
+
   Enum.each @elixir_types, fn(type) ->
     def unquote(String.to_atom("be_#{type}"))() do
       {Assertions.BeType, unquote(Macro.escape(type))}
