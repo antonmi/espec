@@ -9,7 +9,11 @@ defmodule ESpec.Assertions.BeCloseTo do
   alias ESpec.DatesTimes.Comparator
 
   defp match(subject, [value, {granularity, delta}] = data) do
-    result = abs(Comparator.diff(subject, value, granularity)) <= delta
+    result =
+      subject
+      |> Comparator.diff(value, granularity)
+      |> abs()
+      |> Kernel.<=(delta)
     {result, result}
   end
 
