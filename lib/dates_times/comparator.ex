@@ -47,27 +47,27 @@ defmodule ESpec.DatesTimes.Comparator do
     {start_date, _} = :calendar.gregorian_seconds_to_datetime(div(a, 1_000*1_000))
     {end_date, _} = :calendar.gregorian_seconds_to_datetime(div(b, 1_000*1_000))
     if a > b do
-      diff_years(end_date, start_date, 0)
+      do_diff_years(end_date, start_date, 0)
     else
-      diff_years(start_date, end_date, 0) * -1
+      do_diff_years(start_date, end_date, 0) * -1
     end
   end
-  defp diff_years({y, _, _}, {y, _, _}, acc) do
+  defp do_diff_years({y, _, _}, {y, _, _}, acc) do
     acc
   end
-  defp diff_years({y1, m, d}, {y2, _, _} = ed, acc) when y1 < y2 do
+  defp do_diff_years({y1, m, d}, {y2, _, _} = ed, acc) when y1 < y2 do
     sd2 = {y1+1, m, d}
     if :calendar.valid_date(sd2) do
       sd2_secs = :calendar.datetime_to_gregorian_seconds({sd2,{0,0,0}})
       ed_secs = :calendar.datetime_to_gregorian_seconds({ed,{0,0,0}})
       if sd2_secs <= ed_secs do
-        diff_years(sd2, ed, acc+1)
+        do_diff_years(sd2, ed, acc+1)
       else
         acc
       end
     else
       # This date is a leap day, so subtract a day and try again
-      diff_years({y1, m, d-1}, ed, acc)
+      do_diff_years({y1, m, d-1}, ed, acc)
     end
   end
 
