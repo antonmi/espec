@@ -592,6 +592,10 @@ expect string |> to(have_first value)   # String.first(string) == value
 expect map |> to(have_key value)    # Map.has_key?(value)
 expect map |> to(have_value value)  # Enum.member?(Map.values(dict), value)
 ```
+#### PID
+```elixir
+expect pid |> to(be_alive) # Process.alive?(pid)
+```
 
 #### Type checking
 ``` elixir
