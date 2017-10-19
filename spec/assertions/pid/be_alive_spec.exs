@@ -11,6 +11,7 @@ defmodule ESpec.Assertions.PID.BeAliveSpec do
 
     it "checks success with `not_to`" do
       pid = spawn fn -> :ok end
+      Process.exit(pid, :normal)
       message = expect(pid).to_not be_alive()
       expect(message) |> to(eq "`#{inspect(pid)}` is not alive.")
     end
@@ -20,6 +21,7 @@ defmodule ESpec.Assertions.PID.BeAliveSpec do
     context "with `to`" do
       before do
         pid = spawn fn -> :ok end
+        Process.exit(pid, :normal)
         {:shared,
           expectation: fn -> expect(pid).to be_alive() end,
           message: "Expected `#{inspect(pid)}` to be alive but it isn't."}
