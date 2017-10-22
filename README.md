@@ -46,6 +46,7 @@ It is NOT a wrapper around ExUnit but a completely new testing framework written
 - [Custom matchers](#custom-matchers)
 - [`described_module`](#described_module)
 - [Mocks](#mocks)
+- [Datetime Comparison](#datetime-comparison)
 - [Doc specs](#doc-specs)
 - [Configuration and options](#configuration-and-options)
 - [Formatters](#formatters)
@@ -846,6 +847,59 @@ end
 `accepted` assertion checks `:meck.history(SomeModule)`. See [meck](https://github.com/eproxus/meck) documentation.
 
 Don't use `async: true` when using mocks!
+
+### Datetime Comparison
+
+ESpec has comparison support for Elixir's date(time) related structs. Specifically, it has support for Date, Time, NaiveDateTime, and DateTime structs using ESpec's `be_close_to` assertion. It allows you to compare using the lowest-level granularity avaiable in the struct. For example, since the lowest level of granularity available in a NaiveDateTime is the microsecond, you can compare how close to NaiveDateTime structs are with respect to microseconds.
+
+#### Date Struct Comparison Example
+
+```
+expect(~D[2017-08-07]).to be_close_to(~D[2018-08-07], {:years, 1})
+
+# or alternatively, you can do:
+it do: expect(~D[2017-08-07]).to be_close_to(~D[2020-08-07], {:years, 3})
+```
+
+#### NaiveDateTime Struct Comparison Example
+
+```
+expect(~N[2017-08-07 01:10:10.000001]).to be_close_to(~N[2017-08-07 01:10:10.000003], {:microseconds, 2})
+
+# or alternatively, you can do:
+it do: expect(~N[2017-08-07 01:10:10.000001]).to be_close_to(~N[2017-08-07 01:10:10.000003], {:microseconds, 2})
+```
+
+#### Time Struct Comparison Example
+
+```
+expect(~T[01:10:10]).to be_close_to(~T[01:50:10], {:minutes, 40})
+
+# or alternatively, you can do:
+it do: expect(~T[01:10:10]).to be_close_to(~T[01:50:10], {:minutes, 40})
+```
+
+#### DateTime Struct Comparison Example
+
+Note the example shows a DateTimec comparison with utc and std offsets for time zone differences. It is up to the user to be aware of the time zone utc and std offsets.
+
+```
+context "Success with DateTime with utc and std offsets to represent time zone differences" do
+  let :datetime_pst, do: %DateTime{year: 2017, month: 3, day: 15, hour: 1, minute: 30, second: 30, microsecond: {1, 6}, std_offset: 1*3600, utc_offset: -8*3600, zone_abbr: "PST", time_zone: "America/Los_Angeles"}
+  let :datetime_est, do: %DateTime{year: 2017, month: 3, day: 15, hour: 6, minute: 30, second: 30, microsecond: {1, 6}, std_offset: 1*3600, utc_offset: -5*3600, zone_abbr: "EST", time_zone: "America/New_York"}
+  it "checks success with `to`" do
+    message = expect(datetime_pst()).to be_close_to(datetime_est(), {:hours, 2})
+    expect(message) |> to(eq "`#{inspect datetime_pst()}` is close to `#{inspect datetime_est()}` with delta `{:hours, 2}`.")
+  end
+
+  it "checks success with `not_to`" do
+    message = expect(datetime_pst()).to_not be_close_to(datetime_est(), {:hours, 1})
+    expect(message) |> to(eq "`#{inspect datetime_pst()}` is not close to `#{inspect datetime_est()}` with delta `{:hours, 1}`.")
+  end
+
+  it do: expect(datetime_pst()).to be_close_to(datetime_est(), {:hours, 2})
+end
+```
 
 ### Limitations
 
