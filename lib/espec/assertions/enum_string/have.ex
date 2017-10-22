@@ -8,6 +8,15 @@ defmodule ESpec.Assertions.EnumString.Have do
   """
   use ESpec.Assertions.Interface
 
+  defp match(enum, [{_key, _value} = tuple]) do
+    match(enum, tuple)
+  end
+
+  defp match(%{} = map, {key, value}) do
+    result = (Map.get(map, key) == value)
+    {result, result}
+  end
+
   defp match(enum, val) when is_binary(enum) do
     result = String.contains?(enum, val)
     {result, result}
