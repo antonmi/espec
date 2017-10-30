@@ -58,6 +58,28 @@ defmodule ESpec.Assertions.DatesTimes.BeCloseToSpec do
       it do: expect(~D[2017-08-07]).to be_close_to(~D[2017-10-07], {:days, 61})
     end
 
+    context "Errors with Date" do
+      context "with `to`" do
+        before do
+          {:shared,
+            expectation: fn -> expect(~D[2017-08-07]).to be_close_to(~D[2050-08-19], {:years, 3}) end,
+            message: "Expected `~D[2017-08-07]` to be close to `~D[2050-08-19]` with delta `{:years, 3}`, but it isn't. The actual delta is {:years, 33}."}
+        end
+
+        it_behaves_like(CheckErrorSharedSpec)
+      end
+
+      context "with `not_to`" do
+        before do
+          {:shared,
+            expectation: fn -> expect(~D[2017-08-07]).to_not be_close_to(~D[2017-10-07], {:months, 1}) end,
+            message: "Expected `~D[2017-08-07]` not to be close to `~D[2017-10-07]` with delta `{:months, 1}`, but it is. The actual delta is {:months, 2}"}
+        end
+
+        it_behaves_like(CheckErrorSharedSpec)
+      end
+    end
+
     context "Success with NaiveDateTime with a granularity of years" do
       it "checks success with `to`" do
         message = expect(~N[2017-08-07 01:10:10]).to be_close_to(~N[2018-08-07 01:10:10], {:years, 1})
