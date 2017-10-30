@@ -1,7 +1,7 @@
 defmodule ESpec.DatesTimes.Comparator do
   @moduledoc false
 
-  alias ESpec.Delegator
+  alias ESpec.DatesTimes.Delegator
 
   @units [:years, :months, :weeks, :days,
           :hours, :minutes, :seconds, :milliseconds, :microseconds]

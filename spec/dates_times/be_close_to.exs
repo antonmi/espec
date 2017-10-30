@@ -1,7 +1,7 @@
 defmodule ESpec.Assertions.DatesTimes.BeCloseToSpec do
   use ESpec, async: true
 
-  describe "ESpec.Assertions.Between" do
+  describe "ESpec.Assertions.BeCloseTo" do
     context "Success with Date with a granularity of years" do
       it "checks success with `to`" do
         message = expect(~D[2017-08-07]).to be_close_to(~D[2018-08-07], {:years, 1})

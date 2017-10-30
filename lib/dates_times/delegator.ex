@@ -1,6 +1,6 @@
-defmodule ESpec.Delegator do
+defmodule ESpec.DatesTimes.Delegator do
   @moduledoc """
-  The ESpec.Delegator module. Used to delegate methods to the correct protocol
+  The ESpec.DateTimes.Delegator module. Used to delegate methods to the correct protocol
   implementation.
   """
 
