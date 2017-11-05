@@ -192,6 +192,28 @@ defmodule ESpec.Assertions.DatesTimes.BeCloseToSpec do
       it do: expect(~N[2017-08-07 01:10:10.000001]).to be_close_to(~N[2017-08-07 01:10:10.000003], {:microseconds, 2})
     end
 
+    context "Errors with NaiveDateTime" do
+      context "with `to`" do
+        before do
+          {:shared,
+            expectation: fn -> expect(~N[2017-08-07 01:10:10]).to be_close_to(~N[2017-08-07 01:10:15], {:seconds, 3}) end,
+            message: "Expected `~N[2017-08-07 01:10:10]` to be close to `~N[2017-08-07 01:10:15]` with delta `{:seconds, 3}`, but it isn't. The actual delta is {:seconds, 5}."}
+        end
+
+        it_behaves_like(CheckErrorSharedSpec)
+      end
+
+      context "with `not_to`" do
+        before do
+          {:shared,
+            expectation: fn -> expect(~N[2017-08-07 01:10:10]).to_not be_close_to(~N[2017-08-07 01:10:15], {:seconds, 5}) end,
+            message: "Expected `~N[2017-08-07 01:10:10]` not to be close to `~N[2017-08-07 01:10:15]` with delta `{:seconds, 5}`, but it isn't. The actual delta is {:seconds, 5}."}
+        end
+
+        it_behaves_like(CheckErrorSharedSpec)
+      end
+    end
+
     context "Success with Time with a granularity of hours" do
       it "checks success with `to`" do
         message = expect(~T[01:10:10]).to be_close_to(~T[02:10:10], {:hours, 1})
@@ -246,6 +268,28 @@ defmodule ESpec.Assertions.DatesTimes.BeCloseToSpec do
       end
 
       it do: expect(~T[01:10:10.000001]).to be_close_to(~T[01:10:10.000002], {:microseconds, 1})
+    end
+
+    context "Errors with Time" do
+      context "with `to`" do
+        before do
+          {:shared,
+            expectation: fn -> expect(~T[01:10:10.000001]).to be_close_to(~T[01:10:10.000006], {:microseconds, 3}) end,
+            message: "Expected `~T[01:10:10.000001]` to be close to `~T[01:10:10.000006]` with delta `{:microseconds, 3}`, but it isn't. The actual delta is {:microseconds, 5}."}
+        end
+
+        it_behaves_like(CheckErrorSharedSpec)
+      end
+
+      context "with `not_to`" do
+        before do
+          {:shared,
+            expectation: fn -> expect(~T[01:10:10.000001]).to_not be_close_to(~T[01:10:10.000006], {:microseconds, 5}) end,
+            message: "Expected `~T[01:10:10.000001]` not to be close to `~T[01:10:10.000006]` with delta `{:microseconds, 5}`, but it isn't. The actual delta is {:microseconds, 5}."}
+        end
+
+        it_behaves_like(CheckErrorSharedSpec)
+      end
     end
 
     let :datetime1, do: DateTime.Extension.from_naive!(~N[2017-08-07 01:10:10.000001], "Etc/UTC")
@@ -387,6 +431,33 @@ defmodule ESpec.Assertions.DatesTimes.BeCloseToSpec do
       end
 
       it do: expect(datetime_pst()).to be_close_to(datetime_est(), {:hours, 2})
+    end
+
+    context "Errors with DateTime" do
+      context "with `to`" do
+        let :datetime1, do: DateTime.Extension.from_naive!(~N[2017-08-07 01:10:12.000001], "Etc/UTC")
+        let :datetime2, do: DateTime.Extension.from_naive!(~N[2017-08-07 01:10:12.000006], "Etc/UTC")
+        before do
+          {:shared,
+            expectation: fn -> expect(datetime1()).to be_close_to(datetime2(), {:microseconds, 3}) end,
+            message: "Expected `#{inspect datetime1()}` to be close to `#{inspect datetime2()}` with delta `{:microseconds, 3}`, but it isn't. The actual delta is {:microseconds, 5}."}
+        end
+
+        it_behaves_like(CheckErrorSharedSpec)
+      end
+
+      context "with `not_to`" do
+        let :datetime1, do: DateTime.Extension.from_naive!(~N[2017-08-07 01:10:12.000001], "Etc/UTC")
+        let :datetime2, do: DateTime.Extension.from_naive!(~N[2017-08-07 01:10:12.000006], "Etc/UTC")
+
+        before do
+          {:shared,
+            expectation: fn -> expect(datetime1()).to_not be_close_to(datetime2(), {:microseconds, 5}) end,
+            message: "Expected `#{inspect datetime1()}` not to be close to `#{inspect datetime2()}` with delta `{:microseconds, 5}`, but it isn't. The actual delta is {:microseconds, 5}."}
+        end
+
+        it_behaves_like(CheckErrorSharedSpec)
+      end
     end
   end
 end
