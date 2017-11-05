@@ -1,7 +1,7 @@
 defmodule ESpec.Assertions.BeCloseToSpec do
   use ESpec, async: true
 
-  describe "ESpec.Assertions.Between" do
+  describe "ESpec.Assertions.BeCloseTo" do
     context "Success" do
       it "checks success with `to`" do
         message = expect(5).to be_close_to(4, 1)
