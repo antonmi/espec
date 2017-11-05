@@ -13,6 +13,6 @@ defmodule ESpec.ExpectTo do
     apply(module, :assert, [subject, data, false, stacktrace])
   end
 
-  @doc "Alias fo `to_not`."
+  @doc "Alias of `to_not`."
   def not_to(rhs, {__MODULE__, subject, stacktrace}), do: to_not(rhs, {__MODULE__, subject, stacktrace})
 end
