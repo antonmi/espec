@@ -18,6 +18,18 @@ defmodule ESpec.Assertions.Be do
     {result, {granularity, actual_delta}}
   end
 
+  defp match(%Date{} = subject, [op, %Date{} = val]), do: match_date_times(subject, [op, val])
+  defp match(%Time{} = subject, [op, %Time{} = val]), do: match_date_times(subject, [op, val])
+  defp match(%DateTime{} = subject, [op, %DateTime{} = val]), do: match_date_times(subject, [op, val])
+  defp match(%NaiveDateTime{} = subject, [op, %NaiveDateTime{} = val]), do: match_date_times(subject, [op, val])
+
+  defp match_date_times(subject, [op, val]) do
+    delta = subject |> Comparator.diff(val, :microseconds)
+
+    result = apply(Kernel, op, [delta, 0])
+    {result, result}
+  end
+
   defp match(subject, [op, val]) do
     result = apply(Kernel, op, [subject, val])
     {result, result}
