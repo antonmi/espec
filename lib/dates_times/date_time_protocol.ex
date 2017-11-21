@@ -8,7 +8,6 @@ defprotocol ESpec.DatesTimes.DateTimeProtocol do
   @doc """
   Convert a date/time value to gregorian microseconds (microseconds since the start of year zero)
   """
-  #@spec to_gregorian_microseconds(Types.valid_datetime) :: non_neg_integer | {:error, term}
-  #def to_gregorian_microseconds(datetime)
+  @spec to_comparison_units(Types.valid_datetime) :: non_neg_integer | {:error, term}
   def to_comparison_units(datetime)
 end
