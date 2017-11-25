@@ -383,7 +383,7 @@ defmodule ESpec.Assertions.DatesTimes.BeSpec do
         before do
           {:shared,
             expectation: fn -> expect(~N[2017-08-07 01:10:10]).to_not be :<, ~N[2017-08-07 01:10:15], {:seconds, 5} end,
-            message: "Expected `~N[2017-08-07 01:10:10] < ~N[2017-08-07 01:10:15]` to be `true` but got `false`  with delta `{:seconds, 5}`. The actual delta is {:seconds, 5}, witha n inclusive boundary."}
+            message: "Expected `~N[2017-08-07 01:10:10] < ~N[2017-08-07 01:10:15]` to be `true` but got `false`  with delta `{:seconds, 5}`. The actual delta is {:seconds, 5}, with an inclusive boundary."}
         end
 
         it_behaves_like(CheckErrorSharedSpec)
