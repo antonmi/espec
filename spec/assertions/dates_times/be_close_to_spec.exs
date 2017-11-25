@@ -434,9 +434,10 @@ defmodule ESpec.Assertions.DatesTimes.BeCloseToSpec do
     end
 
     context "Errors with DateTime" do
+      let :datetime1, do: DateTime.Extension.from_naive!(~N[2017-08-07 01:10:12.000001], "Etc/UTC")
+      let :datetime2, do: DateTime.Extension.from_naive!(~N[2017-08-07 01:10:12.000006], "Etc/UTC")
+
       context "with `to`" do
-        let :datetime1, do: DateTime.Extension.from_naive!(~N[2017-08-07 01:10:12.000001], "Etc/UTC")
-        let :datetime2, do: DateTime.Extension.from_naive!(~N[2017-08-07 01:10:12.000006], "Etc/UTC")
         before do
           {:shared,
             expectation: fn -> expect(datetime1()).to be_close_to(datetime2(), {:microseconds, 3}) end,
@@ -447,9 +448,6 @@ defmodule ESpec.Assertions.DatesTimes.BeCloseToSpec do
       end
 
       context "with `not_to`" do
-        let :datetime1, do: DateTime.Extension.from_naive!(~N[2017-08-07 01:10:12.000001], "Etc/UTC")
-        let :datetime2, do: DateTime.Extension.from_naive!(~N[2017-08-07 01:10:12.000006], "Etc/UTC")
-
         before do
           {:shared,
             expectation: fn -> expect(datetime1()).to_not be_close_to(datetime2(), {:microseconds, 5}) end,
