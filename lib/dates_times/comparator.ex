@@ -2,16 +2,20 @@ defmodule ESpec.DatesTimes.Comparator do
   @moduledoc false
 
   alias ESpec.DatesTimes.Delegator
+  alias ESpec.DatesTimes.Types
 
   @units [:years, :months, :weeks, :days,
           :hours, :minutes, :seconds, :milliseconds, :microseconds]
 
-  @spec diff(Types.microseconds, Types.microseconds, Comparable.granularity) :: integer
-  @spec diff(Types.valid_datetime, Types.valid_datetime, Comparable.granularity) :: integer
+  @spec diff(non_neg_integer, non_neg_integer, Types.time_units) :: integer
   def diff(a, a, granularity) when is_integer(a), do: zero(granularity)
+
+  @spec diff(non_neg_integer, non_neg_integer, Types.time_units) :: integer
   def diff(a, b, granularity) when is_integer(a) and is_integer(b) and is_atom(granularity) do
     do_diff(a, b, granularity)
   end
+
+  @spec diff(non_neg_integer, non_neg_integer, Types.time_units) :: integer
   def diff(a, b, granularity) do
     case {Delegator.to_comparison_units(a), Delegator.to_comparison_units(b)} do
       {{:error, _} = err, _} -> err

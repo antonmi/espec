@@ -9,6 +9,7 @@ defimpl ESpec.DatesTimes.DateTimeProtocol, for: DateTime do
   Time intervals in this module don't account for leap seconds.
   """
 
+  @spec to_comparison_units(DateTime.t) :: non_neg_integer
   def to_comparison_units(%{std_offset: std_offset, utc_offset: utc_offset} = datetime) do
     microseconds = datetime
                    |> Calendar.ISO.Extension.to_iso_days()
