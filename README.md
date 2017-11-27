@@ -850,9 +850,30 @@ Don't use `async: true` when using mocks!
 
 ### Datetime Comparison
 
-ESpec has comparison support for Elixir's date(time) related structs. Specifically, it has support for Date, Time, NaiveDateTime, and DateTime structs using ESpec's `be_close_to` assertion. It allows you to compare using the lowest-level granularity avaiable in the struct. For example, since the lowest level of granularity available in a NaiveDateTime is the microsecond, you can compare how close to NaiveDateTime structs are with respect to microseconds.
+ESpec has comparison support for Elixir's date(time) related structs. Specifically, it has support for Date, Time, NaiveDateTime, and DateTime structs using ESpec's `be_close_to` and `be` assertions. It allows you to compare using the lowest-level granularity available in the struct. For example, since the lowest level of granularity available in a NaiveDateTime is the microsecond, you can compare how close to NaiveDateTime structs are with respect to microseconds.
 
-#### Date Struct Comparison Example
+#### Datetime be assertion(s) syntax
+
+For the `be` assertions, ESpec supports a syntax with a granularity tuple (or keyword list) or a syntax without it. The following examples are shown with a Date struct.
+
+##### Be assertion syntax without granularity
+
+```
+it do: expect(~D[2020-08-07]).to be :>=, ~D[2017-08-07]
+```
+
+##### Be assertion syntax with granularity
+
+```
+it do: expect(~D[2020-08-07]).to be :>=, ~D[2017-08-07], {:years, 3}
+
+# or alternatively, you can do:
+it do: expect(~D[2020-08-07]).to be :>=, ~D[2017-08-07], years: 3
+```
+
+#### Datetime be_close_to asssertion(s) syntax
+
+##### Date Struct Comparison Example(s)
 
 ```
 expect(~D[2017-08-07]).to be_close_to(~D[2018-08-07], {:years, 1})
@@ -861,7 +882,7 @@ expect(~D[2017-08-07]).to be_close_to(~D[2018-08-07], {:years, 1})
 it do: expect(~D[2017-08-07]).to be_close_to(~D[2020-08-07], {:years, 3})
 ```
 
-#### NaiveDateTime Struct Comparison Example
+##### NaiveDateTime Struct Comparison Example
 
 ```
 expect(~N[2017-08-07 01:10:10.000001]).to be_close_to(~N[2017-08-07 01:10:10.000003], {:microseconds, 2})
@@ -870,7 +891,7 @@ expect(~N[2017-08-07 01:10:10.000001]).to be_close_to(~N[2017-08-07 01:10:10.000
 it do: expect(~N[2017-08-07 01:10:10.000001]).to be_close_to(~N[2017-08-07 01:10:10.000003], {:microseconds, 2})
 ```
 
-#### Time Struct Comparison Example
+##### Time Struct Comparison Example
 
 ```
 expect(~T[01:10:10]).to be_close_to(~T[01:50:10], {:minutes, 40})
@@ -879,9 +900,9 @@ expect(~T[01:10:10]).to be_close_to(~T[01:50:10], {:minutes, 40})
 it do: expect(~T[01:10:10]).to be_close_to(~T[01:50:10], {:minutes, 40})
 ```
 
-#### DateTime Struct Comparison Example
+##### DateTime Struct Comparison Example
 
-Note the example shows a DateTimec comparison with utc and std offsets for time zone differences. It is up to the user to be aware of the time zone utc and std offsets.
+Note the example shows a DateTime comparison with utc and std offsets for time zone differences. It is up to the user to be aware of the time zone utc and std offsets.
 
 ```
 context "Success with DateTime with utc and std offsets to represent time zone differences" do
