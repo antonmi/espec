@@ -1159,6 +1159,8 @@ There are community supported formatters:
      - Fix doctests (allow "strings")
      - allow keywords in `let_ok` and `let_error`
      - Fix `before` to ignore not enumerables
+  * 1.5.0
+     - Add `be` and `be_close_to` assertions for `Date`, `Time`, `NaiveDateTime`, and `DateTime`
 
 ## Contributing
 ##### Contributions are welcome and appreciated!
