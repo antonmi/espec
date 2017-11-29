@@ -30,7 +30,6 @@ defmodule Calendar.ISO.Extension do
       {730485, {46800000000, 86400000000}}
 
   """
-  @impl true
   @spec naive_datetime_to_iso_days(Calendar.year, Calendar.month, Calendar.day,
                                    Calendar.hour, Calendar.minute, Calendar.second,
                                    Calendar.microsecond) :: Calendar.iso_days
@@ -50,7 +49,6 @@ defmodule Calendar.ISO.Extension do
       {45296000123, 86400000000}
 
   """
-  @impl true
   @spec time_to_day_fraction(Calendar.hour, Calendar.minute,
                              Calendar.second, Calendar.microsecond) :: Calendar.day_fraction
   def time_to_day_fraction(0, 0, 0, {0, _}) do
@@ -94,7 +92,6 @@ defmodule Calendar.ISO.Extension do
 
   """
   @spec days_in_month(year, month) :: 28..31
-  @impl true
   def days_in_month(year, month)
 
   def days_in_month(year, 2) do
@@ -104,7 +101,6 @@ defmodule Calendar.ISO.Extension do
   def days_in_month(_, month) when month in 1..12, do: 31
 
   @spec leap_year?(year) :: boolean()
-  @impl true
   def leap_year?(year) when is_integer(year) and year >= 0 do
     rem(year, 4) === 0 and (rem(year, 100) > 0 or rem(year, 400) === 0)
   end
