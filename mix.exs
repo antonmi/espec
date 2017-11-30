@@ -22,7 +22,7 @@ defmodule ESpec.Mixfile do
 
   defp deps do
     [
-      {:meck, "0.8.8"},
+      {:meck, "0.8.9"},
       {:credo, "0.8.8", only: [:dev, :test]},
       # Docs
       {:ex_doc, "0.18.1", only: [:docs, :dev]}

@@ -1161,6 +1161,9 @@ There are community supported formatters:
      - Fix `before` to ignore not enumerables
   * 1.5.0
      - Add `be` and `be_close_to` assertions for `Date`, `Time`, `NaiveDateTime`, and `DateTime`
+     - 'have' matcher for Map
+     - 'let' works for generated examples
+     - 'match_pattern' macro
 
 ## Contributing
 ##### Contributions are welcome and appreciated!
