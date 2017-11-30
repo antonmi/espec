@@ -9,7 +9,7 @@ defmodule ESpec.Assertions.Enum.BeEmptySpec do
       end
 
       it "checks success with `not_to`" do
-        message = expect([1,2,3]).to_not be_empty()
+        message = expect([1, 2, 3]).to_not be_empty()
         expect(message) |> to(eq "`[1, 2, 3]` is not empty.")
       end
     end
@@ -32,7 +32,7 @@ defmodule ESpec.Assertions.Enum.BeEmptySpec do
       context "with `to`" do
         before do
           {:shared,
-            expectation: fn -> expect([1,2,3]).to be_empty() end,
+            expectation: fn -> expect([1, 2, 3]).to be_empty() end,
             message: "Expected `[1, 2, 3]` to be empty, but it has `3` elements."}
         end
 

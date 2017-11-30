@@ -28,7 +28,7 @@ defmodule ESpec.Assertions.BetweenSpec do
       context "with `not_to`" do
         before do
           {:shared,
-            expectation: fn -> expect(1 + 1).to_not be_between(1,3) end,
+            expectation: fn -> expect(1 + 1).to_not be_between(1, 3) end,
             message: "Expected `2` not to be between `1` and `3`, but it is."}
         end
 

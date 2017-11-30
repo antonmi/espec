@@ -21,7 +21,7 @@ defmodule StringFilterTest do
     assert(Enum.count(examples) == 2)
 
     examples = ESpec.SuiteRunner.filter(SomeSpec.examples, [string: "wrong"])
-    assert(Enum.count(examples) == 0)
+    assert(Enum.empty?(examples))
   end
 
   test "matches context description" do
@@ -32,7 +32,7 @@ defmodule StringFilterTest do
     assert(Enum.count(examples) == 1)
 
     examples = ESpec.SuiteRunner.filter(SomeSpec.examples, [string: "wrong"])
-    assert(Enum.count(examples) == 0)
+    assert(Enum.empty?(examples))
   end
 
 end

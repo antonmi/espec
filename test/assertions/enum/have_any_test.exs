@@ -32,6 +32,6 @@ defmodule Enum.HaveAnyTest do
   end
 
   test "Errors", context do
-    Enum.each(context[:errors],&(assert(&1.status == :failure)))
+    Enum.each(context[:errors], &(assert(&1.status == :failure)))
   end
 end

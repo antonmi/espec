@@ -210,7 +210,7 @@ defmodule ESpec.ExampleRunner do
     case res do
       {key, list} when key in @dict_keys and (is_list(list) or is_map(list)) ->
         if (Keyword.keyword?(list) || is_map(list)) && Enumerable.impl_for(list) do
-          Enum.reduce(list, map, fn({k,v}, a) -> Map.put(a, k, v) end)
+          Enum.reduce(list, map, fn({k, v}, a) -> Map.put(a, k, v) end)
         else
           map
         end

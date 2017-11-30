@@ -199,7 +199,7 @@ defmodule Mix.Tasks.Espec do
 
       spec_files =
         if Enum.any?(files) do
-          files = files_with_opts |> Enum.map(fn {f,_} -> f end)
+          files = files_with_opts |> Enum.map(fn {f, _} -> f end)
           Mix.Utils.extract_files(files, spec_pattern)
         else
           Mix.Utils.extract_files(spec_paths, spec_pattern)

@@ -26,7 +26,7 @@ defmodule FilterTagsOnlyTest do
     assert(Enum.count(examples) == 1)
 
     examples = ESpec.SuiteRunner.filter(SomeSpec.examples, [only: "wrong_tag"])
-    assert(Enum.count(examples) == 0)
+    assert(Enum.empty?(examples))
   end
 
   test "with context" do
