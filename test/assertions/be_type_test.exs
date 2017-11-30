@@ -12,7 +12,7 @@ defmodule BeTypeTest do
       it do: 1.2 |> should(be_float())
       it do: fn -> :ok end |> should(be_function())
       it do: 1 |> should(be_integer())
-      it do: [1,2,3] |> should(be_list())
+      it do: [1, 2, 3] |> should(be_list())
       it do: %{a: :b} |> should(be_map())
       it do: nil |> should(be_nil())
       it do: 1.5 |> should(be_number())

@@ -32,7 +32,7 @@ defmodule ThowTermTest do
   end
 
   test "Success", context do
-    Enum.each(context[:success],&(assert(&1.status == :success)))
+    Enum.each(context[:success], &(assert(&1.status == :success)))
   end
 
   test "Errors", context do

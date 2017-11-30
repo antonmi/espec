@@ -12,7 +12,10 @@ defmodule AssertReceiveSpec do
 
       it "waits custom time until received" do
         parent = self()
-        spawn(fn -> :timer.sleep(200); send(parent, :hello) end)
+        spawn(fn ->
+          :timer.sleep(200)
+          send(parent, :hello)
+        end)
         message = assert_receive(:hello, 300)
         expect(message) |> to(eq "Received `:hello`.")
       end
