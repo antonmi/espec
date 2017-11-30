@@ -26,8 +26,8 @@ defmodule DatesTimes.BeTest do
       let :datetime_minutes, do: DateTime.Extension.from_naive!(~N[2017-08-07 01:50:10.000001], "Etc/UTC")
       let :datetime_seconds, do: DateTime.Extension.from_naive!(~N[2017-08-07 01:10:12.000001], "Etc/UTC")
       let :datetime_microseconds, do: DateTime.Extension.from_naive!(~N[2017-08-07 01:10:10.000003], "Etc/UTC")
-      let :datetime_pst, do: %DateTime{year: 2017, month: 3, day: 15, hour: 1, minute: 30, second: 30, microsecond: {1, 6}, std_offset: 1*3600, utc_offset: -8*3600, zone_abbr: "PST", time_zone: "America/Los_Angeles"}
-      let :datetime_est, do: %DateTime{year: 2017, month: 3, day: 15, hour: 6, minute: 30, second: 30, microsecond: {1, 6}, std_offset: 1*3600, utc_offset: -5*3600, zone_abbr: "EST", time_zone: "America/New_York"}
+      let :datetime_pst, do: %DateTime{year: 2017, month: 3, day: 15, hour: 1, minute: 30, second: 30, microsecond: {1, 6}, std_offset: 1 * 3600, utc_offset: -8 * 3600, zone_abbr: "PST", time_zone: "America/Los_Angeles"}
+      let :datetime_est, do: %DateTime{year: 2017, month: 3, day: 15, hour: 6, minute: 30, second: 30, microsecond: {1, 6}, std_offset: 1 * 3600, utc_offset: -5 * 3600, zone_abbr: "EST", time_zone: "America/New_York"}
 
       it do: expect(~D[2020-08-07]).to be :>=, ~D[2017-08-07], {:years, 3}
       it do: expect(~D[2020-08-07]).to be :>=, ~D[2017-08-07], years: 3

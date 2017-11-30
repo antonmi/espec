@@ -2,7 +2,7 @@ defmodule ESpec.Assertions.Enum.HaveAllSpec do
   use ESpec, async: true
 
   let :range, do: (1..3)
-  let :list, do: [1,2,3]
+  let :list, do: [1, 2, 3]
   let :dict, do: %{a: 1, b: 2, c: 3}
 
   let :positive, do: fn(el) -> el > 0 end

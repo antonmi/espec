@@ -4,7 +4,7 @@ defmodule List.HaveLastTest do
   defmodule SomeSpec do
     use ESpec
 
-    subject [1,2,3]
+    subject [1, 2, 3]
   
     context "Success" do
       it do: should have_last 3

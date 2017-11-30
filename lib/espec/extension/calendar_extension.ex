@@ -65,7 +65,7 @@ defmodule Calendar.ISO.Extension do
     0
   end
   def date_to_iso_days(1970, 1, 1) do
-    719528
+    719_528
   end
   def date_to_iso_days(year, month, day) when year in 0..9999 do
     true = day <= days_in_month(year, month)

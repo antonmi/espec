@@ -1,7 +1,7 @@
 defmodule ESpec.Assertions.List.HaveFirstSpec do
   use ESpec, async: true
 
-  subject [1,2,3]
+  subject [1, 2, 3]
 
   context "Success" do
     it "checks success with `to`" do

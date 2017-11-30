@@ -26,7 +26,7 @@ defmodule AsyncOptionTest do
   test "check async examples in SomeSpecAsync" do
     {async, sync} = ESpec.SuiteRunner.partition_async(SomeSpecAsync.examples)
     assert length(async) == 2
-    assert length(sync) == 0
+    assert Enum.empty?(sync)
   end
 
   test "check sync examples in SomeSpecSyncAsync" do
