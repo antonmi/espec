@@ -13,6 +13,8 @@ defmodule ESpec.AssertionHelpers do
   def eql(value), do: {Assertions.Eql, value}
   def be(value), do: {Assertions.Eq, value}
   def be(operator, value), do: {Assertions.Be, [operator,  value]}
+  def be(operator, value, [{granularity, delta}]), do: {Assertions.Be, [operator,  value, [{granularity, delta}]]}
+  def be(operator, value, {granularity, delta}), do: {Assertions.Be, [operator,  value, {granularity, delta}]}
   def be_between(min, max), do: {Assertions.BeBetween, [min, max]}
   def be_close_to(value, delta), do: {Assertions.BeCloseTo, [value, delta]}
   def match(value), do: {Assertions.Match, value}
