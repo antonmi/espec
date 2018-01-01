@@ -13,6 +13,10 @@ defmodule ConfigFinallyRaiseTest do
       end
     end
 
+    on_exit fn ->
+      ESpec.configure fn(c) -> c.finally(fn -> :ok end) end
+    end
+
     {:ok, ex1: Enum.at(SomeSpec.examples, 0)}
   end
 
@@ -36,6 +40,10 @@ defmodule ConfigFinallyThrowTest do
       c.finally fn ->
         throw :some_term
       end
+    end
+
+    on_exit fn ->
+      ESpec.configure fn(c) -> c.finally(fn -> :ok end) end
     end
 
     {:ok, ex2: Enum.at(SomeSpec.examples, 0)}

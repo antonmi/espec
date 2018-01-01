@@ -159,8 +159,9 @@ defmodule ESpec.ExampleRunner do
     func = ESpec.Configuration.get(:finally)
     if func do
       run_config_finally({assigns, example}, func)
+    else
+      {assigns, example}
     end
-    {assigns, example}
   end
 
   defp run_config_finally({assigns, example}, func) do
