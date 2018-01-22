@@ -37,14 +37,14 @@ defmodule ESpec.ExampleRunner do
     {assigns, example} = before_example_actions(example)
     try do
       try_run(example, assigns, start_time)
-    catch
-      what, value -> do_catch(example, assigns, start_time, what, value)
     rescue
       error in [AssertionError] -> do_rescue(example, assigns, start_time, error)
       error in [AfterExampleError] -> do_rescue(example, assigns, start_time, error.example_error, false)
       other_error ->
         error = %AssertionError{message: format_other_error(other_error)}
         do_rescue(example, assigns, start_time, error)
+    catch
+      what, value -> do_catch(example, assigns, start_time, what, value)
     after
       unload_mocks()
     end
@@ -175,10 +175,10 @@ defmodule ESpec.ExampleRunner do
   defp call_with_rescue(fun, {assigns, example}) do
     try do
       fun.()
-    catch
-      what, value -> do_catch(what, value, {assigns, example})
     rescue
       any_error -> do_before(any_error, {assigns, example})
+    catch
+      what, value -> do_catch(what, value, {assigns, example})
     end
   end
 

@@ -42,7 +42,7 @@ defmodule ESpec.SuiteRunner do
 
   @doc false
   def partition_async(examples) do
-    Enum.partition(examples, &Example.extract_option(&1, :async) === true)
+    Enum.split_with(examples, &Example.extract_option(&1, :async) === true)
   end
 
   defp run_before_all(module) do
