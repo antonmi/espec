@@ -200,7 +200,7 @@ mix espec spec/some_spec.exs --only context_tag:some_tag --exclude example_tag
 ```
 This runs only one test "some example"
 
-You can also filter examples by `--string` option which filter examples which contain given string it their nested description.
+You can also filter examples by `--string` option which filter examples which contain given string in their nested description.
 ```sh
 mix espec spec/some_spec.exs --string 'context with tag'
 ```
