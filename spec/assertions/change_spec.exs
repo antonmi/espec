@@ -29,7 +29,7 @@ defmodule ChangeSpec do
 
     it "checks success with `by`" do
       message = expect(f1()).to change(f2(), by: 1)
-      expect(message) |> to(end_with "changes by the value of `&ChangeSpec.count/0` by `1`.")
+      expect(message) |> to(end_with "changes the value of `&ChangeSpec.count/0` by `1`.")
     end
   end
 
