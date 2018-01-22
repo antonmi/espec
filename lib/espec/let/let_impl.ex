@@ -12,19 +12,23 @@ defmodule ESpec.Let.Impl do
         result = apply(module, funcname, [shared])
         agent_put({self(), module, var}, {:done, result})
         result
+
       {:done, result} ->
         result
+
       nil ->
-        funcname = case var do
-          :subject -> "subject"
-          _ -> "let function `#{var}/0`"
-        end
+        funcname =
+          case var do
+            :subject -> "subject"
+            _ -> "let function `#{var}/0`"
+          end
+
         raise ESpec.LetError, "The #{funcname} is not defined in the current scope!"
     end
   end
 
   @doc "Starts Agent to save state of 'lets'."
-  def start_agent, do: Agent.start_link(fn -> Map.new end, name: @agent_name)
+  def start_agent, do: Agent.start_link(fn -> Map.new() end, name: @agent_name)
 
   @doc "Stops Agent"
   def stop_agent, do: Agent.stop(@agent_name)
@@ -38,7 +42,8 @@ defmodule ESpec.Let.Impl do
   @doc "Clears all let values for the given module. Called by ExampleRunner."
   def clear_lets(module) do
     me = self()
-    Agent.update(@agent_name, fn(map) ->
+
+    Agent.update(@agent_name, fn map ->
       keys_to_remove = Map.keys(map) |> Enum.filter(&match?({^me, ^module, _}, &1))
       Map.drop(map, keys_to_remove)
     end)
@@ -50,10 +55,10 @@ defmodule ESpec.Let.Impl do
   end
 
   defp agent_get(key) do
-    Agent.get(@agent_name, fn(state) -> Map.get(state, key) end)
+    Agent.get(@agent_name, fn state -> Map.get(state, key) end)
   end
 
-  defp agent_put(key, value), do: Agent.update(@agent_name, &(Map.put(&1, key, value)))
+  defp agent_put(key, value), do: Agent.update(@agent_name, &Map.put(&1, key, value))
 
-  def random_let_name, do: String.to_atom("let_#{ESpec.Support.random_string}")
+  def random_let_name, do: String.to_atom("let_#{ESpec.Support.random_string()}")
 end

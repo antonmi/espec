@@ -13,13 +13,12 @@ defmodule ESpec.Assertions.String.BePrintable do
 
   defp success_message(string, _val, _result, positive) do
     to = if positive, do: "is", else: "is not"
-    "`#{inspect string}` #{to} printable."
+    "`#{inspect(string)}` #{to} printable."
   end
 
   defp error_message(string, _val, _result, positive) do
     to = if positive, do: "to", else: "not to"
     but = if positive, do: "it isn't", else: "it is"
-    "Expected `#{inspect string}` #{to} be printable but #{but}."
+    "Expected `#{inspect(string)}` #{to} be printable but #{but}."
   end
-
 end

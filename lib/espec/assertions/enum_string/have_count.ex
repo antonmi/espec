@@ -20,12 +20,11 @@ defmodule ESpec.Assertions.EnumString.HaveCount do
 
   defp success_message(enum, val, _result, positive) do
     to = if positive, do: "has", else: "doesn't have"
-    "`#{inspect enum}` #{to} `#{val}` elements."
+    "`#{inspect(enum)}` #{to} `#{val}` elements."
   end
 
   defp error_message(enum, val, result, positive) do
     to = if positive, do: "to", else: "not to"
-    "Expected `#{inspect enum}` #{to} have `#{val}` elements but it has `#{result}`."
+    "Expected `#{inspect(enum)}` #{to} have `#{val}` elements but it has `#{result}`."
   end
-
 end

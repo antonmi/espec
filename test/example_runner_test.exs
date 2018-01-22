@@ -7,6 +7,7 @@ defmodule ExampleRunnerTest do
     before do
       {:ok, a: 10}
     end
+
     it do: "a = #{shared[:a]}"
 
     context "Context" do
@@ -16,22 +17,22 @@ defmodule ExampleRunnerTest do
     end
 
     context "errors" do
-      it do: expect(1).to eq(2)
-      it do: UndefinedModule.run
+      it do: expect(1).to(eq(2))
+      it do: UndefinedModule.run()
 
       context "throw term inside it block" do
-        it do: throw :some_term
+        it do: throw(:some_term)
       end
     end
   end
 
   setup_all do
     {:ok,
-      ex1: Enum.at(SomeSpec.examples, 0),
-      ex2: Enum.at(SomeSpec.examples, 1),
-      ex3: Enum.at(SomeSpec.examples, 2),
-      ex4: Enum.at(SomeSpec.examples, 3),
-      ex5: Enum.at(SomeSpec.examples, 4)}
+     ex1: Enum.at(SomeSpec.examples(), 0),
+     ex2: Enum.at(SomeSpec.examples(), 1),
+     ex3: Enum.at(SomeSpec.examples(), 2),
+     ex4: Enum.at(SomeSpec.examples(), 3),
+     ex5: Enum.at(SomeSpec.examples(), 4)}
   end
 
   test "run success examples", context do

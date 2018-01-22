@@ -2,11 +2,11 @@ defmodule ESpec.Formatters.Doc do
   @moduledoc """
   Generates plain colored text output.
   """
-  @green IO.ANSI.green
-  @red IO.ANSI.red
-  @cyan IO.ANSI.cyan
-  @yellow IO.ANSI.yellow
-  @reset IO.ANSI.reset
+  @green IO.ANSI.green()
+  @red IO.ANSI.red()
+  @cyan IO.ANSI.cyan()
+  @yellow IO.ANSI.yellow()
+  @reset IO.ANSI.reset()
 
   @status_colors [success: @green, failure: @red, pending: @yellow]
   @status_symbols [success: ".", failure: "F", pending: "*"]
@@ -19,6 +19,7 @@ defmodule ESpec.Formatters.Doc do
   def format_example(example, opts) do
     color = color_for_status(example.status)
     symbol = symbol_for_status(example.status)
+
     if opts[:details] do
       trace_description(example)
     else
@@ -39,17 +40,19 @@ defmodule ESpec.Formatters.Doc do
   end
 
   defp format_failed(failed, opts) do
-    res = failed |> Enum.with_index
-    |> Enum.map(fn({example, index}) ->
+    res =
+      failed |> Enum.with_index()
+      |> Enum.map(fn {example, index} ->
         do_format_failed_example(example, index, opts)
       end)
+
     Enum.join(res, "\n")
   end
 
   defp format_pending(pending) do
     pending
-    |> Enum.with_index
-    |> Enum.map(fn({example, index}) ->
+    |> Enum.with_index()
+    |> Enum.map(fn {example, index} ->
       do_format_pending_example(example, example.result, index)
     end)
     |> Enum.join("\n")
@@ -58,11 +61,12 @@ defmodule ESpec.Formatters.Doc do
   defp do_format_pending_example(example, info, index) do
     color = color_for_status(example.status)
     description = one_line_description(example)
+
     [
       "\n",
       "\t#{index + 1}) #{description}",
       "\t#{@cyan}#{example.file}:#{example.line}#{@reset}",
-      "\t#{color}#{info}#{@reset}",
+      "\t#{color}#{info}#{@reset}"
     ]
     |> Enum.join("\n")
   end
@@ -70,17 +74,20 @@ defmodule ESpec.Formatters.Doc do
   defp do_format_failed_example(example, index, opts) do
     color = color_for_status(example.status)
     description = one_line_description(example)
+
     error_message =
       example.error.message
       |> String.replace("\n", "\n\t  ")
 
-    Enum.join([
-      "\n",
-      "\t#{index + 1}) #{description}",
-      "\t#{@cyan}#{do_format_stacktrace(example)}#{@reset}",
-      "\t#{color}#{error_message}#{@reset}"
-    ], "\n") <>
-    if Map.get(opts, :diff_enabled?, true), do: do_format_diff(example.error), else: ""
+    Enum.join(
+      [
+        "\n",
+        "\t#{index + 1}) #{description}",
+        "\t#{@cyan}#{do_format_stacktrace(example)}#{@reset}",
+        "\t#{color}#{error_message}#{@reset}"
+      ],
+      "\n"
+    ) <> if Map.get(opts, :diff_enabled?, true), do: do_format_diff(example.error), else: ""
   end
 
   defp do_format_stacktrace(example) do
@@ -106,8 +113,8 @@ defmodule ESpec.Formatters.Doc do
     else
       example.error.stacktrace
       |> remove_example_if_first(example)
-      |> Enum.map(fn({module, function, arity, [file: file, line: line]} = item) ->
-        if in_this_example?(example, item)  do
+      |> Enum.map(fn {module, function, arity, [file: file, line: line]} = item ->
+        if in_this_example?(example, item) do
           "#{file}:#{line}: (inside example)"
         else
           "#{file}:#{line}: #{module}.#{function}/#{arity}"
@@ -117,14 +124,14 @@ defmodule ESpec.Formatters.Doc do
   end
 
   defp in_this_example?(example, {module, function, arity, [file: file, line: _line]}) do
-    module == example.module && function == example.function &&
-      arity == 1 &&
+    module == example.module && function == example.function && arity == 1 &&
       file == String.to_charlist(Path.relative_to_cwd(example.file))
   end
 
   defp remove_example_if_first([], _example) do
     []
   end
+
   defp remove_example_if_first([{_, _, _, [file: _, line: line]} = first | rest] = trace, example) do
     if in_this_example?(example, first) && line == example.line do
       rest
@@ -136,6 +143,7 @@ defmodule ESpec.Formatters.Doc do
   defp do_format_diff(%ESpec.AssertionError{extra: %{diff_fn: f}}) when is_function(f, 0) do
     format_diff(f.())
   end
+
   defp do_format_diff(_), do: ""
 
   defp format_diff({l, r}) do
@@ -150,15 +158,19 @@ defmodule ESpec.Formatters.Doc do
   defp colorize_diff([{:eq, text} | rest]) do
     text <> colorize_diff(rest)
   end
+
   defp colorize_diff([{:ins, text} | rest]) do
     "#{@green}#{text}#{@reset}" <> colorize_diff(rest)
   end
+
   defp colorize_diff([{:del, text} | rest]) do
     "#{@red}#{text}#{@reset}" <> colorize_diff(rest)
   end
+
   defp colorize_diff([{:ins_whitespace, length} | rest]) do
     String.duplicate(" ", length) <> colorize_diff(rest)
   end
+
   defp colorize_diff([]), do: ""
 
   defp format_footer(examples, failed, pending) do
@@ -172,8 +184,9 @@ defmodule ESpec.Formatters.Doc do
     color = get_color(failed, pending)
     load_time = :timer.now_diff(finish_loading_time, start_loading_time)
     spec_time = :timer.now_diff(finish_specs_time, finish_loading_time)
-    "\n\n\t#{color}Finished in #{us_to_sec(load_time + spec_time)} seconds"
-    <> " (#{us_to_sec(load_time)}s on load, #{us_to_sec(spec_time)}s on specs)#{@reset}\n\n"
+
+    "\n\n\t#{color}Finished in #{us_to_sec(load_time + spec_time)} seconds" <>
+      " (#{us_to_sec(load_time)}s on load, #{us_to_sec(spec_time)}s on specs)#{@reset}\n\n"
   end
 
   defp format_seed do
@@ -197,23 +210,30 @@ defmodule ESpec.Formatters.Doc do
 
   defp one_line_description(example) do
     desc = Example.context_descriptions(example) ++ [example.description]
+
     desc
     |> Enum.join(" ")
-    |> String.trim_trailing
+    |> String.trim_trailing()
   end
 
   defp trace_description(example) do
     color = color_for_status(example.status)
-    ex_desc = if String.length(example.description) > 0 do
-      "#{color}#{example.description}#{@reset}"
-    else
-      status_message(example, color)
-    end
+
+    ex_desc =
+      if String.length(example.description) > 0 do
+        "#{color}#{example.description}#{@reset}"
+      else
+        status_message(example, color)
+      end
+
     array = Example.context_descriptions(example) ++ [ex_desc]
-    {result, _} = Enum.reduce(array, {"", ""}, fn(description, acc) ->
-      {d, w} = acc
-      {d <> w <> "#{description}" <> "\n", w <> "  "}
-    end)
+
+    {result, _} =
+      Enum.reduce(array, {"", ""}, fn description, acc ->
+        {d, w} = acc
+        {d <> w <> "#{description}" <> "\n", w <> "  "}
+      end)
+
     result
   end
 
@@ -221,7 +241,7 @@ defmodule ESpec.Formatters.Doc do
     if example.status == :failure do
       "#{color}#{example.error.message}#{@reset}"
     else
-      "#{color}#{inspect example.result}#{@reset}"
+      "#{color}#{inspect(example.result)}#{@reset}"
     end
   end
 

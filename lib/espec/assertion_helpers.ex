@@ -12,9 +12,14 @@ defmodule ESpec.AssertionHelpers do
   def eq(value), do: {Assertions.Eq, value}
   def eql(value), do: {Assertions.Eql, value}
   def be(value), do: {Assertions.Eq, value}
-  def be(operator, value), do: {Assertions.Be, [operator,  value]}
-  def be(operator, value, [{granularity, delta}]), do: {Assertions.Be, [operator,  value, [{granularity, delta}]]}
-  def be(operator, value, {granularity, delta}), do: {Assertions.Be, [operator,  value, {granularity, delta}]}
+  def be(operator, value), do: {Assertions.Be, [operator, value]}
+
+  def be(operator, value, [{granularity, delta}]),
+    do: {Assertions.Be, [operator, value, [{granularity, delta}]]}
+
+  def be(operator, value, {granularity, delta}),
+    do: {Assertions.Be, [operator, value, {granularity, delta}]}
+
   def be_between(min, max), do: {Assertions.BeBetween, [min, max]}
   def be_close_to(value, delta), do: {Assertions.BeCloseTo, [value, delta]}
   def match(value), do: {Assertions.Match, value}
@@ -35,25 +40,42 @@ defmodule ESpec.AssertionHelpers do
   def raise_exception(exception, message) when is_atom(exception) and is_binary(message) do
     {Assertions.RaiseException, [exception, message]}
   end
-  def raise_exception(exception) when is_atom(exception), do: {Assertions.RaiseException, [exception]}
+
+  def raise_exception(exception) when is_atom(exception),
+    do: {Assertions.RaiseException, [exception]}
+
   def raise_exception(), do: {Assertions.RaiseException, []}
 
   def throw_term(term), do: {Assertions.ThrowTerm, [term]}
   def throw_term(), do: {Assertions.ThrowTerm, []}
 
   def change(func) when is_function(func), do: {Assertions.Change, [func]}
-  def change(func, value) when is_function(func) and is_integer(value), do: {Assertions.ChangeTo, [func, value]}
-  def change(func, value) when is_function(func) and is_list(value), do: {Assertions.ChangeBy, [func, value]}
-  def change(func, before, value) when is_function(func), do: {Assertions.ChangeFromTo, [func, before, value]}
+
+  def change(func, value) when is_function(func) and is_integer(value),
+    do: {Assertions.ChangeTo, [func, value]}
+
+  def change(func, value) when is_function(func) and is_list(value),
+    do: {Assertions.ChangeBy, [func, value]}
+
+  def change(func, before, value) when is_function(func),
+    do: {Assertions.ChangeFromTo, [func, before, value]}
 
   def have_all(func) when is_function(func), do: {Assertions.Enum.HaveAll, func}
   def have_any(func) when is_function(func), do: {Assertions.Enum.HaveAny, func}
-  def have_count_by(func, val) when is_function(func), do: {Assertions.Enum.HaveCountBy, [func, val]}
+
+  def have_count_by(func, val) when is_function(func),
+    do: {Assertions.Enum.HaveCountBy, [func, val]}
+
   def be_empty, do: {Assertions.Enum.BeEmpty, []}
   def have_max(value), do: {Assertions.Enum.HaveMax, value}
-  def have_max_by(func, value) when is_function(func), do: {Assertions.Enum.HaveMaxBy, [func, value]}
+
+  def have_max_by(func, value) when is_function(func),
+    do: {Assertions.Enum.HaveMaxBy, [func, value]}
+
   def have_min(value), do: {Assertions.Enum.HaveMin, value}
-  def have_min_by(func, value) when is_function(func), do: {Assertions.Enum.HaveMinBy, [func, value]}
+
+  def have_min_by(func, value) when is_function(func),
+    do: {Assertions.Enum.HaveMinBy, [func, value]}
 
   def match_list(value) when is_list(value), do: {Assertions.ContainExactly, value}
   def contain_exactly(value) when is_list(value), do: {Assertions.ContainExactly, value}
@@ -83,17 +105,19 @@ defmodule ESpec.AssertionHelpers do
 
   def be_alive(), do: {Assertions.PID.BeAlive, []}
 
-  Enum.each @elixir_types, fn(type) ->
+  Enum.each(@elixir_types, fn type ->
     def unquote(String.to_atom("be_#{type}"))() do
       {Assertions.BeType, unquote(Macro.escape(type))}
     end
-  end
+  end)
+
   def be_nil, do: {Assertions.BeType, :null}
   def be_function(arity), do: {Assertions.BeType, [:function, arity]}
   def be_struct, do: {Assertions.BeType, :struct}
   def be_struct(name), do: {Assertions.BeType, [:struct, name]}
 
-  def accepted(func, args \\ :any, opts \\ [pid: :any, count: :any]), do: {Assertions.Accepted, [func, args, opts]}
+  def accepted(func, args \\ :any, opts \\ [pid: :any, count: :any]),
+    do: {Assertions.Accepted, [func, args, opts]}
 
   def be_ok_result(), do: {Assertions.Result.BeOkResult, []}
   def be_error_result(), do: {Assertions.Result.BeErrorResult, []}

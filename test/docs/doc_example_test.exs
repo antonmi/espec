@@ -11,8 +11,8 @@ defmodule ESpec.Docs.DocExampleTest do
       5
     """
     def f, do: :f
-
-  end |> write_beam
+  end
+  |> write_beam
 
   test "Mod1" do
     examples = ESpec.DocExample.extract(Mod1)
@@ -31,11 +31,14 @@ defmodule ESpec.Docs.DocExampleTest do
     """
 
     def f, do: :f
-  end |> write_beam
+  end
+  |> write_beam
 
   test "Mod2" do
-    assert_raise ESpec.DocExample.Error, "indentation level mismatch: \"2\", should have been 2 spaces", fn ->
-      ESpec.DocExample.extract(Mod2)
-    end
+    assert_raise ESpec.DocExample.Error,
+                 "indentation level mismatch: \"2\", should have been 2 spaces",
+                 fn ->
+                   ESpec.DocExample.extract(Mod2)
+                 end
   end
 end
