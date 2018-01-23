@@ -20,6 +20,7 @@ defmodule ESpec.Configuration do
     string: "Run only examples whose full nested descriptions contain string",
     seed: "Seeds the random number generator used to randomize tests order",
     test: "For test purpose",
+    shared_specs: "The shared spec files to include",
     start_loading_time: "Starts loading files",
     finish_loading_time: "Finished loading",
     finish_specs_time: "Finished specs",
