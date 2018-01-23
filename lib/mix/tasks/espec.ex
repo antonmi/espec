@@ -193,29 +193,25 @@ defmodule Mix.Tasks.Espec do
   defp parse_spec_files(project, files) do
     spec_paths = get_spec_paths(project)
     spec_pattern = get_spec_pattern(project)
-    shared_spec_paths = get_shared_spec_paths(project)
-    shared_spec_pattern = get_shared_spec_pattern(project)
 
     if Enum.all?(spec_paths, &require_spec_helper(&1)) do
       files_with_opts = if Enum.any?(files), do: parse_files(files), else: []
+      shared_spec_files = extract_shared_specs(project)
 
-      spec_files =
-        if Enum.any?(files) do
-          files = files_with_opts |> Enum.map(fn {f, _} -> f end)
-          Mix.Utils.extract_files(files, spec_pattern)
-        else
-          Mix.Utils.extract_files(spec_paths, spec_pattern)
-        end
-
-      shared_spec_files = Mix.Utils.extract_files(shared_spec_paths, shared_spec_pattern)
-
-      Kernel.ParallelCompiler.files(shared_spec_files)
-      Kernel.ParallelRequire.files(spec_files -- shared_spec_files)
+      files_with_opts
+      |> Enum.map(&elem(&1, 0))
+      |> if_empty_use(spec_paths)
+      |> extract_files(spec_pattern)
+      |> compile(include_shared: shared_spec_files)
 
       Configuration.add(file_opts: files_with_opts)
+      Configuration.add(shared_specs: shared_spec_files)
       Configuration.add(finish_loading_time: :os.timestamp)
     end
   end
+
+  defp if_empty_use([], default), do: default
+  defp if_empty_use(value, _default), do: value
 
   defp get_spec_paths(project) do
     project[:spec_paths] || ["spec"]
@@ -223,6 +219,17 @@ defmodule Mix.Tasks.Espec do
 
   defp get_spec_pattern(project) do
     project[:spec_pattern] || "*_spec.exs"
+  end
+
+  defp extract_files(paths, pattern) do
+    Mix.Utils.extract_files(paths, pattern)
+  end
+
+  defp extract_shared_specs(project) do
+    shared_spec_paths = get_shared_spec_paths(project)
+    shared_spec_pattern = get_shared_spec_pattern(project)
+
+    extract_files(shared_spec_paths, shared_spec_pattern)
   end
 
   defp get_shared_spec_paths(project) do
@@ -237,5 +244,12 @@ defmodule Mix.Tasks.Espec do
 
   defp get_shared_spec_pattern(project) do
     project[:shared_spec_pattern] || get_spec_pattern(project)
+  end
+
+  defp compile(spec_files, include_shared: shared_spec_files) do
+    shared_spec_files = shared_spec_files || []
+
+    Kernel.ParallelCompiler.files(shared_spec_files)
+    Kernel.ParallelCompiler.files(spec_files -- shared_spec_files)
   end
 end
