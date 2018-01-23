@@ -191,8 +191,10 @@ defmodule Mix.Tasks.Espec do
   end
 
   defp parse_spec_files(project, files) do
-    spec_paths = project[:spec_paths] || ["spec"]
-    spec_pattern =  project[:spec_pattern] || "*_spec.exs"
+    spec_paths = get_spec_paths(project)
+    spec_pattern = get_spec_pattern(project)
+    shared_spec_paths = get_shared_spec_paths(project)
+    shared_spec_pattern = get_shared_spec_pattern(project)
 
     if Enum.all?(spec_paths, &require_spec_helper(&1)) do
       files_with_opts = if Enum.any?(files), do: parse_files(files), else: []
@@ -205,9 +207,35 @@ defmodule Mix.Tasks.Espec do
           Mix.Utils.extract_files(spec_paths, spec_pattern)
         end
 
-      Kernel.ParallelRequire.files(spec_files)
+      shared_spec_files = Mix.Utils.extract_files(shared_spec_paths, shared_spec_pattern)
+
+      Kernel.ParallelCompiler.files(shared_spec_files)
+      Kernel.ParallelRequire.files(spec_files -- shared_spec_files)
+
       Configuration.add(file_opts: files_with_opts)
       Configuration.add(finish_loading_time: :os.timestamp)
     end
+  end
+
+  defp get_spec_paths(project) do
+    project[:spec_paths] || ["spec"]
+  end
+
+  defp get_spec_pattern(project) do
+    project[:spec_pattern] || "*_spec.exs"
+  end
+
+  defp get_shared_spec_paths(project) do
+    project[:shared_spec_paths] || default_shared_spec_paths(project)
+  end
+
+  defp default_shared_spec_paths(project) do
+    project
+    |> get_spec_paths()
+    |> Enum.map(&Path.join(&1, "shared"))
+  end
+
+  defp get_shared_spec_pattern(project) do
+    project[:shared_spec_pattern] || get_spec_pattern(project)
   end
 end
