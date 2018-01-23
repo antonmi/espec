@@ -222,7 +222,15 @@ defmodule Mix.Tasks.Espec do
   end
 
   defp extract_files(paths, pattern) do
-    Mix.Utils.extract_files(paths, pattern)
+    already_loaded = MapSet.new(Code.loaded_files())
+
+    paths
+    |> Mix.Utils.extract_files(pattern)
+    |> Enum.reject(fn path ->
+      full_path = Path.expand(path)
+
+      MapSet.member?(already_loaded, full_path)
+    end)
   end
 
   defp extract_shared_specs(project) do
