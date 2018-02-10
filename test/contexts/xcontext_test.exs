@@ -7,13 +7,13 @@ defmodule XcontextTest do
 
     it do: "Example"
 
-    context "skipped", skip: true do
+    context "skipped", [skip: true] do
       it do: "skipped"
     end
 
-    context skip: true do
+    context [skip: true] do
       it do: "skipped"
-      xit(do: "skipped")
+      xit do: "skipped"
     end
 
     xcontext do
@@ -22,9 +22,9 @@ defmodule XcontextTest do
 
     xcontext "skipped" do
       it do: "skipped"
-    end
+    end    
 
-    xcontext "skipped", some: :opts do
+    xcontext "skipped", [some: :opts] do
       it do: "skipped"
     end
 
@@ -34,15 +34,16 @@ defmodule XcontextTest do
 
     xdescribe "skipped" do
       it do: "skipped"
-    end
+    end    
 
-    xdescribe "skipped", some: :opts do
+    xdescribe "skipped", [some: :opts] do
       it do: "skipped"
     end
+
   end
 
   test "check success and pending" do
-    results = ESpec.SuiteRunner.run_examples(SomeSpec.examples(), true)
+    results = ESpec.SuiteRunner.run_examples(SomeSpec.examples, true)
     assert(length(Enum.filter(results, &(&1.status == :success))) == 1)
     assert(length(Enum.filter(results, &(&1.status == :pending))) == 9)
   end

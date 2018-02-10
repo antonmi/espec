@@ -1,14 +1,14 @@
 defmodule ConfigBeforeTest do
   use ExUnit.Case, async: true
 
-  ESpec.configure(fn c ->
-    c.before(fn tags ->
+  ESpec.configure fn(c) ->
+    c.before fn(tags) ->
       {:shared, %{answer: 42, tags: tags}}
-    end)
-  end)
+    end
+  end
 
   test "set before in config" do
-    assert(is_function(ESpec.Configuration.get(:before)))
+    assert(is_function ESpec.Configuration.get(:before))
   end
 
   defmodule SomeSpec do
@@ -24,7 +24,10 @@ defmodule ConfigBeforeTest do
   end
 
   setup_all do
-    {:ok, ex1: Enum.at(SomeSpec.examples(), 0), ex2: Enum.at(SomeSpec.examples(), 1)}
+    {:ok,
+      ex1: Enum.at(SomeSpec.examples, 0),
+      ex2: Enum.at(SomeSpec.examples, 1)
+    }
   end
 
   test "run ex1", context do

@@ -7,7 +7,6 @@ defmodule ESpec.Diff do
   # shamelessly copied from ex_unit/formatter
   defp edit_script(left, right) do
     task = Task.async(ExUnit.Diff, :script, [left, right])
-
     case Task.yield(task, 1_500) || Task.shutdown(task, :brutal_kill) do
       {:ok, script} -> script
       nil -> nil
@@ -22,16 +21,16 @@ defmodule ESpec.Diff do
       }
     else
       diff
-      |> List.flatten()
+      |> List.flatten
       |> split_flattened_diff()
     end
   end
 
   defp split_flattened_diff(diff) do
     split_flattened_diff(diff, %{
-      left: [],
-      right: []
-    })
+        left: [],
+        right: []
+      })
   end
 
   defp split_flattened_diff([{:ins, text} | tail], processed) do

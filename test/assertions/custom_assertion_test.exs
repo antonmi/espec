@@ -12,34 +12,38 @@ defmodule CustonAssertionTest do
     context "Success" do
       subject 3
 
-      it do: should(be_divisor_of(6))
-      it do: should_not(be_divisor_of(5))
+      it do: should(be_divisor_of 6)
+      it do: should_not(be_divisor_of 5)
 
-      it do: should(be_odd())
+      it do: should be_odd()
       it do: 2 |> should_not(be_odd())
     end
 
     context "Error" do
       subject 5
 
-      it do: should(be_divisor_of(6))
-      it do: should_not(be_divisor_of(5))
+      it do: should be_divisor_of(6)
+      it do: should_not be_divisor_of(5)
 
-      it do: should_not(be_odd())
+      it do: should_not be_odd()
       it do: 2 |> should(be_odd())
     end
+
   end
 
+
   setup_all do
-    examples = ESpec.SuiteRunner.run_examples(SomeSpec.examples(), true)
-    {:ok, success: Enum.slice(examples, 0, 3), errors: Enum.slice(examples, 4, 7)}
+    examples = ESpec.SuiteRunner.run_examples(SomeSpec.examples, true)
+    {:ok,
+      success: Enum.slice(examples, 0, 3),
+      errors: Enum.slice(examples, 4, 7)}
   end
 
   test "Success", context do
-    Enum.each(context[:success], &assert(&1.status == :success))
+    Enum.each(context[:success], &(assert(&1.status == :success)))
   end
 
   test "Errors", context do
-    Enum.each(context[:errors], &assert(&1.status == :failure))
+    Enum.each(context[:errors], &(assert(&1.status == :failure)))
   end
 end

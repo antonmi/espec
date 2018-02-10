@@ -8,7 +8,7 @@ defmodule ESpec.Assertions.String.BeValidSpec do
     end
 
     it "checks success with `not_to`" do
-      message = <<0xFFFF::16>> |> should_not(be_valid_string())
+      message = <<0xffff :: 16>> |> should_not(be_valid_string())
       expect(message) |> to(eq "`<<255, 255>>` is not valid.")
     end
   end
@@ -17,8 +17,8 @@ defmodule ESpec.Assertions.String.BeValidSpec do
     context "with `to`" do
       before do
         {:shared,
-         expectation: fn -> <<0xFFFF::16>> |> should(be_valid_string()) end,
-         message: "Expected `<<255, 255>>` to be valid but it isn't."}
+          expectation: fn -> <<0xffff :: 16>> |> should(be_valid_string()) end,
+          message: "Expected `<<255, 255>>` to be valid but it isn't."}
       end
 
       it_behaves_like(CheckErrorSharedSpec)
@@ -27,8 +27,8 @@ defmodule ESpec.Assertions.String.BeValidSpec do
     context "with `not_to`" do
       before do
         {:shared,
-         expectation: fn -> "qwerty" |> should_not(be_valid_string()) end,
-         message: "Expected `\"qwerty\"` not to be valid but it is."}
+          expectation: fn -> "qwerty" |> should_not(be_valid_string()) end,
+          message: "Expected `\"qwerty\"` not to be valid but it is."}
       end
 
       it_behaves_like(CheckErrorSharedSpec)

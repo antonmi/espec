@@ -13,12 +13,13 @@ defmodule ESpec.Assertions.Map.HaveKey do
 
   defp success_message(dict, val, _result, positive) do
     to = if positive, do: "has", else: "doesn't have"
-    "`#{inspect(dict)}` #{to} key `#{inspect(val)}`."
+    "`#{inspect dict}` #{to} key `#{inspect val}`."
   end
 
   defp error_message(dict, val, _result, positive) do
     to = if positive, do: "to", else: "not to"
     but = if positive, do: "doesn't have", else: "has"
-    "Expected `#{inspect(dict)}` #{to} have key `#{inspect(val)}` but it #{but}."
+    "Expected `#{inspect dict}` #{to} have key `#{inspect val}` but it #{but}."
   end
+
 end

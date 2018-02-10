@@ -10,21 +10,14 @@ defmodule ESpec do
     quote do
       ESpec.add_spec(__MODULE__)
 
-      Module.register_attribute(__MODULE__, :examples, accumulate: true)
+      Module.register_attribute __MODULE__, :examples, accumulate: true
 
       @shared unquote(args)[:shared] || false
       @before_compile ESpec
 
       import ESpec.Context
-
-      @context [
-        %ESpec.Context{
-          description: inspect(__MODULE__),
-          module: __MODULE__,
-          line: __ENV__.line,
-          opts: unquote(args)
-        }
-      ]
+      @context [%ESpec.Context{description: inspect(__MODULE__),
+                  module: __MODULE__, line: __ENV__.line, opts: unquote(args)}]
 
       import ESpec.ExampleHelpers
       import ESpec.DocTest, only: [doctest: 1, doctest: 2]
@@ -54,12 +47,11 @@ defmodule ESpec do
   end
 
   defmacrop version_safe_start_capture_server do
-    case Version.match?(System.version(), ">= 1.5.0") do
+    case Version.match?(System.version, ">= 1.5.0") do
       true ->
         quote do
           ExUnit.CaptureServer.start_link([])
         end
-
       _ ->
         quote do
           ExUnit.CaptureServer.start_link()
@@ -84,32 +76,32 @@ defmodule ESpec do
 
   @doc "Runs the examples"
   def run do
-    ESpec.Runner.start()
-    ESpec.Output.start()
-    ESpec.Runner.run()
+    ESpec.Runner.start
+    ESpec.Output.start
+    ESpec.Runner.run
   end
 
   @doc "Starts ESpec. Starts agents to store specs, mocks, cache 'let' values, etc."
   def start do
     {:ok, _} = Application.ensure_all_started(:espec)
     start_specs_agent()
-    ESpec.Let.Impl.start_agent()
-    ESpec.Mock.start_agent()
+    ESpec.Let.Impl.start_agent
+    ESpec.Mock.start_agent
     start_capture_server()
   end
 
   @doc "Stops ESpec components"
   def stop do
     stop_specs_agent()
-    ESpec.Let.Impl.stop_agent()
-    ESpec.Mock.stop_agent()
-    ESpec.Runner.stop()
-    ESpec.Output.stop()
+    ESpec.Let.Impl.stop_agent
+    ESpec.Mock.stop_agent
+    ESpec.Runner.stop
+    ESpec.Output.stop
     stop_capture_server()
   end
 
   @doc "Returns all examples."
-  def specs, do: Agent.get(@spec_agent_name, & &1)
+  def specs, do: Agent.get(@spec_agent_name, &(&1))
 
   @doc "Adds example to the agent."
   def add_spec(module), do: Agent.update(@spec_agent_name, &[module | &1])

@@ -7,13 +7,13 @@ defmodule AssertReceiveTest do
     context "Success" do
       it "assert_receive" do
         parent = self()
-        spawn(fn -> send(parent, :hello) end)
-        ESpec.AssertReceive.assert_receive(:hello)
+        spawn(fn -> send parent, :hello end)
+        ESpec.AssertReceive.assert_receive :hello
       end
 
       it "assert_received" do
         send(self(), :hello)
-        ESpec.AssertReceive.assert_received(:hello)
+        ESpec.AssertReceive.assert_received :hello
       end
     end
 
@@ -45,15 +45,17 @@ defmodule AssertReceiveTest do
   end
 
   setup_all do
-    examples = ESpec.SuiteRunner.run_examples(SomeSpec.examples(), true)
-    {:ok, success: Enum.slice(examples, 0, 1), errors: Enum.slice(examples, 2, 3)}
+    examples = ESpec.SuiteRunner.run_examples(SomeSpec.examples, true)
+    {:ok,
+      success: Enum.slice(examples, 0, 1),
+      errors: Enum.slice(examples, 2, 3)}
   end
 
   test "Success", context do
-    Enum.each(context[:success], &assert(&1.status == :success))
+    Enum.each(context[:success], &(assert(&1.status == :success)))
   end
 
   test "Errors", context do
-    Enum.each(context[:errors], &assert(&1.status == :failure))
+    Enum.each(context[:errors], &(assert(&1.status == :failure)))
   end
 end

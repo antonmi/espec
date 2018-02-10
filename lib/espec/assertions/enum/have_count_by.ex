@@ -13,14 +13,11 @@ defmodule ESpec.Assertions.Enum.HaveCountBy do
 
   defp success_message(enum, [func, val], _result, positive) do
     to = if positive, do: "is", else: "is not"
-    "`#{inspect(enum)}` count_by `#{inspect(func)}` #{to} `#{val}`."
+    "`#{inspect enum}` count_by `#{inspect func}` #{to} `#{val}`."
   end
 
   defp error_message(enum, [func, val], result, positive) do
     to = if positive, do: "to", else: "not to"
-
-    "Expected `#{inspect(enum)}` #{to} have count_by `#{inspect(func)}` be equal to `#{val}` but it has `#{
-      result
-    }` elements."
+    "Expected `#{inspect enum}` #{to} have count_by `#{inspect func}` be equal to `#{val}` but it has `#{result}` elements."
   end
 end

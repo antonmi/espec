@@ -16,11 +16,11 @@ defmodule Mix.Tasks.Espec.Init do
   @spec_helper "spec_helper.exs"
 
   def run(_args) do
-    create_directory(@spec_folder)
+    create_directory @spec_folder
     create_file(Path.join(@spec_folder, @spec_helper), spec_helper_template(nil))
   end
 
-  embed_template(:spec_helper, """
+  embed_template :spec_helper, """
   ESpec.configure fn(config) ->
     config.before fn(tags) ->
       {:shared, hello: :world, tags: tags}
@@ -30,5 +30,5 @@ defmodule Mix.Tasks.Espec.Init do
       :ok
     end
   end
-  """)
+  """
 end

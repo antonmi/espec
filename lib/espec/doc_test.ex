@@ -26,7 +26,6 @@ defmodule ESpec.DocTest do
   @doc "Parses the module and builds 'specs'."
   defmacro doctest(module, opts \\ []) do
     do_import = Keyword.get(opts, :import, false)
-
     quote do
       ESpec.DocTest.__do_doctest__(unquote(module), unquote(opts), unquote(do_import))
     end
@@ -51,90 +50,67 @@ defmodule ESpec.DocTest do
     quote do
       examples = ESpec.DocExample.extract(unquote(module))
 
-      examples =
-        if Keyword.get(unquote(opts), :only, false) do
-          ESpec.DocTest.__filter_only__(examples, unquote(opts)[:only])
-        else
-          examples
-        end
-
-      examples =
-        if Keyword.get(unquote(opts), :except, false) do
-          ESpec.DocTest.__filter_except__(examples, unquote(opts)[:except])
-        else
-          examples
-        end
+      examples = if Keyword.get(unquote(opts), :only, :false) do
+        ESpec.DocTest.__filter_only__(examples, unquote(opts)[:only])
+      else
+        examples
+      end
+      examples = if Keyword.get(unquote(opts), :except, false) do
+        ESpec.DocTest.__filter_except__(examples, unquote(opts)[:except])
+      else
+        examples
+      end
 
       Enum.with_index(examples)
-      |> Enum.reduce({[], {nil, nil}}, fn {ex, index},
-                                          {prev_binding, {binding_fun, binding_arity}} ->
+      |> Enum.reduce({[], {nil, nil}}, fn({ex, index}, {prev_binding, {binding_fun, binding_arity}}) ->
         context = Enum.reverse(@context)
         {fun, arity} = ex.fun_arity
 
         description = "Doctest for #{unquote(module)}.#{fun}/#{arity} (#{index})"
         function = :"#{ESpec.Support.word_chars(description)}_#{index}"
 
-        @examples %ESpec.Example{
-          description: description,
-          module: __MODULE__,
-          function: function,
-          opts: [],
-          file: __ENV__.file,
-          line: __ENV__.line,
-          context: context,
-          shared: false
-        }
+        @examples %ESpec.Example{description: description, module: __MODULE__, function: function,
+                                  opts: [], file: __ENV__.file, line: __ENV__.line, context: context,
+                                  shared: false}
 
-        binding =
-          case {binding_fun, binding_arity} do
-            {^fun, ^arity} -> prev_binding
-            _ -> []
-          end
+        binding = case {binding_fun, binding_arity} do
+          {^fun, ^arity} -> prev_binding
+          _ -> []
+        end
 
         {string_to_eval, new_binding} =
           cond do
             ex.type == :test ->
               {lhs, new_binding} = Code.eval_string(ex.lhs, binding, __ENV__)
               {rhs, _} = Code.eval_string(ex.rhs, binding, __ENV__)
-
               str = """
               def #{function}(shared) do
                 shared[:key]
-                expect(#{inspect(lhs)}).to eq(#{inspect(rhs)})
+                expect(#{inspect lhs}).to eq(#{inspect rhs})
               end
               """
-
               {str, new_binding}
-
             ex.type == :error ->
               {error_module, error_message} = ex.rhs
               lhs = ex.lhs
-
               str = """
               def #{function}(shared) do
                 shared[:key]
-                expect(fn -> Code.eval_string(#{lhs}) end).to raise_exception(#{error_module}, #{
-                inspect(error_message)
-              })
+                expect(fn -> Code.eval_string(#{lhs}) end).to raise_exception(#{error_module}, #{inspect error_message})
               end
               """
-
               {str, binding}
-
             ex.type == :inspect ->
               {lhs, new_binding} = Code.eval_string(ex.lhs, binding, __ENV__)
               {rhs, _} = Code.eval_string(ex.rhs, binding, __ENV__)
               lhs = inspect(lhs)
-
               str = """
               def #{function}(shared) do
                 shared[:key]
-                expect(#{inspect(lhs)}).to eq(#{inspect(rhs)})
+                expect(#{inspect lhs}).to eq(#{inspect rhs})
               end
               """
-
               {str, new_binding}
-
             true ->
               raise RuntimeError, message: "Wrong %ESpec.DocExample{} type!"
           end
@@ -152,7 +128,7 @@ defmodule ESpec.DocTest do
 
   @doc false
   def __filter_except__(examples, list) do
-    Enum.filter(examples, fn ex ->
+    Enum.filter(examples, fn(ex) ->
       !Enum.member?(list, ex.fun_arity)
     end)
   end

@@ -3,11 +3,7 @@ defmodule ESpec.AssertionError do
   Defines ESpec.AssertionError exception.
   The exception is raised by `ESpec.Assertions.Interface.raise_error/4` when example fails.
   """
-  defexception subject: nil,
-               data: nil,
-               result: nil,
-               asserion: nil,
-               message: nil,
-               extra: nil,
-               stacktrace: nil
+  defexception subject: nil, data: nil,
+                result: nil, asserion: nil, message: nil, extra: nil,
+                stacktrace: nil
 end

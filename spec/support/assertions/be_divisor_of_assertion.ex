@@ -8,14 +8,11 @@ defmodule BeDivisorOfAssertion do
 
   defp success_message(subject, number, _result, positive) do
     to = if positive, do: "is", else: "is not"
-    "`#{inspect(subject)}` #{to} the divisor of #{number}."
-  end
+    "`#{inspect subject}` #{to} the divisor of #{number}."
+  end  
 
   defp error_message(subject, number, result, positive) do
     to = if positive, do: "to", else: "not to"
-
-    "Expected `#{inspect(subject)}` #{to} be the divisor of `#{number}`, but the remainder is '#{
-      result
-    }'."
+    "Expected `#{inspect subject}` #{to} be the divisor of `#{number}`, but the remainder is '#{result}'."
   end
 end

@@ -20,14 +20,7 @@ defmodule ESpec.Context do
   defmacro context(description, opts, do: block) do
     quote do
       tail = @context
-
-      head = %ESpec.Context{
-        description: unquote(description),
-        module: __MODULE__,
-        line: __ENV__.line,
-        opts: unquote(opts)
-      }
-
+      head =  %ESpec.Context{description: unquote(description), module: __MODULE__, line: __ENV__.line, opts: unquote(opts)}
       @context [head | tail]
       unquote(block)
       @context tail
@@ -57,7 +50,7 @@ defmodule ESpec.Context do
   end
 
   @doc "Aliases for `context`."
-  Enum.each(@aliases, fn func ->
+  Enum.each @aliases, fn(func) ->
     defmacro unquote(func)(description, opts, do: block) do
       quote do: context(unquote(description), unquote(opts), do: unquote(block))
     end
@@ -73,19 +66,13 @@ defmodule ESpec.Context do
     defmacro unquote(func)(_description) do
       quote do: context(_description)
     end
-  end)
+  end
 
   @doc "Macros for skipped contexts"
-  Enum.each(@skipped, fn func ->
+  Enum.each @skipped, fn(func) ->
     defmacro unquote(func)(description, opts, do: block) do
       reason = "`#{unquote(func)}`"
-
-      quote do:
-              context(
-                unquote(description),
-                Keyword.put(unquote(opts), :skip, unquote(reason)),
-                do: unquote(block)
-              )
+      quote do: context(unquote(description), Keyword.put(unquote(opts), :skip, unquote(reason)), do: unquote(block))
     end
 
     defmacro unquote(func)(opts, do: block) when is_list(opts) do
@@ -102,17 +89,12 @@ defmodule ESpec.Context do
       reason = "`#{unquote(func)}`"
       quote do: context([skip: unquote(reason)], do: unquote(block))
     end
-  end)
+  end
 
   @doc "Macros for focused contexts"
-  Enum.each(@focused, fn func ->
+  Enum.each @focused, fn(func) ->
     defmacro unquote(func)(description, opts, do: block) do
-      quote do:
-              context(
-                unquote(description),
-                Keyword.put(unquote(opts), :focus, true),
-                do: unquote(block)
-              )
+      quote do: context(unquote(description), Keyword.put(unquote(opts), :focus, true), do: unquote(block))
     end
 
     defmacro unquote(func)(opts, do: block) when is_list(opts) do
@@ -126,5 +108,5 @@ defmodule ESpec.Context do
     defmacro unquote(func)(do: block) do
       quote do: context([focus: true], do: unquote(block))
     end
-  end)
+  end
 end

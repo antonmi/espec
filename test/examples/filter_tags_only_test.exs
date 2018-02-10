@@ -19,35 +19,35 @@ defmodule FilterTagsOnlyTest do
   end
 
   test "withot context, only with some tag" do
-    examples = ESpec.SuiteRunner.filter(SomeSpec.examples(), only: "some:tag")
+    examples = ESpec.SuiteRunner.filter(SomeSpec.examples, [only: "some:tag"])
     assert(Enum.count(examples) == 1)
 
-    examples = ESpec.SuiteRunner.filter(SomeSpec.examples(), only: "some")
+    examples = ESpec.SuiteRunner.filter(SomeSpec.examples, [only: "some"])
     assert(Enum.count(examples) == 1)
 
-    examples = ESpec.SuiteRunner.filter(SomeSpec.examples(), only: "wrong_tag")
+    examples = ESpec.SuiteRunner.filter(SomeSpec.examples, [only: "wrong_tag"])
     assert(Enum.empty?(examples))
   end
 
   test "with context" do
-    examples = ESpec.SuiteRunner.filter(SomeSpec.examples(), only: "context_tag:true")
+    examples = ESpec.SuiteRunner.filter(SomeSpec.examples, [only: "context_tag:true"])
     assert(Enum.count(examples) == 4)
 
-    examples = ESpec.SuiteRunner.filter(SomeSpec.examples(), only: "context_tag")
+    examples = ESpec.SuiteRunner.filter(SomeSpec.examples, [only: "context_tag"])
     assert(Enum.count(examples) == 4)
 
-    examples = ESpec.SuiteRunner.filter(SomeSpec.examples(), only: "inside_context")
+    examples = ESpec.SuiteRunner.filter(SomeSpec.examples, [only: "inside_context"])
     assert(Enum.count(examples) == 1)
   end
 
   test "context inside context" do
-    examples = ESpec.SuiteRunner.filter(SomeSpec.examples(), only: "cc_tag:tag_cc")
+    examples = ESpec.SuiteRunner.filter(SomeSpec.examples, [only: "cc_tag:tag_cc"])
     assert(Enum.count(examples) == 2)
 
-    examples = ESpec.SuiteRunner.filter(SomeSpec.examples(), only: "cc_tag")
+    examples = ESpec.SuiteRunner.filter(SomeSpec.examples, [only: "cc_tag"])
     assert(Enum.count(examples) == 2)
 
-    examples = ESpec.SuiteRunner.filter(SomeSpec.examples(), only: "ccc")
+    examples = ESpec.SuiteRunner.filter(SomeSpec.examples, [only: "ccc"])
     assert(Enum.count(examples) == 1)
   end
 end

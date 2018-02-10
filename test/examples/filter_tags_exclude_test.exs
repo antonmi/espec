@@ -19,35 +19,35 @@ defmodule FilterTagsExcludeTest do
   end
 
   test "withot context, only with some tag" do
-    examples = ESpec.SuiteRunner.filter(SomeSpec.examples(), exclude: "some:tag")
+    examples = ESpec.SuiteRunner.filter(SomeSpec.examples, [exclude: "some:tag"])
     assert(Enum.count(examples) == 5)
 
-    examples = ESpec.SuiteRunner.filter(SomeSpec.examples(), exclude: "some")
+    examples = ESpec.SuiteRunner.filter(SomeSpec.examples, [exclude: "some"])
     assert(Enum.count(examples) == 5)
 
-    examples = ESpec.SuiteRunner.filter(SomeSpec.examples(), exclude: "wrong_tag")
+    examples = ESpec.SuiteRunner.filter(SomeSpec.examples, [exclude: "wrong_tag"])
     assert(Enum.count(examples) == 6)
   end
 
   test "with context" do
-    examples = ESpec.SuiteRunner.filter(SomeSpec.examples(), exclude: "context_tag:true")
+    examples = ESpec.SuiteRunner.filter(SomeSpec.examples, [exclude: "context_tag:true"])
     assert(Enum.count(examples) == 2)
 
-    examples = ESpec.SuiteRunner.filter(SomeSpec.examples(), exclude: "context_tag")
+    examples = ESpec.SuiteRunner.filter(SomeSpec.examples, [exclude: "context_tag"])
     assert(Enum.count(examples) == 2)
 
-    examples = ESpec.SuiteRunner.filter(SomeSpec.examples(), exclude: "inside_context")
+    examples = ESpec.SuiteRunner.filter(SomeSpec.examples, [exclude: "inside_context"])
     assert(Enum.count(examples) == 5)
   end
 
   test "context inside context" do
-    examples = ESpec.SuiteRunner.filter(SomeSpec.examples(), exclude: "cc_tag:tag_cc")
+    examples = ESpec.SuiteRunner.filter(SomeSpec.examples, [exclude: "cc_tag:tag_cc"])
     assert(Enum.count(examples) == 4)
 
-    examples = ESpec.SuiteRunner.filter(SomeSpec.examples(), exclude: "cc_tag")
+    examples = ESpec.SuiteRunner.filter(SomeSpec.examples, [exclude: "cc_tag"])
     assert(Enum.count(examples) == 4)
 
-    examples = ESpec.SuiteRunner.filter(SomeSpec.examples(), exclude: "ccc")
+    examples = ESpec.SuiteRunner.filter(SomeSpec.examples, [exclude: "ccc"])
     assert(Enum.count(examples) == 5)
   end
 end

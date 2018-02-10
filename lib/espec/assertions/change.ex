@@ -10,18 +10,18 @@ defmodule ESpec.Assertions.Change do
     initial = func.()
     subject.()
     then = func.()
-    result = initial != then
+    result = (initial != then)
     {result, result}
   end
 
   defp success_message(subject, [func], _result, positive) do
     to = if positive, do: "changes", else: "doesn't change"
-    "`#{inspect(subject)}` #{to} the value of `#{inspect(func)}`."
+    "`#{inspect subject}` #{to} the value of `#{inspect func}`."
   end
 
   defp error_message(subject, [func], _result, positive) do
     to = if positive, do: "to", else: "not to"
     but = if positive, do: "didn't change", else: "changed"
-    "Expected `#{inspect(subject)}` #{to} change the value of `#{inspect(func)}`, but it #{but}."
+    "Expected `#{inspect subject}` #{to} change the value of `#{inspect func}`, but it #{but}."
   end
 end

@@ -20,24 +20,15 @@ defmodule ESpec.Example do
   error - store an error,
   duration - test duration.
   """
-  defstruct description: "",
-            module: nil,
-            function: nil,
-            opts: [],
-            file: nil,
-            line: nil,
-            context: [],
-            shared: false,
-            status: :new,
-            result: nil,
-            error: nil,
-            duration: 0
+  defstruct description: "", module: nil, function: nil, opts: [],
+            file: nil, line: nil, context: [], shared: false,
+            status: :new, result: nil, error: nil, duration: 0
 
   @doc "Context descriptions."
   def context_descriptions(example) do
     example
     |> extract_contexts
-    |> Enum.map(& &1.description)
+    |> Enum.map(&(&1.description))
   end
 
   @doc "Filters success examples."
@@ -58,10 +49,9 @@ defmodule ESpec.Example do
   @doc "Extracts example option."
   def extract_option(example, option) do
     opts = extract_options(example)
-    opt = Enum.find(opts, fn {k, _v} -> k == option end)
-
+    opt = Enum.find(opts, fn({k, _v}) -> k == option end)
     if opt do
-      {^option, value} = opt
+     {^option, value} = opt
       value
     else
       nil
@@ -71,7 +61,7 @@ defmodule ESpec.Example do
   @doc "Extracts example options."
   def extract_options(example) do
     contexts = ESpec.Example.extract_contexts(example)
-    List.flatten(example.opts ++ Enum.reverse(Enum.map(contexts, & &1.opts)))
+    List.flatten(example.opts ++ Enum.reverse(Enum.map(contexts, &(&1.opts))))
   end
 
   def extract(context, module) do
@@ -81,7 +71,6 @@ defmodule ESpec.Example do
   @doc "Message for skipped examples."
   def skip_message(example) do
     skipper = extract_option(example, :skip)
-
     if skipper === true do
       "Temporarily skipped without a reason."
     else

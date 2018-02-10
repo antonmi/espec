@@ -15,22 +15,23 @@ defmodule SubjectTest do
     context "Function" do
       subject fn -> 5 end
 
-      it do: expect(subject().()).to(eq(5))
+      it do: expect(subject().()).to eq(5)
       it do: subject().() |> should(eq 5)
 
-      it do: is_expected().to_not(raise_exception())
-      it do: should_not(raise_exception())
+      it do: is_expected().to_not raise_exception()
+      it do: should_not raise_exception()
     end
   end
 
   setup_all do
     {:ok,
-     ex1: Enum.at(SomeSpec.examples(), 0),
-     ex2: Enum.at(SomeSpec.examples(), 1),
-     ex3: Enum.at(SomeSpec.examples(), 2),
-     ex4: Enum.at(SomeSpec.examples(), 3),
-     ex5: Enum.at(SomeSpec.examples(), 4),
-     ex6: Enum.at(SomeSpec.examples(), 5)}
+      ex1: Enum.at(SomeSpec.examples, 0),
+      ex2: Enum.at(SomeSpec.examples, 1),
+      ex3: Enum.at(SomeSpec.examples, 2),
+      ex4: Enum.at(SomeSpec.examples, 3),
+      ex5: Enum.at(SomeSpec.examples, 4),
+      ex6: Enum.at(SomeSpec.examples, 5)
+    }
   end
 
   test "run ex1", context do

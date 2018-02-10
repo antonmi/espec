@@ -4,10 +4,12 @@ defmodule ModuleAsTopContextTest do
   defmodule SomeSpec do
     use ESpec, a: 1, b: 2
     it do: "example"
-  end
+  end  
 
   setup_all do
-    {:ok, ex1: Enum.at(SomeSpec.examples(), 0)}
+    {:ok,
+      ex1: Enum.at(SomeSpec.examples, 0), 
+    }
   end
 
   test "check ex1 context", context do
@@ -20,8 +22,6 @@ defmodule ModuleAsTopContextTest do
   end
 
   test "ex1 full description", context do
-    assert ESpec.Example.context_descriptions(context[:ex1]) == [
-             "ModuleAsTopContextTest.SomeSpec"
-           ]
+    assert ESpec.Example.context_descriptions(context[:ex1]) == ["ModuleAsTopContextTest.SomeSpec"]
   end
 end

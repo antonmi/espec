@@ -30,8 +30,7 @@ defmodule ESpec.DocTestTest.Mod1 do
     10
   """
   def f, do: :f
-end
-|> ESpec.TestHelpers.write_beam()
+end |> ESpec.TestHelpers.write_beam
 
 defmodule ESpec.DocTestTest.ExceptionInterpolation do
   @moduledoc """
@@ -62,8 +61,7 @@ defmodule ESpec.DocTestTest.ExceptionInterpolation do
     iex> raise ArgumentError, message: "Check for a very, very, very, very, very, very, very, very, very, very, very, very, very, very, very long string"
     ** (ArgumentError) Check for a very, very, very, very, very, very, very, very, very, very, very, very, very, very, very long string
   """
-end
-|> ESpec.TestHelpers.write_beam()
+end |> ESpec.TestHelpers.write_beam
 
 defmodule DocTestSpec do
   use ESpec
@@ -71,5 +69,5 @@ defmodule DocTestSpec do
   doctest ESpec.DocTestTest.Mod1
   doctest ESpec.DocTestTest.ExceptionInterpolation
 
-  it do: expect(ESpec.DocTestTest.Mod1.f()).to(eq(:f))
+  it do: expect(ESpec.DocTestTest.Mod1.f).to eq(:f)
 end

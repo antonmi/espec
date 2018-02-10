@@ -42,7 +42,7 @@ defmodule ESpec.SuiteRunner do
 
   @doc false
   def partition_async(examples) do
-    Enum.split_with(examples, &(Example.extract_option(&1, :async) === true))
+    Enum.split_with(examples, &Example.extract_option(&1, :async) === true)
   end
 
   defp run_before_all(module) do
@@ -65,7 +65,7 @@ defmodule ESpec.SuiteRunner do
   end
 
   defp do_run_async do
-    Enum.map(1..@max_async_count, fn _ ->
+    Enum.map(1..@max_async_count, fn(_) ->
       Task.async(fn -> spawn_task() end)
     end)
     |> Enum.map(&Task.await(&1, :infinity))
@@ -98,23 +98,19 @@ defmodule ESpec.SuiteRunner do
   defp filter_shared(examples), do: Enum.filter(examples, &(!&1.shared))
 
   defp file_opts_filter(examples, file_opts) do
-    grouped_by_file = Enum.group_by(examples, fn example -> example.file end)
-
-    filtered =
-      Enum.reduce(grouped_by_file, [], fn {file, exs}, acc ->
-        opts = opts_for_file(file, file_opts)
-        line = Keyword.get(opts, :line)
-        if line, do: examples_for_line(exs, line, acc), else: acc ++ exs
-      end)
-
+    grouped_by_file = Enum.group_by(examples, fn(example) -> example.file end)
+    filtered = Enum.reduce(grouped_by_file, [], fn({file, exs}, acc) ->
+      opts = opts_for_file(file, file_opts)
+      line = Keyword.get(opts, :line)
+      if line, do: examples_for_line(exs, line, acc), else: acc ++ exs
+    end)
     filtered
   end
 
   defp examples_for_line(exs, line, acc) do
     block_filtered = filtered_examples_within_block(exs, line)
-
     if Enum.empty?(block_filtered) do
-      closest = get_closest(Enum.map(exs, & &1.line), line)
+      closest = get_closest(Enum.map(exs, &(&1.line)), line)
       acc ++ Enum.filter(exs, &(&1.line == closest))
     else
       acc ++ block_filtered
@@ -122,22 +118,19 @@ defmodule ESpec.SuiteRunner do
   end
 
   defp filtered_examples_within_block(examples, line) do
-    Enum.filter(examples, fn ex ->
+    Enum.filter(examples, fn(ex) ->
       ex
-      |> Example.extract_contexts()
-      |> Enum.map(fn c -> c.line end)
+      |> Example.extract_contexts
+      |> Enum.map(fn(c) -> c.line end)
       |> Enum.member?(line)
     end)
   end
 
   defp get_closest(arr, value) do
     arr = Enum.sort(arr)
-
-    line =
-      arr
-      |> Enum.reverse()
-      |> Enum.find(fn l -> l <= value end)
-
+    line = arr
+      |> Enum.reverse
+      |> Enum.find(fn(l) -> l <= value end)
     if line, do: line, else: hd(arr)
   end
 
@@ -149,14 +142,14 @@ defmodule ESpec.SuiteRunner do
   end
 
   defp filter_focus(examples) do
-    Enum.filter(examples, fn example ->
+    Enum.filter(examples, fn(example) ->
       contexts = Example.extract_contexts(example)
-      example.opts[:focus] || Enum.any?(contexts, & &1.opts[:focus])
+      example.opts[:focus] || Enum.any?(contexts, &(&1.opts[:focus]))
     end)
   end
 
   defp filter_string(examples, string) do
-    Enum.filter(examples, fn example ->
+    Enum.filter(examples, fn(example) ->
       description = Enum.join([example.description | Example.context_descriptions(example)])
       String.contains?(description, string)
     end)
@@ -164,10 +157,8 @@ defmodule ESpec.SuiteRunner do
 
   defp filter_only(examples, only, reverse \\ false) do
     [key, value] = extract_opts(only)
-
-    Enum.filter(examples, fn example ->
+    Enum.filter(examples, fn(example) ->
       tag_values = filter_tag_value(example, key)
-
       if reverse do
         if Enum.empty?(tag_values), do: true, else: !is_any_with_tag?(tag_values, value)
       else
@@ -180,19 +171,17 @@ defmodule ESpec.SuiteRunner do
     contexts = Example.extract_contexts(example)
     key = String.to_atom(key)
     example_tag_value = example.opts[key]
-    context_tag_values = Enum.map(contexts, & &1.opts[key])
-    Enum.filter([example_tag_value | context_tag_values], & &1)
+    context_tag_values = Enum.map(contexts, &(&1.opts[key]))
+    Enum.filter([example_tag_value | context_tag_values], &(&1))
   end
 
   defp is_any_with_tag?(tag_values, value) do
-    Enum.any?(tag_values, fn tag ->
+    Enum.any?(tag_values, fn(tag) ->
       cond do
         is_atom(tag) ->
           if value, do: Atom.to_string(tag) == value, else: tag
-
         is_integer(tag) ->
           if value, do: Integer.to_string(tag) == value, else: tag
-
         true ->
           if value, do: tag == value, else: tag
       end

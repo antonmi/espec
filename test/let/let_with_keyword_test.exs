@@ -8,7 +8,7 @@ defmodule LetWithKeywordTest do
     it do: "a = #{a()}"
 
     context "Context" do
-      let a: 20, f: fn x -> x * 2 end
+      let a: 20, f: fn(x) -> x * 2 end
 
       it do: "a = #{a()}"
       it do: "f.(2) = #{f().(2)}"
@@ -23,10 +23,11 @@ defmodule LetWithKeywordTest do
 
   setup_all do
     {:ok,
-     ex1: Enum.at(SomeSpec.examples(), 0),
-     ex2: Enum.at(SomeSpec.examples(), 1),
-     ex3: Enum.at(SomeSpec.examples(), 2),
-     ex4: Enum.at(SomeSpec.examples(), 3)}
+      ex1: Enum.at(SomeSpec.examples, 0),
+      ex2: Enum.at(SomeSpec.examples, 1),
+      ex3: Enum.at(SomeSpec.examples, 2),
+      ex4: Enum.at(SomeSpec.examples, 3)
+    }
   end
 
   test "run ex1", context do
@@ -44,7 +45,7 @@ defmodule LetWithKeywordTest do
     assert(example.result == "f.(2) = 4")
   end
 
-  test "run ex5", context do
+   test "run ex5", context do
     example = ESpec.ExampleRunner.run(context[:ex4])
     assert(example.result == "y = 2")
   end

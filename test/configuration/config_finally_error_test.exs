@@ -7,17 +7,17 @@ defmodule ConfigFinallyRaiseTest do
   end
 
   setup_all do
-    ESpec.configure(fn c ->
-      c.finally(fn ->
+    ESpec.configure fn(c) ->
+      c.finally fn ->
         raise "An exception"
-      end)
-    end)
+      end
+    end
 
-    on_exit(fn ->
-      ESpec.configure(fn c -> c.finally(fn -> :ok end) end)
-    end)
+    on_exit fn ->
+      ESpec.configure fn(c) -> c.finally(fn -> :ok end) end
+    end
 
-    {:ok, ex1: Enum.at(SomeSpec.examples(), 0)}
+    {:ok, ex1: Enum.at(SomeSpec.examples, 0)}
   end
 
   test "run ex1", context do
@@ -36,17 +36,17 @@ defmodule ConfigFinallyThrowTest do
   end
 
   setup_all do
-    ESpec.configure(fn c ->
-      c.finally(fn ->
-        throw(:some_term)
-      end)
-    end)
+    ESpec.configure fn(c) ->
+      c.finally fn ->
+        throw :some_term
+      end
+    end
 
-    on_exit(fn ->
-      ESpec.configure(fn c -> c.finally(fn -> :ok end) end)
-    end)
+    on_exit fn ->
+      ESpec.configure fn(c) -> c.finally(fn -> :ok end) end
+    end
 
-    {:ok, ex2: Enum.at(SomeSpec.examples(), 0)}
+    {:ok, ex2: Enum.at(SomeSpec.examples, 0)}
   end
 
   test "run ex2", context do

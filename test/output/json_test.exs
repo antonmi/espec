@@ -4,19 +4,18 @@ defmodule Formatters.JsonTest do
   defmodule SomeSpec do
     use ESpec
 
-    it do: expect(1).to(eq(1))
-    it do: expect(1).to(eq(2))
-    xit(do: expect(1).to(eq(1)))
+    it do: expect(1).to eq(1)
+    it do: expect(1).to eq(2)
+    xit do: expect(1).to eq(1)
   end
 
   setup_all do
-    examples = ESpec.SuiteRunner.run_examples(SomeSpec.examples(), true)
-
+    examples = ESpec.SuiteRunner.run_examples(SomeSpec.examples, true)
     {:ok,
-     examples: examples,
-     success_example: Enum.at(examples, 0),
-     failed_example: Enum.at(examples, 1),
-     pending_example: Enum.at(examples, 2)}
+      examples: examples,
+      success_example: Enum.at(examples, 0),
+      failed_example: Enum.at(examples, 1),
+      pending_example: Enum.at(examples, 2)}
   end
 
   test "format_result", context do

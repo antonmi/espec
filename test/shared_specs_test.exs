@@ -11,10 +11,10 @@ defmodule SharedSpecsTest do
     context "SharedSpec context" do
       let :d, do: shared.c + 1
 
-      it do: expect(shared.a).to(eq(1))
-      it do: expect(shared.b).to(eq(2))
-      it do: expect(c()).to(eq(3))
-      it do: expect(d()).to(eq(4))
+      it do: expect(shared.a).to eq(1)
+      it do: expect(shared.b).to eq(2)
+      it do: expect(c()).to eq(3)
+      it do: expect(d()).to eq(4)
     end
   end
 
@@ -32,12 +32,12 @@ defmodule SharedSpecsTest do
   end
 
   setup_all do
-    examples = ESpec.SuiteRunner.run_examples(UseSharedSpecSpec.examples(), true)
+    examples = ESpec.SuiteRunner.run_examples(UseSharedSpecSpec.examples, true)
     {:ok, examples: examples}
   end
 
   test "Examples should pass", context do
-    Enum.each(context[:examples], fn ex ->
+    Enum.each(context[:examples], fn(ex) ->
       assert(ex.status == :success)
     end)
   end

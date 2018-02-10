@@ -12,7 +12,7 @@ defmodule BeforeTest do
       it do: "#{shared[:a]} and #{shared[:b]} is defined"
 
       ESpec.Context.describe "Describe" do
-        before do: {:ok, b: fn a -> a * 2 end}
+        before do: {:ok, b: fn(a) -> a * 2 end}
         it do: "#{shared[:b].(10)} == 20"
       end
     end
@@ -24,12 +24,12 @@ defmodule BeforeTest do
 
     context "error or throw" do
       context "throw term" do
-        before do: throw(:some_term)
+        before do: throw :some_term
         it do: true
       end
 
       context "fail " do
-        before do: raise("Error")
+        before do: raise "Error"
         it do: true
       end
     end
@@ -37,12 +37,13 @@ defmodule BeforeTest do
 
   setup_all do
     {:ok,
-     ex1: Enum.at(SomeSpec.examples(), 0),
-     ex2: Enum.at(SomeSpec.examples(), 1),
-     ex3: Enum.at(SomeSpec.examples(), 2),
-     ex4: Enum.at(SomeSpec.examples(), 3),
-     ex5: Enum.at(SomeSpec.examples(), 4),
-     ex6: Enum.at(SomeSpec.examples(), 5)}
+      ex1: Enum.at(SomeSpec.examples, 0),
+      ex2: Enum.at(SomeSpec.examples, 1),
+      ex3: Enum.at(SomeSpec.examples, 2),
+      ex4: Enum.at(SomeSpec.examples, 3),
+      ex5: Enum.at(SomeSpec.examples, 4),
+      ex6: Enum.at(SomeSpec.examples, 5)
+    }
   end
 
   test "run ex1", context do

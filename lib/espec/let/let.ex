@@ -18,18 +18,18 @@ defmodule ESpec.Let do
   defmacro let(var, do: block), do: do_let(var, block)
 
   @doc "Allows to define several 'lets' at once"
-  defmacro let(keyword) when is_list(keyword) do
+  defmacro let(keyword) when is_list keyword do
     if Keyword.keyword?(keyword) do
-      Enum.map(keyword, fn {var, block} -> do_let(var, block) end)
+      Enum.map(keyword, fn{var, block} -> do_let(var, block) end)
     else
       raise "Argument must be a Keyword"
     end
   end
 
   @doc "Defines overridable lets in shared examples"
-  defmacro let_overridable(keywords) when is_list(keywords) do
+  defmacro let_overridable(keywords) when is_list keywords do
     if Keyword.keyword?(keywords) do
-      Enum.map(keywords, fn {var, block} -> do_let(var, block, true) end)
+      Enum.map(keywords, fn{var, block} -> do_let(var, block, true) end)
     else
       Enum.map(keywords, &do_let(&1, nil, true))
     end
@@ -38,24 +38,17 @@ defmodule ESpec.Let do
   defmacro let_overridable(var), do: do_let(var, nil, true)
 
   defp do_let(var, block, shared \\ false) do
-    block = Macro.escape(quote(do: unquote(block)), unquote: true)
+    block = Macro.escape((quote do: unquote(block)), unquote: true)
 
     quote bind_quoted: [block: block, var: var, shared: shared] do
-      function = ESpec.Let.Impl.random_let_name()
+      function = ESpec.Let.Impl.random_let_name
 
       if shared && !@shared do
         raise ESpec.LetError, ESpec.Let.__overridable_error_message__(var, __MODULE__)
       end
 
       tail = @context
-
-      head = %ESpec.Let{
-        var: var,
-        module: __MODULE__,
-        shared_module: __MODULE__,
-        function: function,
-        shared: shared
-      }
+      head = %ESpec.Let{var: var, module: __MODULE__, shared_module: __MODULE__, function: function, shared: shared}
 
       def unquote(function)(var!(shared)) do
         var!(shared)
@@ -81,7 +74,7 @@ defmodule ESpec.Let do
   end
 
   @doc "Allows to define several 'lets' at once"
-  defmacro let!(keyword) when is_list(keyword) do
+  defmacro let!(keyword) when is_list keyword do
     before_block =
       keyword
       |> Keyword.keys()
@@ -144,9 +137,9 @@ defmodule ESpec.Let do
   @doc """
   Allows to define several 'let_ok's at once
   """
-  defmacro let_ok(keyword) when is_list(keyword) do
+  defmacro let_ok(keyword) when is_list keyword do
     if Keyword.keyword?(keyword) do
-      Enum.map(keyword, fn {var, block} -> do_result_let(var, block, :ok, false) end)
+      Enum.map(keyword, fn{var, block} -> do_result_let(var, block, :ok, false) end)
     else
       raise "Argument must be a Keyword"
     end
@@ -162,9 +155,9 @@ defmodule ESpec.Let do
   @doc """
   Allows to define several 'let_ok!'s at once
   """
-  defmacro let_ok!(keyword) when is_list(keyword) do
+  defmacro let_ok!(keyword) when is_list keyword do
     if Keyword.keyword?(keyword) do
-      Enum.map(keyword, fn {var, block} -> do_result_let(var, block, :ok, true) end)
+      Enum.map(keyword, fn{var, block} -> do_result_let(var, block, :ok, true) end)
     else
       raise "Argument must be a Keyword"
     end
@@ -180,9 +173,9 @@ defmodule ESpec.Let do
   @doc """
   Allows to define several 'let_error's at once
   """
-  defmacro let_error(keyword) when is_list(keyword) do
+  defmacro let_error(keyword) when is_list keyword do
     if Keyword.keyword?(keyword) do
-      Enum.map(keyword, fn {var, block} -> do_result_let(var, block, :error, false) end)
+      Enum.map(keyword, fn{var, block} -> do_result_let(var, block, :error, false) end)
     else
       raise "Argument must be a Keyword"
     end
@@ -198,21 +191,19 @@ defmodule ESpec.Let do
   @doc """
   Allows to define several 'let_error!'s at once
   """
-  defmacro let_error!(keyword) when is_list(keyword) do
+  defmacro let_error!(keyword) when is_list keyword do
     if Keyword.keyword?(keyword) do
-      Enum.map(keyword, fn {var, block} -> do_result_let(var, block, :error, true) end)
+      Enum.map(keyword, fn{var, block} -> do_result_let(var, block, :error, true) end)
     else
       raise "Argument must be a Keyword"
     end
   end
 
   defp do_result_let(var, block, key, bang?) do
-    new_block =
-      quote do
-        {unquote(key), result} = unquote(block)
-        result
-      end
-
+    new_block = quote do
+      {unquote(key), result} = unquote(block)
+      result
+    end
     if bang? do
       quote do: let!(unquote(var), do: unquote(new_block))
     else

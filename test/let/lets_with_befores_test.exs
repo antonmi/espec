@@ -13,16 +13,17 @@ defmodule LetsWithBeforesTest do
     let! :c, do: b() + 1
     it do: c() |> should(eq 3)
 
-    before do: {:ok, d: c() + 1}
+    before do:  {:ok, d: c() + 1}
     it do: shared.d |> should(eq 4)
   end
 
   setup_all do
     {:ok,
-     ex1: Enum.at(SomeSpec.examples(), 0),
-     ex2: Enum.at(SomeSpec.examples(), 1),
-     ex3: Enum.at(SomeSpec.examples(), 2),
-     ex4: Enum.at(SomeSpec.examples(), 3)}
+      ex1: Enum.at(SomeSpec.examples, 0),
+      ex2: Enum.at(SomeSpec.examples, 1),
+      ex3: Enum.at(SomeSpec.examples, 2),
+      ex4: Enum.at(SomeSpec.examples, 3)
+    }
   end
 
   test "run ex1", context do
@@ -40,7 +41,7 @@ defmodule LetsWithBeforesTest do
     assert(example.status == :success)
   end
 
-  test "run ex5", context do
+   test "run ex5", context do
     example = ESpec.ExampleRunner.run(context[:ex4])
     assert(example.status == :success)
   end

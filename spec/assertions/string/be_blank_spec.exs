@@ -17,8 +17,8 @@ defmodule ESpec.Assertions.String.BeBlankSpec do
     context "with `to`" do
       before do
         {:shared,
-         expectation: fn -> "qwerty" |> should(be_blank()) end,
-         message: "Expected `\"qwerty\"` to be blank but it isn't."}
+          expectation: fn -> "qwerty" |> should(be_blank()) end,
+          message: "Expected `\"qwerty\"` to be blank but it isn't."}
       end
 
       it_behaves_like(CheckErrorSharedSpec)
@@ -27,8 +27,8 @@ defmodule ESpec.Assertions.String.BeBlankSpec do
     context "with `not_to`" do
       before do
         {:shared,
-         expectation: fn -> "" |> should_not(be_blank()) end,
-         message: "Expected `\"\"` not to be blank but it is."}
+          expectation: fn -> "" |> should_not(be_blank()) end,
+          message: "Expected `\"\"` not to be blank but it is."}
       end
 
       it_behaves_like(CheckErrorSharedSpec)

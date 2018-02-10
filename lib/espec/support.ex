@@ -11,7 +11,7 @@ defmodule ESpec.Support do
     string
     |> remove_unicode
     |> String.replace(~r/[\W+\d+\s+]/, "_")
-    |> String.downcase()
+    |> String.downcase
   end
 
   defp remove_unicode(string) do

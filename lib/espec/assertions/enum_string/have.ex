@@ -13,7 +13,7 @@ defmodule ESpec.Assertions.EnumString.Have do
   end
 
   defp match(%{} = map, {key, value}) do
-    result = Map.get(map, key) == value
+    result = (Map.get(map, key) == value)
     {result, result}
   end
 
@@ -29,12 +29,13 @@ defmodule ESpec.Assertions.EnumString.Have do
 
   defp success_message(enum, val, _result, positive) do
     to = if positive, do: "has", else: "doesn't have"
-    "`#{inspect(enum)}` #{to} `#{inspect(val)}`."
+    "`#{inspect enum}` #{to} `#{inspect val}`."
   end
 
   defp error_message(enum, val, result, positive) do
     to = if positive, do: "to", else: "not to"
     has = if result, do: "has", else: "has not"
-    "Expected `#{inspect(enum)}` #{to} have `#{inspect(val)}`, but it #{has}."
+    "Expected `#{inspect enum}` #{to} have `#{inspect val}`, but it #{has}."
   end
+
 end

@@ -19,14 +19,14 @@ defmodule ESpec.Assertions.Enum.BeEmpty do
 
   defp success_message(enum, _data, _result, positive) do
     to = if positive, do: "is", else: "is not"
-    "`#{inspect(enum)}` #{to} empty."
+    "`#{inspect enum}` #{to} empty."
   end
 
   defp error_message(enum, _data, result, positive) do
     if positive do
-      "Expected `#{inspect(enum)}` to be empty, but it has `#{result}` elements."
+      "Expected `#{inspect enum}` to be empty, but it has `#{result}` elements."
     else
-      "Expected `#{inspect(enum)}` not to be empty, but it is."
+      "Expected `#{inspect enum}` not to be empty, but it is."
     end
   end
 end

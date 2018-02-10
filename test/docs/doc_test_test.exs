@@ -17,26 +17,25 @@ defmodule ESpec.DocTestTest.Mod1 do
     :f
   """
   def f, do: :f
-end
-|> ExUnit.TestHelpers.write_beam()
+end |> ExUnit.TestHelpers.write_beam
 
 defmodule ESpec.DocTestTest.SomeDocSpec do
   use ESpec
   doctest ESpec.DocTestTest.Mod1
-end
-|> ExUnit.TestHelpers.write_beam()
+end |> ExUnit.TestHelpers.write_beam
+
 
 defmodule ESpec.Docs.DocTestTest do
   use ExUnit.Case, async: true
 
   setup do
-    examples = ESpec.DocTestTest.SomeDocSpec.examples()
-
+    examples = ESpec.DocTestTest.SomeDocSpec.examples
     {:ok,
-     ex1: Enum.at(examples, 0),
-     ex2: Enum.at(examples, 1),
-     ex3: Enum.at(examples, 2),
-     ex4: Enum.at(examples, 3)}
+      ex1: Enum.at(examples, 0),
+      ex2: Enum.at(examples, 1),
+      ex3: Enum.at(examples, 2),
+      ex4: Enum.at(examples, 3)
+    }
   end
 
   test "ex1", context do

@@ -1,10 +1,9 @@
-ESpec.configure(fn config ->
-  config.before(fn _tags ->
+ESpec.configure fn(config) ->
+  config.before fn(_tags) ->
     {:ok, %{answer: 42, order_spec_answer: 42}}
-  end)
-
-  config.finally(fn shared -> shared.answer end)
-end)
+  end
+  config.finally fn(shared) -> shared.answer end
+end
 
 Code.require_file("spec/support/assertions/check_error_shared_spec.exs")
 

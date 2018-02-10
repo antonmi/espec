@@ -28,7 +28,7 @@ defmodule Integer.Extension do
   """
   @spec floor_div(integer, neg_integer | pos_integer) :: integer
   def floor_div(dividend, divisor) do
-    if dividend * divisor < 0 and rem(dividend, divisor) != 0 do
+    if (dividend * divisor < 0) and rem(dividend, divisor) != 0 do
       div(dividend, divisor) - 1
     else
       div(dividend, divisor)

@@ -18,8 +18,7 @@ defmodule ESpec.To do
   end
 
   @doc false
-  def to(module, {:accept, name, function, meck_options})
-      when is_atom(name) and is_list(meck_options) do
+  def to(module, {:accept, name, function, meck_options}) when is_atom(name) and is_list(meck_options) do
     AllowTo.to({:accept, name, function, meck_options}, {AllowTo, module})
   end
 
@@ -29,7 +28,7 @@ defmodule ESpec.To do
   end
 
   @doc false
-  def to(module, {:accept, list, meck_options}) when is_list(list) and is_list(meck_options) do
+  def to(module, {:accept, list, meck_options}) when is_list(list) and is_list(meck_options)  do
     AllowTo.to({:accept, list, meck_options}, {AllowTo, module})
   end
 

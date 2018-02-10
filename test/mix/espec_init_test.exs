@@ -3,13 +3,12 @@ defmodule EspecInitTest do
 
   @tmp_path Path.join(__DIR__, "tmp")
 
-  def clear, do: File.rm_rf!(@tmp_path)
+  def clear, do: File.rm_rf! @tmp_path
 
   setup do
-    # Get Mix output sent to the current process to avoid polluting tests.
-    Mix.shell(Mix.Shell.Process)
-    File.mkdir_p!(@tmp_path)
-    File.cd!(@tmp_path, fn -> Mix.Tasks.Espec.Init.run([]) end)
+    Mix.shell(Mix.Shell.Process) # Get Mix output sent to the current process to avoid polluting tests.
+    File.mkdir_p! @tmp_path
+    File.cd! @tmp_path, fn -> Mix.Tasks.Espec.Init.run([]) end
     on_exit(&clear/0)
     :ok
   end

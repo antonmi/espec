@@ -6,8 +6,8 @@ defmodule ESpec.Output do
   use GenServer
   alias ESpec.Configuration
 
-  @red IO.ANSI.red()
-  @reset IO.ANSI.reset()
+  @red IO.ANSI.red
+  @reset IO.ANSI.reset
 
   @doc "Starts server."
   def start do
@@ -16,13 +16,11 @@ defmodule ESpec.Output do
 
   @doc "Initiates server with configuration options and formatter"
   def init(args) do
-    pids =
-      Enum.map(args[:formatters], fn {formatter_module, opts} ->
-        {:ok, pid} = GenServer.start_link(formatter_module, opts)
-        pid
-      end)
-
-    state = %{opts: Configuration.all(), formatter: args[:formatter], formatter_pids: pids}
+    pids = Enum.map(args[:formatters], fn({formatter_module, opts}) ->
+      {:ok, pid} = GenServer.start_link(formatter_module, opts)
+      pid
+    end)
+    state = %{opts: Configuration.all, formatter: args[:formatter], formatter_pids: pids}
     {:ok, state}
   end
 
@@ -33,39 +31,34 @@ defmodule ESpec.Output do
 
   @doc "Generates suite info"
   def final_result(examples) do
-    result = GenServer.call(__MODULE__, {:final_result, examples}, :infinity)
-    result
+   result = GenServer.call(__MODULE__, {:final_result, examples}, :infinity)
+   result
   end
 
   defp display_stop_timeout_message(timeout) do
-    IO.puts("\n  #{@red}Sorry, but the formatters did not have enough time to finish their work.")
-
-    IO.puts(
-      "  The most time consuming are (most probably) the diffs in the Doc formatter (shown for the failed examples)."
-    )
-
-    IO.puts("  You could try to:")
-    IO.puts("  * run less (failed) examples (please see the doc on --exclude and --focus)")
-    IO.puts("  * increase the formatters timeout (the current value is #{inspect(timeout)})")
-    IO.puts("      \# spec_helper.exs")
-    IO.puts("      ESpec.configure fn(config) ->")
-    IO.puts("        config.formatters_timeout 30_000 \# or :infinity to wait until done")
-    IO.puts("      end")
-    IO.puts("  * disable the diffs for the Doc formatter")
-    IO.puts("      \# spec_helper.exs")
-    IO.puts("      ESpec.configure fn(config) ->")
-    IO.puts("        config.formatters [")
-    IO.puts("          \# ...")
-    IO.puts("          {ESpec.Formatters.Doc, %{diff_enabled?: false}}")
-    IO.puts("          \# ...")
-    IO.puts("        ]")
-    IO.puts("      end#{@reset}")
+    IO.puts "\n  #{@red}Sorry, but the formatters did not have enough time to finish their work."
+    IO.puts "  The most time consuming are (most probably) the diffs in the Doc formatter (shown for the failed examples)."
+    IO.puts "  You could try to:"
+    IO.puts "  * run less (failed) examples (please see the doc on --exclude and --focus)"
+    IO.puts "  * increase the formatters timeout (the current value is #{inspect(timeout)})"
+    IO.puts "      \# spec_helper.exs"
+    IO.puts "      ESpec.configure fn(config) ->"
+    IO.puts "        config.formatters_timeout 30_000 \# or :infinity to wait until done"
+    IO.puts "      end"
+    IO.puts "  * disable the diffs for the Doc formatter"
+    IO.puts "      \# spec_helper.exs"
+    IO.puts "      ESpec.configure fn(config) ->"
+    IO.puts "        config.formatters ["
+    IO.puts "          \# ..."
+    IO.puts "          {ESpec.Formatters.Doc, %{diff_enabled?: false}}"
+    IO.puts "          \# ..."
+    IO.puts "        ]"
+    IO.puts "      end#{@reset}"
   end
 
   @doc false
   def stop do
     timeout = Configuration.get(:formatters_timeout)
-
     try do
       if is_nil(timeout) do
         GenServer.call(__MODULE__, :stop)
@@ -84,19 +77,14 @@ defmodule ESpec.Output do
     unless silent?() do
       Enum.each(state[:formatter_pids], &GenServer.cast(&1, {:example_finished, example}))
     end
-
     {:noreply, state}
   end
 
   @doc false
   def handle_call({:final_result, examples}, _pid, state) do
     unless silent?() do
-      Enum.each(
-        state[:formatter_pids],
-        &GenServer.cast(&1, {:final_result, examples, get_durations()})
-      )
+      Enum.each(state[:formatter_pids], &GenServer.cast(&1, {:final_result, examples, get_durations()}))
     end
-
     {:reply, :ok, state}
   end
 

@@ -9,63 +9,45 @@ defmodule RaiseExceptionTest do
     let :func3, do: fn -> List.first(:a) end
 
     context "Success" do
-      it do: expect(func1()).to(raise_exception())
-      it do: expect(func1()).to(raise_exception(ArithmeticError))
+      it do: expect(func1()).to raise_exception()
+      it do: expect(func1()).to raise_exception(ArithmeticError)
+      it do: expect(func1()).to raise_exception(ArithmeticError, "bad argument in arithmetic expression")
 
-      it do:
-           expect(func1()).to(
-             raise_exception(ArithmeticError, "bad argument in arithmetic expression")
-           )
+      it do: expect(func2()).to_not raise_exception()
+      it do: expect(func2()).to_not raise_exception(ArithmeticError, "bad argument in arithmetic expression")
+      it do: expect(func2()).to_not raise_exception(ArithmeticError)
 
-      it do: expect(func2()).to_not(raise_exception())
-
-      it do:
-           expect(func2()).to_not(
-             raise_exception(ArithmeticError, "bad argument in arithmetic expression")
-           )
-
-      it do: expect(func2()).to_not(raise_exception(ArithmeticError))
-
-      it do: expect(func3()).to_not(raise_exception(ArithmeticError))
-      it do: expect(func3()).to_not(raise_exception(FunctionClauseError, "no such message"))
+      it do: expect(func3()).to_not raise_exception(ArithmeticError)
+      it do: expect(func3()).to_not raise_exception(FunctionClauseError, "no such message")
     end
 
     context "Errors" do
-      it do: expect(func2()).to(raise_exception())
-      it do: expect(func2()).to(raise_exception(ArithmeticError))
+      it do: expect(func2()).to raise_exception()
+      it do: expect(func2()).to raise_exception(ArithmeticError)
+      it do: expect(func2()).to raise_exception(ArithmeticError, "bad argument in arithmetic expression")
 
-      it do:
-           expect(func2()).to(
-             raise_exception(ArithmeticError, "bad argument in arithmetic expression")
-           )
+      it do: expect(func1()).to_not raise_exception()
+      it do: expect(func1()).to_not raise_exception(ArithmeticError)
+      it do: expect(func1()).to_not raise_exception(ArithmeticError, "bad argument in arithmetic expression")
 
-      it do: expect(func1()).to_not(raise_exception())
-      it do: expect(func1()).to_not(raise_exception(ArithmeticError))
-
-      it do:
-           expect(func1()).to_not(
-             raise_exception(ArithmeticError, "bad argument in arithmetic expression")
-           )
-
-      it do: expect(func3()).to_not(raise_exception(FunctionClauseError))
-
-      it do:
-           expect(func3()).to_not(
-             raise_exception(FunctionClauseError, "no function clause matching in List.first/1")
-           )
+      it do: expect(func3()).to_not raise_exception(FunctionClauseError)
+      it do: expect(func3()).to_not raise_exception(FunctionClauseError, "no function clause matching in List.first/1")
     end
+
   end
 
   setup_all do
-    examples = ESpec.SuiteRunner.run_examples(SomeSpec.examples(), true)
-    {:ok, success: Enum.slice(examples, 0, 7), errors: Enum.slice(examples, 8, 15)}
+    examples = ESpec.SuiteRunner.run_examples(SomeSpec.examples, true)
+    {:ok,
+      success: Enum.slice(examples, 0, 7),
+      errors: Enum.slice(examples, 8, 15)}
   end
 
   test "Success", context do
-    Enum.each(context[:success], &assert(&1.status == :success))
+    Enum.each(context[:success], &(assert(&1.status == :success)))
   end
 
   test "Errors", context do
-    Enum.each(context[:errors], &assert(&1.status == :failure))
+    Enum.each(context[:errors], &(assert(&1.status == :failure)))
   end
 end

@@ -17,8 +17,8 @@ defmodule ESpec.Before do
   defmacro before(do: block), do: do_before(block)
 
   @doc "Allows to add keyword list or map to the shared dictionary"
-  defmacro before(keyword) when is_list(keyword) do
-    if Keyword.keyword?(keyword) do
+  defmacro before(keyword) when is_list (keyword) do
+    if Keyword.keyword?(keyword)do
       do_before({:shared, keyword})
     else
       raise "Argument must be a Keyword"
@@ -27,19 +27,16 @@ defmodule ESpec.Before do
 
   defp do_before(block) do
     function = random_before_name()
-
     quote do
       tail = @context
-      head = %ESpec.Before{module: __MODULE__, function: unquote(function)}
-
+      head =  %ESpec.Before{module: __MODULE__, function: unquote(function)}
       def unquote(function)(var!(shared)) do
         var!(shared)
         unquote(block)
       end
-
       @context [head | tail]
     end
   end
 
-  defp random_before_name, do: String.to_atom("before_#{ESpec.Support.random_string()}")
+  defp random_before_name, do: String.to_atom("before_#{ESpec.Support.random_string}")
 end
