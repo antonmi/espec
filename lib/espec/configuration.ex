@@ -24,8 +24,9 @@ defmodule ESpec.Configuration do
     start_loading_time: "Starts loading files",
     finish_loading_time: "Finished loading",
     finish_specs_time: "Finished specs",
-    formatters_timeout: "How long to wait for the formatters to " <>
-                   "finish formatting (defaults to the GenServer call timeout)"
+    formatters_timeout:
+      "How long to wait for the formatters to " <>
+        "finish formatting (defaults to the GenServer call timeout)"
   ]
 
   @doc """
@@ -34,7 +35,8 @@ defmodule ESpec.Configuration do
   Allows only whitelisted options.
   """
   def add(opts) do
-    opts |> Enum.each(fn {key, val} ->
+    opts
+    |> Enum.each(fn {key, val} ->
       if Enum.member?(Keyword.keys(@list), key) do
         Application.put_env(:espec, key, val)
       end
@@ -53,7 +55,8 @@ defmodule ESpec.Configuration do
   """
   def configure(func), do: func.({ESpec.Configuration})
 
-  Keyword.keys(@list) |> Enum.each(fn(func) ->
+  Keyword.keys(@list)
+  |> Enum.each(fn func ->
     def unquote(func)(value, {ESpec.Configuration}) do
       ESpec.Configuration.add([{unquote(func), value}])
     end

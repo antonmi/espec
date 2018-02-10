@@ -8,6 +8,7 @@ defmodule ESpec.Assertions.String.StartWith do
 
   defp match(string, val) do
     result = String.starts_with?(string, val)
+
     if result do
       {result, val}
     else
@@ -27,14 +28,15 @@ defmodule ESpec.Assertions.String.StartWith do
 
   defp success_message(string, val, _result, positive) do
     to = if positive, do: "starts", else: "doesn't start"
-    "`#{inspect string}` #{to} with `#{inspect val}`."
+    "`#{inspect(string)}` #{to} with `#{inspect(val)}`."
   end
 
   defp error_message(string, val, result, positive) do
     to = if positive, do: "to", else: "not to"
-    m = "Expected `#{inspect string}` #{to} start with `#{val}` but it starts with `#{result}`."
+    m = "Expected `#{inspect(string)}` #{to} start with `#{val}` but it starts with `#{result}`."
+
     if positive do
-      {m, %{diff_fn: fn() -> ESpec.Diff.diff(result, val) end}}
+      {m, %{diff_fn: fn -> ESpec.Diff.diff(result, val) end}}
     else
       m
     end

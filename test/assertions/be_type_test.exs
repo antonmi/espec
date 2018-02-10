@@ -20,7 +20,7 @@ defmodule BeTypeTest do
       it do: hd(Port.list()) |> should(be_port())
       it do: make_ref() |> should(be_reference())
       it do: {:a, :b} |> should(be_tuple())
-      it do: fn(_a, _b) -> :ok end |> should(be_function 2)
+      it do: fn _a, _b -> :ok end |> should(be_function 2)
     end
 
     context "Error" do
@@ -30,23 +30,21 @@ defmodule BeTypeTest do
       it do: 5 |> should(be_nil())
       it do: nil |> should_not(be_nil())
 
-      it do: fn(_a) -> :ok end |> should(be_function 2)
-      it do: fn(_a, _b) -> :ok end |> should_not(be_function 2)
+      it do: fn _a -> :ok end |> should(be_function 2)
+      it do: fn _a, _b -> :ok end |> should_not(be_function 2)
     end
   end
 
   setup_all do
-    examples = ESpec.SuiteRunner.run_examples(SomeSpec.examples, true)
-    {:ok,
-      success: Enum.slice(examples, 0, 15),
-      errors: Enum.slice(examples, 16, 21)}
+    examples = ESpec.SuiteRunner.run_examples(SomeSpec.examples(), true)
+    {:ok, success: Enum.slice(examples, 0, 15), errors: Enum.slice(examples, 16, 21)}
   end
 
   test "Success", context do
-    Enum.each(context[:success], &(assert(&1.status == :success)))
+    Enum.each(context[:success], &assert(&1.status == :success))
   end
 
   test "Errors", context do
-    Enum.each(context[:errors], &(assert(&1.status == :failure)))
+    Enum.each(context[:errors], &assert(&1.status == :failure))
   end
 end

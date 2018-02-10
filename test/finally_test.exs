@@ -17,26 +17,25 @@ defmodule FinallyTest do
 
     context "error or throw" do
       context "throw term" do
-        finally do: throw :some_term
+        finally do: throw(:some_term)
         it do: true
       end
 
       context "fail " do
-        finally do: raise "Error"
+        finally do: raise("Error")
         it do: true
       end
     end
 
-    #this finally is not accessible
+    # this finally is not accessible
     finally do: Application.put_env(:espec, :finally_c, 3)
   end
 
   setup_all do
     {:ok,
-      ex1: Enum.at(SomeSpec.examples, 0),
-      ex2: Enum.at(SomeSpec.examples, 1),
-      ex3: Enum.at(SomeSpec.examples, 2)
-    }
+     ex1: Enum.at(SomeSpec.examples(), 0),
+     ex2: Enum.at(SomeSpec.examples(), 1),
+     ex3: Enum.at(SomeSpec.examples(), 2)}
   end
 
   test "run ex1", context do
@@ -66,22 +65,22 @@ defmodule FinallyTestWithExceptions do
     use ESpec
 
     before do: {:ok, foo: :bar}
+
     finally do
       Application.put_env(:espec, :finally_value, 100_500)
       Application.put_env(:espec, :shared_value, shared[:foo])
     end
 
-    it "failing example 1", do: expect 1 |> to(eq 2)
-    it "failing exampe 2", do: raise "Some error"
+    it "failing example 1", do: expect(1 |> to(eq 2))
+    it "failing exampe 2", do: raise("Some error")
   end
 
   setup do
     Application.put_env(:espec, :finally_value, nil)
     Application.put_env(:espec, :finally_value, nil)
+
     {:ok,
-      ex1: Enum.at(Spec.FailingSpec.examples, 0),
-      ex2: Enum.at(Spec.FailingSpec.examples, 1)
-    }
+     ex1: Enum.at(Spec.FailingSpec.examples(), 0), ex2: Enum.at(Spec.FailingSpec.examples(), 1)}
   end
 
   test "run ex1", context do

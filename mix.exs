@@ -4,16 +4,17 @@ defmodule ESpec.Mixfile do
   @version "1.5.0"
 
   def project do
-    [app: :espec,
-     name: "ESpec",
-     version: @version,
-     elixir: ">= 1.3.4",
-     description: description(),
-     package: package(),
-     deps: deps(),
-     source_url: "https://github.com/antonmi/espec",
-     preferred_cli_env: [espec: :test]
-   ]
+    [
+      app: :espec,
+      name: "ESpec",
+      version: @version,
+      elixir: ">= 1.3.4",
+      description: description(),
+      package: package(),
+      deps: deps(),
+      source_url: "https://github.com/antonmi/espec",
+      preferred_cli_env: [espec: :test]
+    ]
   end
 
   def application do
@@ -34,11 +35,11 @@ defmodule ESpec.Mixfile do
   end
 
   defp package do
-   [
-     files: ~w(lib mix.exs README.md),
-     maintainers: ["Anton Mishchuk"],
-     licenses: ["MIT"],
-     links: %{"github" => "https://github.com/antonmi/espec"}
-   ]
- end
+    [
+      files: ~w(lib mix.exs README.md),
+      maintainers: ["Anton Mishchuk"],
+      licenses: ["MIT"],
+      links: %{"github" => "https://github.com/antonmi/espec"}
+    ]
+  end
 end

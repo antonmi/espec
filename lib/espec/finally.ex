@@ -15,16 +15,19 @@ defmodule ESpec.Finally do
   """
   defmacro finally(do: block) do
     function = random_finally_name()
+
     quote do
       tail = @context
-      head =  %ESpec.Finally{module: __MODULE__, function: unquote(function)}
+      head = %ESpec.Finally{module: __MODULE__, function: unquote(function)}
+
       def unquote(function)(var!(shared)) do
         var!(shared)
         unquote(block)
       end
+
       @context [head | tail]
     end
   end
 
-  defp random_finally_name, do: String.to_atom("finally_#{ESpec.Support.random_string}")
+  defp random_finally_name, do: String.to_atom("finally_#{ESpec.Support.random_string()}")
 end

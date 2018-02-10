@@ -9,12 +9,16 @@ defimpl ESpec.DatesTimes.DateTimeProtocol, for: DateTime do
   Time intervals in this module don't account for leap seconds.
   """
 
-  @spec to_comparison_units(DateTime.t) :: non_neg_integer
+  @spec to_comparison_units(DateTime.t()) :: non_neg_integer
   def to_comparison_units(%{std_offset: std_offset, utc_offset: utc_offset} = datetime) do
-    microseconds = datetime
-                   |> Calendar.ISO.Extension.to_iso_days()
-                   |> Calendar.ISO.Extension.iso_days_to_unit(:microseconds)
-    offset_microseconds = System.convert_time_unit(std_offset + utc_offset, :seconds, :microseconds)
+    microseconds =
+      datetime
+      |> Calendar.ISO.Extension.to_iso_days()
+      |> Calendar.ISO.Extension.iso_days_to_unit(:microseconds)
+
+    offset_microseconds =
+      System.convert_time_unit(std_offset + utc_offset, :seconds, :microseconds)
+
     microseconds - offset_microseconds
   end
 end

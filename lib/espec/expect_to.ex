@@ -14,5 +14,6 @@ defmodule ESpec.ExpectTo do
   end
 
   @doc "Alias of `to_not`."
-  def not_to(rhs, {__MODULE__, subject, stacktrace}), do: to_not(rhs, {__MODULE__, subject, stacktrace})
+  def not_to(rhs, {__MODULE__, subject, stacktrace}),
+    do: to_not(rhs, {__MODULE__, subject, stacktrace})
 end

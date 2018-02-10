@@ -39,8 +39,12 @@ defmodule ESpec.Expect do
   defp prune_stacktrace([{ESpec.To, :not_to, 2, _} | rest]), do: prune_stacktrace(rest)
   defp prune_stacktrace([{ESpec.To, :to_not, 2, _} | rest]), do: prune_stacktrace(rest)
   defp prune_stacktrace([{ESpec.Expect, :expect, _, _} | rest]), do: prune_stacktrace(rest)
-  defp prune_stacktrace([{ESpec.Expect, :pruned_stacktrace, 0, _} | rest]), do: prune_stacktrace(rest)
-  defp prune_stacktrace([{ESpec.Expect, :prune_stacktrace, 2, _} | rest]), do: prune_stacktrace(rest)
+
+  defp prune_stacktrace([{ESpec.Expect, :pruned_stacktrace, 0, _} | rest]),
+    do: prune_stacktrace(rest)
+
+  defp prune_stacktrace([{ESpec.Expect, :prune_stacktrace, 2, _} | rest]),
+    do: prune_stacktrace(rest)
 
   defp prune_stacktrace([h | t]), do: [h | prune_stacktrace(t)]
   defp prune_stacktrace([]), do: []

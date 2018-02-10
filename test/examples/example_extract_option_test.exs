@@ -25,10 +25,9 @@ defmodule ExampleHasOptionTest do
 
   setup_all do
     {:ok,
-      ex1: Enum.at(SomeSpec.examples, 0), 
-      ex2: Enum.at(SomeSpec.examples, 1), 
-      ex3: Enum.at(SomeSpec.examples, 2), 
-    }
+     ex1: Enum.at(SomeSpec.examples(), 0),
+     ex2: Enum.at(SomeSpec.examples(), 1),
+     ex3: Enum.at(SomeSpec.examples(), 2)}
   end
 
   test "ex1 options", context do
@@ -40,19 +39,19 @@ defmodule ExampleHasOptionTest do
     assert ESpec.Example.extract_option(ex, :e)
     assert ESpec.Example.extract_option(ex, :f)
     assert ESpec.Example.extract_option(ex, :g) == nil
-  end 
+  end
 
   test "ex2 options", context do
     ex = context[:ex2]
     assert ESpec.Example.extract_option(ex, :a) == false
     assert ESpec.Example.extract_option(ex, :b) == false
     assert ESpec.Example.extract_option(ex, :c) == nil
-  end 
+  end
 
   test "ex3 options", context do
     ex = context[:ex3]
     assert ESpec.Example.extract_option(ex, :a) == true
     assert ESpec.Example.extract_option(ex, :b) == false
     assert ESpec.Example.extract_option(ex, :c) == nil
-  end 
+  end
 end

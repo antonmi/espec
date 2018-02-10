@@ -25,9 +25,11 @@ defmodule Formatters.DocStacktraceTest do
 
   for {desc, module, file} <- modules do
     Code.require_file(Path.join(__DIR__, "#{file}.exs"))
+
     test desc do
       m = unquote(module)
       name = module_name(m)
+
       f =
         __DIR__
         |> Path.relative_to_cwd()
@@ -36,84 +38,70 @@ defmodule Formatters.DocStacktraceTest do
       output = output(m.examples)
 
       start_line = 3
+
       for line <- start_line..(start_line + 2) do
-        assert_contains(
-            output,
-            """
-            #{name}
-            \t\e[36m#{f}:#{line}\e[0m
-            \t\e[31mExpected
-            """
-          )
+        assert_contains(output, """
+        #{name}
+        \t\e[36m#{f}:#{line}\e[0m
+        \t\e[31mExpected
+        """)
       end
-      assert_contains(
-          output,
-          """
-          liner
-          \t\e[36m#{f}:#{start_line + 5}: (inside example)
-          \t#{f}:#{start_line + 3}: (example)\e[0m
-          \t\e[31mExpected
-          """
-        )
+
+      assert_contains(output, """
+      liner
+      \t\e[36m#{f}:#{start_line + 5}: (inside example)
+      \t#{f}:#{start_line + 3}: (example)\e[0m
+      \t\e[31mExpected
+      """)
 
       start_line = 14
+
       for line <- start_line..(start_line + 2) do
-        assert_contains(
-            output,
-            """
-            #{name}
-            \t\e[36m#{f}:#{line}\e[0m
-            \t\e[31mExpected
-            """
-          )
+        assert_contains(output, """
+        #{name}
+        \t\e[36m#{f}:#{line}\e[0m
+        \t\e[31mExpected
+        """)
       end
-      assert_contains(
-          output,
-          """
-          subject
-          \t\e[36m#{f}:#{start_line + 5}: (inside example)
-          \t#{f}:#{start_line + 3}: (example)\e[0m
-          \t\e[31mExpected
-          """
-        )
+
+      assert_contains(output, """
+      subject
+      \t\e[36m#{f}:#{start_line + 5}: (inside example)
+      \t#{f}:#{start_line + 3}: (example)\e[0m
+      \t\e[31mExpected
+      """)
 
       start_line = 23
-      assert_contains(
-          output,
-          """
-          has 3 expects, the second fails
-          \t\e[36m#{f}:#{start_line + 2}: (inside example)
-          \t#{f}:#{start_line}: (example)\e[0m
-          \t\e[31mExpected
-          """
-        )
+
+      assert_contains(output, """
+      has 3 expects, the second fails
+      \t\e[36m#{f}:#{start_line + 2}: (inside example)
+      \t#{f}:#{start_line}: (example)\e[0m
+      \t\e[31mExpected
+      """)
 
       start_line = 29
       function_first_line = 34
-      assert_contains(
-          output,
-          """
-          has a failing expect in a function
-          \t\e[36m#{f}:#{function_first_line}: Elixir.#{name}.test_function/2
-          \t#{f}:#{start_line}: (example)\e[0m
-          \t\e[31mExpected
-          """
-        )
+
+      assert_contains(output, """
+      has a failing expect in a function
+      \t\e[36m#{f}:#{function_first_line}: Elixir.#{name}.test_function/2
+      \t#{f}:#{start_line}: (example)\e[0m
+      \t\e[31mExpected
+      """)
 
       start_line = 38
       first_function_line = 44
-      assert_contains(
-          output,
-          """
-          has a failing expect in some nested function call
-          \t\e[36m#{f}:#{first_function_line + 18}: Elixir.#{name}.level4/1
-          \t#{f}:#{first_function_line + 12}: Elixir.#{name}.level3/1
-          \t#{f}:#{first_function_line + 6}: Elixir.#{name}.level2/1
-          \t#{f}:#{first_function_line}: Elixir.#{name}.level1/1
-          \t#{f}:#{start_line}: (example)\e[0m
-          \t\e[31mExpected
-          """
-        )
+
+      assert_contains(output, """
+      has a failing expect in some nested function call
+      \t\e[36m#{f}:#{first_function_line + 18}: Elixir.#{name}.level4/1
+      \t#{f}:#{first_function_line + 12}: Elixir.#{name}.level3/1
+      \t#{f}:#{first_function_line + 6}: Elixir.#{name}.level2/1
+      \t#{f}:#{first_function_line}: Elixir.#{name}.level1/1
+      \t#{f}:#{start_line}: (example)\e[0m
+      \t\e[31mExpected
+      """)
     end
   end
 end

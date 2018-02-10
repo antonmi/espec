@@ -3,6 +3,7 @@ defmodule ExampleSpecShould do
   it do: 1 |> should(eq(2))
   it do: 1 |> should_not(eq(1))
   it do: 1 |> should_not(eq(1))
+
   it "is not a one liner" do
     a = 10
     1 |> should(eq(a))
@@ -14,6 +15,7 @@ defmodule ExampleSpecShould do
   it do: should(eq(2))
   it do: should_not(eq(1))
   it do: should_not(eq(1))
+
   it "is not a one liner with subject" do
     a = 10
     should(eq(a))
@@ -40,26 +42,34 @@ defmodule ExampleSpecShould do
   end
 
   defp level1(x) do
-    a = 1 # some code
+    # some code
+    a = 1
     level2(x)
-    a # trying to prevent the compiler from optimizing this
+    # trying to prevent the compiler from optimizing this
+    a
   end
 
   defp level2(x) do
-    a = 2 # some code
+    # some code
+    a = 2
     level3(x)
-    a # trying to prevent the compiler from optimizing this
+    # trying to prevent the compiler from optimizing this
+    a
   end
 
   defp level3(x) do
-    a = 3 # some code
+    # some code
+    a = 3
     level4(x)
-    a # trying to prevent the compiler from optimizing this
+    # trying to prevent the compiler from optimizing this
+    a
   end
 
   defp level4(x) do
-    a = 4 # some code
+    # some code
+    a = 4
     expect(x).to(eq(""))
-    a # trying to prevent the compiler from optimizing this
+    # trying to prevent the compiler from optimizing this
+    a
   end
 end
