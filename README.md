@@ -60,7 +60,7 @@ Add `espec` to dependencies in the `mix.exs` file:
 ```elixir
 def deps do
   ...
-  {:espec, "~> 1.4.6", only: :test},
+  {:espec, "~> 1.5.0", only: :test},
   #{:espec, github: "antonmi/espec", only: :test}, to get the latest version
   ...
 end
@@ -428,41 +428,13 @@ end
 
 ### Shared Examples in separate files
 
-When trying to use a shared example which is defined in a separate file, you will probably encounter an error telling you, that the module containing the shared examples does not exist.
+In case you want to add some "global" shared specs which you want to use in multiple specs, ESpec has you covered. Simply add these files to your `spec/shared` folder. The place where `mix espec.init` generates you a placeholder folder and file.
 
-There are two ways of counteracting this, you can either explicitly import the file containing the shared examples in your `spec_helper.exs` file:
+By default ESpec loads all files contained in `<your_spec_paths>/shared` which match your `spec_pattern`.
+The [Configuration and options](#configuration-and-options) chapter contains details on how to control this behaviour.
 
-```elixir
-Code.require_file("path/to/your_shared_spec.exs")
-```
+In case you already use `Code.require_file/1` in your `spec_helper.exs` don't sweat. ESpec makes sure to require each file only once, it ignores files which already have been included.
 
-Or you ensure that the file(s) are being compiled when testing. For this you can use the `elixirc_paths` setting in your project configuration (in your `mix.exs` file).
-You could, for example, create a `spec/shared/` folder which contains all your shared examples, in that case your configuration could look like this:
-
-```elixir
-defmodule YourApp.Mixfile do
-  use Mix.Project
-
-  def project do
-    [
-      app: :your_app,
-      version: "0.1.0",
-      elixir: "~> 1.5",
-      elixirc_paths: elixirc_paths(Mix.env),
-      start_permanent: Mix.env == :prod,
-      preferred_cli_env: [espec: :test],
-      deps: deps()
-    ]
-  end
-
-  def elixirc_paths(:test), do: ["lib", "spec/shared"]
-  def elixirc_paths(_), do: ["lib"]
-
-  # Some other stuff ...
-end
-```
-
-This will tell the elixir compile to compile all files contained in `spec/shared` and will make your shared examples available in your actual specs.
 
 ## Generated examples
 Examples can be generated from code "templates". This should help with making the code more DRY:
@@ -1025,7 +997,7 @@ end
 `MIX_ENV=test mix help espec`
 ```
 #### Spec paths and pattern
-You can change (in `mix.exs` file) the folder where your specs are and the pattern to match the files.
+You can change (in the `mix.exs` file) the folder where your specs are and the pattern to match these files.
 ```elixir
  def project do
   ...
@@ -1033,6 +1005,16 @@ You can change (in `mix.exs` file) the folder where your specs are and the patte
   spec_pattern: "*_espec.exs",
   ...
  end
+```
+#### Shared spec paths and pattern
+In addition to specifying the spec paths you can also tell ESpec where to find your SharedSpecs.
+```elixir
+  def project do
+    ...
+    shared_spec_paths: ["my_specs/shared", "espec/my_shared"],
+    shared_spec_pattern: "*_shared.exs",
+    ...
+  end
 ```
 #### Coverage
 One can run specs with coverage:
