@@ -49,12 +49,12 @@ defmodule Formatters.DocStacktraceTest do
 
       assert_contains(output, """
       liner
-      \t\e[36m#{f}:#{start_line + 5}: (inside example)
-      \t#{f}:#{start_line + 3}: (example)\e[0m
+      \t\e[36m#{f}:#{start_line + 6}: (inside example)
+      \t#{f}:#{start_line + 4}: (example)\e[0m
       \t\e[31mExpected
       """)
 
-      start_line = 14
+      start_line = 15
 
       for line <- start_line..(start_line + 2) do
         assert_contains(output, """
@@ -66,12 +66,12 @@ defmodule Formatters.DocStacktraceTest do
 
       assert_contains(output, """
       subject
-      \t\e[36m#{f}:#{start_line + 5}: (inside example)
-      \t#{f}:#{start_line + 3}: (example)\e[0m
+      \t\e[36m#{f}:#{start_line + 6}: (inside example)
+      \t#{f}:#{start_line + 4}: (example)\e[0m
       \t\e[31mExpected
       """)
 
-      start_line = 23
+      start_line = 25
 
       assert_contains(output, """
       has 3 expects, the second fails
@@ -80,8 +80,8 @@ defmodule Formatters.DocStacktraceTest do
       \t\e[31mExpected
       """)
 
-      start_line = 29
-      function_first_line = 34
+      start_line = 31
+      function_first_line = 36
 
       assert_contains(output, """
       has a failing expect in a function
@@ -90,14 +90,14 @@ defmodule Formatters.DocStacktraceTest do
       \t\e[31mExpected
       """)
 
-      start_line = 38
-      first_function_line = 44
+      start_line = 40
+      first_function_line = 47
 
       assert_contains(output, """
       has a failing expect in some nested function call
-      \t\e[36m#{f}:#{first_function_line + 18}: Elixir.#{name}.level4/1
-      \t#{f}:#{first_function_line + 12}: Elixir.#{name}.level3/1
-      \t#{f}:#{first_function_line + 6}: Elixir.#{name}.level2/1
+      \t\e[36m#{f}:#{first_function_line + 24}: Elixir.#{name}.level4/1
+      \t#{f}:#{first_function_line + 16}: Elixir.#{name}.level3/1
+      \t#{f}:#{first_function_line + 8}: Elixir.#{name}.level2/1
       \t#{f}:#{first_function_line}: Elixir.#{name}.level1/1
       \t#{f}:#{start_line}: (example)\e[0m
       \t\e[31mExpected
