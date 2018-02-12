@@ -1,10 +1,10 @@
 ExUnit.start()
 ESpec.start()
-ESpec.Output.start
+ESpec.Output.start()
 
-ESpec.configure fn(config) ->
-  config.silent true
-end
+ESpec.configure(fn config ->
+  config.silent(true)
+end)
 
 path = Path.expand("../tmp/beams", __DIR__)
 File.rm_rf!(path)

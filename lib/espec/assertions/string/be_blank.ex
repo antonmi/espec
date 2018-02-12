@@ -13,12 +13,12 @@ defmodule ESpec.Assertions.String.BeBlank do
 
   defp success_message(string, _val, _result, positive) do
     to = if positive, do: "is", else: "is not"
-    "`#{inspect string}` #{to} blank."
+    "`#{inspect(string)}` #{to} blank."
   end
 
   defp error_message(string, _val, _result, positive) do
     to = if positive, do: "to", else: "not to"
     but = if positive, do: "it isn't", else: "it is"
-    "Expected `#{inspect string}` #{to} be blank but #{but}."
+    "Expected `#{inspect(string)}` #{to} be blank but #{but}."
   end
 end

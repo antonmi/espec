@@ -6,26 +6,26 @@ defmodule XcontextResultsTest do
 
     it [skip: true], do: "Example"
     it [skip: "Some message"], do: "Example"
-    xit do: "Example"
+    xit(do: "Example")
 
     context "Skip", skip: true do
       it [skip: "Some message"], do: "Example"
     end
 
-    xcontext "Skip", [some: :option] do
+    xcontext "Skip", some: :option do
       it do: "Example"
     end
   end
 
   setup_all do
-    examples = ESpec.SuiteRunner.run_examples(SomeSpec.examples, true)
+    examples = ESpec.SuiteRunner.run_examples(SomeSpec.examples(), true)
+
     {:ok,
-      ex1: Enum.at(examples, 0),
-      ex2: Enum.at(examples, 1),
-      ex3: Enum.at(examples, 2),
-      ex4: Enum.at(examples, 3),
-      ex5: Enum.at(examples, 4)
-    }
+     ex1: Enum.at(examples, 0),
+     ex2: Enum.at(examples, 1),
+     ex3: Enum.at(examples, 2),
+     ex4: Enum.at(examples, 3),
+     ex5: Enum.at(examples, 4)}
   end
 
   test "check ex1", context do

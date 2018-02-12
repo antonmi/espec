@@ -1,9 +1,10 @@
-ESpec.configure fn(config) ->
-  config.before fn(_tags) ->
+ESpec.configure(fn config ->
+  config.before(fn _tags ->
     {:ok, %{answer: 42, order_spec_answer: 42}}
-  end
-  config.finally fn(shared) -> shared.answer end
-end
+  end)
+
+  config.finally(fn shared -> shared.answer end)
+end)
 
 path = Path.expand("../tmp/beams", __DIR__)
 File.rm_rf!(path)

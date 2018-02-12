@@ -3,7 +3,7 @@ defmodule ESpec.ExampleRunner do
   Contains all the functions need to run a 'spec' example.
   """
 
-  defmodule AfterExampleError, do: defexception example_error: nil, message: nil
+  defmodule(AfterExampleError, do: defexception(example_error: nil, message: nil))
 
   @dict_keys [:ok, :shared]
 
@@ -23,23 +23,31 @@ defmodule ESpec.ExampleRunner do
   """
   def run(example) do
     contexts = Example.extract_contexts(example)
+
     cond do
-      example.opts[:skip] || Enum.any?(contexts, &(&1.opts[:skip])) ->
+      example.opts[:skip] || Enum.any?(contexts, & &1.opts[:skip]) ->
         run_skipped(example)
+
       example.opts[:pending] ->
         run_pending(example)
+
       true ->
-        run_example(example, :os.timestamp)
+        run_example(example, :os.timestamp())
     end
   end
 
   defp run_example(example, start_time) do
     {assigns, example} = before_example_actions(example)
+
     try do
       try_run(example, assigns, start_time)
     rescue
-      error in [AssertionError] -> do_rescue(example, assigns, start_time, error)
-      error in [AfterExampleError] -> do_rescue(example, assigns, start_time, error.example_error, false)
+      error in [AssertionError] ->
+        do_rescue(example, assigns, start_time, error)
+
+      error in [AfterExampleError] ->
+        do_rescue(example, assigns, start_time, error.example_error, false)
+
       other_error ->
         error = %AssertionError{message: format_other_error(other_error)}
         do_rescue(example, assigns, start_time, error)
@@ -62,24 +70,25 @@ defmodule ESpec.ExampleRunner do
   end
 
   defp try_run(example, assigns, start_time) do
-    if example.status == :failure, do: raise example.error
+    if example.status == :failure, do: raise(example.error)
 
-    result = case apply(example.module, example.function, [assigns]) do
-      {ESpec.ExpectTo, res} -> res
-      res -> res
-    end
+    result =
+      case apply(example.module, example.function, [assigns]) do
+        {ESpec.ExpectTo, res} -> res
+        res -> res
+      end
 
     {_assigns, example} = after_example_actions(assigns, example)
-    if example.status == :failure, do: raise %AfterExampleError{example_error: example.error}
+    if example.status == :failure, do: raise(%AfterExampleError{example_error: example.error})
 
-    duration = duration_in_ms(start_time, :os.timestamp)
+    duration = duration_in_ms(start_time, :os.timestamp())
     example = %Example{example | status: :success, result: result, duration: duration}
     Output.example_finished(example)
     example
   end
 
   defp do_catch(example, assigns, start_time, what, value) do
-    duration = duration_in_ms(start_time, :os.timestamp)
+    duration = duration_in_ms(start_time, :os.timestamp())
     error = %AssertionError{message: format_catch(what, value)}
     example = %Example{example | status: :failure, error: error, duration: duration}
     Output.example_finished(example)
@@ -88,7 +97,7 @@ defmodule ESpec.ExampleRunner do
   end
 
   defp do_rescue(example, assigns, start_time, error, perform_after_example \\ true) do
-    duration = duration_in_ms(start_time, :os.timestamp)
+    duration = duration_in_ms(start_time, :os.timestamp())
     example = %Example{example | status: :failure, error: error, duration: duration}
     Output.example_finished(example)
     if perform_after_example, do: after_example_actions(assigns, example)
@@ -115,12 +124,15 @@ defmodule ESpec.ExampleRunner do
 
   defp run_config_before({assigns, example}) do
     func = ESpec.Configuration.get(:before)
+
     if func do
-      fun = if is_function(func, 1) do
-        fn -> {fill_dict(assigns, func.(assigns)), example} end
-      else
-        fn -> {fill_dict(assigns, func.()), example} end
-      end
+      fun =
+        if is_function(func, 1) do
+          fn -> {fill_dict(assigns, func.(assigns)), example} end
+        else
+          fn -> {fill_dict(assigns, func.()), example} end
+        end
+
       call_with_rescue(fun, {assigns, example})
     else
       {assigns, example}
@@ -129,15 +141,18 @@ defmodule ESpec.ExampleRunner do
 
   defp run_befores_and_lets({assigns, example}) do
     ESpec.Let.Impl.clear_lets(example.module)
+
     Example.extract_lets(example)
     |> Enum.each(&ESpec.Let.Impl.run_before/1)
 
-    {assigns, example} = Example.extract_befores(example)
-    |> Enum.reduce({assigns, example}, fn(before, {assigns, example}) ->
+    {assigns, example} =
+      Example.extract_befores(example)
+      |> Enum.reduce({assigns, example}, fn before, {assigns, example} ->
         ESpec.Let.Impl.update_shared(assigns)
         fun = fn -> {do_run_before(before, assigns), example} end
         call_with_rescue(fun, {assigns, example})
-    end)
+      end)
+
     ESpec.Let.Impl.update_shared(assigns)
 
     {assigns, example}
@@ -145,18 +160,20 @@ defmodule ESpec.ExampleRunner do
 
   defp run_finallies({assigns, example}) do
     Example.extract_finallies(example)
-    |> Enum.reverse
-    |> Enum.reduce({assigns, example}, fn(finally, {map, example}) ->
+    |> Enum.reverse()
+    |> Enum.reduce({assigns, example}, fn finally, {map, example} ->
       fun = fn ->
-        assigns =  apply(finally.module, finally.function, [map])
+        assigns = apply(finally.module, finally.function, [map])
         {fill_dict(map, assigns), example}
       end
+
       call_with_rescue(fun, {assigns, example})
     end)
   end
 
   defp run_config_finally({assigns, example}) do
     func = ESpec.Configuration.get(:finally)
+
     if func do
       run_config_finally({assigns, example}, func)
     else
@@ -169,6 +186,7 @@ defmodule ESpec.ExampleRunner do
       if is_function(func, 1), do: func.(assigns), else: func.()
       {assigns, example}
     end
+
     call_with_rescue(fun, {assigns, example})
   end
 
@@ -183,22 +201,26 @@ defmodule ESpec.ExampleRunner do
   end
 
   defp do_catch(what, value, {map, example}) do
-    example = if example.error do
-      example
-    else
-      error = %AssertionError{message: format_catch(what, value)}
-      %Example{example | status: :failure, error: error}
-    end
+    example =
+      if example.error do
+        example
+      else
+        error = %AssertionError{message: format_catch(what, value)}
+        %Example{example | status: :failure, error: error}
+      end
+
     {map, example}
   end
 
   defp do_before(error, {map, example}) do
-    example = if example.error do
-      example
-    else
-      error = %AssertionError{message: format_other_error(error)}
-      %Example{example | status: :failure, error: error}
-    end
+    example =
+      if example.error do
+        example
+      else
+        error = %AssertionError{message: format_other_error(error)}
+        %Example{example | status: :failure, error: error}
+      end
+
     {map, example}
   end
 
@@ -211,15 +233,17 @@ defmodule ESpec.ExampleRunner do
     case res do
       {key, list} when key in @dict_keys and (is_list(list) or is_map(list)) ->
         if (Keyword.keyword?(list) || is_map(list)) && Enumerable.impl_for(list) do
-          Enum.reduce(list, map, fn({k, v}, a) -> Map.put(a, k, v) end)
+          Enum.reduce(list, map, fn {k, v}, a -> Map.put(a, k, v) end)
         else
           map
         end
-      _ -> map
+
+      _ ->
+        map
     end
   end
 
-  defp unload_mocks, do: ESpec.Mock.unload
+  defp unload_mocks, do: ESpec.Mock.unload()
 
   defp duration_in_ms(start_time, end_time) do
     div(:timer.now_diff(end_time, start_time), 1000)
@@ -227,9 +251,9 @@ defmodule ESpec.ExampleRunner do
 
   defp format_other_error(error) do
     error_message = Exception.format_banner(:error, error)
-    stacktrace = Exception.format_stacktrace(System.stacktrace)
+    stacktrace = Exception.format_stacktrace(System.stacktrace())
     error_message <> "\n" <> stacktrace
   end
 
-  defp format_catch(what, value), do: "#{what} #{inspect value}"
+  defp format_catch(what, value), do: "#{what} #{inspect(value)}"
 end

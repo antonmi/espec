@@ -11,7 +11,7 @@ defmodule ESpec.Formatters.Html do
     tree = context_tree(examples)
     html = make_html(tree, true)
     summary = format_summary(examples, durations)
-    string = EEx.eval_file(template_path(), [examples: html, summary: summary])
+    string = EEx.eval_file(template_path(), examples: html, summary: summary)
     String.replace(string, "\n", "")
   end
 
@@ -22,25 +22,29 @@ defmodule ESpec.Formatters.Html do
 
   defp context_tree(examples) do
     examples
-    |> Enum.reduce({Map.new, []}, fn(ex, acc) ->
+    |> Enum.reduce({Map.new(), []}, fn ex, acc ->
       contexts = Example.extract_contexts(ex)
       put_deep(acc, contexts, ex)
     end)
   end
 
   defp put_deep({dict, values}, [el | tl], value) when length(tl) > 0 do
-    d = case Map.get(dict, el) do
-      {inner, vals} -> put_deep({inner, vals}, tl, value)
-      nil -> put_deep({Map.new, []}, tl, value)
-    end
+    d =
+      case Map.get(dict, el) do
+        {inner, vals} -> put_deep({inner, vals}, tl, value)
+        nil -> put_deep({Map.new(), []}, tl, value)
+      end
+
     {Map.put(dict, el, d), values}
   end
 
   defp put_deep({dict, values}, [el], value) do
-    new_dict = case Map.get(dict, el) do
-      {inner, vals} -> Map.put(dict, el, {inner, [value | vals]})
-      nil -> Map.put(dict, el, {Map.new, [value]})
+    new_dict =
+      case Map.get(dict, el) do
+        {inner, vals} -> Map.put(dict, el, {inner, [value | vals]})
+        nil -> Map.put(dict, el, {Map.new(), [value]})
       end
+
     {new_dict, values}
   end
 
@@ -56,13 +60,13 @@ defmodule ESpec.Formatters.Html do
   end
 
   defp main_lis(values) do
-    Enum.reduce(values, "", fn(ex, acc) ->
+    Enum.reduce(values, "", fn ex, acc ->
       acc <> "<li class='#{li_class(ex)}'>#{ex_desc(ex)}</li>"
     end)
   end
 
   defp ul_or_lis(lis, firstli?) do
-    if  String.length(lis) > 0 do
+    if String.length(lis) > 0 do
       if firstli?, do: "<ul class='tree'>" <> lis <> "</ul>", else: "<ul>" <> lis <> "</ul>"
     else
       lis
@@ -70,11 +74,14 @@ defmodule ESpec.Formatters.Html do
   end
 
   defp uls(lis, dict, top?, firstli?) do
-    Enum.reduce(dict, lis, fn({key, d}, acc) ->
+    Enum.reduce(dict, lis, fn {key, d}, acc ->
       if top? do
-        acc <> "<section class='context'><h3>#{key.description}</h3>" <> make_html(d, false, true) <> "</section>"
+        acc <>
+          "<section class='context'><h3>#{key.description}</h3>" <>
+          make_html(d, false, true) <> "</section>"
       else
         mainli = "<li><h4>#{key.description}</h4>"
+
         if firstli? do
           acc <> "<ul class='tree'>#{mainli}" <> make_html(d) <> "</li></ul>"
         else
@@ -85,15 +92,17 @@ defmodule ESpec.Formatters.Html do
   end
 
   defp ex_desc(ex) do
-    res = if String.length(ex.description) > 0 do
-      ex.description
-    else
-      if ex.status == :failure do
-        ex.error.message |> String.replace("\n", "<br>")
+    res =
+      if String.length(ex.description) > 0 do
+        ex.description
       else
-        ex.result
+        if ex.status == :failure do
+          ex.error.message |> String.replace("\n", "<br>")
+        else
+          ex.result
+        end
       end
-    end
+
     res = "#{res} (#{ex.duration} ms)"
     String.replace(res, "\"", "'")
   end
@@ -106,9 +115,14 @@ defmodule ESpec.Formatters.Html do
     load_time = :timer.now_diff(finish_loading_time, start_loading_time)
     spec_time = :timer.now_diff(finish_specs_time, finish_loading_time)
     seed = get_seed()
+
     {
-      Enum.count(examples), Enum.count(failed), Enum.count(pending),
-      us_to_sec(load_time + spec_time), us_to_sec(load_time), us_to_sec(spec_time),
+      Enum.count(examples),
+      Enum.count(failed),
+      Enum.count(pending),
+      us_to_sec(load_time + spec_time),
+      us_to_sec(load_time),
+      us_to_sec(spec_time),
       seed
     }
   end

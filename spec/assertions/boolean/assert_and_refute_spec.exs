@@ -17,8 +17,8 @@ defmodule ESpec.Assertions.Boolean.AssertAndRefuteSpec do
     context "with `to`" do
       before do
         {:shared,
-          expectation: fn -> assert false end,
-          message: "Expected `false` to be truthy but it isn't."}
+         expectation: fn -> assert false end,
+         message: "Expected `false` to be truthy but it isn't."}
       end
 
       it_behaves_like(CheckErrorSharedSpec)
@@ -27,8 +27,7 @@ defmodule ESpec.Assertions.Boolean.AssertAndRefuteSpec do
     context "with `not_to`" do
       before do
         {:shared,
-          expectation: fn -> refute "a" end,
-          message: "Expected `\"a\"` to be falsy but it isn't."}
+         expectation: fn -> refute "a" end, message: "Expected `\"a\"` to be falsy but it isn't."}
       end
 
       it_behaves_like(CheckErrorSharedSpec)

@@ -26,7 +26,7 @@ defmodule ESpec.Assertions.BeTypeSpec do
     it do: hd(Port.list()) |> should(be_port())
     it do: make_ref() |> should(be_reference())
     it do: {:a, :b} |> should(be_tuple())
-    it do: fn(_a, _b) -> :ok end |> should(be_function(2))
+    it do: fn _a, _b -> :ok end |> should(be_function(2))
     it do: %{__struct__: S} |> should(be_struct())
     it do: %{__struct__: S} |> should(be_struct(S))
   end
@@ -35,8 +35,8 @@ defmodule ESpec.Assertions.BeTypeSpec do
     context "with `to`" do
       before do
         {:shared,
-          expectation: fn -> 1 |> should(be_atom()) end,
-          message: "Expected `1` to be `atom` but it isn't."}
+         expectation: fn -> 1 |> should(be_atom()) end,
+         message: "Expected `1` to be `atom` but it isn't."}
       end
 
       it_behaves_like(CheckErrorSharedSpec)
@@ -45,8 +45,8 @@ defmodule ESpec.Assertions.BeTypeSpec do
     context "with `not_to`" do
       before do
         {:shared,
-          expectation: fn -> :atom |> should_not(be_atom()) end,
-          message: "Expected `:atom` not to be `atom` but it is."}
+         expectation: fn -> :atom |> should_not(be_atom()) end,
+         message: "Expected `:atom` not to be `atom` but it is."}
       end
 
       it_behaves_like(CheckErrorSharedSpec)

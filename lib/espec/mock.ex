@@ -16,6 +16,7 @@ defmodule ESpec.Mock do
   """
   def expect(module, name, function, meck_options) do
     opts = if Enum.empty?(meck_options), do: @default_options, else: meck_options
+
     try do
       :meck.new(module, opts)
     rescue
@@ -25,35 +26,38 @@ defmodule ESpec.Mock do
           _ -> raise error
         end
     end
+
     :meck.expect(module, name, function)
     agent_put({module, self()})
   end
 
   @doc "Unloads modules at the end of example"
   def unload do
-    modules = agent_get(self()) |> Enum.map(fn{m, _p} -> m end)
+    modules = agent_get(self()) |> Enum.map(fn {m, _p} -> m end)
     :meck.unload(modules)
     agent_del(self())
   end
 
   @doc "Starts Agent to save mocked modules."
-  def start_agent, do: Agent.start_link(fn -> MapSet.new end, name: @agent_name)
+  def start_agent, do: Agent.start_link(fn -> MapSet.new() end, name: @agent_name)
 
   @doc "Stops Agent"
   def stop_agent, do: Agent.stop(@agent_name)
 
   defp agent_get(pid) do
-    Agent.get(@agent_name, &(&1))
-    |> Enum.filter(fn{_m, p} -> p == pid end)
+    Agent.get(@agent_name, & &1)
+    |> Enum.filter(fn {_m, p} -> p == pid end)
   end
 
   defp agent_del(pid) do
-    new_set = Agent.get(@agent_name, &(&1))
-    |> Enum.reduce(MapSet.new, fn({m, p}, acc) ->
-      if p != pid, do: MapSet.put(acc, {m, p}), else: acc
-    end)
-    Agent.update(@agent_name, fn(_state) -> new_set end)
+    new_set =
+      Agent.get(@agent_name, & &1)
+      |> Enum.reduce(MapSet.new(), fn {m, p}, acc ->
+        if p != pid, do: MapSet.put(acc, {m, p}), else: acc
+      end)
+
+    Agent.update(@agent_name, fn _state -> new_set end)
   end
 
-  defp agent_put(key), do: Agent.update(@agent_name, &(MapSet.put(&1, key)))
+  defp agent_put(key), do: Agent.update(@agent_name, &MapSet.put(&1, key))
 end

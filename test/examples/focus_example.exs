@@ -7,10 +7,10 @@ defmodule PendingExampleTest do
     it do: "Example"
 
     it "with focus", [focus: true], do: "focus true"
-    focus "with focus", do: "focus focus"
-    fit "pending with message", do: "focus fit"
-    fexample "pending with message", do: "focus fexample"
-    fspecify "pending with message", do: "focus fspecify"
+    focus("with focus", do: "focus focus")
+    fit("pending with message", do: "focus fit")
+    fexample("pending with message", do: "focus fexample")
+    fspecify("pending with message", do: "focus fspecify")
 
     fcontext "focus context" do
       it do: "focus fcontext"
@@ -18,16 +18,16 @@ defmodule PendingExampleTest do
   end
 
   setup_all do
-    ESpec.Configuration.add([focus: true])
-    examples = ESpec.SuiteRunner.run_examples(SomeSpec.examples, true)
+    ESpec.Configuration.add(focus: true)
+    examples = ESpec.SuiteRunner.run_examples(SomeSpec.examples(), true)
+
     {:ok,
-      ex1: Enum.at(examples, 0),
-      ex2: Enum.at(examples, 1),
-      ex3: Enum.at(examples, 2),
-      ex4: Enum.at(examples, 3),
-      ex5: Enum.at(examples, 4),
-      ex6: Enum.at(examples, 5),
-    }
+     ex1: Enum.at(examples, 0),
+     ex2: Enum.at(examples, 1),
+     ex3: Enum.at(examples, 2),
+     ex4: Enum.at(examples, 3),
+     ex5: Enum.at(examples, 4),
+     ex6: Enum.at(examples, 5)}
   end
 
   test "ex1", context do

@@ -32,6 +32,7 @@ defmodule ESpec.AssertReceive do
       case pattern do
         {:when, meta, [left, right]} ->
           {:when, meta, [quote(do: unquote(left) = received), right]}
+
         left ->
           quote(do: unquote(left) = received)
       end
@@ -44,14 +45,19 @@ defmodule ESpec.AssertReceive do
     quote do
       result =
         {received, unquote(vars)} =
-          receive do
-            unquote(pattern) -> {received, unquote(vars)}
-          after
-            unquote(timeout) ->
-              args = [unquote(binary), unquote(pins), ESpec.AssertReceive.__mailbox_messages__]
-              ExpectTo.to({AssertReceive, args}, {ExpectTo, {:error, :timeout}, ESpec.Expect.pruned_stacktrace()})
-          end
-      args = [unquote(binary), unquote(pins), ESpec.AssertReceive.__mailbox_messages__]
+        receive do
+          unquote(pattern) -> {received, unquote(vars)}
+        after
+          unquote(timeout) ->
+            args = [unquote(binary), unquote(pins), ESpec.AssertReceive.__mailbox_messages__()]
+
+            ExpectTo.to(
+              {AssertReceive, args},
+              {ExpectTo, {:error, :timeout}, ESpec.Expect.pruned_stacktrace()}
+            )
+        end
+
+      args = [unquote(binary), unquote(pins), ESpec.AssertReceive.__mailbox_messages__()]
       ExpectTo.to({AssertReceive, args}, {ExpectTo, result, ESpec.Expect.pruned_stacktrace()})
     end
   end
@@ -69,30 +75,37 @@ defmodule ESpec.AssertReceive do
       Macro.prewalk(expr, [], fn
         {:^, _, [{name, _, _} = var]}, acc ->
           {:ok, [{name, var} | acc]}
+
         form, acc ->
           {form, acc}
       end)
+
     Enum.uniq_by(pins, &elem(&1, 0))
   end
 
   defp collect_vars_from_pattern({:when, _, [left, right]}) do
     pattern = collect_vars_from_pattern(left)
+
     for {name, _, context} = var <- collect_vars_from_pattern(right),
-      Enum.any?(pattern, &match?({^name, _, ^context}, &1)),
-      into: pattern,
-      do: var
+        Enum.any?(pattern, &match?({^name, _, ^context}, &1)),
+        into: pattern,
+        do: var
   end
 
   defp collect_vars_from_pattern(expr) do
     Macro.prewalk(expr, [], fn
       {:::, _, [left, _]}, acc ->
         {[left], acc}
+
       {skip, _, [_]}, acc when skip in [:^, :@] ->
         {:ok, acc}
+
       {:_, _, context}, acc when is_atom(context) ->
         {:ok, acc}
+
       {name, meta, context}, acc when is_atom(name) and is_atom(context) ->
         {:ok, [{name, [generated: true] ++ meta, context} | acc]}
+
       any_node, acc ->
         {any_node, acc}
     end)

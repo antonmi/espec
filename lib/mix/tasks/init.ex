@@ -18,16 +18,16 @@ defmodule Mix.Tasks.Espec.Init do
   @shared_spec_example "example_spec.exs"
 
   def run(_args) do
-    create_directory @spec_folder
+    create_directory(@spec_folder)
     create_file(Path.join(@spec_folder, @spec_helper), spec_helper_template(nil))
 
     shared_specs = Path.join(@spec_folder, @shared_spec_folder)
 
-    create_directory shared_specs
+    create_directory(shared_specs)
     create_file(Path.join(shared_specs, @shared_spec_example), shared_spec_example_template(nil))
   end
 
-  embed_template :spec_helper, """
+  embed_template(:spec_helper, """
   ESpec.configure fn(config) ->
     config.before fn(tags) ->
       {:shared, hello: :world, tags: tags}
@@ -37,13 +37,13 @@ defmodule Mix.Tasks.Espec.Init do
       :ok
     end
   end
-  """
+  """)
 
-  embed_template :shared_spec_example, """
+  embed_template(:shared_spec_example, """
   defmodule ExampleSharedSpec do
     use ESpec, shared: true
 
     # This shared spec will always be included!
   end
-  """
+  """)
 end

@@ -17,8 +17,8 @@ defmodule ESpec.Assertions.String.BePrintableSpec do
     context "with `to`" do
       before do
         {:shared,
-          expectation: fn -> <<1, 2, 3>> |> should(be_printable()) end,
-          message: "Expected `<<1, 2, 3>>` to be printable but it isn't."}
+         expectation: fn -> <<1, 2, 3>> |> should(be_printable()) end,
+         message: "Expected `<<1, 2, 3>>` to be printable but it isn't."}
       end
 
       it_behaves_like(CheckErrorSharedSpec)
@@ -27,8 +27,8 @@ defmodule ESpec.Assertions.String.BePrintableSpec do
     context "with `not_to`" do
       before do
         {:shared,
-          expectation: fn -> "qwerty" |> should_not(be_printable()) end,
-          message: "Expected `\"qwerty\"` not to be printable but it is."}
+         expectation: fn -> "qwerty" |> should_not(be_printable()) end,
+         message: "Expected `\"qwerty\"` not to be printable but it is."}
       end
 
       it_behaves_like(CheckErrorSharedSpec)

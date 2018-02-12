@@ -11,6 +11,6 @@ defmodule ESpec.DatesTimes.Delegator do
   (microseconds since start of year zero if gregorian)
   """
 
-  @spec to_comparison_units(Types.calendar_types) :: non_neg_integer | {:error, term}
+  @spec to_comparison_units(Types.calendar_types()) :: non_neg_integer | {:error, term}
   defdelegate to_comparison_units(calendar_type), to: ESpec.DatesTimes.DateTimeProtocol
 end

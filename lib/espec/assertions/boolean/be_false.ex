@@ -13,12 +13,12 @@ defmodule ESpec.Assertions.Boolean.BeFalse do
 
   defp success_message(subject, _val, _result, positive) do
     to = if positive, do: "is", else: "is not"
-    "`#{inspect subject}` #{to} false."
+    "`#{inspect(subject)}` #{to} false."
   end
 
   defp error_message(subject, _val, _result, positive) do
     to = if positive, do: "to", else: "not to"
     but = if positive, do: "it isn't", else: "it is"
-    "Expected `#{inspect subject}` #{to} be false but #{but}."
+    "Expected `#{inspect(subject)}` #{to} be false but #{but}."
   end
 end

@@ -10,14 +10,13 @@ defmodule ConfigFinallyTest2 do
   end
 
   setup_all do
-    ESpec.configure fn(c) ->
-      c.finally fn(assigns) -> 
-        ESpec.configure fn(c) -> c.test assigns[:a] end
-      end
-    end
-    {:ok,
-      ex1: Enum.at(SomeSpec.examples, 0),
-    }
+    ESpec.configure(fn c ->
+      c.finally(fn assigns ->
+        ESpec.configure(fn c -> c.test(assigns[:a]) end)
+      end)
+    end)
+
+    {:ok, ex1: Enum.at(SomeSpec.examples(), 0)}
   end
 
   test "run ex1", context do

@@ -3,29 +3,30 @@ defmodule Mix.Tasks.Espec do
     @moduledoc false
 
     def start(compile_path, opts) do
-      Mix.shell.info "Cover compiling modules ... "
-      _ = :cover.start
+      Mix.shell().info("Cover compiling modules ... ")
+      _ = :cover.start()
 
       case :cover.compile_beam_directory(compile_path |> to_charlist) do
         results when is_list(results) ->
           :ok
+
         {:error, _} ->
-          Mix.raise "Failed to cover compile directory: " <> compile_path
+          Mix.raise("Failed to cover compile directory: " <> compile_path)
       end
 
       output = opts[:output]
 
-      fn() ->
-        Mix.shell.info "\nGenerating cover results ... "
+      fn ->
+        Mix.shell().info("\nGenerating cover results ... ")
         File.mkdir_p!(output)
-        Enum.each(:cover.modules, fn(mod) -> cover_function(mod, output) end)
+        Enum.each(:cover.modules(), fn mod -> cover_function(mod, output) end)
       end
     end
 
     defp cover_function(mod, output) do
       case :cover.analyse_to_file(mod, '#{output}/#{mod}.html', [:html]) do
         {:ok, _} -> nil
-        {:error, error} -> Mix.shell.info "#{error} while generating cover results for #{mod}"
+        {:error, error} -> Mix.shell().info("#{error} while generating cover results for #{mod}")
       end
     end
   end
@@ -95,20 +96,29 @@ defmodule Mix.Tasks.Espec do
   @cover [output: "cover", tool: Cover]
   @recursive true
 
-  @switches [focus: :boolean, silent: :boolean, order: :boolean,
-             sync: :boolean, trace: :boolean, cover: :boolean,
-             only: :string, exclude: :string, string: :string, seed: :integer]
+  @switches [
+    focus: :boolean,
+    silent: :boolean,
+    order: :boolean,
+    sync: :boolean,
+    trace: :boolean,
+    cover: :boolean,
+    only: :string,
+    exclude: :string,
+    string: :string,
+    seed: :integer
+  ]
 
   def run(args) do
     {opts, files, mix_opts} = OptionParser.parse(args, strict: @switches)
 
     check_env!()
-    Mix.Task.run "loadpaths", args
+    Mix.Task.run("loadpaths", args)
 
     if Keyword.get(mix_opts, :compile, true), do: Mix.Task.run("compile", args)
 
-    project = Mix.Project.config
-    cover   = Keyword.merge(@cover, project[:test_coverage] || [])
+    project = Mix.Project.config()
+    cover = Keyword.merge(@cover, project[:test_coverage] || [])
 
     # Start cover after we load deps but before we start the app.
     cover =
@@ -116,8 +126,8 @@ defmodule Mix.Tasks.Espec do
         cover[:tool].start(Mix.Project.compile_path(project), cover)
       end
 
-    Mix.shell.print_app
-    Mix.Task.run "app.start", args
+    Mix.shell().print_app
+    Mix.Task.run("app.start", args)
 
     ensure_espec_loaded!()
 
@@ -125,9 +135,8 @@ defmodule Mix.Tasks.Espec do
 
     success = run_espec(project, files, cover)
 
-    System.at_exit(fn(_) -> unless success, do: exit({:shutdown, 1}) end)
+    System.at_exit(fn _ -> unless success, do: exit({:shutdown, 1}) end)
   end
-
 
   def parse_files(files), do: files |> Enum.map(&parse_file(&1))
 
@@ -135,18 +144,19 @@ defmodule Mix.Tasks.Espec do
     case Regex.run(~r/^(.+):(\d+)$/, file, capture: :all_but_first) do
       [file, line_number] ->
         {Path.absname(file), [line: String.to_integer(line_number)]}
+
       nil ->
         {Path.absname(file), []}
     end
   end
 
   defp run_espec(project, files, cover) do
-    ESpec.start
+    ESpec.start()
     parse_spec_files(project, files)
-    success = ESpec.run
+    success = ESpec.run()
 
     if cover, do: cover.()
-    ESpec.stop
+    ESpec.stop()
 
     success
   end
@@ -165,11 +175,13 @@ defmodule Mix.Tasks.Espec do
 
   defp check_env! do
     if elixir_version() < "1.3.0" do
-      unless System.get_env("MIX_ENV") || Mix.env == :test do
-        Mix.raise "espec is running on environment #{Mix.env}.\n" <>
-                  "It is recommended to run espec in test environment.\n" <>
-                  "Please add `preferred_cli_env: [espec: :test]` to project configurations in mix.exs file.\n" <>
-                  "Or set MIX_ENV explicitly (MIX_ENV=test mix espec)"
+      unless System.get_env("MIX_ENV") || Mix.env() == :test do
+        Mix.raise(
+          "espec is running on environment #{Mix.env()}.\n" <>
+            "It is recommended to run espec in test environment.\n" <>
+            "Please add `preferred_cli_env: [espec: :test]` to project configurations in mix.exs file.\n" <>
+            "Or set MIX_ENV explicitly (MIX_ENV=test mix espec)"
+        )
       end
     end
   end
@@ -186,7 +198,7 @@ defmodule Mix.Tasks.Espec do
   end
 
   defp set_configuration(opts) do
-    Configuration.add(start_loading_time: :os.timestamp)
+    Configuration.add(start_loading_time: :os.timestamp())
     Configuration.add(opts)
   end
 
@@ -206,7 +218,7 @@ defmodule Mix.Tasks.Espec do
 
       Configuration.add(file_opts: files_with_opts)
       Configuration.add(shared_specs: shared_spec_files)
-      Configuration.add(finish_loading_time: :os.timestamp)
+      Configuration.add(finish_loading_time: :os.timestamp())
     end
   end
 

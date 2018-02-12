@@ -7,6 +7,7 @@ defmodule RunnerTest do
     before do
       {:ok, a: 10}
     end
+
     it do: "a = #{shared[:a]}"
 
     context "Context" do
@@ -17,7 +18,7 @@ defmodule RunnerTest do
   end
 
   test "run_examples" do
-    examples = ESpec.SuiteRunner.run_examples(SomeSpec.examples, true)
+    examples = ESpec.SuiteRunner.run_examples(SomeSpec.examples(), true)
     assert(List.first(examples).status == :success)
     assert(List.last(examples).status == :success)
   end
