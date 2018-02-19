@@ -1,5 +1,5 @@
 defmodule ConfigFinallyTest do
-  use ExUnit.Case, async: true
+  use ExUnit.Case
 
   defmodule SomeSpec do
     use ESpec
