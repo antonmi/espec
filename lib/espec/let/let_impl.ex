@@ -5,12 +5,12 @@ defmodule ESpec.Let.Impl do
   @agent_name :espec_let_agent
 
   @doc "This function is used by the let macro to implement lazy evaluation"
-  def let_eval(module, var) do
-    case agent_get({self(), module, var}) do
+  def let_eval(key_module, var) do
+    case agent_get({self(), key_module, var}) do
       {:todo, module, funcname} ->
         shared = agent_get({self(), :shared})
         result = apply(module, funcname, [shared])
-        agent_put({self(), module, var}, {:done, result})
+        agent_put({self(), key_module, var}, {:done, result})
         result
 
       {:done, result} ->
@@ -58,7 +58,9 @@ defmodule ESpec.Let.Impl do
     Agent.get(@agent_name, fn state -> Map.get(state, key) end)
   end
 
-  defp agent_put(key, value), do: Agent.update(@agent_name, &Map.put(&1, key, value))
+  defp agent_put(key, value) do
+    Agent.update(@agent_name, &Map.put(&1, key, value))
+  end
 
   def random_let_name, do: String.to_atom("let_#{ESpec.Support.random_string()}")
 end
