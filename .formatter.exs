@@ -1,6 +1,8 @@
 locals_without_parens = [
   ## Test setup
   before: 1,
+  before_all: 1,
+  after_all: 1,
   finally: 1,
   subject: :*,
   subject!: :*,
@@ -13,8 +15,12 @@ locals_without_parens = [
   let_overridable: 1,
 
   ## Examples
-  it_behaves_like: :*,
+  focus: :*,
+  pending: 1,
+  example: :*,
   it: :*,
+  specify: :*,
+  it_behaves_like: :*,
 
   ## Assertions / Matchers
   assert: 1,
