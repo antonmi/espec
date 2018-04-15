@@ -60,7 +60,7 @@ Add `espec` to dependencies in the `mix.exs` file:
 ```elixir
 def deps do
   ...
-  {:espec, "~> 1.5.0", only: :test},
+  {:espec, "~> 1.5.1", only: :test},
   #{:espec, github: "antonmi/espec", only: :test}, to get the latest version
   ...
 end
@@ -1146,6 +1146,10 @@ There are community supported formatters:
      - 'have' matcher for Map
      - 'let' works for generated examples
      - 'match_pattern' macro
+  * 1.5.1
+     - Code formatting
+     - Improve `have` and `eq` assertions
+     - Fix `let` caching for shared examples
 
 ## Contributing
 ##### Contributions are welcome and appreciated!
