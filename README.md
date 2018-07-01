@@ -569,9 +569,11 @@ expect string |> to(have_first value)   # String.first(string) == value
 ```
 #### Map
 ```elixir
-expect map |> to(have foo: "bar")   # Map.get(map, :foo) == "bar"
-expect map |> to(have_key value)    # Map.has_key?(map, value)
-expect map |> to(have_value value)  # Enum.member?(Map.values(map), value)
+expect map |> to(have foo: "bar")     # Map.get(map, :foo) == "bar"
+expect map |> to(have {:foo, "bar"})  # Map.get(map, :foo) == "bar"
+expect map |> to(have {"foo", "bar"}) # Map.get(map, :foo) == "bar"
+expect map |> to(have_key value)      # Map.has_key?(map, value)
+expect map |> to(have_value value)    # Enum.member?(Map.values(map), value)
 ```
 #### PID
 ```elixir
