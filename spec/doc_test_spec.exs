@@ -71,5 +71,5 @@ defmodule DocTestSpec do
   doctest ESpec.DocTestTest.Mod1
   doctest ESpec.DocTestTest.ExceptionInterpolation
 
-  it do: expect(ESpec.DocTestTest.Mod1.f()).to(eq(:f))
+  it do: expect ESpec.DocTestTest.Mod1.f() |> to(eq :f)
 end
