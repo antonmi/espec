@@ -6,17 +6,17 @@ defmodule LetSpec do
       fn x -> x * 2 end
     end
 
-    it do: expect(f().(2)).to(eq(4))
+    it do: expect f().(2) |> to(eq 4)
 
     context "redefine" do
       let! :f, do: 5
-      it do: expect(f()).to(eq(5))
+      it do: expect f() |> to(eq 5)
     end
 
     context "use 'shared''" do
       before do: {:ok, a: 1}
       let! :a, do: shared[:a] + 1
-      it do: expect(a()).to(eq(2))
+      it do: expect a() |> to(eq 2)
     end
 
     context "forces evaluation before examples" do
@@ -91,17 +91,17 @@ defmodule LetSpec do
       fn x -> x * 2 end
     end
 
-    it do: expect(f().(2)).to(eq(4))
+    it do: expect f().(2) |> to(eq 4)
 
     context "redefine" do
       let :f, do: 5
-      it do: expect(f()).to(eq(5))
+      it do: expect f() |> to(eq 5)
     end
 
     context "use 'shared'" do
       before do: {:ok, a: 1}
       let :a, do: shared[:a] + 1
-      it do: expect(a()).to(eq(2))
+      it do: expect a() |> to(eq 2)
     end
   end
 
@@ -121,8 +121,8 @@ defmodule LetSpec do
 
     it do
       Application.put_env(:espec, :let_value, "initial")
-      expect(a()).to(eq("initial.let"))
-      expect(a()).to(eq("initial.let"))
+      expect a() |> to(eq "initial.let")
+      expect a() |> to(eq "initial.let")
     end
   end
 
@@ -179,8 +179,8 @@ defmodule LetSpec do
 
       it "has run before example" do
         value = Application.get_env(:espec, :let_errorbang_value, "")
-        expect(value |> to(eq "let_error!"))
-        expect(c() |> to(eq "c"))
+        expect value |> to(eq "let_error!")
+        expect c() |> to(eq "c")
       end
 
       context "with a keyword list" do
@@ -193,8 +193,8 @@ defmodule LetSpec do
 
         it "has run before example" do
           value = Application.get_env(:espec, :let_errorbang_keyword_value, "")
-          expect(value |> to(eq "let_error! keyword"))
-          expect(d() |> to(eq "d"))
+          expect value |> to(eq "let_error! keyword")
+          expect d() |> to(eq "d")
         end
       end
     end

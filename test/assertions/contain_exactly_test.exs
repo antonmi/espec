@@ -5,19 +5,19 @@ defmodule ContainExactlyTest do
     use ESpec
 
     context "Success" do
-      it do: expect(a: 1, a: 1).to(contain_exactly(a: 1, a: 1))
-      it do: expect(a: 1, b: 1).to(contain_exactly(b: 1, a: 1))
-      it do: expect(a: 1, a: 1).not_to(contain_exactly(a: 1))
-      it do: expect(a: 1, b: 1).not_to(contain_exactly(a: 1))
-      it do: expect(nil).not_to(contain_exactly(a: 1))
+      it do: expect(a: 1, a: 1) |> to(contain_exactly(a: 1, a: 1))
+      it do: expect(a: 1, b: 1) |> to(contain_exactly(b: 1, a: 1))
+      it do: expect(a: 1, a: 1) |> not_to(contain_exactly(a: 1))
+      it do: expect(a: 1, b: 1) |> not_to(contain_exactly(a: 1))
+      it do: expect(nil) |> not_to(contain_exactly(a: 1))
     end
 
     context "Errors" do
-      it do: expect(a: 1, a: 1).not_to(contain_exactly(a: 1, a: 1))
-      it do: expect(a: 1, b: 1).not_to(contain_exactly(b: 1, a: 1))
-      it do: expect(a: 1, a: 1).to(contain_exactly(a: 1))
-      it do: expect(a: 1, b: 1).to(contain_exactly(a: 1))
-      it do: expect(nil).to(contain_exactly(a: 1))
+      it do: expect(a: 1, a: 1) |> not_to(contain_exactly(a: 1, a: 1))
+      it do: expect(a: 1, b: 1) |> not_to(contain_exactly(b: 1, a: 1))
+      it do: expect(a: 1, a: 1) |> to(contain_exactly(a: 1))
+      it do: expect(a: 1, b: 1) |> to(contain_exactly(a: 1))
+      it do: expect(nil) |> to(contain_exactly(a: 1))
     end
   end
 

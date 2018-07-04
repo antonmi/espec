@@ -10,12 +10,12 @@ defmodule ESpec.Assertions.Map.HaveSpec do
 
   context "Success" do
     it "checks success with `to` for map" do
-      message = expect(map()).to(have({:foo, "bar"}))
+      message = expect(map()) |> to(have({:foo, "bar"}))
       expect(message) |> to(eq "`%{foo: \"bar\"}` has `\"bar\"` for key `:foo`.")
     end
 
     it "checks success with `to` for struct" do
-      message = expect(struct()).to(have({:foo, "bar"}))
+      message = expect(struct()) |> to(have({:foo, "bar"}))
 
       expect(message)
       |> to(
@@ -24,12 +24,12 @@ defmodule ESpec.Assertions.Map.HaveSpec do
     end
 
     it "checks success with `to` for map with single element Keyword list" do
-      message = expect(map()).to(have(foo: "bar"))
+      message = expect(map()) |> to(have(foo: "bar"))
       expect(message) |> to(eq "`%{foo: \"bar\"}` has `\"bar\"` for key `:foo`.")
     end
 
     it "checks success with `to` for struct with single element Keyword list" do
-      message = expect(struct()).to(have(foo: "bar"))
+      message = expect(struct()) |> to(have(foo: "bar"))
 
       expect(message)
       |> to(
@@ -38,7 +38,7 @@ defmodule ESpec.Assertions.Map.HaveSpec do
     end
 
     it "checks success with `not_to`" do
-      message = expect(map()).to_not(have(4))
+      message = expect(map()) |> to_not(have(4))
       expect(message) |> to(eq "`%{foo: \"bar\"}` doesn't have `4`.")
     end
   end
@@ -47,7 +47,7 @@ defmodule ESpec.Assertions.Map.HaveSpec do
     context "with `to`" do
       before do
         {:shared,
-         expectation: fn -> expect(map()).to(have(4)) end,
+         expectation: fn -> expect(map()) |> to(have(4)) end,
          message: "Expected `%{foo: \"bar\"}` to have `4`, but it has not.",
          extra: false}
       end
@@ -58,7 +58,7 @@ defmodule ESpec.Assertions.Map.HaveSpec do
     context "with `not_to`" do
       before do
         {:shared,
-         expectation: fn -> expect(map()).to_not(have({:foo, "bar"})) end,
+         expectation: fn -> expect(map()) |> to_not(have({:foo, "bar"})) end,
          message: "Expected `%{foo: \"bar\"}` not to have `\"bar\"` for key `:foo`, but it has.",
          exta: false}
       end
@@ -69,7 +69,7 @@ defmodule ESpec.Assertions.Map.HaveSpec do
     context "with `not_to`" do
       before do
         {:shared,
-         expectation: fn -> expect(struct()).to_not(have({:foo, "bar"})) end,
+         expectation: fn -> expect(struct()) |> to_not(have({:foo, "bar"})) end,
          message:
            "Expected `%ESpec.Assertions.Map.HaveSpec.TestStruct{foo: \"bar\"}` not to have `\"bar\"` for key `:foo`, but it has.",
          extra: false}
@@ -81,7 +81,7 @@ defmodule ESpec.Assertions.Map.HaveSpec do
     context "with `to`" do
       before do
         {:shared,
-         expectation: fn -> expect(struct()).to(have({:foo, "baz"})) end,
+         expectation: fn -> expect(struct()) |> to(have({:foo, "baz"})) end,
          message:
            "Expected `%ESpec.Assertions.Map.HaveSpec.TestStruct{foo: \"bar\"}` to have `\"baz\"` for key `:foo`, but it has not.",
          extra: true}
