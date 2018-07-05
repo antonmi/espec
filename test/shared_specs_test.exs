@@ -11,10 +11,10 @@ defmodule SharedSpecsTest do
     context "SharedSpec context" do
       let :d, do: shared.c + 1
 
-      it do: expect(shared.a).to(eq(1))
-      it do: expect(shared.b).to(eq(2))
-      it do: expect(c()).to(eq(3))
-      it do: expect(d()).to(eq(4))
+      it do: expect(shared.a) |> to(eq(1))
+      it do: expect(shared.b) |> to(eq(2))
+      it do: expect(c()) |> to(eq(3))
+      it do: expect(d()) |> to(eq(4))
     end
   end
 
