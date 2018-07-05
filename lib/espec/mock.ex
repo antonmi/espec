@@ -23,7 +23,7 @@ defmodule ESpec.Mock do
       error in [ErlangError] ->
         case error do
           %ErlangError{original: {:already_started, _pid}} -> :ok
-          _ -> reraise error
+          _ -> raise error
         end
     end
 
