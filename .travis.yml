@@ -4,6 +4,7 @@ elixir:
   - 1.4.5
   - 1.5.0
   - 1.6.0
+  - 1.6.6
 otp_release:
   - 18.3
   - 19.2
@@ -17,8 +18,14 @@ matrix:
       otp_release: 20.0
     - elixir: 1.6.0
       otp_release: 20.0
+    - elixir: 1.6.0
+      otp_release: 21.0
+    - elixir: 1.6.6
+      otp_release: 21.0
   exclude:
     - elixir: 1.6.0
+      otp_release: 18.3
+    - elixir: 1.6.6
       otp_release: 18.3
 sudo: false
 script:
