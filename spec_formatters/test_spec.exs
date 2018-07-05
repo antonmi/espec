@@ -5,7 +5,7 @@ defmodule TestSpec do
   use ESpec, async: true
 
   it "just simple test" do
-    expect(1+1).to eq(2)
+    expect(1+1) |> to(eq 2)
   end
 
   context "with context" do
