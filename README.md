@@ -315,10 +315,15 @@ So, 'config.finally' will print `46`.
 Pay attention to how `finally` blocks are defined and evaluated.
 
 ## `let` and `subject`
-`let` and `let!` have the same behaviour as in RSpec. Both defines memoizable functions in 'spec module'. The value will be cached across multiple calls in the same example but not across examples. `let` is not evaluated until the first time the function it defines is invoked. Use `let!` to force the invocation before each example.
-
-The `shared` is available in `let`s but neither `let` nor `let!` can modify the dictionary.
-
+`let` and `let!` have the same behavior as in RSpec. Both defines memoizable functions in 'spec module'. The value will be cached across multiple calls in the same example but not across examples. 
+**`let` is lazy-evaluated, it is not evaluated until the first time the function it defines is invoked.**
+Use `let!` to force the invocation before each example.
+A bang version is just a shortcut for:
+```elixir
+let :a, do: 1
+before do: a()
+```
+In example below, `let! :a` will be evaluated just after `before a: 1`. But `let :b` will be invoked only in the last test.
 ```elixir
 defmodule LetSpec do
   use ESpec
@@ -331,6 +336,8 @@ defmodule LetSpec do
   it do: expect b() |> to(eq 2)
 end
 ```
+Note, The `shared` is available in `let`s but neither `let` nor `let!` can modify the dictionary.
+
 You can pass a keyword list to `let` or `let!` to define several 'lets' at once:
 ```elixir
 defmodule LetSpec do
@@ -562,9 +569,11 @@ expect string |> to(have_first value)   # String.first(string) == value
 ```
 #### Map
 ```elixir
-expect map |> to(have foo: "bar")   # Map.get(map, :foo) == "bar"
-expect map |> to(have_key value)    # Map.has_key?(map, value)
-expect map |> to(have_value value)  # Enum.member?(Map.values(map), value)
+expect map |> to(have foo: "bar")     # Map.get(map, :foo) == "bar"
+expect map |> to(have {:foo, "bar"})  # Map.get(map, :foo) == "bar"
+expect map |> to(have {"foo", "bar"}) # Map.get(map, :foo) == "bar"
+expect map |> to(have_key value)      # Map.has_key?(map, value)
+expect map |> to(have_value value)    # Enum.member?(Map.values(map), value)
 ```
 #### PID
 ```elixir
