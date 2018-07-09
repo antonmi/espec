@@ -8,7 +8,7 @@ defmodule ExampleTest do
 
     example "failed example with name" do
       :timer.sleep(2)
-      expect(true).to(be(false))
+      expect(true) |> to(be(false))
     end
 
     it [a: 1, b: 2], do: "it example with opts"

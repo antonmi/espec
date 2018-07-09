@@ -10,13 +10,13 @@ defmodule Enum.HaveAnyTest do
     let :negative, do: fn el -> el < 0 end
 
     context "Success" do
-      it do: expect(range()).to(have_any(positive()))
-      it do: expect(range()).to_not(have_any(negative()))
+      it do: expect(range()) |> to(have_any(positive()))
+      it do: expect(range()) |> to_not(have_any(negative()))
     end
 
     context "Error" do
-      it do: expect(range()).to_not(have_any(positive()))
-      it do: expect(range()).to(have_any(negative()))
+      it do: expect(range()) |> to_not(have_any(positive()))
+      it do: expect(range()) |> to(have_any(negative()))
     end
   end
 

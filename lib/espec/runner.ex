@@ -3,9 +3,11 @@ defmodule ESpec.Runner do
   Defines functions which runs the examples.
   Uses GenServer behavior.
   """
+  alias __MODULE__.Queue
   alias ESpec.Configuration
   alias ESpec.Example
-  alias __MODULE__.Queue
+  alias ESpec.Output
+  alias ESpec.SuiteRunner
 
   @doc "Starts the `ESpec.Runner` server"
   def start do
@@ -34,7 +36,7 @@ defmodule ESpec.Runner do
       end
 
     Configuration.add(finish_specs_time: :os.timestamp())
-    ESpec.Output.final_result(examples)
+    Output.final_result(examples)
     !Enum.any?(Example.failure(examples))
   end
 
@@ -42,7 +44,7 @@ defmodule ESpec.Runner do
     specs
     |> Enum.reverse()
     |> Enum.map(fn module ->
-      ESpec.SuiteRunner.run(module, opts, shuffle)
+      SuiteRunner.run(module, opts, shuffle)
     end)
     |> List.flatten()
   end

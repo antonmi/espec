@@ -2,7 +2,7 @@ defmodule ESpecSpec do
   use ESpec, async: true
 
   it "sets @shared" do
-    expect(@shared).to(be false)
+    expect @shared |> to(be false)
   end
 
   it "sets top level context" do

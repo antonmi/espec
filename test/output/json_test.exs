@@ -4,9 +4,9 @@ defmodule Formatters.JsonTest do
   defmodule SomeSpec do
     use ESpec
 
-    it do: expect(1).to(eq(1))
-    it do: expect(1).to(eq(2))
-    xit(do: expect(1).to(eq(1)))
+    it do: expect(1) |> to(eq(1))
+    it do: expect(1) |> to(eq(2))
+    xit(do: expect(1) |> to(eq(1)))
   end
 
   setup_all do

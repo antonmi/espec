@@ -8,24 +8,24 @@ defmodule LetInSharedWithSpec do
   let :qqq, do: :qqq
 
   it "overrides a" do
-    expect(a()).to(eq(1))
+    expect a() |> to(eq 1)
   end
 
   it "leaves b as default" do
-    expect(b()).to(eq(20))
+    expect b() |> to(eq 20)
   end
 
   it "overrides c" do
-    expect(c()).to(eq(3))
+    expect c() |> to(eq 3)
   end
 
   it "checks d and e" do
-    expect(d()).to(eq(nil))
-    expect(e()).to(eq(nil))
+    expect d() |> to(eq nil)
+    expect e() |> to(eq nil)
   end
 
   it "does not change qqq" do
-    expect(qqq()).to(eq(:qqq))
+    expect qqq() |> to(eq :qqq)
   end
 end
 

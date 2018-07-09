@@ -9,13 +9,13 @@ defmodule Enum.HaveAllTest do
     let :negative, do: fn el -> el < 0 end
 
     context "Success" do
-      it do: expect(range()).to(have_all(positive()))
-      it do: expect(range()).to_not(have_all(negative()))
+      it do: expect(range()) |> to(have_all(positive()))
+      it do: expect(range()) |> to_not(have_all(negative()))
     end
 
     context "Error" do
-      it do: expect(range()).to_not(have_all(positive()))
-      it do: expect(range()).to(have_all(negative()))
+      it do: expect(range()) |> to_not(have_all(positive()))
+      it do: expect(range()) |> to(have_all(negative()))
     end
   end
 
