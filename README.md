@@ -12,10 +12,11 @@ It is NOT a wrapper around ExUnit but a completely new testing framework written
   * Test organization with `describe`, `context`, `it`, and etc blocks.
   * Familiar matchers: `eq`, `be_close_to`, `raise_exception`, etc.
   * Possibility to add custom matchers.
-  * There are three (!) types of expectation syntax:
-    - RSpec syntax with `expect` helper: `expect(smth1).to eq(smth2)` or `is_expected.to eq(smth)` when `subject` is defined;
+  * There are two types of expectation syntax:
     - `expect` syntax with pipe operator `expect smth1 |> to(eq smth2)` or `is_expected |> to(eq smth)` when `subject` is defined;
     - `should` syntax: `smth1 |> should(eq smth2)` or `should eq smth` when `subject` is defined.
+    
+    ##### Note: RSpec syntax `expect(smth1).to eq(smth2)` is deprecated and won't work with OTP 21.
   * `before` and `finally` blocks (like RSpec `before` and `after`).
   * `let`, `let!` and `subject`.
   * Shared examples.
@@ -94,7 +95,6 @@ Place your `_spec.exs` files into `spec` folder. `use ESpec` in the 'spec module
 defmodule SyntaxExampleSpec do
   use ESpec
   it do: expect true |> to(be_true())
-  it do: expect(1 + 1).to eq(2)
   it do: (1..3) |> should(have 2)
 end
 ```
@@ -409,18 +409,18 @@ defmodule SharedSpec do
   let :internal_value, do: :shared_spec
 
   it "will be overridden" do
-    expect(a()).to eq(1)
-    expect(c()).to eq(3)
-    expect(e()).to eq(5)
+    expect a() |> to(eq 1)
+    expect c() |> to(eq 3)
+    expect e() |> to(eq 5)
   end
 
   it "returns defaults" do
-    expect(b()).to eq(20)
-    expect(d()).to eq(nil)
+    expect b() |> to(eq 20)
+    expect d() |> to(eq nil)
   end
 
   it "does not override internal 'lets'" do
-    expect(internal_value()).to eq(:shared_spec)
+    expect internal_value() |> to(eq :shared_spec)
   end
 end
 
@@ -453,7 +453,7 @@ defmodule GeneratedExamplesSpec do
 
   Enum.map 2..4, fn(n) ->
     it "is divisible by #{n}" do
-      expect(rem(subject(), unquote(n))).to be(0)
+      expect rem(subject(), unquote(n)) |> to(eq 0)
     end
   end
 end
@@ -720,7 +720,7 @@ You can mock the module with 'allow accept':
 defmodule MocksSpec do
   use ESpec
   context "with old syntax" do
-    before do: allow(SomeModule).to accept(:func, fn(a, b) -> a + b end)
+    before do: allow SomeModule |> to(accept(:func, fn(a, b) -> a + b end))
     it do: expect SomeModule.func(1, 2) |> to(eq 3)
   end
 
@@ -840,16 +840,16 @@ For the `be` assertions, ESpec supports a syntax with a granularity tuple (or ke
 ##### Be assertion syntax without granularity
 
 ```
-it do: expect(~D[2020-08-07]).to be :>=, ~D[2017-08-07]
+it do: expect ~D[2020-08-07] |> to(be :>=, ~D[2017-08-07])
 ```
 
 ##### Be assertion syntax with granularity
 
 ```
-it do: expect(~D[2020-08-07]).to be :>=, ~D[2017-08-07], {:years, 3}
+it do: expect ~D[2020-08-07] |> to(be :>=, ~D[2017-08-07], {:years, 3})
 
 # or alternatively, you can do:
-it do: expect(~D[2020-08-07]).to be :>=, ~D[2017-08-07], years: 3
+it do: expect ~D[2020-08-07]) |> to(be :>=, ~D[2017-08-07], years: 3)
 ```
 
 #### Datetime be_close_to asssertion(s) syntax
@@ -857,28 +857,28 @@ it do: expect(~D[2020-08-07]).to be :>=, ~D[2017-08-07], years: 3
 ##### Date Struct Comparison Example(s)
 
 ```
-expect(~D[2017-08-07]).to be_close_to(~D[2018-08-07], {:years, 1})
+expect ~D[2017-08-07] |> to(be_close_to(~D[2018-08-07], {:years, 1}))
 
 # or alternatively, you can do:
-it do: expect(~D[2017-08-07]).to be_close_to(~D[2020-08-07], {:years, 3})
+it do: expect ~D[2017-08-07] |> to(be_close_to(~D[2020-08-07], {:years, 3}))
 ```
 
 ##### NaiveDateTime Struct Comparison Example
 
 ```
-expect(~N[2017-08-07 01:10:10.000001]).to be_close_to(~N[2017-08-07 01:10:10.000003], {:microseconds, 2})
+expect ~N[2017-08-07 01:10:10.000001] |> to(be_close_to(~N[2017-08-07 01:10:10.000003], {:microseconds, 2}))
 
 # or alternatively, you can do:
-it do: expect(~N[2017-08-07 01:10:10.000001]).to be_close_to(~N[2017-08-07 01:10:10.000003], {:microseconds, 2})
+it do: expect ~N[2017-08-07 01:10:10.000001] |> to(be_close_to(~N[2017-08-07 01:10:10.000003], {:microseconds, 2}))
 ```
 
 ##### Time Struct Comparison Example
 
 ```
-expect(~T[01:10:10]).to be_close_to(~T[01:50:10], {:minutes, 40})
+expect ~T[01:10:10] |> to(be_close_to(~T[01:50:10], {:minutes, 40}))
 
 # or alternatively, you can do:
-it do: expect(~T[01:10:10]).to be_close_to(~T[01:50:10], {:minutes, 40})
+it do: expect ~T[01:10:10] |> to(be_close_to(~T[01:50:10], {:minutes, 40}))
 ```
 
 ##### DateTime Struct Comparison Example
@@ -889,17 +889,8 @@ Note the example shows a DateTime comparison with utc and std offsets for time z
 context "Success with DateTime with utc and std offsets to represent time zone differences" do
   let :datetime_pst, do: %DateTime{year: 2017, month: 3, day: 15, hour: 1, minute: 30, second: 30, microsecond: {1, 6}, std_offset: 1*3600, utc_offset: -8*3600, zone_abbr: "PST", time_zone: "America/Los_Angeles"}
   let :datetime_est, do: %DateTime{year: 2017, month: 3, day: 15, hour: 6, minute: 30, second: 30, microsecond: {1, 6}, std_offset: 1*3600, utc_offset: -5*3600, zone_abbr: "EST", time_zone: "America/New_York"}
-  it "checks success with `to`" do
-    message = expect(datetime_pst()).to be_close_to(datetime_est(), {:hours, 2})
-    expect(message) |> to(eq "`#{inspect datetime_pst()}` is close to `#{inspect datetime_est()}` with delta `{:hours, 2}`.")
-  end
 
-  it "checks success with `not_to`" do
-    message = expect(datetime_pst()).to_not be_close_to(datetime_est(), {:hours, 1})
-    expect(message) |> to(eq "`#{inspect datetime_pst()}` is not close to `#{inspect datetime_est()}` with delta `{:hours, 1}`.")
-  end
-
-  it do: expect(datetime_pst()).to be_close_to(datetime_est(), {:hours, 2})
+  it do: expect datetime_pst() |> to(be_close_to(datetime_est(), {:hours, 2}))
 end
 ```
 
@@ -1159,6 +1150,8 @@ There are community supported formatters:
      - Code formatting
      - Improve `have` and `eq` assertions
      - Fix `let` caching for shared examples
+  * 1.6.0
+     - Compatibility with OTP 21     
 
 ## Contributing
 ##### Contributions are welcome and appreciated!
