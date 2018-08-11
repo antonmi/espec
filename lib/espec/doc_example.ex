@@ -118,9 +118,7 @@ defmodule ESpec.DocExample do
   end
 
   # handles new
-  defp extract_from_doc({{kind, _, _}, _, _, doc, _})
-       when kind not in [:function, :macro] or doc in [:none, :hidden],
-       do: []
+  defp extract_from_doc({{kind, _, _}, _, _, doc, _}) when kind not in [:function, :macro] or doc in [:none, :hidden], do: []
 
   defp extract_from_doc({{_, name, arity}, anno, _, %{"en" => doc}, _}) do
     line = :erl_anno.line(anno)
