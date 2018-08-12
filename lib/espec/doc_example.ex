@@ -14,11 +14,19 @@ defmodule ESpec.DocExample do
   Read 'ESpec.DocTest' doc for more info.
   """
   defstruct lhs: nil, rhs: nil, fun_arity: nil, line: nil, type: :test
-
   defmodule(Error, do: defexception([:message]))
+  @new_format_version "1.7.0"
 
   @doc "Extract module docs and returns a list of %ESpec.DocExample{} structs"
   def extract(module) do
+    if Version.compare(System.version(), @new_format_version) == :lt do
+      do_extract(module)
+    else
+      do_new_extract(module)
+    end
+  end
+
+  defp do_extract(module) do
     all_docs = Code.get_docs(module, :all)
 
     unless all_docs do
@@ -36,8 +44,26 @@ defmodule ESpec.DocExample do
           do: doc
 
     (moduledocs ++ docs)
-    |> Enum.map(&to_struct/1)
-    |> List.flatten()
+    |> Enum.flat_map(&to_struct/1)
+  end
+
+  defp do_new_extract(module) do
+    case Code.fetch_docs(module) do
+      {:docs_v1, anno, _, _, moduledoc, _, docs} ->
+        moduledocs = extract_from_moduledoc(anno, moduledoc)
+        docs =
+          for doc <- Enum.sort(docs),
+              doc <- extract_from_doc(doc),
+              do: doc
+        (moduledocs ++ docs)
+        |> Enum.flat_map(&to_struct/1)
+
+      {:error, reason} ->
+        raise Error,
+          module: module,
+          message:
+            "could not retrieve the documentation for module #{inspect(module)}. Reason: #{reason}"
+    end
   end
 
   def to_struct(%{exprs: list, fun_arity: fun_arity, line: line}) do
@@ -82,6 +108,26 @@ defmodule ESpec.DocExample do
     end
   end
 
+  # handles new
+  defp extract_from_moduledoc(_, doc) when doc in [:none, :hidden], do: []
+
+  defp extract_from_moduledoc(anno, %{"en" => doc}) do
+    for test <- extract_tests(:erl_anno.line(anno), doc) do
+      %{test | fun_arity: {:moduledoc, 0}}
+    end
+  end
+
+  # handles new
+  defp extract_from_doc({{kind, _, _}, _, _, doc, _}) when kind not in [:function, :macro] or doc in [:none, :hidden], do: []
+
+  defp extract_from_doc({{_, name, arity}, anno, _, %{"en" => doc}, _}) do
+    line = :erl_anno.line(anno)
+
+    for test <- extract_tests(line, doc) do
+      %{test | fun_arity: {name, arity}}
+    end
+  end
+
   defp extract_from_doc({_, _, _, _, doc}) when doc in [false, nil], do: []
 
   defp extract_from_doc({fa, line, _, _, doc}) do
@@ -91,7 +137,7 @@ defmodule ESpec.DocExample do
   end
 
   defp extract_tests(line, doc) do
-    lines = String.split(doc, ~r/\n/, trim: false) |> adjust_indent
+    lines = String.split(doc, "\n", trim: false) |> adjust_indent
     extract_tests(lines, line, "", "", [], true)
   end
 
