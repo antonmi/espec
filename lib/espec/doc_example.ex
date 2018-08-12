@@ -27,7 +27,7 @@ defmodule ESpec.DocExample do
   end
 
   defp do_extract(module) do
-    all_docs = Code.get_docs(module, :all)
+    all_docs = apply(Code, :get_docs, [module, :all])
 
     unless all_docs do
       raise Error,
@@ -48,7 +48,7 @@ defmodule ESpec.DocExample do
   end
 
   defp do_new_extract(module) do
-    case Code.fetch_docs(module) do
+    case apply(Code, :fetch_docs, [module]) do
       {:docs_v1, anno, _, _, moduledoc, _, docs} ->
         moduledocs = extract_from_moduledoc(anno, moduledoc)
         docs =
