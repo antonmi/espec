@@ -12,17 +12,14 @@ defmodule ESpec.Let.Impl do
         result = apply(module, funcname, [shared])
         agent_put({self(), key_module, var}, {:done, result})
         result
-
-      {:done, result} ->
-        result
-
+      {:done, result} -> result
+      {:shared_let, key_module, var} -> let_eval(key_module, var)
       nil ->
         funcname =
           case var do
             :subject -> "subject"
             _ -> "let function `#{var}/0`"
           end
-
         raise ESpec.LetError, "The #{funcname} is not defined in the current scope!"
     end
   end
@@ -36,7 +33,11 @@ defmodule ESpec.Let.Impl do
   @doc "Resets stored let value and prepares for evaluation. Called by ExampleRunner."
   def run_before(let) do
     agent_module = if let.shared, do: let.shared_module, else: let.module
-    agent_put({self(), agent_module, let.var}, {:todo, let.module, let.function})
+    if let.shared && agent_module != let.module do
+      agent_put({self(), agent_module, let.var}, {:shared_let, let.module, let.var})
+    else
+      agent_put({self(), agent_module, let.var}, {:todo, let.module, let.function})
+    end
   end
 
   @doc "Clears all let values for the given module. Called by ExampleRunner."
