@@ -100,7 +100,7 @@ defmodule ESpec.DocTest do
               str = """
               def #{function}(shared) do
                 shared[:key]
-                expect(#{inspect(lhs)}).to eq(#{inspect(rhs)})
+                expect(#{inspect(lhs)}) |> to(eq #{inspect(rhs)})
               end
               """
 
@@ -113,9 +113,9 @@ defmodule ESpec.DocTest do
               str = """
               def #{function}(shared) do
                 shared[:key]
-                expect(fn -> Code.eval_string(#{lhs}) end).to raise_exception(#{error_module}, #{
+                expect(fn -> Code.eval_string(#{lhs}) end) |> to(raise_exception(#{error_module}, #{
                 inspect(error_message)
-              })
+              }))
               end
               """
 
@@ -129,7 +129,7 @@ defmodule ESpec.DocTest do
               str = """
               def #{function}(shared) do
                 shared[:key]
-                expect(#{inspect(lhs)}).to eq(#{inspect(rhs)})
+                expect(#{inspect(lhs)}) |> to eq(#{inspect(rhs)})
               end
               """
 

@@ -3,6 +3,7 @@ ESpec.configure(fn config ->
     {:ok, %{answer: 42, order_spec_answer: 42}}
   end)
 
+
   config.finally(fn shared -> shared.answer end)
 end)
 

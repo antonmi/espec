@@ -6,50 +6,50 @@ defmodule MatchPatternTest do
 
     context "Success" do
       ESpec.Context.describe "ESpec.Assertions.MatchPattern" do
-        it do: expect({:ok, 1}).to(match_pattern({:ok, 1}))
-        it do: expect({:ok, 1}).to(match_pattern({:ok, _}))
-        it do: expect(%{"foo" => :bar}).to(match_pattern(%{"foo" => _bar}))
+        it do: expect({:ok, 1}) |> to(match_pattern({:ok, 1}))
+        it do: expect({:ok, 1}) |> to(match_pattern({:ok, _}))
+        it do: expect(%{"foo" => :bar}) |> to(match_pattern(%{"foo" => _bar}))
 
-        it do: expect({:ok, 1}).to_not(match_pattern({:ok, 2}))
-        it do: expect({:ok, 1}).to_not(match_pattern({:error, _}))
-        it do: expect(%{}).to_not(match_pattern(%{"foo" => _bar}))
+        it do: expect({:ok, 1}) |> to_not(match_pattern({:ok, 2}))
+        it do: expect({:ok, 1}) |> to_not(match_pattern({:error, _}))
+        it do: expect(%{}) |> to_not(match_pattern(%{"foo" => _bar}))
 
         context "with pinned variables" do
           it do
             var = 1
 
-            expect({:ok, 1}).to(match_pattern({:ok, ^var}))
+            expect({:ok, 1}) |> to(match_pattern({:ok, ^var}))
           end
 
           it do
             pattern = {:ok, 1}
 
-            expect({:ok, 1}).to(match_pattern(^pattern))
+            expect({:ok, 1}) |> to(match_pattern(^pattern))
           end
         end
       end
     end
 
     context "Errors" do
-      it do: expect({:ok, 1}).to_not(match_pattern({:ok, 1}))
-      it do: expect({:ok, 1}).to_not(match_pattern({:ok, _}))
-      it do: expect(%{"foo" => :bar}).to_not(match_pattern(%{"foo" => _bar}))
+      it do: expect({:ok, 1}) |> to_not(match_pattern({:ok, 1}))
+      it do: expect({:ok, 1}) |> to_not(match_pattern({:ok, _}))
+      it do: expect(%{"foo" => :bar}) |> to_not(match_pattern(%{"foo" => _bar}))
 
-      it do: expect({:ok, 1}).to(match_pattern({:ok, 2}))
-      it do: expect({:ok, 1}).to(match_pattern({:error, _}))
-      it do: expect(%{}).to(match_pattern(%{"foo" => _bar}))
+      it do: expect({:ok, 1}) |> to(match_pattern({:ok, 2}))
+      it do: expect({:ok, 1}) |> to(match_pattern({:error, _}))
+      it do: expect(%{}) |> to(match_pattern(%{"foo" => _bar}))
 
       context "with pinned variables" do
         it do
           var = 1
 
-          expect({:ok, 1}).to_not(match_pattern({:ok, ^var}))
+          expect({:ok, 1}) |> to_not(match_pattern({:ok, ^var}))
         end
 
         it do
           pattern = {:ok, 1}
 
-          expect({:ok, 1}).to_not(match_pattern(^pattern))
+          expect({:ok, 1}) |> to_not(match_pattern(^pattern))
         end
       end
 

@@ -16,26 +16,26 @@ defmodule MockTest do
 
     context "with mock" do
       before do
-        allow(SomeModule).to(accept(:f, fn a -> "mock! #{a}" end))
-        allow(SomeModule).to(accept(x: fn -> :y end, q: fn -> :w end))
+        allow(SomeModule) |> to(accept(:f, fn a -> "mock! #{a}" end))
+        allow(SomeModule) |> to(accept(x: fn -> :y end, q: fn -> :w end))
       end
 
       it do: SomeModule.f(1)
       it do: SomeModule.q()
 
       it "SomeModule.m is defined" do
-        expect(SomeModule.m()).to(eq(:m))
+        expect(SomeModule.m()) |> to(eq(:m))
       end
 
       context "expect accepted" do
-        it do: expect(SomeModule).to_not(accepted(:f, [1]))
+        it do: expect(SomeModule) |> to_not(accepted(:f, [1]))
         before do: SomeModule.f(1)
-        it do: expect(SomeModule).to(accepted(:f, [1]))
+        it do: expect(SomeModule) |> to(accepted(:f, [1]))
       end
 
       context "passthrough" do
         before do
-          allow(SomeModule).to(
+          allow(SomeModule) |> to(
             accept(:f1, fn
               AAA -> "mock! AAA"
               _ -> passthrough([BBB])
@@ -43,19 +43,19 @@ defmodule MockTest do
           )
         end
 
-        it do: expect(SomeModule.f1(AAA)).to(eq("mock! AAA"))
-        it do: expect(SomeModule.f1(BBB)).to(eq(BBB))
+        it do: expect(SomeModule.f1(AAA)) |> to(eq("mock! AAA"))
+        it do: expect(SomeModule.f1(BBB)) |> to(eq(BBB))
       end
     end
 
     context "stubs" do
       before do
-        allow(SomeModule).to(accept(:f))
-        allow(SomeModule).to(accept([:x, :q]))
+        allow(SomeModule) |> to(accept(:f))
+        allow(SomeModule) |> to(accept([:x, :q]))
       end
 
-      it do: expect(SomeModule.f()).to(be_nil())
-      it do: expect(SomeModule.q(10)).to(be_nil())
+      it do: expect(SomeModule.f()) |> to(be_nil())
+      it do: expect(SomeModule.q(10)) |> to(be_nil())
     end
 
     context "without mock" do

@@ -12,14 +12,14 @@ defmodule Map.HaveTest do
     let struct: %TestStruct{foo: "bar"}
 
     context "Success" do
-      it do: expect(map()).to(have({:foo, "bar"}))
-      it do: expect(map()).to(have(foo: "bar"))
+      it do: expect(map()) |> to(have({:foo, "bar"}))
+      it do: expect(map()) |> to(have(foo: "bar"))
       it do: expect(map() |> to(have foo: "bar"))
-      it do: expect(map()).to_not(have(4))
+      it do: expect(map()) |> to_not(have(4))
 
-      it do: expect(struct()).to(have({:foo, "bar"}))
-      it do: expect(struct()).to(have(foo: "bar"))
-      it do: expect(struct()).to_not(have(4))
+      it do: expect(struct()) |> to(have({:foo, "bar"}))
+      it do: expect(struct()) |> to(have(foo: "bar"))
+      it do: expect(struct()) |> to_not(have(4))
     end
 
     context "Error" do

@@ -7,13 +7,13 @@ defmodule Enum.HaveMinTest do
     let :range, do: 1..3
 
     context "Success" do
-      it do: expect(range()).to(have_min(1))
-      it do: expect(range()).to_not(have_min(2))
+      it do: expect(range()) |> to(have_min(1))
+      it do: expect(range()) |> to_not(have_min(2))
     end
 
     context "Error" do
-      it do: expect(range()).to_not(have_min(1))
-      it do: expect(range()).to(have_min(2))
+      it do: expect(range()) |> to_not(have_min(1))
+      it do: expect(range()) |> to(have_min(2))
     end
   end
 

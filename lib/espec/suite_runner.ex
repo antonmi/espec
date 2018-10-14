@@ -156,9 +156,9 @@ defmodule ESpec.SuiteRunner do
       tag_values = filter_tag_value(example, key)
 
       if reverse do
-        if Enum.empty?(tag_values), do: true, else: !is_any_with_tag?(tag_values, value)
+        if Enum.empty?(tag_values), do: true, else: !any_with_tag?(tag_values, value)
       else
-        is_any_with_tag?(tag_values, value)
+        any_with_tag?(tag_values, value)
       end
     end)
   end
@@ -171,19 +171,21 @@ defmodule ESpec.SuiteRunner do
     Enum.filter([example_tag_value | context_tag_values], & &1)
   end
 
-  defp is_any_with_tag?(tag_values, value) do
-    Enum.any?(tag_values, fn tag ->
-      cond do
-        is_atom(tag) ->
-          if value, do: Atom.to_string(tag) == value, else: tag
+  defp any_with_tag?(tag_values, value) do
+    Enum.any?(tag_values, &any_condition(&1, value))
+  end
 
-        is_integer(tag) ->
-          if value, do: Integer.to_string(tag) == value, else: tag
+  defp any_condition(tag, value) do
+    cond do
+      is_atom(tag) ->
+        if value, do: Atom.to_string(tag) == value, else: tag
 
-        true ->
-          if value, do: tag == value, else: tag
-      end
-    end)
+      is_integer(tag) ->
+        if value, do: Integer.to_string(tag) == value, else: tag
+
+      true ->
+        if value, do: tag == value, else: tag
+    end
   end
 
   defp extract_opts(key_value) do

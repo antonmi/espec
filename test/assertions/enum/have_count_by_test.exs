@@ -8,13 +8,13 @@ defmodule Enum.HaveCountByTest do
     let :func, do: fn el -> el > 1 end
 
     context "Success" do
-      it do: expect(range()).to(have_count_by(func(), 2))
-      it do: expect(range()).to_not(have_count_by(func(), 3))
+      it do: expect(range()) |> to(have_count_by(func(), 2))
+      it do: expect(range()) |> to_not(have_count_by(func(), 3))
     end
 
     context "Error" do
-      it do: expect(range()).to_not(have_count_by(func(), 2))
-      it do: expect(range()).to(have_count_by(func(), 3))
+      it do: expect(range()) |> to_not(have_count_by(func(), 2))
+      it do: expect(range()) |> to(have_count_by(func(), 3))
     end
   end
 

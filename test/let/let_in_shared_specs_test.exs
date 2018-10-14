@@ -10,14 +10,14 @@ defmodule LetSharedSpecsTest do
 
     let :qqq, do: :qqq
 
-    it do: expect(a()).to(eq(1))
-    it do: expect(b()).to(eq(20))
-    it do: expect(c()).to(eq(3))
+    it do: expect(a()) |> to(eq(1))
+    it do: expect(b()) |> to(eq(20))
+    it do: expect(c()) |> to(eq(3))
 
-    it do: expect(d()).to(eq(nil))
-    it do: expect(e()).to(eq(nil))
+    it do: expect(d()) |> to(eq(nil))
+    it do: expect(e()) |> to(eq(nil))
 
-    it do: expect(qqq()).to(eq(:qqq))
+    it do: expect(qqq()) |> to(eq(:qqq))
   end
 
   defmodule UseSharedSpecSpec do

@@ -4,7 +4,7 @@ defmodule GeneratedExamplesSpec do
   subject 1..5
 
   Enum.map(1..3, fn n ->
-    it do: is_expected().to(have(unquote(n)))
+    it do: is_expected() |> to(have unquote(n))
   end)
 
   context "with description" do
@@ -12,7 +12,7 @@ defmodule GeneratedExamplesSpec do
 
     Enum.map(2..4, fn n ->
       it "is divisible by #{n}" do
-        expect(rem(subject(), unquote(n))).to(be(0))
+        expect rem(subject(), unquote(n)) |> to(be 0)
       end
     end)
   end
@@ -23,7 +23,7 @@ defmodule GeneratedExamplesSpec do
     Enum.each([:a, :b, :c], fn key ->
       @key key
       it "it has key #{key}" do
-        is_expected().to(have_key(@key))
+        is_expected() |> to(have_key(@key))
       end
     end)
   end
@@ -35,7 +35,7 @@ defmodule GeneratedExamplesSpec do
     Enum.each([:a, :b, :c], fn value ->
       @value value
       it "it + shared has value #{@value}" do
-        expect(subject() ++ shared.list).to(have(@value))
+        expect(subject() ++ shared.list) |> to(have(@value))
       end
     end)
   end

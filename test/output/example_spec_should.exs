@@ -68,7 +68,7 @@ defmodule ExampleSpecShould do
   defp level4(x) do
     # some code
     a = 4
-    expect(x).to(eq(""))
+    expect(x) |> to(eq(""))
     # trying to prevent the compiler from optimizing this
     a
   end

@@ -53,11 +53,11 @@ defmodule ESpec.Configuration do
   Allows to set the config options.
   See `ESpec.configure/1`.
   """
-  def configure(func), do: func.({ESpec.Configuration})
+  def configure(func), do: func.(ESpec.Configuration)
 
   Keyword.keys(@list)
   |> Enum.each(fn func ->
-    def unquote(func)(value, {ESpec.Configuration}) do
+    def unquote(func)(value) do
       ESpec.Configuration.add([{unquote(func), value}])
     end
   end)

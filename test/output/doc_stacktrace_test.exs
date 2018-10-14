@@ -18,7 +18,6 @@ defmodule Formatters.DocStacktraceTest do
   end
 
   modules = [
-    {"expect().to syntax", ExampleSpecDot, "example_spec_dot"},
     {"expect() |> to syntax", ExampleSpecPipe, "example_spec_pipe"},
     {"should syntax", ExampleSpecShould, "example_spec_should"}
   ]
