@@ -63,7 +63,7 @@ defmodule ESpec.SuiteRunner do
         {:exit, reason} -> raise "Asynchronous test run exited with reason: #{inspect(reason)}"
       end
     end)
-    |> Enum.into([])
+    |> Enum.to_list()
   end
 
   defp run_sync(examples), do: Enum.map(examples, &ExampleRunner.run(&1))
