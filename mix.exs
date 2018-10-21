@@ -8,7 +8,7 @@ defmodule ESpec.Mixfile do
       app: :espec,
       name: "ESpec",
       version: @version,
-      elixir: ">= 1.5.0",
+      elixir: ">= 1.5.3",
       description: description(),
       package: package(),
       deps: deps(),
