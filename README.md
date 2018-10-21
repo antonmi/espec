@@ -61,7 +61,7 @@ Add `espec` to dependencies in the `mix.exs` file:
 ```elixir
 def deps do
   ...
-  {:espec, "~> 1.6.2", only: :test},
+  {:espec, "~> 1.6.3", only: :test},
   #{:espec, github: "antonmi/espec", only: :test}, to get the latest version
   ...
 end
@@ -1156,6 +1156,8 @@ There are community supported formatters:
      - Doctest fix for Elixir >= 1.7
   * 1.6.2
      - Fix 'let' caching in shared specs
+  * 1.6.3
+     - Use 'Task.async_stream' for async examples   
 
 ## Contributing
 ##### Contributions are welcome and appreciated!
