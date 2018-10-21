@@ -56,7 +56,7 @@ defmodule ESpec.SuiteRunner do
 
   defp run_async(examples) do
     examples
-    |> Task.async_stream(&ExampleRunner.run/1)
+    |> Task.async_stream(&ExampleRunner.run/1, timeout: :infinity)
     |> Stream.map(fn task_result ->
       case task_result do
         {:ok, example_result} -> example_result
