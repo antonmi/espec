@@ -6,9 +6,6 @@ defmodule ESpec.SuiteRunner do
   alias ESpec.Configuration
   alias ESpec.Example
   alias ESpec.ExampleRunner
-  alias ESpec.Runner.Queue
-
-  @max_async_count :erlang.system_info(:schedulers_online)
 
   @doc """
   Runs `before_all` hook, examples and then `after_all` hook.
@@ -58,25 +55,15 @@ defmodule ESpec.SuiteRunner do
   end
 
   defp run_async(examples) do
-    Queue.clear(:output)
-    Enum.each(examples, &Queue.push(:input, &1))
-    do_run_async()
-    Queue.all(:output)
-  end
-
-  defp do_run_async do
-    Enum.map(1..@max_async_count, fn _ ->
-      Task.async(fn -> spawn_task() end)
+    examples
+    |> Task.async_stream(&ExampleRunner.run/1)
+    |> Stream.map(fn task_result ->
+      case task_result do
+        {:ok, example_result} -> example_result
+        {:exit, reason} -> raise "Asynchronous test run exited with reason: #{inspect(reason)}"
+      end
     end)
-    |> Enum.map(&Task.await(&1, :infinity))
-  end
-
-  defp spawn_task do
-    if example = Queue.pop(:input) do
-      example = ExampleRunner.run(example)
-      Queue.push(:output, example)
-      spawn_task()
-    end
+    |> Enum.to_list()
   end
 
   defp run_sync(examples), do: Enum.map(examples, &ExampleRunner.run(&1))
