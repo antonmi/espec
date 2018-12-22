@@ -13,6 +13,7 @@ defmodule ESpec.Runner do
   def start do
     Queue.start(:input)
     Queue.start(:output)
+    Task.Supervisor.start_link(name: ESpec.TaskSupervisor)
   end
 
   @doc "Runs all examples."
@@ -24,6 +25,7 @@ defmodule ESpec.Runner do
   def stop do
     Queue.stop(:input)
     Queue.stop(:output)
+    Supervisor.stop(ESpec.TaskSupervisor)
   end
 
   defp do_run(specs, opts) do
