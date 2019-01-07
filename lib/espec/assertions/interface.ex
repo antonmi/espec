@@ -46,7 +46,7 @@ defmodule ESpec.Assertions.Interface do
           subject: subject,
           data: data,
           result: result,
-          asserion: __MODULE__,
+          assertion: __MODULE__,
           message: message,
           extra: extra,
           stacktrace: stacktrace

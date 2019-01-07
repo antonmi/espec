@@ -3,7 +3,7 @@ defmodule ESpec.ExpectTo do
     Defines `to` and `to_not` functions which call specific 'assertion'
   """
 
-  @doc "Calls specific asserion."
+  @doc "Calls specific assertion."
   def to({module, data}, {__MODULE__, subject, stacktrace}) do
     apply(module, :assert, [subject, data, true, stacktrace])
   end
