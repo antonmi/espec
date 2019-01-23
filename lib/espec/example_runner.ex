@@ -32,8 +32,20 @@ defmodule ESpec.ExampleRunner do
         run_pending(example)
 
       true ->
-        run_example(example, :os.timestamp())
+        spawn_example(example, :os.timestamp())
     end
+  end
+
+  defp spawn_example(example, start_time) do
+    Task.Supervisor.async_nolink(ESpec.TaskSupervisor, fn -> run_example(example, start_time) end)
+    |> Task.yield(:infinity)
+    |> check_example_task(example, start_time)
+  end
+
+  defp check_example_task({:ok, example_result}, _, _), do: example_result
+  defp check_example_task({:exit, reason}, example, start_time) do
+    error = %AssertionError{message: "Process exited with reason: #{inspect(reason)}"}
+    do_rescue(example, %{}, start_time, error, false)
   end
 
   defp run_example(example, start_time) do
