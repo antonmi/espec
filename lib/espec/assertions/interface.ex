@@ -1,7 +1,7 @@
 defmodule ESpec.Assertions.Interface do
   @moduledoc """
   Defines the assertion interface.
-  There are 3 function should be defined in the 'assertion' module:
+  There are 3 functions that should be defined in the 'assertion' module:
   - `match/2`;
   - `success_message/4`;
   - `error_message/4`.
