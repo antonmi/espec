@@ -61,7 +61,7 @@ Add `espec` to dependencies in the `mix.exs` file:
 ```elixir
 def deps do
   ...
-  {:espec, "~> 1.6.4", only: :test},
+  {:espec, "~> 1.6.5", only: :test},
   #{:espec, github: "antonmi/espec", only: :test}, to get the latest version
   ...
 end
@@ -1162,6 +1162,8 @@ There are community supported formatters:
      - Use 'Task.async_stream' for async examples      
   * 1.6.4
      - Run every test in separate process
+  * 1.6.5
+     - Update `meck` dependency   
 ## Contributing
 ##### Contributions are welcome and appreciated!
 
