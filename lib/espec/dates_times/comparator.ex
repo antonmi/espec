@@ -5,15 +5,15 @@ defmodule ESpec.DatesTimes.Comparator do
   alias ESpec.DatesTimes.Types
 
   @units [
-    :years,
-    :months,
-    :weeks,
-    :days,
-    :hours,
-    :minutes,
-    :seconds,
-    :milliseconds,
-    :microseconds
+    :year,
+    :month,
+    :week,
+    :day,
+    :hour,
+    :minute,
+    :second,
+    :millisecond,
+    :microsecond
   ]
 
   @spec diff(non_neg_integer, non_neg_integer, Types.time_units()) :: integer
@@ -34,15 +34,15 @@ defmodule ESpec.DatesTimes.Comparator do
   end
 
   defp do_diff(a, a, type), do: zero(type)
-  defp do_diff(a, b, :microseconds), do: a - b
-  defp do_diff(a, b, :milliseconds), do: div(a - b, 1_000)
-  defp do_diff(a, b, :seconds), do: div(a - b, 1_000 * 1_000)
-  defp do_diff(a, b, :minutes), do: div(a - b, 1_000 * 1_000 * 60)
-  defp do_diff(a, b, :hours), do: div(a - b, 1_000 * 1_000 * 60 * 60)
-  defp do_diff(a, b, :days), do: div(a - b, 1_000 * 1_000 * 60 * 60 * 24)
-  defp do_diff(a, b, :weeks), do: div(a - b, 1_000 * 1_000 * 60 * 60 * 24 * 7)
-  defp do_diff(a, b, :months), do: diff_months(a, b)
-  defp do_diff(a, b, :years), do: diff_years(a, b)
+  defp do_diff(a, b, :microsecond), do: a - b
+  defp do_diff(a, b, :millisecond), do: div(a - b, 1_000)
+  defp do_diff(a, b, :second), do: div(a - b, 1_000 * 1_000)
+  defp do_diff(a, b, :minute), do: div(a - b, 1_000 * 1_000 * 60)
+  defp do_diff(a, b, :hour), do: div(a - b, 1_000 * 1_000 * 60 * 60)
+  defp do_diff(a, b, :day), do: div(a - b, 1_000 * 1_000 * 60 * 60 * 24)
+  defp do_diff(a, b, :week), do: div(a - b, 1_000 * 1_000 * 60 * 60 * 24 * 7)
+  defp do_diff(a, b, :month), do: diff_months(a, b)
+  defp do_diff(a, b, :year), do: diff_years(a, b)
 
   defp do_diff(_, _, granularity) when not (granularity in @units),
     do: {:error, {:invalid_granularity, granularity}}

@@ -269,7 +269,7 @@ defmodule Mix.Tasks.Espec do
   defp compile(spec_files, include_shared: shared_spec_files) do
     shared_spec_files = shared_spec_files || []
 
-    Kernel.ParallelCompiler.files(shared_spec_files)
-    Kernel.ParallelCompiler.files(spec_files -- shared_spec_files)
+    Kernel.ParallelCompiler.compile(shared_spec_files)
+    Kernel.ParallelCompiler.compile(spec_files -- shared_spec_files)
   end
 end

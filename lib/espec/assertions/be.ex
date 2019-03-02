@@ -43,7 +43,7 @@ defmodule ESpec.Assertions.Be do
   end
 
   defp match_date_times(subject, [op, val]) do
-    delta = subject |> Comparator.diff(val, :microseconds)
+    delta = subject |> Comparator.diff(val, :microsecond)
 
     result = apply(Kernel, op, [delta, 0])
     {result, result}

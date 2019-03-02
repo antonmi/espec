@@ -158,7 +158,7 @@ defmodule Calendar.ISO.Extension do
   def iso_days_to_unit({days, {parts, ppd}}, unit) do
     day_microseconds = days * @parts_per_day
     microseconds = div(parts * @parts_per_day, ppd)
-    System.convert_time_unit(day_microseconds + microseconds, :microseconds, unit)
+    System.convert_time_unit(day_microseconds + microseconds, :microsecond, unit)
   end
 
   @doc false

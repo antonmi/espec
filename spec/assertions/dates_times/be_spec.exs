@@ -134,113 +134,113 @@ defmodule ESpec.Assertions.DatesTimes.BeSpec do
   # without granularity
 
   describe "ESpec.Assertions.Be, with specified granularity" do
-    context "Success with Date with a granularity of years" do
+    context "Success with Date with a granularity of year" do
       it "checks success with `to` for granularity specified by tuple" do
-        message = expect(~D[2017-08-07]) |> to(be :<=, ~D[2018-08-07], {:years, 1})
+        message = expect(~D[2017-08-07]) |> to(be :<=, ~D[2018-08-07], {:year, 1})
 
         expect(message)
-        |> to(eq "`~D[2017-08-07] <= ~D[2018-08-07]` is true with delta `{:years, 1}`.")
+        |> to(eq "`~D[2017-08-07] <= ~D[2018-08-07]` is true with delta `{:year, 1}`.")
       end
 
       it "checks success with `to` for granularity specified by single element Keyword list" do
-        message = expect(~D[2017-08-07]) |> to(be :<=, ~D[2018-08-07], years: 1)
+        message = expect(~D[2017-08-07]) |> to(be :<=, ~D[2018-08-07], year: 1)
 
         expect(message)
-        |> to(eq "`~D[2017-08-07] <= ~D[2018-08-07]` is true with delta `[years: 1]`.")
+        |> to(eq "`~D[2017-08-07] <= ~D[2018-08-07]` is true with delta `[year: 1]`.")
       end
 
       it "checks success with `not_to`" do
-        message = expect(~D[2017-08-07]) |> to_not(be :<, ~D[2020-08-07], {:years, 2})
+        message = expect(~D[2017-08-07]) |> to_not(be :<, ~D[2020-08-07], {:year, 2})
 
         expect(message)
-        |> to(eq "`~D[2017-08-07] < ~D[2020-08-07]` is false with delta `{:years, 2}`.")
+        |> to(eq "`~D[2017-08-07] < ~D[2020-08-07]` is false with delta `{:year, 2}`.")
       end
 
-      it do: expect(~D[2020-08-07]) |> to(be :>=, ~D[2017-08-07], {:years, 3})
+      it do: expect(~D[2020-08-07]) |> to(be :>=, ~D[2017-08-07], {:year, 3})
     end
 
-    context "Success with Date with a granularity of months" do
+    context "Success with Date with a granularity of month" do
       it "checks success with `to` for granularity specified by tuple" do
-        message = expect(~D[2017-10-07]) |> to(be :>=, ~D[2017-08-07], {:months, 2})
+        message = expect(~D[2017-10-07]) |> to(be :>=, ~D[2017-08-07], {:month, 2})
 
         expect(message)
-        |> to(eq "`~D[2017-10-07] >= ~D[2017-08-07]` is true with delta `{:months, 2}`.")
+        |> to(eq "`~D[2017-10-07] >= ~D[2017-08-07]` is true with delta `{:month, 2}`.")
       end
 
       it "checks success with `to` for granularity specified by single element Keyword list" do
-        message = expect(~D[2017-10-07]) |> to(be :>=, ~D[2017-08-07], months: 2)
+        message = expect(~D[2017-10-07]) |> to(be :>=, ~D[2017-08-07], month: 2)
 
         expect(message)
-        |> to(eq "`~D[2017-10-07] >= ~D[2017-08-07]` is true with delta `[months: 2]`.")
+        |> to(eq "`~D[2017-10-07] >= ~D[2017-08-07]` is true with delta `[month: 2]`.")
       end
 
       it "checks success with `not_to`" do
-        message = expect(~D[2020-08-07]) |> to_not(be :>, ~D[2017-08-07], {:months, 36})
+        message = expect(~D[2020-08-07]) |> to_not(be :>, ~D[2017-08-07], {:month, 36})
 
         expect(message)
-        |> to(eq "`~D[2020-08-07] > ~D[2017-08-07]` is false with delta `{:months, 36}`.")
+        |> to(eq "`~D[2020-08-07] > ~D[2017-08-07]` is false with delta `{:month, 36}`.")
       end
 
-      it do: expect(~D[2017-08-07]) |> to(be :>=, ~D[2017-01-07], {:months, 7})
+      it do: expect(~D[2017-08-07]) |> to(be :>=, ~D[2017-01-07], {:month, 7})
     end
 
-    context "Success with Date with a granularity of weeks" do
+    context "Success with Date with a granularity of week" do
       it "checks success with `to` for granularity specified by tuple" do
-        message = expect(~D[2017-08-07]) |> to(be :<, ~D[2017-08-20], {:weeks, 2})
+        message = expect(~D[2017-08-07]) |> to(be :<, ~D[2017-08-20], {:week, 2})
 
         expect(message)
-        |> to(eq "`~D[2017-08-07] < ~D[2017-08-20]` is true with delta `{:weeks, 2}`.")
+        |> to(eq "`~D[2017-08-07] < ~D[2017-08-20]` is true with delta `{:week, 2}`.")
       end
 
       it "checks success with `to` for granularity specified by single element Keyword list" do
-        message = expect(~D[2017-08-07]) |> to(be :<, ~D[2017-08-20], weeks: 2)
+        message = expect(~D[2017-08-07]) |> to(be :<, ~D[2017-08-20], week: 2)
 
         expect(message)
-        |> to(eq "`~D[2017-08-07] < ~D[2017-08-20]` is true with delta `[weeks: 2]`.")
+        |> to(eq "`~D[2017-08-07] < ~D[2017-08-20]` is true with delta `[week: 2]`.")
       end
 
       it "checks success with `not_to`" do
-        message = expect(~D[2017-08-07]) |> to_not(be :<, ~D[2020-08-07], {:weeks, 156})
+        message = expect(~D[2017-08-07]) |> to_not(be :<, ~D[2020-08-07], {:week, 156})
 
         expect(message)
-        |> to(eq "`~D[2017-08-07] < ~D[2020-08-07]` is false with delta `{:weeks, 156}`.")
+        |> to(eq "`~D[2017-08-07] < ~D[2020-08-07]` is false with delta `{:week, 156}`.")
       end
 
-      it do: expect(~D[2017-08-14]) |> to(be :>=, ~D[2017-08-07], {:weeks, 1})
+      it do: expect(~D[2017-08-14]) |> to(be :>=, ~D[2017-08-07], {:week, 1})
     end
 
-    context "Success with Date with a granularity of days" do
+    context "Success with Date with a granularity of day" do
       it "checks success with `to` for granularity specified by tuple" do
-        message = expect(~D[2017-08-07]) |> to(be :>=, ~D[2017-08-06], {:days, 1})
+        message = expect(~D[2017-08-07]) |> to(be :>=, ~D[2017-08-06], {:day, 1})
 
         expect(message)
-        |> to(eq "`~D[2017-08-07] >= ~D[2017-08-06]` is true with delta `{:days, 1}`.")
+        |> to(eq "`~D[2017-08-07] >= ~D[2017-08-06]` is true with delta `{:day, 1}`.")
       end
 
       it "checks success with `to` for granularity specified by single element Keyword list" do
-        message = expect(~D[2017-08-07]) |> to(be :>=, ~D[2017-08-06], days: 1)
+        message = expect(~D[2017-08-07]) |> to(be :>=, ~D[2017-08-06], day: 1)
 
         expect(message)
-        |> to(eq "`~D[2017-08-07] >= ~D[2017-08-06]` is true with delta `[days: 1]`.")
+        |> to(eq "`~D[2017-08-07] >= ~D[2017-08-06]` is true with delta `[day: 1]`.")
       end
 
       it "checks success with `not_to`" do
-        message = expect(~D[2017-08-07]) |> to_not(be :<, ~D[2017-08-19], {:days, 1})
+        message = expect(~D[2017-08-07]) |> to_not(be :<, ~D[2017-08-19], {:day, 1})
 
         expect(message)
-        |> to(eq "`~D[2017-08-07] < ~D[2017-08-19]` is false with delta `{:days, 1}`.")
+        |> to(eq "`~D[2017-08-07] < ~D[2017-08-19]` is false with delta `{:day, 1}`.")
       end
 
-      it do: expect(~D[2017-08-07]) |> to(be :<=, ~D[2017-10-07], {:days, 61})
+      it do: expect(~D[2017-08-07]) |> to(be :<=, ~D[2017-10-07], {:day, 61})
     end
 
     context "Errors with Date" do
       context "with `to`" do
         before do
           {:shared,
-           expectation: fn -> expect(~D[2017-08-07]) |> to(be :<, ~D[2050-08-19], {:years, 3}) end,
+           expectation: fn -> expect(~D[2017-08-07]) |> to(be :<, ~D[2050-08-19], {:year, 3}) end,
            message:
-             "Expected `~D[2017-08-07] < ~D[2050-08-19]` to be `true` but got `false` with delta `{:years, 3}`. The actual delta is {:years, 33}, with an inclusive boundary."}
+             "Expected `~D[2017-08-07] < ~D[2050-08-19]` to be `true` but got `false` with delta `{:year, 3}`. The actual delta is {:year, 33}, with an inclusive boundary."}
         end
 
         it_behaves_like(CheckErrorSharedSpec)
@@ -250,283 +250,283 @@ defmodule ESpec.Assertions.DatesTimes.BeSpec do
         before do
           {:shared,
            expectation: fn ->
-             expect(~D[2017-08-07]) |> to_not(be :<, ~D[2017-10-07], {:months, 1})
+             expect(~D[2017-08-07]) |> to_not(be :<, ~D[2017-10-07], {:month, 1})
            end,
            message:
-             "Expected `~D[2017-08-07] < ~D[2017-10-07]` to be `true`  but got `false` with delta `{:months, 1}`, but it is. The actual delta is {:months, 2}, with an inclusive boundary."}
+             "Expected `~D[2017-08-07] < ~D[2017-10-07]` to be `true`  but got `false` with delta `{:month, 1}`, but it is. The actual delta is {:month, 2}, with an inclusive boundary."}
         end
 
         it_behaves_like(CheckErrorSharedSpec)
       end
     end
 
-    context "Success with NaiveDateTime with a granularity of years" do
+    context "Success with NaiveDateTime with a granularity of year" do
       it "checks success with `to` for granularity specified by tuple" do
-        message = expect(~N[2017-08-07 01:10:10]) |> to(be :<=, ~N[2018-08-07 01:10:10], {:years, 1})
+        message = expect(~N[2017-08-07 01:10:10]) |> to(be :<=, ~N[2018-08-07 01:10:10], {:year, 1})
 
         expect(message)
         |> to(
-          eq "`~N[2017-08-07 01:10:10] <= ~N[2018-08-07 01:10:10]` is true with delta `{:years, 1}`."
+          eq "`~N[2017-08-07 01:10:10] <= ~N[2018-08-07 01:10:10]` is true with delta `{:year, 1}`."
         )
       end
 
       it "checks success with `to` for granularity specified by single element Keyword list" do
-        message = expect(~N[2017-08-07 01:10:10]) |> to(be :<=, ~N[2018-08-07 01:10:10], years: 1)
+        message = expect(~N[2017-08-07 01:10:10]) |> to(be :<=, ~N[2018-08-07 01:10:10], year: 1)
 
         expect(message)
         |> to(
-          eq "`~N[2017-08-07 01:10:10] <= ~N[2018-08-07 01:10:10]` is true with delta `[years: 1]`."
+          eq "`~N[2017-08-07 01:10:10] <= ~N[2018-08-07 01:10:10]` is true with delta `[year: 1]`."
         )
       end
 
       it "checks success with `not_to`" do
         message =
-          expect(~N[2017-08-07 01:10:10]) |> to_not(be :<, ~N[2020-08-07 01:10:10], {:years, 2})
+          expect(~N[2017-08-07 01:10:10]) |> to_not(be :<, ~N[2020-08-07 01:10:10], {:year, 2})
 
         expect(message)
         |> to(
-          eq "`~N[2017-08-07 01:10:10] < ~N[2020-08-07 01:10:10]` is false with delta `{:years, 2}`."
+          eq "`~N[2017-08-07 01:10:10] < ~N[2020-08-07 01:10:10]` is false with delta `{:year, 2}`."
         )
       end
 
-      it do: expect(~N[2017-08-07 01:10:10]) |> to(be :<=, ~N[2020-08-07 01:10:10], {:years, 3})
+      it do: expect(~N[2017-08-07 01:10:10]) |> to(be :<=, ~N[2020-08-07 01:10:10], {:year, 3})
     end
 
-    context "Success with NaiveDateTime with a granularity of months" do
+    context "Success with NaiveDateTime with a granularity of month" do
       it "checks success with `to` for granularity specified by tuple" do
         message =
-          expect(~N[2017-08-07 01:10:10]) |> to(be :<=, ~N[2017-09-07 01:10:10], {:months, 1})
+          expect(~N[2017-08-07 01:10:10]) |> to(be :<=, ~N[2017-09-07 01:10:10], {:month, 1})
 
         expect(message)
         |> to(
-          eq "`~N[2017-08-07 01:10:10] <= ~N[2017-09-07 01:10:10]` is true with delta `{:months, 1}`."
+          eq "`~N[2017-08-07 01:10:10] <= ~N[2017-09-07 01:10:10]` is true with delta `{:month, 1}`."
         )
       end
 
       it "checks success with `to` for granularity specified by single element Keyword list" do
-        message = expect(~N[2017-08-07 01:10:10]) |> to(be :<=, ~N[2017-09-07 01:10:10], months: 1)
+        message = expect(~N[2017-08-07 01:10:10]) |> to(be :<=, ~N[2017-09-07 01:10:10], month: 1)
 
         expect(message)
         |> to(
-          eq "`~N[2017-08-07 01:10:10] <= ~N[2017-09-07 01:10:10]` is true with delta `[months: 1]`."
+          eq "`~N[2017-08-07 01:10:10] <= ~N[2017-09-07 01:10:10]` is true with delta `[month: 1]`."
         )
       end
 
       it "checks success with `not_to`" do
         message =
-          expect(~N[2017-08-07 01:10:10]) |> to_not(be :<, ~N[2020-08-07 01:10:10], {:months, 2})
+          expect(~N[2017-08-07 01:10:10]) |> to_not(be :<, ~N[2020-08-07 01:10:10], {:month, 2})
 
         expect(message)
         |> to(
-          eq "`~N[2017-08-07 01:10:10] < ~N[2020-08-07 01:10:10]` is false with delta `{:months, 2}`."
+          eq "`~N[2017-08-07 01:10:10] < ~N[2020-08-07 01:10:10]` is false with delta `{:month, 2}`."
         )
       end
 
-      it do: expect(~N[2017-08-07 01:10:10]) |> to(be :>=, ~N[2017-01-07 01:10:10], {:months, 7})
+      it do: expect(~N[2017-08-07 01:10:10]) |> to(be :>=, ~N[2017-01-07 01:10:10], {:month, 7})
     end
 
-    context "Success with NaiveDateTime with a granularity of weeks" do
+    context "Success with NaiveDateTime with a granularity of week" do
       it "checks success with `to` for granularity specified by tuple" do
-        message = expect(~N[2017-08-07 01:10:10]) |> to(be :<=, ~N[2017-08-14 01:10:10], {:weeks, 1})
+        message = expect(~N[2017-08-07 01:10:10]) |> to(be :<=, ~N[2017-08-14 01:10:10], {:week, 1})
 
         expect(message)
         |> to(
-          eq "`~N[2017-08-07 01:10:10] <= ~N[2017-08-14 01:10:10]` is true with delta `{:weeks, 1}`."
+          eq "`~N[2017-08-07 01:10:10] <= ~N[2017-08-14 01:10:10]` is true with delta `{:week, 1}`."
         )
       end
 
       it "checks success with `to` for granularity specified by single element Keyword list" do
-        message = expect(~N[2017-08-07 01:10:10]) |> to(be :<=, ~N[2017-08-14 01:10:10], weeks: 1)
+        message = expect(~N[2017-08-07 01:10:10]) |> to(be :<=, ~N[2017-08-14 01:10:10], week: 1)
 
         expect(message)
         |> to(
-          eq "`~N[2017-08-07 01:10:10] <= ~N[2017-08-14 01:10:10]` is true with delta `[weeks: 1]`."
+          eq "`~N[2017-08-07 01:10:10] <= ~N[2017-08-14 01:10:10]` is true with delta `[week: 1]`."
         )
       end
 
       it "checks success with `not_to`" do
         message =
-          expect(~N[2017-08-07 01:10:10]) |> to_not(be :<, ~N[2020-08-07 01:10:10], {:weeks, 2})
+          expect(~N[2017-08-07 01:10:10]) |> to_not(be :<, ~N[2020-08-07 01:10:10], {:week, 2})
 
         expect(message)
         |> to(
-          eq "`~N[2017-08-07 01:10:10] < ~N[2020-08-07 01:10:10]` is false with delta `{:weeks, 2}`."
+          eq "`~N[2017-08-07 01:10:10] < ~N[2020-08-07 01:10:10]` is false with delta `{:week, 2}`."
         )
       end
 
-      it do: expect(~N[2017-08-07 01:10:10]) |> to(be :<=, ~N[2017-08-14 01:10:10], {:weeks, 1})
+      it do: expect(~N[2017-08-07 01:10:10]) |> to(be :<=, ~N[2017-08-14 01:10:10], {:week, 1})
     end
 
-    context "Success with NaiveDateTime with a granularity of days" do
+    context "Success with NaiveDateTime with a granularity of day" do
       it "checks success with `to` for granularity specified by tuple" do
-        message = expect(~N[2017-08-07 01:10:10]) |> to(be :>=, ~N[2017-08-06 01:10:10], {:days, 1})
+        message = expect(~N[2017-08-07 01:10:10]) |> to(be :>=, ~N[2017-08-06 01:10:10], {:day, 1})
 
         expect(message)
         |> to(
-          eq "`~N[2017-08-07 01:10:10] >= ~N[2017-08-06 01:10:10]` is true with delta `{:days, 1}`."
+          eq "`~N[2017-08-07 01:10:10] >= ~N[2017-08-06 01:10:10]` is true with delta `{:day, 1}`."
         )
       end
 
       it "checks success with `to` for granularity specified by single element Keyword list" do
-        message = expect(~N[2017-08-07 01:10:10]) |> to(be :>=, ~N[2017-08-06 01:10:10], days: 1)
+        message = expect(~N[2017-08-07 01:10:10]) |> to(be :>=, ~N[2017-08-06 01:10:10], day: 1)
 
         expect(message)
         |> to(
-          eq "`~N[2017-08-07 01:10:10] >= ~N[2017-08-06 01:10:10]` is true with delta `[days: 1]`."
+          eq "`~N[2017-08-07 01:10:10] >= ~N[2017-08-06 01:10:10]` is true with delta `[day: 1]`."
         )
       end
 
       it "checks success with `not_to`" do
         message =
-          expect(~N[2017-08-19 01:10:10]) |> to_not(be :>, ~N[2017-08-07 01:10:10], {:days, 13})
+          expect(~N[2017-08-19 01:10:10]) |> to_not(be :>, ~N[2017-08-07 01:10:10], {:day, 13})
 
         expect(message)
         |> to(
-          eq "`~N[2017-08-19 01:10:10] > ~N[2017-08-07 01:10:10]` is false with delta `{:days, 13}`."
+          eq "`~N[2017-08-19 01:10:10] > ~N[2017-08-07 01:10:10]` is false with delta `{:day, 13}`."
         )
       end
 
-      it do: expect(~N[2017-08-07 01:10:10]) |> to(be :<=, ~N[2017-10-07 01:10:10], {:days, 61})
+      it do: expect(~N[2017-08-07 01:10:10]) |> to(be :<=, ~N[2017-10-07 01:10:10], {:day, 61})
     end
 
-    context "Success with NaiveDateTime with a granularity of hours" do
+    context "Success with NaiveDateTime with a granularity of hour" do
       it "checks success with `to` for granuarlity specifed by tuple" do
-        message = expect(~N[2017-08-07 01:10:10]) |> to(be :<=, ~N[2017-08-07 02:10:10], {:hours, 1})
+        message = expect(~N[2017-08-07 01:10:10]) |> to(be :<=, ~N[2017-08-07 02:10:10], {:hour, 1})
 
         expect(message)
         |> to(
-          eq "`~N[2017-08-07 01:10:10] <= ~N[2017-08-07 02:10:10]` is true with delta `{:hours, 1}`."
+          eq "`~N[2017-08-07 01:10:10] <= ~N[2017-08-07 02:10:10]` is true with delta `{:hour, 1}`."
         )
       end
 
       it "checks success with `to` for granularity specifed by single element Keyword list" do
-        message = expect(~N[2017-08-07 01:10:10]) |> to(be :<=, ~N[2017-08-07 02:10:10], hours: 1)
+        message = expect(~N[2017-08-07 01:10:10]) |> to(be :<=, ~N[2017-08-07 02:10:10], hour: 1)
 
         expect(message)
         |> to(
-          eq "`~N[2017-08-07 01:10:10] <= ~N[2017-08-07 02:10:10]` is true with delta `[hours: 1]`."
+          eq "`~N[2017-08-07 01:10:10] <= ~N[2017-08-07 02:10:10]` is true with delta `[hour: 1]`."
         )
       end
 
       it "checks success with `not_to`" do
         message =
-          expect(~N[2017-08-07 01:10:10]) |> to_not(be :<, ~N[2017-08-19 01:10:10], {:hours, 1})
+          expect(~N[2017-08-07 01:10:10]) |> to_not(be :<, ~N[2017-08-19 01:10:10], {:hour, 1})
 
         expect(message)
         |> to(
-          eq "`~N[2017-08-07 01:10:10] < ~N[2017-08-19 01:10:10]` is false with delta `{:hours, 1}`."
+          eq "`~N[2017-08-07 01:10:10] < ~N[2017-08-19 01:10:10]` is false with delta `{:hour, 1}`."
         )
       end
 
-      it do: expect(~N[2017-08-07 01:10:10]) |> to(be :<=, ~N[2017-08-07 02:10:10], {:hours, 1})
+      it do: expect(~N[2017-08-07 01:10:10]) |> to(be :<=, ~N[2017-08-07 02:10:10], {:hour, 1})
     end
 
-    context "Success with NaiveDateTime with a granularity of minutes" do
+    context "Success with NaiveDateTime with a granularity of minute" do
       it "checks success with `to` for granularity specified by tuple" do
         message =
-          expect(~N[2017-08-07 01:10:10]) |> to(be :<=, ~N[2017-08-07 01:50:10], {:minutes, 40})
+          expect(~N[2017-08-07 01:10:10]) |> to(be :<=, ~N[2017-08-07 01:50:10], {:minute, 40})
 
         expect(message)
         |> to(
-          eq "`~N[2017-08-07 01:10:10] <= ~N[2017-08-07 01:50:10]` is true with delta `{:minutes, 40}`."
+          eq "`~N[2017-08-07 01:10:10] <= ~N[2017-08-07 01:50:10]` is true with delta `{:minute, 40}`."
         )
       end
 
       it "checks success with `to` for granularity specified by single element Keyword list" do
-        message = expect(~N[2017-08-07 01:10:10]) |> to(be :<=, ~N[2017-08-07 01:50:10], minutes: 40)
+        message = expect(~N[2017-08-07 01:10:10]) |> to(be :<=, ~N[2017-08-07 01:50:10], minute: 40)
 
         expect(message)
         |> to(
-          eq "`~N[2017-08-07 01:10:10] <= ~N[2017-08-07 01:50:10]` is true with delta `[minutes: 40]`."
+          eq "`~N[2017-08-07 01:10:10] <= ~N[2017-08-07 01:50:10]` is true with delta `[minute: 40]`."
         )
       end
 
       it "checks success with `not_to`" do
         message =
-          expect(~N[2017-08-07 01:10:10]) |> to_not(be :<, ~N[2017-08-07 01:51:10], {:minutes, 40})
+          expect(~N[2017-08-07 01:10:10]) |> to_not(be :<, ~N[2017-08-07 01:51:10], {:minute, 40})
 
         expect(message)
         |> to(
-          eq "`~N[2017-08-07 01:10:10] < ~N[2017-08-07 01:51:10]` is false with delta `{:minutes, 40}`."
+          eq "`~N[2017-08-07 01:10:10] < ~N[2017-08-07 01:51:10]` is false with delta `{:minute, 40}`."
         )
       end
 
-      it do: expect(~N[2017-08-07 01:10:10]) |> to(be :<=, ~N[2017-08-07 01:50:10], {:minutes, 40})
+      it do: expect(~N[2017-08-07 01:10:10]) |> to(be :<=, ~N[2017-08-07 01:50:10], {:minute, 40})
     end
 
-    context "Success with NaiveDateTime with a granularity of seconds" do
+    context "Success with NaiveDateTime with a granularity of second" do
       it "checks success with `to` for granularity specified by tuple" do
         message =
-          expect(~N[2017-08-07 01:10:10]) |> to(be :<=, ~N[2017-08-07 01:10:11], {:seconds, 1})
+          expect(~N[2017-08-07 01:10:10]) |> to(be :<=, ~N[2017-08-07 01:10:11], {:second, 1})
 
         expect(message)
         |> to(
-          eq "`~N[2017-08-07 01:10:10] <= ~N[2017-08-07 01:10:11]` is true with delta `{:seconds, 1}`."
+          eq "`~N[2017-08-07 01:10:10] <= ~N[2017-08-07 01:10:11]` is true with delta `{:second, 1}`."
         )
       end
 
       it "checks success with `to` for granularity specified by single element Keyword list" do
-        message = expect(~N[2017-08-07 01:10:10]) |> to(be :<=, ~N[2017-08-07 01:10:11], seconds: 1)
+        message = expect(~N[2017-08-07 01:10:10]) |> to(be :<=, ~N[2017-08-07 01:10:11], second: 1)
 
         expect(message)
         |> to(
-          eq "`~N[2017-08-07 01:10:10] <= ~N[2017-08-07 01:10:11]` is true with delta `[seconds: 1]`."
+          eq "`~N[2017-08-07 01:10:10] <= ~N[2017-08-07 01:10:11]` is true with delta `[second: 1]`."
         )
       end
 
       it "checks success with `not_to`" do
         message =
-          expect(~N[2017-08-07 01:10:10]) |> to_not(be :<, ~N[2017-08-07 01:10:12], {:seconds, 1})
+          expect(~N[2017-08-07 01:10:10]) |> to_not(be :<, ~N[2017-08-07 01:10:12], {:second, 1})
 
         expect(message)
         |> to(
-          eq "`~N[2017-08-07 01:10:10] < ~N[2017-08-07 01:10:12]` is false with delta `{:seconds, 1}`."
+          eq "`~N[2017-08-07 01:10:10] < ~N[2017-08-07 01:10:12]` is false with delta `{:second, 1}`."
         )
       end
 
-      it do: expect(~N[2017-08-07 01:10:10]) |> to(be :<=, ~N[2017-08-07 01:10:11], {:seconds, 1})
+      it do: expect(~N[2017-08-07 01:10:10]) |> to(be :<=, ~N[2017-08-07 01:10:11], {:second, 1})
     end
 
-    context "Success with NaiveDateTime with a granularity of microseconds" do
+    context "Success with NaiveDateTime with a granularity of microsecond" do
       it "checks success with `to` for granularity specified by tuple" do
         message =
           expect(~N[2017-08-07 01:10:10.000001]) |> to(
-            be :<=, ~N[2017-08-07 01:10:10.000003], {:microseconds, 2}
+            be :<=, ~N[2017-08-07 01:10:10.000003], {:microsecond, 2}
           )
 
         expect(message)
         |> to(
-          eq "`~N[2017-08-07 01:10:10.000001] <= ~N[2017-08-07 01:10:10.000003]` is true with delta `{:microseconds, 2}`."
+          eq "`~N[2017-08-07 01:10:10.000001] <= ~N[2017-08-07 01:10:10.000003]` is true with delta `{:microsecond, 2}`."
         )
       end
 
       it "checks success with `to` for granularity specified by single element Keyword list" do
         message =
           expect(~N[2017-08-07 01:10:10.000001]) |> to(
-            be :<=, ~N[2017-08-07 01:10:10.000003], microseconds: 2
+            be :<=, ~N[2017-08-07 01:10:10.000003], microsecond: 2
           )
 
         expect(message)
         |> to(
-          eq "`~N[2017-08-07 01:10:10.000001] <= ~N[2017-08-07 01:10:10.000003]` is true with delta `[microseconds: 2]`."
+          eq "`~N[2017-08-07 01:10:10.000001] <= ~N[2017-08-07 01:10:10.000003]` is true with delta `[microsecond: 2]`."
         )
       end
 
       it "checks success with `not_to`" do
         message =
           expect(~N[2017-08-07 01:10:10.000001]) |> to_not(
-            be :<, ~N[2017-08-07 01:10:10.000003], {:microseconds, 1}
+            be :<, ~N[2017-08-07 01:10:10.000003], {:microsecond, 1}
           )
 
         expect(message)
         |> to(
-          eq "`~N[2017-08-07 01:10:10.000001] < ~N[2017-08-07 01:10:10.000003]` is false with delta `{:microseconds, 1}`."
+          eq "`~N[2017-08-07 01:10:10.000001] < ~N[2017-08-07 01:10:10.000003]` is false with delta `{:microsecond, 1}`."
         )
       end
 
       it do:
            expect(~N[2017-08-07 01:10:10.000001]) |> to(
-             be :<=, ~N[2017-08-07 01:10:10.000003], {:microseconds, 2}
+             be :<=, ~N[2017-08-07 01:10:10.000003], {:microsecond, 2}
            )
     end
 
@@ -535,10 +535,10 @@ defmodule ESpec.Assertions.DatesTimes.BeSpec do
         before do
           {:shared,
            expectation: fn ->
-             expect(~N[2017-08-07 01:10:10]) |> to(be :<, ~N[2017-08-07 01:10:15], {:seconds, 3})
+             expect(~N[2017-08-07 01:10:10]) |> to(be :<, ~N[2017-08-07 01:10:15], {:second, 3})
            end,
            message:
-             "Expected `~N[2017-08-07 01:10:10] < ~N[2017-08-07 01:10:15]` to be `true` but got `false` with delta `{:seconds, 3}`. The actual delta is {:seconds, 5}, with an inclusive boundary."}
+             "Expected `~N[2017-08-07 01:10:10] < ~N[2017-08-07 01:10:15]` to be `true` but got `false` with delta `{:second, 3}`. The actual delta is {:second, 5}, with an inclusive boundary."}
         end
 
         it_behaves_like(CheckErrorSharedSpec)
@@ -548,121 +548,121 @@ defmodule ESpec.Assertions.DatesTimes.BeSpec do
         before do
           {:shared,
            expectation: fn ->
-             expect(~N[2017-08-07 01:10:10]) |> to_not(be :<, ~N[2017-08-07 01:10:15], {:seconds, 5})
+             expect(~N[2017-08-07 01:10:10]) |> to_not(be :<, ~N[2017-08-07 01:10:15], {:second, 5})
            end,
            message:
-             "Expected `~N[2017-08-07 01:10:10] < ~N[2017-08-07 01:10:15]` to be `true` but got `false`  with delta `{:seconds, 5}`. The actual delta is {:seconds, 5}, with an inclusive boundary."}
+             "Expected `~N[2017-08-07 01:10:10] < ~N[2017-08-07 01:10:15]` to be `true` but got `false`  with delta `{:second, 5}`. The actual delta is {:second, 5}, with an inclusive boundary."}
         end
 
         it_behaves_like(CheckErrorSharedSpec)
       end
     end
 
-    context "Success with Time with a granularity of hours" do
+    context "Success with Time with a granularity of hour" do
       it "checks success with `to` for granularity specified by tuple" do
-        message = expect(~T[01:10:10]) |> to(be :<=, ~T[02:10:10], {:hours, 1})
+        message = expect(~T[01:10:10]) |> to(be :<=, ~T[02:10:10], {:hour, 1})
 
         expect(message)
-        |> to(eq "`~T[01:10:10] <= ~T[02:10:10]` is true with delta `{:hours, 1}`.")
+        |> to(eq "`~T[01:10:10] <= ~T[02:10:10]` is true with delta `{:hour, 1}`.")
       end
 
       it "checks success with `to` for granularity specified by single element Keyword list" do
-        message = expect(~T[01:10:10]) |> to(be :<=, ~T[02:10:10], hours: 1)
+        message = expect(~T[01:10:10]) |> to(be :<=, ~T[02:10:10], hour: 1)
 
         expect(message)
-        |> to(eq "`~T[01:10:10] <= ~T[02:10:10]` is true with delta `[hours: 1]`.")
+        |> to(eq "`~T[01:10:10] <= ~T[02:10:10]` is true with delta `[hour: 1]`.")
       end
 
       it "checks success with `not_to`" do
-        message = expect(~T[01:10:10]) |> to_not(be :<, ~T[03:10:10], {:hours, 1})
+        message = expect(~T[01:10:10]) |> to_not(be :<, ~T[03:10:10], {:hour, 1})
 
         expect(message)
-        |> to(eq "`~T[01:10:10] < ~T[03:10:10]` is false with delta `{:hours, 1}`.")
+        |> to(eq "`~T[01:10:10] < ~T[03:10:10]` is false with delta `{:hour, 1}`.")
       end
 
-      it do: expect(~T[01:10:10]) |> to(be :<=, ~T[02:10:10], {:hours, 1})
+      it do: expect(~T[01:10:10]) |> to(be :<=, ~T[02:10:10], {:hour, 1})
     end
 
-    context "Success with Time with a granularity of minutes" do
+    context "Success with Time with a granularity of minute" do
       it "checks success with `to` for granularity specified by tuple" do
-        message = expect(~T[01:10:10]) |> to(be :<=, ~T[01:50:10], {:minutes, 40})
+        message = expect(~T[01:10:10]) |> to(be :<=, ~T[01:50:10], {:minute, 40})
 
         expect(message)
-        |> to(eq "`~T[01:10:10] <= ~T[01:50:10]` is true with delta `{:minutes, 40}`.")
+        |> to(eq "`~T[01:10:10] <= ~T[01:50:10]` is true with delta `{:minute, 40}`.")
       end
 
       it "checks success with `to` for granularity specified by single element Keyword list" do
-        message = expect(~T[01:10:10]) |> to(be :<=, ~T[01:50:10], minutes: 40)
+        message = expect(~T[01:10:10]) |> to(be :<=, ~T[01:50:10], minute: 40)
 
         expect(message)
-        |> to(eq "`~T[01:10:10] <= ~T[01:50:10]` is true with delta `[minutes: 40]`.")
+        |> to(eq "`~T[01:10:10] <= ~T[01:50:10]` is true with delta `[minute: 40]`.")
       end
 
       it "checks success with `not_to`" do
-        message = expect(~T[01:10:10]) |> to_not(be :<, ~T[01:50:10], {:minutes, 40})
+        message = expect(~T[01:10:10]) |> to_not(be :<, ~T[01:50:10], {:minute, 40})
 
         expect(message)
-        |> to(eq "`~T[01:10:10] < ~T[01:50:10]` is false with delta `{:minutes, 40}`.")
+        |> to(eq "`~T[01:10:10] < ~T[01:50:10]` is false with delta `{:minute, 40}`.")
       end
 
-      it do: expect(~T[01:10:10]) |> to(be :<=, ~T[01:50:10], {:minutes, 40})
+      it do: expect(~T[01:10:10]) |> to(be :<=, ~T[01:50:10], {:minute, 40})
     end
 
-    context "Success with Time with a granularity of seconds" do
+    context "Success with Time with a granularity of second" do
       it "checks success with `to` for granularity specified by tuple" do
-        message = expect(~T[01:10:10]) |> to(be :<=, ~T[01:10:11], {:seconds, 1})
+        message = expect(~T[01:10:10]) |> to(be :<=, ~T[01:10:11], {:second, 1})
 
         expect(message)
-        |> to(eq "`~T[01:10:10] <= ~T[01:10:11]` is true with delta `{:seconds, 1}`.")
+        |> to(eq "`~T[01:10:10] <= ~T[01:10:11]` is true with delta `{:second, 1}`.")
       end
 
       it "checks success with `to` for granularity specified by single element Keyword list" do
-        message = expect(~T[01:10:10]) |> to(be :<=, ~T[01:10:11], seconds: 1)
+        message = expect(~T[01:10:10]) |> to(be :<=, ~T[01:10:11], second: 1)
 
         expect(message)
-        |> to(eq "`~T[01:10:10] <= ~T[01:10:11]` is true with delta `[seconds: 1]`.")
+        |> to(eq "`~T[01:10:10] <= ~T[01:10:11]` is true with delta `[second: 1]`.")
       end
 
       it "checks success with `not_to`" do
-        message = expect(~T[01:10:10]) |> to_not(be :<, ~T[01:10:12], {:seconds, 1})
+        message = expect(~T[01:10:10]) |> to_not(be :<, ~T[01:10:12], {:second, 1})
 
         expect(message)
-        |> to(eq "`~T[01:10:10] < ~T[01:10:12]` is false with delta `{:seconds, 1}`.")
+        |> to(eq "`~T[01:10:10] < ~T[01:10:12]` is false with delta `{:second, 1}`.")
       end
 
-      it do: expect(~T[01:10:10]) |> to(be :<=, ~T[01:10:11], {:seconds, 1})
+      it do: expect(~T[01:10:10]) |> to(be :<=, ~T[01:10:11], {:second, 1})
     end
 
-    context "Success with Time with a granularity of microseconds" do
+    context "Success with Time with a granularity of microsecond" do
       it "checks success with `to` for granularity specified by tuple" do
-        message = expect(~T[01:10:10.000001]) |> to(be :<=, ~T[01:10:10.000002], {:microseconds, 1})
+        message = expect(~T[01:10:10.000001]) |> to(be :<=, ~T[01:10:10.000002], {:microsecond, 1})
 
         expect(message)
         |> to(
-          eq "`~T[01:10:10.000001] <= ~T[01:10:10.000002]` is true with delta `{:microseconds, 1}`."
+          eq "`~T[01:10:10.000001] <= ~T[01:10:10.000002]` is true with delta `{:microsecond, 1}`."
         )
       end
 
       it "checks success with `to` for granularity specified by single element Keyword list" do
-        message = expect(~T[01:10:10.000001]) |> to(be :<=, ~T[01:10:10.000002], microseconds: 1)
+        message = expect(~T[01:10:10.000001]) |> to(be :<=, ~T[01:10:10.000002], microsecond: 1)
 
         expect(message)
         |> to(
-          eq "`~T[01:10:10.000001] <= ~T[01:10:10.000002]` is true with delta `[microseconds: 1]`."
+          eq "`~T[01:10:10.000001] <= ~T[01:10:10.000002]` is true with delta `[microsecond: 1]`."
         )
       end
 
       it "checks success with `not_to`" do
         message =
-          expect(~T[01:10:10.000001]) |> to_not(be :<, ~T[01:10:11.000002], {:microseconds, 1})
+          expect(~T[01:10:10.000001]) |> to_not(be :<, ~T[01:10:11.000002], {:microsecond, 1})
 
         expect(message)
         |> to(
-          eq "`~T[01:10:10.000001] < ~T[01:10:11.000002]` is false with delta `{:microseconds, 1}`."
+          eq "`~T[01:10:10.000001] < ~T[01:10:11.000002]` is false with delta `{:microsecond, 1}`."
         )
       end
 
-      it do: expect(~T[01:10:10.000001]) |> to(be :<=, ~T[01:10:10.000002], {:microseconds, 1})
+      it do: expect(~T[01:10:10.000001]) |> to(be :<=, ~T[01:10:10.000002], {:microsecond, 1})
     end
 
     context "Errors with Time" do
@@ -670,10 +670,10 @@ defmodule ESpec.Assertions.DatesTimes.BeSpec do
         before do
           {:shared,
            expectation: fn ->
-             expect(~T[01:10:10.000001]) |> to(be :<, ~T[01:10:10.000006], {:microseconds, 3})
+             expect(~T[01:10:10.000001]) |> to(be :<, ~T[01:10:10.000006], {:microsecond, 3})
            end,
            message:
-             "Expected `~T[01:10:10.000001] < ~T[01:10:10.000006]` to be `true` but got `false` with delta `{:microseconds, 3}`. The actual delta is {:microseconds, 5}, with an inclusive boundary."}
+             "Expected `~T[01:10:10.000001] < ~T[01:10:10.000006]` to be `true` but got `false` with delta `{:microsecond, 3}`. The actual delta is {:microsecond, 5}, with an inclusive boundary."}
         end
 
         it_behaves_like(CheckErrorSharedSpec)
@@ -683,10 +683,10 @@ defmodule ESpec.Assertions.DatesTimes.BeSpec do
         before do
           {:shared,
            expectation: fn ->
-             expect(~T[01:10:10.000001]) |> to_not(be :<, ~T[01:10:10.000006], {:microseconds, 5})
+             expect(~T[01:10:10.000001]) |> to_not(be :<, ~T[01:10:10.000006], {:microsecond, 5})
            end,
            message:
-             "Expected `~T[01:10:10.000001] < ~T[01:10:10.000006]` to be `true` but got `false` with delta `{:microseconds, 5}`. The actual delta is {:microseconds, 5}, with an inclusive boundary."}
+             "Expected `~T[01:10:10.000001] < ~T[01:10:10.000006]` to be `true` but got `false` with delta `{:microsecond, 5}`. The actual delta is {:microsecond, 5}, with an inclusive boundary."}
         end
 
         it_behaves_like(CheckErrorSharedSpec)
@@ -696,109 +696,109 @@ defmodule ESpec.Assertions.DatesTimes.BeSpec do
     let :datetime1, do: DateTime.Extension.from_naive!(~N[2017-08-07 01:10:10.000001], "Etc/UTC")
     let :datetime3, do: DateTime.Extension.from_naive!(~N[2020-08-07 01:10:10.000001], "Etc/UTC")
 
-    context "Success with DateTime with a granularity of years" do
+    context "Success with DateTime with a granularity of year" do
       let :datetime2,
         do: DateTime.Extension.from_naive!(~N[2018-08-07 01:10:10.000001], "Etc/UTC")
 
       it "checks success with `to` for granularity specified by tuple" do
-        message = expect(datetime1()) |> to(be :<=, datetime2(), {:years, 1})
+        message = expect(datetime1()) |> to(be :<=, datetime2(), {:year, 1})
 
         expect(message)
         |> to(
-          eq "`#{inspect(datetime1())} <= #{inspect(datetime2())}` is true with delta `{:years, 1}`."
+          eq "`#{inspect(datetime1())} <= #{inspect(datetime2())}` is true with delta `{:year, 1}`."
         )
       end
 
       it "checks success with `to` for granularity specified by single element Keyword list" do
-        message = expect(datetime1()) |> to(be :<=, datetime2(), years: 1)
+        message = expect(datetime1()) |> to(be :<=, datetime2(), year: 1)
 
         expect(message)
         |> to(
-          eq "`#{inspect(datetime1())} <= #{inspect(datetime2())}` is true with delta `[years: 1]`."
+          eq "`#{inspect(datetime1())} <= #{inspect(datetime2())}` is true with delta `[year: 1]`."
         )
       end
 
       it "checks success with `not_to`" do
-        message = expect(datetime1()) |> to_not(be :<, datetime3(), {:years, 2})
+        message = expect(datetime1()) |> to_not(be :<, datetime3(), {:year, 2})
 
         expect(message)
         |> to(
-          eq "`#{inspect(datetime1())} < #{inspect(datetime3())}` is false with delta `{:years, 2}`."
+          eq "`#{inspect(datetime1())} < #{inspect(datetime3())}` is false with delta `{:year, 2}`."
         )
       end
 
-      it do: expect(datetime1()) |> to(be :<=, datetime3(), {:years, 3})
+      it do: expect(datetime1()) |> to(be :<=, datetime3(), {:year, 3})
     end
 
-    context "Success with DateTime with a granularity of months" do
+    context "Success with DateTime with a granularity of month" do
       let :datetime2,
         do: DateTime.Extension.from_naive!(~N[2017-09-07 01:10:10.000001], "Etc/UTC")
 
       it "checks success with `to` for granularity specified by tuple" do
-        message = expect(datetime1()) |> to(be :<=, datetime2(), {:months, 1})
+        message = expect(datetime1()) |> to(be :<=, datetime2(), {:month, 1})
 
         expect(message)
         |> to(
-          eq "`#{inspect(datetime1())} <= #{inspect(datetime2())}` is true with delta `{:months, 1}`."
+          eq "`#{inspect(datetime1())} <= #{inspect(datetime2())}` is true with delta `{:month, 1}`."
         )
       end
 
       it "checks success with `to` for granularity specified by single element Keyword list" do
-        message = expect(datetime1()) |> to(be :<=, datetime2(), months: 1)
+        message = expect(datetime1()) |> to(be :<=, datetime2(), month: 1)
 
         expect(message)
         |> to(
-          eq "`#{inspect(datetime1())} <= #{inspect(datetime2())}` is true with delta `[months: 1]`."
+          eq "`#{inspect(datetime1())} <= #{inspect(datetime2())}` is true with delta `[month: 1]`."
         )
       end
 
       it "checks success with `not_to`" do
-        message = expect(datetime1()) |> to_not(be :<, datetime3(), {:months, 2})
+        message = expect(datetime1()) |> to_not(be :<, datetime3(), {:month, 2})
 
         expect(message)
         |> to(
-          eq "`#{inspect(datetime1())} < #{inspect(datetime3())}` is false with delta `{:months, 2}`."
+          eq "`#{inspect(datetime1())} < #{inspect(datetime3())}` is false with delta `{:month, 2}`."
         )
       end
 
-      it do: expect(datetime1()) |> to(be :<=, datetime2(), {:months, 1})
+      it do: expect(datetime1()) |> to(be :<=, datetime2(), {:month, 1})
     end
 
-    context "Success with DateTime with a granularity of weeks" do
+    context "Success with DateTime with a granularity of week" do
       let :datetime2,
         do: DateTime.Extension.from_naive!(~N[2017-08-14 01:10:10.000001], "Etc/UTC")
 
       it "checks success with `to` for granularity specified by tuple" do
-        message = expect(datetime1()) |> to(be :<=, datetime2(), {:weeks, 1})
+        message = expect(datetime1()) |> to(be :<=, datetime2(), {:week, 1})
 
         expect(message)
         |> to(
-          eq "`#{inspect(datetime1())} <= #{inspect(datetime2())}` is true with delta `{:weeks, 1}`."
+          eq "`#{inspect(datetime1())} <= #{inspect(datetime2())}` is true with delta `{:week, 1}`."
         )
       end
 
       it "checks success with `to` for granularity specified by single element Keyword list" do
-        message = expect(datetime1()) |> to(be :<=, datetime2(), weeks: 1)
+        message = expect(datetime1()) |> to(be :<=, datetime2(), week: 1)
 
         expect(message)
         |> to(
-          eq "`#{inspect(datetime1())} <= #{inspect(datetime2())}` is true with delta `[weeks: 1]`."
+          eq "`#{inspect(datetime1())} <= #{inspect(datetime2())}` is true with delta `[week: 1]`."
         )
       end
 
       it "checks success with `not_to`" do
-        message = expect(datetime1()) |> to_not(be :<, datetime3(), {:weeks, 1})
+        message = expect(datetime1()) |> to_not(be :<, datetime3(), {:week, 1})
 
         expect(message)
         |> to(
-          eq "`#{inspect(datetime1())} < #{inspect(datetime3())}` is false with delta `{:weeks, 1}`."
+          eq "`#{inspect(datetime1())} < #{inspect(datetime3())}` is false with delta `{:week, 1}`."
         )
       end
 
-      it do: expect(datetime1()) |> to(be :<=, datetime2(), {:weeks, 1})
+      it do: expect(datetime1()) |> to(be :<=, datetime2(), {:week, 1})
     end
 
-    context "Success with DateTime with a granularity of days" do
+    context "Success with DateTime with a granularity of day" do
       let :datetime2,
         do: DateTime.Extension.from_naive!(~N[2017-08-06 01:10:10.000001], "Etc/UTC")
 
@@ -806,169 +806,169 @@ defmodule ESpec.Assertions.DatesTimes.BeSpec do
         do: DateTime.Extension.from_naive!(~N[2017-10-07 01:10:10.000001], "Etc/UTC")
 
       it "checks success with `to` for granularity specified by tuple" do
-        message = expect(datetime1()) |> to(be :>=, datetime2(), {:days, 1})
+        message = expect(datetime1()) |> to(be :>=, datetime2(), {:day, 1})
 
         expect(message)
         |> to(
-          eq "`#{inspect(datetime1())} >= #{inspect(datetime2())}` is true with delta `{:days, 1}`."
+          eq "`#{inspect(datetime1())} >= #{inspect(datetime2())}` is true with delta `{:day, 1}`."
         )
       end
 
       it "checks success with `to` for granularity specified by single element Keyword list" do
-        message = expect(datetime1()) |> to(be :>=, datetime2(), days: 1)
+        message = expect(datetime1()) |> to(be :>=, datetime2(), day: 1)
 
         expect(message)
         |> to(
-          eq "`#{inspect(datetime1())} >= #{inspect(datetime2())}` is true with delta `[days: 1]`."
+          eq "`#{inspect(datetime1())} >= #{inspect(datetime2())}` is true with delta `[day: 1]`."
         )
       end
 
       it "checks success with `not_to`" do
-        message = expect(datetime1()) |> to_not(be :<, datetime3(), {:days, 1})
+        message = expect(datetime1()) |> to_not(be :<, datetime3(), {:day, 1})
 
         expect(message)
         |> to(
-          eq "`#{inspect(datetime1())} < #{inspect(datetime3())}` is false with delta `{:days, 1}`."
+          eq "`#{inspect(datetime1())} < #{inspect(datetime3())}` is false with delta `{:day, 1}`."
         )
       end
 
-      it do: expect(datetime1()) |> to(be :<=, datetime4(), {:days, 61})
+      it do: expect(datetime1()) |> to(be :<=, datetime4(), {:day, 61})
     end
 
-    context "Success with DateTime with a granularity of hours" do
+    context "Success with DateTime with a granularity of hour" do
       let :datetime2,
         do: DateTime.Extension.from_naive!(~N[2017-08-07 02:10:10.000001], "Etc/UTC")
 
       it "checks success with `to` for granularity specified by tuple" do
-        message = expect(datetime1()) |> to(be :<=, datetime2(), {:hours, 1})
+        message = expect(datetime1()) |> to(be :<=, datetime2(), {:hour, 1})
 
         expect(message)
         |> to(
-          eq "`#{inspect(datetime1())} <= #{inspect(datetime2())}` is true with delta `{:hours, 1}`."
+          eq "`#{inspect(datetime1())} <= #{inspect(datetime2())}` is true with delta `{:hour, 1}`."
         )
       end
 
       it "checks success with `to` for granularity specified by single element Keyword list" do
-        message = expect(datetime1()) |> to(be :<=, datetime2(), hours: 1)
+        message = expect(datetime1()) |> to(be :<=, datetime2(), hour: 1)
 
         expect(message)
         |> to(
-          eq "`#{inspect(datetime1())} <= #{inspect(datetime2())}` is true with delta `[hours: 1]`."
+          eq "`#{inspect(datetime1())} <= #{inspect(datetime2())}` is true with delta `[hour: 1]`."
         )
       end
 
       it "checks success with `not_to`" do
-        message = expect(datetime1()) |> to_not(be :<, datetime3(), {:hours, 1})
+        message = expect(datetime1()) |> to_not(be :<, datetime3(), {:hour, 1})
 
         expect(message)
         |> to(
-          eq "`#{inspect(datetime1())} < #{inspect(datetime3())}` is false with delta `{:hours, 1}`."
+          eq "`#{inspect(datetime1())} < #{inspect(datetime3())}` is false with delta `{:hour, 1}`."
         )
       end
 
-      it do: expect(datetime1()) |> to(be :<=, datetime2(), {:hours, 1})
+      it do: expect(datetime1()) |> to(be :<=, datetime2(), {:hour, 1})
     end
 
-    context "Success with DateTime with a granularity of minutes" do
+    context "Success with DateTime with a granularity of minute" do
       let :datetime2,
         do: DateTime.Extension.from_naive!(~N[2017-08-07 01:50:10.000001], "Etc/UTC")
 
       it "checks success with `to` for granularity specified by tuple" do
-        message = expect(datetime1()) |> to(be :<=, datetime2(), {:minutes, 40})
+        message = expect(datetime1()) |> to(be :<=, datetime2(), {:minute, 40})
 
         expect(message)
         |> to(
-          eq "`#{inspect(datetime1())} <= #{inspect(datetime2())}` is true with delta `{:minutes, 40}`."
+          eq "`#{inspect(datetime1())} <= #{inspect(datetime2())}` is true with delta `{:minute, 40}`."
         )
       end
 
       it "checks success with `to` for granularity specified by single element Keyword list" do
-        message = expect(datetime1()) |> to(be :<=, datetime2(), minutes: 40)
+        message = expect(datetime1()) |> to(be :<=, datetime2(), minute: 40)
 
         expect(message)
         |> to(
-          eq "`#{inspect(datetime1())} <= #{inspect(datetime2())}` is true with delta `[minutes: 40]`."
+          eq "`#{inspect(datetime1())} <= #{inspect(datetime2())}` is true with delta `[minute: 40]`."
         )
       end
 
       it "checks success with `not_to`" do
-        message = expect(datetime1()) |> to_not(be :<, datetime2(), {:minutes, 40})
+        message = expect(datetime1()) |> to_not(be :<, datetime2(), {:minute, 40})
 
         expect(message)
         |> to(
-          eq "`#{inspect(datetime1())} < #{inspect(datetime2())}` is false with delta `{:minutes, 40}`."
+          eq "`#{inspect(datetime1())} < #{inspect(datetime2())}` is false with delta `{:minute, 40}`."
         )
       end
 
-      it do: expect(datetime1()) |> to(be :<=, datetime2(), {:minutes, 40})
+      it do: expect(datetime1()) |> to(be :<=, datetime2(), {:minute, 40})
     end
 
-    context "Success with DateTime with a granularity of seconds" do
+    context "Success with DateTime with a granularity of second" do
       let :datetime2,
         do: DateTime.Extension.from_naive!(~N[2017-08-07 01:10:12.000001], "Etc/UTC")
 
       it "checks success with `to` for granularity specified by tuple" do
-        message = expect(datetime1()) |> to(be :<=, datetime2(), {:seconds, 2})
+        message = expect(datetime1()) |> to(be :<=, datetime2(), {:second, 2})
 
         expect(message)
         |> to(
-          eq "`#{inspect(datetime1())} <= #{inspect(datetime2())}` is true with delta `{:seconds, 2}`."
+          eq "`#{inspect(datetime1())} <= #{inspect(datetime2())}` is true with delta `{:second, 2}`."
         )
       end
 
       it "checks success with `to` for granularity specified by single element Keyword list" do
-        message = expect(datetime1()) |> to(be :<=, datetime2(), seconds: 2)
+        message = expect(datetime1()) |> to(be :<=, datetime2(), second: 2)
 
         expect(message)
         |> to(
-          eq "`#{inspect(datetime1())} <= #{inspect(datetime2())}` is true with delta `[seconds: 2]`."
+          eq "`#{inspect(datetime1())} <= #{inspect(datetime2())}` is true with delta `[second: 2]`."
         )
       end
 
       it "checks success with `not_to`" do
-        message = expect(datetime1()) |> to_not(be :<, datetime2(), {:seconds, 1})
+        message = expect(datetime1()) |> to_not(be :<, datetime2(), {:second, 1})
 
         expect(message)
         |> to(
-          eq "`#{inspect(datetime1())} < #{inspect(datetime2())}` is false with delta `{:seconds, 1}`."
+          eq "`#{inspect(datetime1())} < #{inspect(datetime2())}` is false with delta `{:second, 1}`."
         )
       end
 
-      it do: expect(datetime1()) |> to(be :<=, datetime2(), {:seconds, 2})
+      it do: expect(datetime1()) |> to(be :<=, datetime2(), {:second, 2})
     end
 
-    context "Success with DateTime with a granularity of microseconds" do
+    context "Success with DateTime with a granularity of microsecond" do
       let :datetime2,
         do: DateTime.Extension.from_naive!(~N[2017-08-07 01:10:10.000003], "Etc/UTC")
 
       it "checks success with `to` for granularity specified by tuple" do
-        message = expect(datetime1()) |> to(be :<=, datetime2(), {:microseconds, 2})
+        message = expect(datetime1()) |> to(be :<=, datetime2(), {:microsecond, 2})
 
         expect(message)
         |> to(
-          eq "`#{inspect(datetime1())} <= #{inspect(datetime2())}` is true with delta `{:microseconds, 2}`."
+          eq "`#{inspect(datetime1())} <= #{inspect(datetime2())}` is true with delta `{:microsecond, 2}`."
         )
       end
 
       it "checks success with `to` for granularity specified by single element Keyword list" do
-        message = expect(datetime1()) |> to(be :<=, datetime2(), microseconds: 2)
+        message = expect(datetime1()) |> to(be :<=, datetime2(), microsecond: 2)
 
         expect(message)
         |> to(
-          eq "`#{inspect(datetime1())} <= #{inspect(datetime2())}` is true with delta `[microseconds: 2]`."
+          eq "`#{inspect(datetime1())} <= #{inspect(datetime2())}` is true with delta `[microsecond: 2]`."
         )
       end
 
       it "checks success with `not_to`" do
-        message = expect(datetime1()) |> to_not(be :<, datetime2(), {:microseconds, 1})
+        message = expect(datetime1()) |> to_not(be :<, datetime2(), {:microsecond, 1})
 
         expect(message)
         |> to(
-          eq "`#{inspect(datetime1())} < #{inspect(datetime2())}` is false with delta `{:microseconds, 1}`."
+          eq "`#{inspect(datetime1())} < #{inspect(datetime2())}` is false with delta `{:microsecond, 1}`."
         )
       end
 
-      it do: expect(datetime1()) |> to(be :<=, datetime2(), {:microseconds, 2})
+      it do: expect(datetime1()) |> to(be :<=, datetime2(), {:microsecond, 2})
     end
 
     context "Success with DateTime with utc and std offsets to represent time zone differences" do
@@ -1003,33 +1003,33 @@ defmodule ESpec.Assertions.DatesTimes.BeSpec do
         }
 
       it "checks success with `to` for granularity specified by tuple" do
-        message = expect(datetime_pst()) |> to(be :<=, datetime_est(), {:hours, 2})
+        message = expect(datetime_pst()) |> to(be :<=, datetime_est(), {:hour, 2})
 
         expect(message)
         |> to(
-          eq "`#{inspect(datetime_pst())} <= #{inspect(datetime_est())}` is true with delta `{:hours, 2}`."
+          eq "`#{inspect(datetime_pst())} <= #{inspect(datetime_est())}` is true with delta `{:hour, 2}`."
         )
       end
 
       it "checks success with `to` for granularity specified by single element Keyword list" do
-        message = expect(datetime_pst()) |> to(be :<=, datetime_est(), hours: 2)
+        message = expect(datetime_pst()) |> to(be :<=, datetime_est(), hour: 2)
 
         expect(message)
         |> to(
-          eq "`#{inspect(datetime_pst())} <= #{inspect(datetime_est())}` is true with delta `[hours: 2]`."
+          eq "`#{inspect(datetime_pst())} <= #{inspect(datetime_est())}` is true with delta `[hour: 2]`."
         )
       end
 
       it "checks success with `not_to`" do
-        message = expect(datetime_pst()) |> to_not(be :<, datetime_est(), {:hours, 1})
+        message = expect(datetime_pst()) |> to_not(be :<, datetime_est(), {:hour, 1})
 
         expect(message)
         |> to(
-          eq "`#{inspect(datetime_pst())} < #{inspect(datetime_est())}` is false with delta `{:hours, 1}`."
+          eq "`#{inspect(datetime_pst())} < #{inspect(datetime_est())}` is false with delta `{:hour, 1}`."
         )
       end
 
-      it do: expect(datetime_pst()) |> to(be :<=, datetime_est(), {:hours, 2})
+      it do: expect(datetime_pst()) |> to(be :<=, datetime_est(), {:hour, 2})
     end
 
     context "Errors with DateTime" do
@@ -1042,9 +1042,9 @@ defmodule ESpec.Assertions.DatesTimes.BeSpec do
 
         before do
           {:shared,
-           expectation: fn -> expect(datetime1()) |> to(be :<, datetime2(), {:microseconds, 3}) end,
+           expectation: fn -> expect(datetime1()) |> to(be :<, datetime2(), {:microsecond, 3}) end,
            message:
-             "Expected `#{inspect(datetime1())} < #{inspect(datetime2())}` to be `true` but got `false` with delta `{:microseconds, 3}`. The actual delta is {:microseconds, 5}, with an inclusive boundary."}
+             "Expected `#{inspect(datetime1())} < #{inspect(datetime2())}` to be `true` but got `false` with delta `{:microsecond, 3}`. The actual delta is {:microsecond, 5}, with an inclusive boundary."}
         end
 
         it_behaves_like(CheckErrorSharedSpec)
@@ -1060,10 +1060,10 @@ defmodule ESpec.Assertions.DatesTimes.BeSpec do
         before do
           {:shared,
            expectation: fn ->
-             expect(datetime1()) |> to_not(be :<, datetime2(), {:microseconds, 5})
+             expect(datetime1()) |> to_not(be :<, datetime2(), {:microsecond, 5})
            end,
            message:
-             "Expected `#{inspect(datetime1())} < #{inspect(datetime2())}` to be `true` but got `false` with delta `{:microseconds, 5}`. The actual delta is {:microseconds, 5}."}
+             "Expected `#{inspect(datetime1())} < #{inspect(datetime2())}` to be `true` but got `false` with delta `{:microsecond, 5}`. The actual delta is {:microsecond, 5}."}
         end
 
         it_behaves_like(CheckErrorSharedSpec)
