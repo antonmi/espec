@@ -61,7 +61,7 @@ Add `espec` to dependencies in the `mix.exs` file:
 ```elixir
 def deps do
   ...
-  {:espec, "~> 1.6.5", only: :test},
+  {:espec, "~> 1.7.0", only: :test},
   #{:espec, github: "antonmi/espec", only: :test}, to get the latest version
   ...
 end
@@ -1164,6 +1164,9 @@ There are community supported formatters:
      - Run every test in separate process
   * 1.6.5
      - Update `meck` dependency   
+  * 1.7.0
+     - Follows deprecation of plural time units (:seconds, :microseconds, etc). Allows only singular.
+     - Remove support of Elixir 1.5.   
 ## Contributing
 ##### Contributions are welcome and appreciated!
 

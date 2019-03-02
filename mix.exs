@@ -1,14 +1,14 @@
 defmodule ESpec.Mixfile do
   use Mix.Project
 
-  @version "1.6.5"
+  @version "1.7.0"
 
   def project do
     [
       app: :espec,
       name: "ESpec",
       version: @version,
-      elixir: ">= 1.5.3",
+      elixir: ">= 1.6.0",
       description: description(),
       package: package(),
       deps: deps(),
@@ -24,9 +24,9 @@ defmodule ESpec.Mixfile do
   defp deps do
     [
       {:meck, "~> 0.8.13"},
-      {:credo, "0.10.2", only: [:dev, :test], runtime: false},
+      {:credo, "1.0.2", only: [:dev, :test], runtime: false},
       # Docs
-      {:ex_doc, "0.18.4", only: [:docs, :dev]}
+      {:ex_doc, "0.19.3", only: [:docs, :dev]}
     ]
   end
 
