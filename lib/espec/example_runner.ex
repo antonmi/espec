@@ -70,10 +70,7 @@ defmodule ESpec.ExampleRunner do
     end
   end
 
-  defp initial_shared(example) do
-    Example.extract_options(example)
-    |> Enum.into(%{})
-  end
+  defp initial_shared(example), do: Example.extract_options(example)
 
   defp before_example_actions(example) do
     {initial_shared(example), example}
