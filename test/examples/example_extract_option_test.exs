@@ -34,13 +34,13 @@ defmodule ExampleHasOptionTest do
     ex = context[:ex1]
 
     assert ESpec.Example.extract_options(ex) == %{
-      a: true,
-      b: true,
-      c: true,
-      d: true,
-      e: true,
-      f: true
-    }
+             a: true,
+             b: true,
+             c: true,
+             d: true,
+             e: true,
+             f: true
+           }
   end
 
   test ".extract_option ex1, <option> returns the expected values", context do
@@ -59,9 +59,9 @@ defmodule ExampleHasOptionTest do
     ex = context[:ex2]
 
     assert ESpec.Example.extract_options(ex) == %{
-      a: false,
-      b: false
-    }
+             a: false,
+             b: false
+           }
   end
 
   test ".extract_option ex2, <option> returns the expected values", context do
@@ -76,9 +76,9 @@ defmodule ExampleHasOptionTest do
     ex = context[:ex3]
 
     assert ESpec.Example.extract_options(ex) == %{
-      a: true,
-      b: false
-    }
+             a: true,
+             b: false
+           }
   end
 
   test ".extract_option ex3, <option> returns the expected values", context do

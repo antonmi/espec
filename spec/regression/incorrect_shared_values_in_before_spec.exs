@@ -1,7 +1,7 @@
 defmodule Regression.IncorrectSharedValuesInBeforeSpec do
   use ESpec, option: true
 
-  before do: send self(), {:option, shared[:option]}
+  before do: send(self(), {:option, shared[:option]})
 
   it "option should be true" do
     assert_receive {:option, true}
