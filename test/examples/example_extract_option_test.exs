@@ -30,6 +30,19 @@ defmodule ExampleHasOptionTest do
      ex3: Enum.at(SomeSpec.examples(), 2)}
   end
 
+  test ".extract_options ex1 returns the expected, most specific options", context do
+    ex = context[:ex1]
+
+    assert ESpec.Example.extract_options(ex) == %{
+      a: true,
+      b: true,
+      c: true,
+      d: true,
+      e: true,
+      f: true
+    }
+  end
+
   test ".extract_option ex1, <option> returns the expected values", context do
     ex = context[:ex1]
 
@@ -42,12 +55,30 @@ defmodule ExampleHasOptionTest do
     assert ESpec.Example.extract_option(ex, :g) == nil
   end
 
+  test ".extract_options ex2 returns the expected, most specific options", context do
+    ex = context[:ex2]
+
+    assert ESpec.Example.extract_options(ex) == %{
+      a: false,
+      b: false
+    }
+  end
+
   test ".extract_option ex2, <option> returns the expected values", context do
     ex = context[:ex2]
 
     assert ESpec.Example.extract_option(ex, :a) == false
     assert ESpec.Example.extract_option(ex, :b) == false
     assert ESpec.Example.extract_option(ex, :c) == nil
+  end
+
+  test ".extract_options ex3 returns the expected, most specific options", context do
+    ex = context[:ex3]
+
+    assert ESpec.Example.extract_options(ex) == %{
+      a: true,
+      b: false
+    }
   end
 
   test ".extract_option ex3, <option> returns the expected values", context do
