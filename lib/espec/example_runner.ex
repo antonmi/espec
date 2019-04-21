@@ -43,6 +43,7 @@ defmodule ESpec.ExampleRunner do
   end
 
   defp check_example_task({:ok, example_result}, _, _), do: example_result
+
   defp check_example_task({:exit, reason}, example, start_time) do
     error = %AssertionError{message: "Process exited with reason: #{inspect(reason)}"}
     do_rescue(example, %{}, start_time, error, false)
@@ -70,10 +71,7 @@ defmodule ESpec.ExampleRunner do
     end
   end
 
-  defp initial_shared(example) do
-    Example.extract_options(example)
-    |> Enum.into(%{})
-  end
+  defp initial_shared(example), do: Example.extract_options(example)
 
   defp before_example_actions(example) do
     {initial_shared(example), example}

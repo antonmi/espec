@@ -30,26 +30,60 @@ defmodule ExampleHasOptionTest do
      ex3: Enum.at(SomeSpec.examples(), 2)}
   end
 
-  test "ex1 options", context do
+  test ".extract_options ex1 returns the expected, most specific options", context do
     ex = context[:ex1]
-    assert ESpec.Example.extract_option(ex, :a)
-    assert ESpec.Example.extract_option(ex, :b)
-    assert ESpec.Example.extract_option(ex, :c)
-    assert ESpec.Example.extract_option(ex, :d)
-    assert ESpec.Example.extract_option(ex, :e)
-    assert ESpec.Example.extract_option(ex, :f)
+
+    assert ESpec.Example.extract_options(ex) == %{
+             a: true,
+             b: true,
+             c: true,
+             d: true,
+             e: true,
+             f: true
+           }
+  end
+
+  test ".extract_option ex1, <option> returns the expected values", context do
+    ex = context[:ex1]
+
+    assert ESpec.Example.extract_option(ex, :a) == true
+    assert ESpec.Example.extract_option(ex, :b) == true
+    assert ESpec.Example.extract_option(ex, :c) == true
+    assert ESpec.Example.extract_option(ex, :d) == true
+    assert ESpec.Example.extract_option(ex, :e) == true
+    assert ESpec.Example.extract_option(ex, :f) == true
     assert ESpec.Example.extract_option(ex, :g) == nil
   end
 
-  test "ex2 options", context do
+  test ".extract_options ex2 returns the expected, most specific options", context do
     ex = context[:ex2]
+
+    assert ESpec.Example.extract_options(ex) == %{
+             a: false,
+             b: false
+           }
+  end
+
+  test ".extract_option ex2, <option> returns the expected values", context do
+    ex = context[:ex2]
+
     assert ESpec.Example.extract_option(ex, :a) == false
     assert ESpec.Example.extract_option(ex, :b) == false
     assert ESpec.Example.extract_option(ex, :c) == nil
   end
 
-  test "ex3 options", context do
+  test ".extract_options ex3 returns the expected, most specific options", context do
     ex = context[:ex3]
+
+    assert ESpec.Example.extract_options(ex) == %{
+             a: true,
+             b: false
+           }
+  end
+
+  test ".extract_option ex3, <option> returns the expected values", context do
+    ex = context[:ex3]
+
     assert ESpec.Example.extract_option(ex, :a) == true
     assert ESpec.Example.extract_option(ex, :b) == false
     assert ESpec.Example.extract_option(ex, :c) == nil

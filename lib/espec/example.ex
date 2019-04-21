@@ -5,6 +5,8 @@ defmodule ESpec.Example do
   Example structs %ESpec.Example are accumulated in @examples attribute
   """
 
+  @type t :: %__MODULE__{}
+
   @doc """
   Example struct.
   description - the description of example,
@@ -56,20 +58,25 @@ defmodule ESpec.Example do
   def extract_contexts(example), do: extract(example.context, ESpec.Context)
 
   @doc "Extracts example option."
+  @spec extract_option(t(), option :: atom()) :: nil | any()
   def extract_option(example, option) do
-    opts = extract_options(example)
-    opt = Enum.find(opts, fn {k, _v} -> k == option end)
-
-    if opt do
-      {^option, value} = opt
-      value
-    else
-      nil
-    end
+    example
+    |> extract_options()
+    |> Map.get(option)
   end
 
-  @doc "Extracts example options."
+  @doc "Extracts example options as they are currently valid for this example as map."
+  @spec extract_options(t()) :: %{required(atom()) => any()}
   def extract_options(example) do
+    example
+    |> extract_all_options()
+    |> Enum.uniq_by(fn {key, _} -> key end)
+    |> Map.new()
+  end
+
+  @doc "Extracts example options from most specific to least specific as Keyword list. Can include duplicates."
+  @spec extract_all_options(t()) :: Keyword.t()
+  def extract_all_options(example) do
     contexts = ESpec.Example.extract_contexts(example)
     List.flatten(example.opts ++ Enum.reverse(Enum.map(contexts, & &1.opts)))
   end
