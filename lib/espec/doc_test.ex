@@ -129,7 +129,7 @@ defmodule ESpec.DocTest do
               str = """
               def #{function}(shared) do
                 shared[:key]
-                expect(#{inspect(lhs)}) |> to eq(#{inspect(rhs)})
+                expect(#{inspect(lhs)}) |> to(eq(#{inspect(rhs)}))
               end
               """
 
