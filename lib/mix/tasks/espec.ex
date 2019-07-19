@@ -47,7 +47,7 @@ defmodule Mix.Tasks.Espec do
   A list of files can be given after the task name in order to select
   the files to compile:
 
-      mix espec spec/some/particular/file_spec.exs
+      mix espec spec/some/particular/file_spec.exs, spec/some/particular/another_file_spec.exs
 
   In case a single file is being tested, it is possible pass a specific
   line number:
@@ -66,6 +66,7 @@ defmodule Mix.Tasks.Espec do
     * `--exclude`    - exclude tests that match the filter `--exclude some:tag`
     * `--string`     - run only examples whose full nested descriptions contain string `--string 'only this'`
     * `--seed`       - seeds the random number generator used to randomize tests order
+    * `--stale`      - The --stale command line option attempts to run only those test files which reference modules that have changed since the last time you ran this task with --stale
 
   ## Configuration
     * `:spec_paths` - list of paths containing spec files, defaults to `["spec"]`.
@@ -106,7 +107,8 @@ defmodule Mix.Tasks.Espec do
     only: :string,
     exclude: :string,
     string: :string,
-    seed: :integer
+    seed: :integer,
+    stale: :boolean
   ]
 
   def run(args) do

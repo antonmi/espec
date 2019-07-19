@@ -26,7 +26,9 @@ defmodule ESpec.Configuration do
     finish_specs_time: "Finished specs",
     formatters_timeout:
       "How long to wait for the formatters to " <>
-        "finish formatting (defaults to the GenServer call timeout)"
+        "finish formatting (defaults to the GenServer call timeout)",
+    stale:
+      "Run only those test files which reference modules that have changed since the last time you ran this task"
   ]
 
   @doc """

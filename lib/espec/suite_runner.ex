@@ -78,8 +78,17 @@ defmodule ESpec.SuiteRunner do
     examples = if opts[:only], do: filter_only(examples, opts[:only]), else: examples
     examples = if opts[:exclude], do: filter_only(examples, opts[:exclude], true), else: examples
     examples = if opts[:string], do: filter_string(examples, opts[:string]), else: examples
+    if opts[:stale], do: filter_stale_files(examples, opts[:stale_files]), else: examples
+  end
 
+  defp filter_stale_files(examples, test_files_to_run) do
     examples
+    |> Enum.filter(&test_files_contain_example_file?(&1, test_files_to_run))
+  end
+
+  defp test_files_contain_example_file?(example, test_files_to_run) do
+    test_files_to_run
+    |> Enum.any?(&(&1 == example.file))
   end
 
   defp filter_shared(examples), do: Enum.filter(examples, &(!&1.shared))
