@@ -10,3 +10,4 @@ results.html
 results.json
 results.txt
 results-no-diff.txt
+.elixir_ls/

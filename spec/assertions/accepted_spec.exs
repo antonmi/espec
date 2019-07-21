@@ -41,7 +41,7 @@ defmodule AcceptedSpec do
           {:shared,
            expectation: fn -> expect(SomeModule) |> to(accepted(:another_function, [])) end,
            message:
-             "Expected `AcceptedSpec.SomeModule` to accept `:another_function` with `[]` in process `:any` at least once, but it accepted the function `0` times."}
+             "Expected `AcceptedSpec.SomeModule` to accept `:another_function` with `[]` in process `:any` at least once, but it accepted the function `0` times. The function was called with arguments []"}
         end
 
         it_behaves_like(CheckErrorSharedSpec)
@@ -52,7 +52,7 @@ defmodule AcceptedSpec do
           {:shared,
            expectation: fn -> expect(SomeModule) |> to_not(accepted(:func, [1, 2])) end,
            message:
-             "Expected `AcceptedSpec.SomeModule` not to accept `:func` with `[1, 2]` in process `:any` at least once, but it accepted the function `1` times."}
+             "Expected `AcceptedSpec.SomeModule` not to accept `:func` with `[1, 2]` in process `:any` at least once, but it accepted the function `1` times. The function was called with arguments [1, 2]"}
         end
 
         it_behaves_like(CheckErrorSharedSpec)
@@ -129,13 +129,15 @@ defmodule AcceptedSpec do
     it "for positive assertions" do
       SomeModule.func(1, 2)
 
-      expect(assert(SomeModule, [:func, :any, []], true)) |> to(
+      expect(assert(SomeModule, [:func, :any, []], true))
+      |> to(
         eq(
           "`AcceptedSpec.SomeModule` accepted `:func` with `:any` in process `:any` at least once."
         )
       )
 
-      expect(assert(SomeModule, [:func, [1, 2], [count: 1]], true)) |> to(
+      expect(assert(SomeModule, [:func, [1, 2], [count: 1]], true))
+      |> to(
         eq(
           "`AcceptedSpec.SomeModule` accepted `:func` with `[1, 2]` in process `:any` `1` times."
         )
@@ -143,13 +145,15 @@ defmodule AcceptedSpec do
     end
 
     it "for negative assertions" do
-      expect(assert(SomeModule, [:func, :any, []], false)) |> to(
+      expect(assert(SomeModule, [:func, :any, []], false))
+      |> to(
         eq(
           "`AcceptedSpec.SomeModule` didn't accept `:func` with `:any` in process `:any` at least once."
         )
       )
 
-      expect(assert(SomeModule, [:func, [1, 2], [count: 1]], false)) |> to(
+      expect(assert(SomeModule, [:func, [1, 2], [count: 1]], false))
+      |> to(
         eq(
           "`AcceptedSpec.SomeModule` didn't accept `:func` with `[1, 2]` in process `:any` `1` times."
         )
@@ -157,10 +161,11 @@ defmodule AcceptedSpec do
     end
 
     it "for failed positive assertions" do
-      expect(fn -> assert(SomeModule, [:func, :any, []], true) end) |> to(
+      expect(fn -> assert(SomeModule, [:func, :any, []], true) end)
+      |> to(
         raise_exception(
           Elixir.ESpec.AssertionError,
-          "Expected `AcceptedSpec.SomeModule` to accept `:func` with `:any` in process `:any` at least once, but it accepted the function `0` times."
+          "Expected `AcceptedSpec.SomeModule` to accept `:func` with `:any` in process `:any` at least once, but it accepted the function `0` times. The function was called with arguments :any"
         )
       )
     end
@@ -168,10 +173,11 @@ defmodule AcceptedSpec do
     it "for failed negative assertions" do
       SomeModule.func(1, 2)
 
-      expect(fn -> assert(SomeModule, [:func, :any, []], false) end) |> to(
+      expect(fn -> assert(SomeModule, [:func, :any, []], false) end)
+      |> to(
         raise_exception(
           Elixir.ESpec.AssertionError,
-          "Expected `AcceptedSpec.SomeModule` not to accept `:func` with `:any` in process `:any` at least once, but it accepted the function `1` times."
+          "Expected `AcceptedSpec.SomeModule` not to accept `:func` with `:any` in process `:any` at least once, but it accepted the function `1` times. The function was called with arguments :any"
         )
       )
     end
