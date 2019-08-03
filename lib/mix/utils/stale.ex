@@ -11,6 +11,7 @@ defmodule Mix.Utils.Stale do
 
   @stale_manifest "compile.espec_stale"
   @manifest_vsn 1
+  @agent_manifest_name :espec_stale_manifest_agent
 
   # set up stale manifest
   def set_up_stale_sources(matched_test_files) do
@@ -19,7 +20,9 @@ defmodule Mix.Utils.Stale do
     all_sources = read_manifest()
 
     removed =
-      for source(source: source) <- all_sources, source not in matched_test_files, do: source
+      for source(source: source) <- all_sources,
+          source not in matched_test_files,
+          do: Path.expand(source)
 
     sources_mtimes = mtimes(all_sources)
 
@@ -49,27 +52,11 @@ defmodule Mix.Utils.Stale do
 
     if test_files_to_run == [] do
       write_manifest(sources)
-      {[], nil, nil}
+      []
     else
-      {:ok, pid} = Agent.start_link(fn -> sources end)
-      spec_modules_to_run = extract_spec_modules_from_files(test_files_to_run)
-      {spec_modules_to_run, test_files_to_run, pid}
+      {:ok, _pid} = Agent.start_link(fn -> sources end, name: @agent_manifest_name)
+      test_files_to_run
     end
-  end
-
-  defp extract_spec_modules_from_files(files) do
-    files
-    |> Enum.flat_map(&extract_modules_from_file/1)
-  end
-
-  defp extract_modules_from_file(file) do
-    contents = File.read!(file)
-    pattern = ~r{defmodule \s*([^\s]*)}x
-
-    Regex.scan(pattern, contents, capture: :all_but_first)
-    |> List.flatten()
-    |> Enum.map(&String.to_atom/1)
-    |> Enum.map(&Module.concat(Elixir, &1))
   end
 
   ## Manifest
@@ -98,19 +85,13 @@ defmodule Mix.Utils.Stale do
     end
   end
 
-  def agent_write_manifest(nil), do: :noop
+  def agent_manifest_name(), do: @agent_manifest_name
 
-  def agent_write_manifest(pid) do
-    Agent.cast(pid, fn sources ->
+  def agent_write_manifest() do
+    Agent.cast(@agent_manifest_name, fn sources ->
       write_manifest(sources)
       sources
     end)
-  end
-
-  def agent_stop(nil), do: :noop
-
-  def agent_stop(pid) do
-    Agent.stop(pid, :normal, :infinity)
   end
 
   ## Setup helpers

@@ -30,73 +30,33 @@ defmodule ESpec.Runner do
   end
 
   defp do_run(specs, opts) do
-    {spec_modules, test_files, stale_manifest_pid} =
-      case Configuration.get(:stale) do
-        true ->
-          set_up_stale_manifest(specs)
-
-        _ ->
-          {specs, nil, nil}
-      end
-
-    opts = Keyword.put(opts, :stale_files, test_files)
-
     examples =
       if Configuration.get(:order) do
-        run_suites(spec_modules, opts, false)
+        run_suites(specs, opts, false)
       else
         seed_random!()
-        run_suites(spec_modules, opts)
+        run_suites(specs, opts)
       end
 
     success = !Enum.any?(Example.failure(examples))
 
-    if opts[:stale] && success, do: Stale.agent_write_manifest(stale_manifest_pid)
-
     Configuration.add(finish_specs_time: :os.timestamp())
+    stale_manifest_and_output(examples, stale: opts[:stale])
+
+    success
+  end
+
+  defp stale_manifest_and_output(examples, stale: true) do
+    Stale.agent_write_manifest()
 
     case examples do
       [] -> Mix.shell().info("No stale tests to run...")
       examples -> Output.final_result(examples)
     end
-
-    success
   end
 
-  defp set_up_stale_manifest(all_specs) do
-    project = Mix.Project.config()
-    spec_pattern = project[:spec_pattern] || "*_spec.exs"
-    spec_paths = project[:spec_paths] || default_test_paths()
-
-    matched_files = extract_files(spec_paths, spec_pattern)
-
-    {spec_modules_to_run, test_files_to_run, pid} = Stale.set_up_stale_sources(matched_files)
-
-    spec_modules_to_run =
-      MapSet.intersection(MapSet.new(all_specs), MapSet.new(spec_modules_to_run))
-      |> MapSet.to_list()
-
-    {spec_modules_to_run, test_files_to_run, pid}
-  end
-
-  defp default_test_paths do
-    if File.dir?("spec") do
-      [Path.join(File.cwd!(), "spec")]
-    else
-      []
-    end
-  end
-
-  defp extract_files(paths, pattern) do
-    already_loaded = MapSet.new(Code.loaded_files())
-
-    paths
-    |> Mix.Utils.extract_files(pattern)
-    |> Enum.reject(fn path ->
-      full_path = Path.expand(path)
-
-      MapSet.member?(already_loaded, full_path)
-    end)
+  defp stale_manifest_and_output(examples, _opts) do
+    Output.final_result(examples)
   end
 
   defp run_suites(specs, opts, shuffle \\ true) do

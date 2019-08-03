@@ -1,4 +1,6 @@
 defmodule Mix.Tasks.Espec do
+  alias Mix.Utils.Stale
+
   defmodule Cover do
     @moduledoc false
 
@@ -47,7 +49,7 @@ defmodule Mix.Tasks.Espec do
   A list of files can be given after the task name in order to select
   the files to compile:
 
-      mix espec spec/some/particular/file_spec.exs, spec/some/particular/another_file_spec.exs
+      mix espec spec/some/particular/file_spec.exs
 
   In case a single file is being tested, it is possible pass a specific
   line number:
@@ -216,11 +218,23 @@ defmodule Mix.Tasks.Espec do
       |> Enum.map(&elem(&1, 0))
       |> if_empty_use(spec_paths)
       |> extract_files(spec_pattern)
+      |> filter_stale_files()
       |> compile(include_shared: shared_spec_files)
 
       Configuration.add(file_opts: files_with_opts)
       Configuration.add(shared_specs: shared_spec_files)
       Configuration.add(finish_loading_time: :os.timestamp())
+    end
+  end
+
+  defp filter_stale_files(test_files) do
+    case Configuration.get(:stale) do
+      true ->
+        test_files
+        |> Stale.set_up_stale_sources()
+
+      _ ->
+        test_files
     end
   end
 
