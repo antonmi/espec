@@ -234,7 +234,7 @@ defmodule Mix.Tasks.Espec do
         |> Stale.set_up_stale_sources()
 
       _ ->
-        test_files
+        {test_files, []}
     end
   end
 
@@ -254,6 +254,7 @@ defmodule Mix.Tasks.Espec do
 
     paths
     |> Mix.Utils.extract_files(pattern)
+    |> Enum.map(&Path.absname/1)
     |> Enum.reject(fn path ->
       full_path = Path.expand(path)
 
@@ -282,10 +283,10 @@ defmodule Mix.Tasks.Espec do
     project[:shared_spec_pattern] || get_spec_pattern(project)
   end
 
-  defp compile(spec_files, include_shared: shared_spec_files) do
+  defp compile({spec_files, parallel_require_callbacks}, include_shared: shared_spec_files) do
     shared_spec_files = shared_spec_files || []
 
-    Kernel.ParallelCompiler.compile(shared_spec_files)
-    Kernel.ParallelCompiler.compile(spec_files -- shared_spec_files)
+    Kernel.ParallelCompiler.compile(shared_spec_files, parallel_require_callbacks)
+    Kernel.ParallelCompiler.compile(spec_files -- shared_spec_files, parallel_require_callbacks)
   end
 end

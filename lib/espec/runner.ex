@@ -41,13 +41,13 @@ defmodule ESpec.Runner do
     success = !Enum.any?(Example.failure(examples))
 
     Configuration.add(finish_specs_time: :os.timestamp())
-    stale_manifest_and_output(examples, stale: opts[:stale])
+    stale_manifest_and_output(examples, stale: opts[:stale], success: success)
 
     success
   end
 
-  defp stale_manifest_and_output(examples, stale: true) do
-    Stale.agent_write_manifest()
+  defp stale_manifest_and_output(examples, stale: true, success: success) do
+    if success, do: Stale.agent_write_manifest()
 
     case examples do
       [] -> Mix.shell().info("No stale tests to run...")
