@@ -286,7 +286,7 @@ defmodule Mix.Tasks.Espec do
   defp compile({spec_files, parallel_require_callbacks}, include_shared: shared_spec_files) do
     shared_spec_files = shared_spec_files || []
 
-    # In Elixir 1.(6, 7, 8) Kernel.ParallelCompiler.compile/2 causes "redefining module CheckErrorSharedSpec (current version defined in memory)" issue when running stale feature
+    # In Elixir 1.(6, 7, 8) Kernel.ParallelCompiler.compile/2 causes "redefining module CheckErrorSharedSpec (current version defined in memory)" issue when running stale feature so use Code.require_file/1
     shared_spec_files
     |> Enum.each(&Code.require_file/1)
 
