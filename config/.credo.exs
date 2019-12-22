@@ -6,9 +6,7 @@
         included: ["lib/", "spec/", "test/"],
         excluded: []
       },
-
       check_for_updates: true,
-
       checks: [
         {Credo.Check.Consistency.TabsOrSpaces},
 
@@ -19,7 +17,7 @@
         # For others you can also set parameters
         {Credo.Check.Readability.MaxLineLength, priority: :low, max_length: 95},
 
-        #deactivated
+        # deactivated
         {Credo.Check.Readability.ModuleDoc, false},
         {Credo.Check.Refactor.PipeChainStart, false},
 
@@ -30,7 +28,7 @@
 
         # To deactivate a check:
         # Put `false` as second element:
-        {Credo.Check.Design.TagFIXME, false},
+        {Credo.Check.Design.TagFIXME, false}
 
         # ... several checks omitted for readability ...
       ]

@@ -9,7 +9,8 @@ defmodule AllowAcceptSpec do
 
   describe "allow(module).to accept(name1: func1, name2: func2)" do
     before do
-      allow(SomeModule) |> to(
+      allow(SomeModule)
+      |> to(
         accept(
           func: fn a -> "mock! #{a}" end,
           func2: fn -> "mock! func2" end

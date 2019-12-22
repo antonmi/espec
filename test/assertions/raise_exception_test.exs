@@ -13,16 +13,14 @@ defmodule RaiseExceptionTest do
       it do: expect(func1()) |> to(raise_exception(ArithmeticError))
 
       it do:
-           expect(func1()) |> to(
-             raise_exception(ArithmeticError, "bad argument in arithmetic expression")
-           )
+           expect(func1())
+           |> to(raise_exception(ArithmeticError, "bad argument in arithmetic expression"))
 
       it do: expect(func2()) |> to_not(raise_exception())
 
       it do:
-           expect(func2()) |> to_not(
-             raise_exception(ArithmeticError, "bad argument in arithmetic expression")
-           )
+           expect(func2())
+           |> to_not(raise_exception(ArithmeticError, "bad argument in arithmetic expression"))
 
       it do: expect(func2()) |> to_not(raise_exception(ArithmeticError))
 
@@ -35,22 +33,21 @@ defmodule RaiseExceptionTest do
       it do: expect(func2()) |> to(raise_exception(ArithmeticError))
 
       it do:
-           expect(func2()) |> to(
-             raise_exception(ArithmeticError, "bad argument in arithmetic expression")
-           )
+           expect(func2())
+           |> to(raise_exception(ArithmeticError, "bad argument in arithmetic expression"))
 
       it do: expect(func1()) |> to_not(raise_exception())
       it do: expect(func1()) |> to_not(raise_exception(ArithmeticError))
 
       it do:
-           expect(func1()) |> to_not(
-             raise_exception(ArithmeticError, "bad argument in arithmetic expression")
-           )
+           expect(func1())
+           |> to_not(raise_exception(ArithmeticError, "bad argument in arithmetic expression"))
 
       it do: expect(func3()) |> to_not(raise_exception(FunctionClauseError))
 
       it do:
-           expect(func3()) |> to_not(
+           expect(func3())
+           |> to_not(
              raise_exception(FunctionClauseError, "no function clause matching in List.first/1")
            )
     end
