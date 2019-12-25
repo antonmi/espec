@@ -1,6 +1,5 @@
 defmodule Mix.Tasks.Espec do
   alias Mix.Utils.Stale
-  @version_limit "1.7.0"
 
   defmodule Cover do
     @moduledoc false
