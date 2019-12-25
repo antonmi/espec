@@ -1,14 +1,14 @@
 defmodule ESpec.Mixfile do
   use Mix.Project
 
-  @version "1.7.0"
+  @version "1.8.0"
 
   def project do
     [
       app: :espec,
       name: "ESpec",
       version: @version,
-      elixir: ">= 1.6.0",
+      elixir: ">= 1.7.0",
       description: description(),
       package: package(),
       deps: deps(),
