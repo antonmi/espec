@@ -1,4 +1,6 @@
 defmodule Mix.Tasks.Espec do
+  alias Mix.Utils.Stale
+
   defmodule Cover do
     @moduledoc false
 
@@ -66,6 +68,7 @@ defmodule Mix.Tasks.Espec do
     * `--exclude`    - exclude tests that match the filter `--exclude some:tag`
     * `--string`     - run only examples whose full nested descriptions contain string `--string 'only this'`
     * `--seed`       - seeds the random number generator used to randomize tests order
+    * `--stale`      - The --stale command line option attempts to run only those test files which reference modules that have changed since the last time you ran this task with --stale
 
   ## Configuration
     * `:spec_paths` - list of paths containing spec files, defaults to `["spec"]`.
@@ -106,7 +109,8 @@ defmodule Mix.Tasks.Espec do
     only: :string,
     exclude: :string,
     string: :string,
-    seed: :integer
+    seed: :integer,
+    stale: :boolean
   ]
 
   def run(args) do
@@ -214,11 +218,23 @@ defmodule Mix.Tasks.Espec do
       |> Enum.map(&elem(&1, 0))
       |> if_empty_use(spec_paths)
       |> extract_files(spec_pattern)
+      |> filter_stale_files()
       |> compile(include_shared: shared_spec_files)
 
       Configuration.add(file_opts: files_with_opts)
       Configuration.add(shared_specs: shared_spec_files)
       Configuration.add(finish_loading_time: :os.timestamp())
+    end
+  end
+
+  defp filter_stale_files(test_files) do
+    case Configuration.get(:stale) do
+      true ->
+        test_files
+        |> Stale.set_up_stale_sources()
+
+      _ ->
+        {test_files, []}
     end
   end
 
@@ -238,6 +254,7 @@ defmodule Mix.Tasks.Espec do
 
     paths
     |> Mix.Utils.extract_files(pattern)
+    |> Enum.map(&Path.absname/1)
     |> Enum.reject(fn path ->
       full_path = Path.expand(path)
 
@@ -266,10 +283,13 @@ defmodule Mix.Tasks.Espec do
     project[:shared_spec_pattern] || get_spec_pattern(project)
   end
 
-  defp compile(spec_files, include_shared: shared_spec_files) do
+  defp compile({spec_files, parallel_require_callbacks}, include_shared: shared_spec_files) do
     shared_spec_files = shared_spec_files || []
 
-    Kernel.ParallelCompiler.compile(shared_spec_files)
-    Kernel.ParallelCompiler.compile(spec_files -- shared_spec_files)
+    # In Elixir 1.(6, 7, 8) Kernel.ParallelCompiler.compile/2 causes "redefining module CheckErrorSharedSpec (current version defined in memory)" issue when running stale feature so use Code.require_file/1
+    shared_spec_files
+    |> Enum.each(&Code.require_file/1)
+
+    Kernel.ParallelCompiler.compile(spec_files -- shared_spec_files, parallel_require_callbacks)
   end
 end
