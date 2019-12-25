@@ -11,3 +11,4 @@ results.json
 results.txt
 results-no-diff.txt
 .elixir_ls/
+.tool-versions
