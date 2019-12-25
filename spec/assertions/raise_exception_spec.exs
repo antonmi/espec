@@ -20,9 +20,8 @@ defmodule ESpec.Assertions.RaiseExceptionSpec do
 
       it "checks success with `to`" do
         message =
-          expect(func1()) |> to(
-            raise_exception(ArithmeticError, "bad argument in arithmetic expression")
-          )
+          expect(func1())
+          |> to(raise_exception(ArithmeticError, "bad argument in arithmetic expression"))
 
         expect(message)
         |> to(
@@ -42,9 +41,8 @@ defmodule ESpec.Assertions.RaiseExceptionSpec do
 
       it "checks success with `not_to`" do
         message =
-          expect(func2()) |> to_not(
-            raise_exception(ArithmeticError, "bad argument in arithmetic expression")
-          )
+          expect(func2())
+          |> to_not(raise_exception(ArithmeticError, "bad argument in arithmetic expression"))
 
         expect(message)
         |> to(
@@ -58,7 +56,8 @@ defmodule ESpec.Assertions.RaiseExceptionSpec do
       end
 
       it "checks success with `not_to`" do
-        message = expect(func3()) |> to_not(raise_exception(FunctionClauseError, "no such message"))
+        message =
+          expect(func3()) |> to_not(raise_exception(FunctionClauseError, "no such message"))
 
         expect(message)
         |> to(
@@ -103,9 +102,8 @@ defmodule ESpec.Assertions.RaiseExceptionSpec do
 
       it "checks error with `to`" do
         try do
-          expect(func2()) |> to(
-            raise_exception(ArithmeticError, "bad argument in arithmetic expression")
-          )
+          expect(func2())
+          |> to(raise_exception(ArithmeticError, "bad argument in arithmetic expression"))
         rescue
           error in [ESpec.AssertionError] ->
             expect(error.message)
@@ -117,9 +115,8 @@ defmodule ESpec.Assertions.RaiseExceptionSpec do
 
       it "checks error with `to`" do
         try do
-          expect(func4()) |> to(
-            raise_exception(ArithmeticError, "bad argument in arithmetic expression")
-          )
+          expect(func4())
+          |> to(raise_exception(ArithmeticError, "bad argument in arithmetic expression"))
         rescue
           error in [ESpec.AssertionError] ->
             expect(error.message)
@@ -153,9 +150,8 @@ defmodule ESpec.Assertions.RaiseExceptionSpec do
 
       it "checks error with `not_to`" do
         try do
-          expect(func1()) |> not_to(
-            raise_exception(ArithmeticError, "bad argument in arithmetic expression")
-          )
+          expect(func1())
+          |> not_to(raise_exception(ArithmeticError, "bad argument in arithmetic expression"))
         rescue
           error in [ESpec.AssertionError] ->
             expect(error.message)
@@ -167,9 +163,8 @@ defmodule ESpec.Assertions.RaiseExceptionSpec do
 
       it "checks error with `to`" do
         try do
-          expect(func1()) |> to(
-            raise_exception(AnotherError, "bad argument in arithmetic expression")
-          )
+          expect(func1())
+          |> to(raise_exception(AnotherError, "bad argument in arithmetic expression"))
         rescue
           error in [ESpec.AssertionError] ->
             expect(error.message)
@@ -205,7 +200,8 @@ defmodule ESpec.Assertions.RaiseExceptionSpec do
 
       it "checks error with `not_to`" do
         try do
-          expect(func3()) |> to_not(
+          expect(func3())
+          |> to_not(
             raise_exception(FunctionClauseError, "no function clause matching in List.first/1")
           )
         rescue

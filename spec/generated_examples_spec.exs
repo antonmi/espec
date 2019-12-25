@@ -12,7 +12,7 @@ defmodule GeneratedExamplesSpec do
 
     Enum.map(2..4, fn n ->
       it "is divisible by #{n}" do
-        expect rem(subject(), unquote(n)) |> to(be 0)
+        expect(rem(subject(), unquote(n)) |> to(be 0))
       end
     end)
   end

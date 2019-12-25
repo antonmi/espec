@@ -20,12 +20,12 @@ defmodule MockSpec do
       allow SomeModule |> to(accept(x: fn -> :y end, q: fn -> :w end))
     end
 
-    it do: expect SomeModule.f(1) |> to(eq "mock! 1")
-    it do: expect SomeModule.x() |> to(eq :y)
-    it do: expect SomeModule.q() |> to(eq :w)
+    it do: expect(SomeModule.f(1) |> to(eq "mock! 1"))
+    it do: expect(SomeModule.x() |> to(eq :y))
+    it do: expect(SomeModule.q() |> to(eq :w))
 
     it "SomeModule.m is not mocked" do
-      expect SomeModule.m() |> to(eq :m)
+      expect(SomeModule.m() |> to(eq :m))
     end
   end
 
@@ -85,14 +85,16 @@ defmodule MockSpec do
   context "passthrough" do
     context "old syntax" do
       before do
-        allow(SomeModule) |> to(
+        allow(SomeModule)
+        |> to(
           accept(:f, fn
             :a -> "mock! :a"
             :b -> passthrough([])
           end)
         )
 
-        allow(SomeModule) |> to(
+        allow(SomeModule)
+        |> to(
           accept(:f1, fn
             AAA -> "mock! AAA"
             [AAA, BBB] -> "mock! AAA, BBB"
@@ -100,7 +102,8 @@ defmodule MockSpec do
           end)
         )
 
-        allow(SomeModule) |> to(
+        allow(SomeModule)
+        |> to(
           accept(:f2, fn
             AAA, BBB -> "mock! AAA BBB"
             a, b -> passthrough([a, b])
@@ -171,9 +174,8 @@ defmodule MockSpec do
 
       context "list of functions" do
         before do
-          allow(SomeModule) |> to(
-            accept([x: fn -> :y end, q: fn -> :w end], [:non_strict, :passthrough])
-          )
+          allow(SomeModule)
+          |> to(accept([x: fn -> :y end, q: fn -> :w end], [:non_strict, :passthrough]))
         end
 
         it do: expect(SomeModule.x()) |> to(eq(:y))

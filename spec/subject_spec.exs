@@ -3,7 +3,7 @@ defmodule SubjectSpec do
 
   subject(1 + 1)
 
-  it do: expect subject() |> to(eq 2)
+  it do: expect(subject() |> to(eq 2))
 
   it do: is_expected() |> to(eq 2)
   it do: should(eq(2))
@@ -29,11 +29,11 @@ defmodule SubjectSpec do
 
   context "with name" do
     subject :subj, do: 2 + 5
-    it do: expect subj() |> to(eq 7)
+    it do: expect(subj() |> to(eq 7))
 
     context "redefine" do
       subject :subj, do: 3 + 5
-      it do: expect subj() |> to(eq 8)
+      it do: expect(subj() |> to(eq 8))
       it do: subj() |> should(eq 8)
       it do: subj() |> should_not(eq 10)
     end

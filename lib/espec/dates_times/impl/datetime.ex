@@ -16,8 +16,7 @@ defimpl ESpec.DatesTimes.DateTimeProtocol, for: DateTime do
       |> Calendar.ISO.Extension.to_iso_days()
       |> Calendar.ISO.Extension.iso_days_to_unit(:microsecond)
 
-    offset_microseconds =
-      System.convert_time_unit(std_offset + utc_offset, :second, :microsecond)
+    offset_microseconds = System.convert_time_unit(std_offset + utc_offset, :second, :microsecond)
 
     microseconds - offset_microseconds
   end

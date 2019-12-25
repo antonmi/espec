@@ -35,7 +35,8 @@ defmodule MockTest do
 
       context "passthrough" do
         before do
-          allow(SomeModule) |> to(
+          allow(SomeModule)
+          |> to(
             accept(:f1, fn
               AAA -> "mock! AAA"
               _ -> passthrough([BBB])

@@ -69,7 +69,9 @@ defmodule Formatters.DocDiffTest do
     defmodule SomeSpecEqLongString do
       use ESpec
 
-      it do: expect(String.duplicate("external", 1000)) |> to(eq(String.duplicate("expected", 1000)))
+      it do:
+           expect(String.duplicate("external", 1000))
+           |> to(eq(String.duplicate("expected", 1000)))
     end
 
     output = output(SomeSpecEqLongString.examples())
@@ -306,9 +308,8 @@ defmodule Formatters.DocDiffTest do
       use ESpec
 
       it do:
-           expect("string that starts with something") |> to(
-             start_with("string that doesnt't start with")
-           )
+           expect("string that starts with something")
+           |> to(start_with("string that doesnt't start with"))
     end
 
     output = output(SomeSpecStartWith.examples())
@@ -357,7 +358,8 @@ defmodule Formatters.DocDiffTest do
       use ESpec
 
       it do:
-           expect("string that ends with something") |> to(end_with("string that doesnt't end with"))
+           expect("string that ends with something")
+           |> to(end_with("string that doesnt't end with"))
     end
 
     output = output(SomeSpecEndWith.examples())

@@ -262,7 +262,8 @@ defmodule ESpec.Assertions.DatesTimes.BeSpec do
 
     context "Success with NaiveDateTime with a granularity of year" do
       it "checks success with `to` for granularity specified by tuple" do
-        message = expect(~N[2017-08-07 01:10:10]) |> to(be :<=, ~N[2018-08-07 01:10:10], {:year, 1})
+        message =
+          expect(~N[2017-08-07 01:10:10]) |> to(be :<=, ~N[2018-08-07 01:10:10], {:year, 1})
 
         expect(message)
         |> to(
@@ -327,7 +328,8 @@ defmodule ESpec.Assertions.DatesTimes.BeSpec do
 
     context "Success with NaiveDateTime with a granularity of week" do
       it "checks success with `to` for granularity specified by tuple" do
-        message = expect(~N[2017-08-07 01:10:10]) |> to(be :<=, ~N[2017-08-14 01:10:10], {:week, 1})
+        message =
+          expect(~N[2017-08-07 01:10:10]) |> to(be :<=, ~N[2017-08-14 01:10:10], {:week, 1})
 
         expect(message)
         |> to(
@@ -359,7 +361,8 @@ defmodule ESpec.Assertions.DatesTimes.BeSpec do
 
     context "Success with NaiveDateTime with a granularity of day" do
       it "checks success with `to` for granularity specified by tuple" do
-        message = expect(~N[2017-08-07 01:10:10]) |> to(be :>=, ~N[2017-08-06 01:10:10], {:day, 1})
+        message =
+          expect(~N[2017-08-07 01:10:10]) |> to(be :>=, ~N[2017-08-06 01:10:10], {:day, 1})
 
         expect(message)
         |> to(
@@ -391,7 +394,8 @@ defmodule ESpec.Assertions.DatesTimes.BeSpec do
 
     context "Success with NaiveDateTime with a granularity of hour" do
       it "checks success with `to` for granuarlity specifed by tuple" do
-        message = expect(~N[2017-08-07 01:10:10]) |> to(be :<=, ~N[2017-08-07 02:10:10], {:hour, 1})
+        message =
+          expect(~N[2017-08-07 01:10:10]) |> to(be :<=, ~N[2017-08-07 02:10:10], {:hour, 1})
 
         expect(message)
         |> to(
@@ -433,7 +437,8 @@ defmodule ESpec.Assertions.DatesTimes.BeSpec do
       end
 
       it "checks success with `to` for granularity specified by single element Keyword list" do
-        message = expect(~N[2017-08-07 01:10:10]) |> to(be :<=, ~N[2017-08-07 01:50:10], minute: 40)
+        message =
+          expect(~N[2017-08-07 01:10:10]) |> to(be :<=, ~N[2017-08-07 01:50:10], minute: 40)
 
         expect(message)
         |> to(
@@ -466,7 +471,8 @@ defmodule ESpec.Assertions.DatesTimes.BeSpec do
       end
 
       it "checks success with `to` for granularity specified by single element Keyword list" do
-        message = expect(~N[2017-08-07 01:10:10]) |> to(be :<=, ~N[2017-08-07 01:10:11], second: 1)
+        message =
+          expect(~N[2017-08-07 01:10:10]) |> to(be :<=, ~N[2017-08-07 01:10:11], second: 1)
 
         expect(message)
         |> to(
@@ -490,9 +496,8 @@ defmodule ESpec.Assertions.DatesTimes.BeSpec do
     context "Success with NaiveDateTime with a granularity of microsecond" do
       it "checks success with `to` for granularity specified by tuple" do
         message =
-          expect(~N[2017-08-07 01:10:10.000001]) |> to(
-            be :<=, ~N[2017-08-07 01:10:10.000003], {:microsecond, 2}
-          )
+          expect(~N[2017-08-07 01:10:10.000001])
+          |> to(be :<=, ~N[2017-08-07 01:10:10.000003], {:microsecond, 2})
 
         expect(message)
         |> to(
@@ -502,9 +507,8 @@ defmodule ESpec.Assertions.DatesTimes.BeSpec do
 
       it "checks success with `to` for granularity specified by single element Keyword list" do
         message =
-          expect(~N[2017-08-07 01:10:10.000001]) |> to(
-            be :<=, ~N[2017-08-07 01:10:10.000003], microsecond: 2
-          )
+          expect(~N[2017-08-07 01:10:10.000001])
+          |> to(be :<=, ~N[2017-08-07 01:10:10.000003], microsecond: 2)
 
         expect(message)
         |> to(
@@ -514,9 +518,8 @@ defmodule ESpec.Assertions.DatesTimes.BeSpec do
 
       it "checks success with `not_to`" do
         message =
-          expect(~N[2017-08-07 01:10:10.000001]) |> to_not(
-            be :<, ~N[2017-08-07 01:10:10.000003], {:microsecond, 1}
-          )
+          expect(~N[2017-08-07 01:10:10.000001])
+          |> to_not(be :<, ~N[2017-08-07 01:10:10.000003], {:microsecond, 1})
 
         expect(message)
         |> to(
@@ -525,9 +528,8 @@ defmodule ESpec.Assertions.DatesTimes.BeSpec do
       end
 
       it do:
-           expect(~N[2017-08-07 01:10:10.000001]) |> to(
-             be :<=, ~N[2017-08-07 01:10:10.000003], {:microsecond, 2}
-           )
+           expect(~N[2017-08-07 01:10:10.000001])
+           |> to(be :<=, ~N[2017-08-07 01:10:10.000003], {:microsecond, 2})
     end
 
     context "Errors with NaiveDateTime" do
@@ -548,7 +550,8 @@ defmodule ESpec.Assertions.DatesTimes.BeSpec do
         before do
           {:shared,
            expectation: fn ->
-             expect(~N[2017-08-07 01:10:10]) |> to_not(be :<, ~N[2017-08-07 01:10:15], {:second, 5})
+             expect(~N[2017-08-07 01:10:10])
+             |> to_not(be :<, ~N[2017-08-07 01:10:15], {:second, 5})
            end,
            message:
              "Expected `~N[2017-08-07 01:10:10] < ~N[2017-08-07 01:10:15]` to be `true` but got `false`  with delta `{:second, 5}`. The actual delta is {:second, 5}, with an inclusive boundary."}
@@ -635,7 +638,8 @@ defmodule ESpec.Assertions.DatesTimes.BeSpec do
 
     context "Success with Time with a granularity of microsecond" do
       it "checks success with `to` for granularity specified by tuple" do
-        message = expect(~T[01:10:10.000001]) |> to(be :<=, ~T[01:10:10.000002], {:microsecond, 1})
+        message =
+          expect(~T[01:10:10.000001]) |> to(be :<=, ~T[01:10:10.000002], {:microsecond, 1})
 
         expect(message)
         |> to(

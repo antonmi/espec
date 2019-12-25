@@ -26,7 +26,8 @@ defmodule ESpec.Assertions.ContainExactlySpec do
       end
 
       it "checks success with `to`" do
-        message = expect([{:a, 1}, 5, {:b, "16"}]) |> to(contain_exactly([{:b, "16"}, {:a, 1}, 5]))
+        message =
+          expect([{:a, 1}, 5, {:b, "16"}]) |> to(contain_exactly([{:b, "16"}, {:a, 1}, 5]))
 
         expect(message)
         |> to(eq "`[{:a, 1}, 5, {:b, \"16\"}]` contains exactly `[{:b, \"16\"}, {:a, 1}, 5]`.")
@@ -92,7 +93,9 @@ defmodule ESpec.Assertions.ContainExactlySpec do
       context "with `not_to`" do
         before do
           {:shared,
-           expectation: fn -> expect([1, 2, 2, 3, 3]) |> not_to(contain_exactly([3, 1, 2, 2, 3])) end,
+           expectation: fn ->
+             expect([1, 2, 2, 3, 3]) |> not_to(contain_exactly([3, 1, 2, 2, 3]))
+           end,
            message:
              "Expected `[1, 2, 2, 3, 3]` not to contain exactly `[3, 1, 2, 2, 3]`, but it does."}
         end
