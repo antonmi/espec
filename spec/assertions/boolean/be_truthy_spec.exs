@@ -17,7 +17,7 @@ defmodule ESpec.Assertions.Boolean.BeTruthySpec do
     context "with `to`" do
       before do
         {:shared,
-         expectation: fn -> expect false |> to(be_truthy()) end,
+         expectation: fn -> expect(false |> to(be_truthy())) end,
          message: "Expected `false` to be truthy but it isn't."}
       end
 

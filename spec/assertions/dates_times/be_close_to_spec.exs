@@ -115,9 +115,8 @@ defmodule ESpec.Assertions.DatesTimes.BeCloseToSpec do
 
       it "checks success with `not_to`" do
         message =
-          expect(~N[2017-08-07 01:10:10]) |> to_not(
-            be_close_to(~N[2020-08-07 01:10:10], {:year, 2})
-          )
+          expect(~N[2017-08-07 01:10:10])
+          |> to_not(be_close_to(~N[2020-08-07 01:10:10], {:year, 2}))
 
         expect(message)
         |> to(
@@ -125,7 +124,8 @@ defmodule ESpec.Assertions.DatesTimes.BeCloseToSpec do
         )
       end
 
-      it do: expect(~N[2017-08-07 01:10:10]) |> to(be_close_to(~N[2020-08-07 01:10:10], {:year, 3}))
+      it do:
+           expect(~N[2017-08-07 01:10:10]) |> to(be_close_to(~N[2020-08-07 01:10:10], {:year, 3}))
     end
 
     context "Success with NaiveDateTime with a granularity of month" do
@@ -141,9 +141,8 @@ defmodule ESpec.Assertions.DatesTimes.BeCloseToSpec do
 
       it "checks success with `not_to`" do
         message =
-          expect(~N[2017-08-07 01:10:10]) |> to_not(
-            be_close_to(~N[2020-08-07 01:10:10], {:month, 2})
-          )
+          expect(~N[2017-08-07 01:10:10])
+          |> to_not(be_close_to(~N[2020-08-07 01:10:10], {:month, 2}))
 
         expect(message)
         |> to(
@@ -152,7 +151,8 @@ defmodule ESpec.Assertions.DatesTimes.BeCloseToSpec do
       end
 
       it do:
-           expect(~N[2017-08-07 01:10:10]) |> to(be_close_to(~N[2017-01-07 01:10:10], {:month, 7}))
+           expect(~N[2017-08-07 01:10:10])
+           |> to(be_close_to(~N[2017-01-07 01:10:10], {:month, 7}))
     end
 
     context "Success with NaiveDateTime with a granularity of week" do
@@ -168,9 +168,8 @@ defmodule ESpec.Assertions.DatesTimes.BeCloseToSpec do
 
       it "checks success with `not_to`" do
         message =
-          expect(~N[2017-08-07 01:10:10]) |> to_not(
-            be_close_to(~N[2020-08-07 01:10:10], {:week, 2})
-          )
+          expect(~N[2017-08-07 01:10:10])
+          |> to_not(be_close_to(~N[2020-08-07 01:10:10], {:week, 2}))
 
         expect(message)
         |> to(
@@ -178,7 +177,8 @@ defmodule ESpec.Assertions.DatesTimes.BeCloseToSpec do
         )
       end
 
-      it do: expect(~N[2017-08-07 01:10:10]) |> to(be_close_to(~N[2017-08-14 01:10:10], {:week, 1}))
+      it do:
+           expect(~N[2017-08-07 01:10:10]) |> to(be_close_to(~N[2017-08-14 01:10:10], {:week, 1}))
     end
 
     context "Success with NaiveDateTime with a granularity of day" do
@@ -194,7 +194,8 @@ defmodule ESpec.Assertions.DatesTimes.BeCloseToSpec do
 
       it "checks success with `not_to`" do
         message =
-          expect(~N[2017-08-07 01:10:10]) |> to_not(be_close_to(~N[2017-08-19 01:10:10], {:day, 1}))
+          expect(~N[2017-08-07 01:10:10])
+          |> to_not(be_close_to(~N[2017-08-19 01:10:10], {:day, 1}))
 
         expect(message)
         |> to(
@@ -202,7 +203,8 @@ defmodule ESpec.Assertions.DatesTimes.BeCloseToSpec do
         )
       end
 
-      it do: expect(~N[2017-08-07 01:10:10]) |> to(be_close_to(~N[2017-10-07 01:10:10], {:day, 61}))
+      it do:
+           expect(~N[2017-08-07 01:10:10]) |> to(be_close_to(~N[2017-10-07 01:10:10], {:day, 61}))
     end
 
     context "Success with NaiveDateTime with a granularity of hour" do
@@ -218,9 +220,8 @@ defmodule ESpec.Assertions.DatesTimes.BeCloseToSpec do
 
       it "checks success with `not_to`" do
         message =
-          expect(~N[2017-08-07 01:10:10]) |> to_not(
-            be_close_to(~N[2017-08-19 01:10:10], {:hour, 1})
-          )
+          expect(~N[2017-08-07 01:10:10])
+          |> to_not(be_close_to(~N[2017-08-19 01:10:10], {:hour, 1}))
 
         expect(message)
         |> to(
@@ -228,13 +229,15 @@ defmodule ESpec.Assertions.DatesTimes.BeCloseToSpec do
         )
       end
 
-      it do: expect(~N[2017-08-07 01:10:10]) |> to(be_close_to(~N[2017-08-07 02:10:10], {:hour, 1}))
+      it do:
+           expect(~N[2017-08-07 01:10:10]) |> to(be_close_to(~N[2017-08-07 02:10:10], {:hour, 1}))
     end
 
     context "Success with NaiveDateTime with a granularity of minute" do
       it "checks success with `to`" do
         message =
-          expect(~N[2017-08-07 01:10:10]) |> to(be_close_to(~N[2017-08-07 01:50:10], {:minute, 40}))
+          expect(~N[2017-08-07 01:10:10])
+          |> to(be_close_to(~N[2017-08-07 01:50:10], {:minute, 40}))
 
         expect(message)
         |> to(
@@ -244,9 +247,8 @@ defmodule ESpec.Assertions.DatesTimes.BeCloseToSpec do
 
       it "checks success with `not_to`" do
         message =
-          expect(~N[2017-08-07 01:10:10]) |> to_not(
-            be_close_to(~N[2017-08-07 01:51:10], {:minute, 40})
-          )
+          expect(~N[2017-08-07 01:10:10])
+          |> to_not(be_close_to(~N[2017-08-07 01:51:10], {:minute, 40}))
 
         expect(message)
         |> to(
@@ -255,15 +257,15 @@ defmodule ESpec.Assertions.DatesTimes.BeCloseToSpec do
       end
 
       it do:
-           expect(~N[2017-08-07 01:10:10]) |> to(
-             be_close_to(~N[2017-08-07 01:50:10], {:minute, 40})
-           )
+           expect(~N[2017-08-07 01:10:10])
+           |> to(be_close_to(~N[2017-08-07 01:50:10], {:minute, 40}))
     end
 
     context "Success with NaiveDateTime with a granularity of second" do
       it "checks success with `to`" do
         message =
-          expect(~N[2017-08-07 01:10:10]) |> to(be_close_to(~N[2017-08-07 01:10:11], {:second, 1}))
+          expect(~N[2017-08-07 01:10:10])
+          |> to(be_close_to(~N[2017-08-07 01:10:11], {:second, 1}))
 
         expect(message)
         |> to(
@@ -273,9 +275,8 @@ defmodule ESpec.Assertions.DatesTimes.BeCloseToSpec do
 
       it "checks success with `not_to`" do
         message =
-          expect(~N[2017-08-07 01:10:10]) |> to_not(
-            be_close_to(~N[2017-08-07 01:10:12], {:second, 1})
-          )
+          expect(~N[2017-08-07 01:10:10])
+          |> to_not(be_close_to(~N[2017-08-07 01:10:12], {:second, 1}))
 
         expect(message)
         |> to(
@@ -284,15 +285,15 @@ defmodule ESpec.Assertions.DatesTimes.BeCloseToSpec do
       end
 
       it do:
-           expect(~N[2017-08-07 01:10:10]) |> to(be_close_to(~N[2017-08-07 01:10:11], {:second, 1}))
+           expect(~N[2017-08-07 01:10:10])
+           |> to(be_close_to(~N[2017-08-07 01:10:11], {:second, 1}))
     end
 
     context "Success with NaiveDateTime with a granularity of microsecond" do
       it "checks success with `to`" do
         message =
-          expect(~N[2017-08-07 01:10:10.000001]) |> to(
-            be_close_to(~N[2017-08-07 01:10:10.000003], {:microsecond, 2})
-          )
+          expect(~N[2017-08-07 01:10:10.000001])
+          |> to(be_close_to(~N[2017-08-07 01:10:10.000003], {:microsecond, 2}))
 
         expect(message)
         |> to(
@@ -302,9 +303,8 @@ defmodule ESpec.Assertions.DatesTimes.BeCloseToSpec do
 
       it "checks success with `not_to`" do
         message =
-          expect(~N[2017-08-07 01:10:10.000001]) |> to_not(
-            be_close_to(~N[2017-08-07 01:10:10.000003], {:microsecond, 1})
-          )
+          expect(~N[2017-08-07 01:10:10.000001])
+          |> to_not(be_close_to(~N[2017-08-07 01:10:10.000003], {:microsecond, 1}))
 
         expect(message)
         |> to(
@@ -313,9 +313,8 @@ defmodule ESpec.Assertions.DatesTimes.BeCloseToSpec do
       end
 
       it do:
-           expect(~N[2017-08-07 01:10:10.000001]) |> to(
-             be_close_to(~N[2017-08-07 01:10:10.000003], {:microsecond, 2})
-           )
+           expect(~N[2017-08-07 01:10:10.000001])
+           |> to(be_close_to(~N[2017-08-07 01:10:10.000003], {:microsecond, 2}))
     end
 
     context "Errors with NaiveDateTime" do
@@ -323,9 +322,8 @@ defmodule ESpec.Assertions.DatesTimes.BeCloseToSpec do
         before do
           {:shared,
            expectation: fn ->
-             expect(~N[2017-08-07 01:10:10]) |> to(
-               be_close_to(~N[2017-08-07 01:10:15], {:second, 3})
-             )
+             expect(~N[2017-08-07 01:10:10])
+             |> to(be_close_to(~N[2017-08-07 01:10:15], {:second, 3}))
            end,
            message:
              "Expected `~N[2017-08-07 01:10:10]` to be close to `~N[2017-08-07 01:10:15]` with delta `{:second, 3}`, but it isn't. The actual delta is {:second, 5}."}
@@ -338,9 +336,8 @@ defmodule ESpec.Assertions.DatesTimes.BeCloseToSpec do
         before do
           {:shared,
            expectation: fn ->
-             expect(~N[2017-08-07 01:10:10]) |> to_not(
-               be_close_to(~N[2017-08-07 01:10:15], {:second, 5})
-             )
+             expect(~N[2017-08-07 01:10:10])
+             |> to_not(be_close_to(~N[2017-08-07 01:10:15], {:second, 5}))
            end,
            message:
              "Expected `~N[2017-08-07 01:10:10]` not to be close to `~N[2017-08-07 01:10:15]` with delta `{:second, 5}`, but it isn't. The actual delta is {:second, 5}."}
@@ -417,7 +414,8 @@ defmodule ESpec.Assertions.DatesTimes.BeCloseToSpec do
 
       it "checks success with `not_to`" do
         message =
-          expect(~T[01:10:10.000001]) |> to_not(be_close_to(~T[01:10:11.000002], {:microsecond, 1}))
+          expect(~T[01:10:10.000001])
+          |> to_not(be_close_to(~T[01:10:11.000002], {:microsecond, 1}))
 
         expect(message)
         |> to(
@@ -425,7 +423,8 @@ defmodule ESpec.Assertions.DatesTimes.BeCloseToSpec do
         )
       end
 
-      it do: expect(~T[01:10:10.000001]) |> to(be_close_to(~T[01:10:10.000002], {:microsecond, 1}))
+      it do:
+           expect(~T[01:10:10.000001]) |> to(be_close_to(~T[01:10:10.000002], {:microsecond, 1}))
     end
 
     context "Errors with Time" do
@@ -433,7 +432,8 @@ defmodule ESpec.Assertions.DatesTimes.BeCloseToSpec do
         before do
           {:shared,
            expectation: fn ->
-             expect(~T[01:10:10.000001]) |> to(be_close_to(~T[01:10:10.000006], {:microsecond, 3}))
+             expect(~T[01:10:10.000001])
+             |> to(be_close_to(~T[01:10:10.000006], {:microsecond, 3}))
            end,
            message:
              "Expected `~T[01:10:10.000001]` to be close to `~T[01:10:10.000006]` with delta `{:microsecond, 3}`, but it isn't. The actual delta is {:microsecond, 5}."}
@@ -446,9 +446,8 @@ defmodule ESpec.Assertions.DatesTimes.BeCloseToSpec do
         before do
           {:shared,
            expectation: fn ->
-             expect(~T[01:10:10.000001]) |> to_not(
-               be_close_to(~T[01:10:10.000006], {:microsecond, 5})
-             )
+             expect(~T[01:10:10.000001])
+             |> to_not(be_close_to(~T[01:10:10.000006], {:microsecond, 5}))
            end,
            message:
              "Expected `~T[01:10:10.000001]` not to be close to `~T[01:10:10.000006]` with delta `{:microsecond, 5}`, but it isn't. The actual delta is {:microsecond, 5}."}

@@ -41,7 +41,8 @@ defmodule ESpec.Formatters.Doc do
 
   defp format_failed(failed, opts) do
     res =
-      failed |> Enum.with_index()
+      failed
+      |> Enum.with_index()
       |> Enum.map(fn {example, index} ->
         do_format_failed_example(example, index, opts)
       end)

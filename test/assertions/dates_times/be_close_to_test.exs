@@ -16,19 +16,19 @@ defmodule DatesTimes.BeCloseToTest do
     end
 
     context "Success, NaiveDateTime with granularity" do
-      it do: expect(~N[2017-08-07 01:10:10]) |> to(be_close_to(~N[2020-08-07 01:10:10], {:year, 3}))
+      it do:
+           expect(~N[2017-08-07 01:10:10]) |> to(be_close_to(~N[2020-08-07 01:10:10], {:year, 3}))
 
       it do:
-           expect(~N[2017-08-07 01:10:10]) |> to_not(
-             be_close_to(~N[2020-08-07 01:10:10], {:year, 2})
-           )
-
-      it do: expect(~N[2017-08-07 01:10:10]) |> to(be_close_to(~N[2017-08-14 01:10:10], {:week, 1}))
+           expect(~N[2017-08-07 01:10:10])
+           |> to_not(be_close_to(~N[2020-08-07 01:10:10], {:year, 2}))
 
       it do:
-           expect(~N[2017-08-07 01:10:10]) |> to_not(
-             be_close_to(~N[2020-08-07 01:10:10], {:week, 2})
-           )
+           expect(~N[2017-08-07 01:10:10]) |> to(be_close_to(~N[2017-08-14 01:10:10], {:week, 1}))
+
+      it do:
+           expect(~N[2017-08-07 01:10:10])
+           |> to_not(be_close_to(~N[2020-08-07 01:10:10], {:week, 2}))
     end
 
     context "Success, Time with granularity" do
@@ -38,12 +38,13 @@ defmodule DatesTimes.BeCloseToTest do
       it do: expect(~T[01:10:10]) |> to_not(be_close_to(~T[01:51:10], {:minute, 40}))
       it do: expect(~T[01:10:10]) |> to(be_close_to(~T[01:10:11], {:second, 1}))
       it do: expect(~T[01:10:10]) |> to_not(be_close_to(~T[01:10:12], {:second, 1}))
-      it do: expect(~T[01:10:10.000001]) |> to(be_close_to(~T[01:10:10.000002], {:microsecond, 1}))
 
       it do:
-           expect(~T[01:10:10.000001]) |> to_not(
-             be_close_to(~T[01:10:11.000002], {:microsecond, 1})
-           )
+           expect(~T[01:10:10.000001]) |> to(be_close_to(~T[01:10:10.000002], {:microsecond, 1}))
+
+      it do:
+           expect(~T[01:10:10.000001])
+           |> to_not(be_close_to(~T[01:10:11.000002], {:microsecond, 1}))
     end
 
     context "Success, DateTime with granularity" do
@@ -89,7 +90,9 @@ defmodule DatesTimes.BeCloseToTest do
       it do: expect(datetime_a()) |> to(be_close_to(datetime_seconds(), {:second, 2}))
       it do: expect(datetime_a()) |> to_not(be_close_to(datetime_seconds(), {:second, 1}))
       it do: expect(datetime_a()) |> to(be_close_to(datetime_microseconds(), {:microsecond, 2}))
-      it do: expect(datetime_a()) |> to_not(be_close_to(datetime_microseconds(), {:microsecond, 1}))
+
+      it do:
+           expect(datetime_a()) |> to_not(be_close_to(datetime_microseconds(), {:microsecond, 1}))
     end
 
     context "Errors, Date with granularity" do
@@ -99,21 +102,21 @@ defmodule DatesTimes.BeCloseToTest do
 
     context "Errors, NaiveDateTime with granularity" do
       it do:
-           expect(~N[2017-08-07 01:10:10]) |> to(be_close_to(~N[2017-08-07 01:10:15], {:second, 3}))
+           expect(~N[2017-08-07 01:10:10])
+           |> to(be_close_to(~N[2017-08-07 01:10:15], {:second, 3}))
 
       it do:
-           expect(~N[2017-08-07 01:10:10]) |> to_not(
-             be_close_to(~N[2017-08-07 01:10:15], {:second, 5})
-           )
+           expect(~N[2017-08-07 01:10:10])
+           |> to_not(be_close_to(~N[2017-08-07 01:10:15], {:second, 5}))
     end
 
     context "Errors, Time with granularity" do
-      it do: expect(~T[01:10:10.000001]) |> to(be_close_to(~T[01:10:10.000006], {:microsecond, 3}))
+      it do:
+           expect(~T[01:10:10.000001]) |> to(be_close_to(~T[01:10:10.000006], {:microsecond, 3}))
 
       it do:
-           expect(~T[01:10:10.000001]) |> to_not(
-             be_close_to(~T[01:10:10.000006], {:microsecond, 5})
-           )
+           expect(~T[01:10:10.000001])
+           |> to_not(be_close_to(~T[01:10:10.000006], {:microsecond, 5}))
     end
 
     context "Errors, DateTime with granularity" do

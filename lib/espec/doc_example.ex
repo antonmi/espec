@@ -51,10 +51,12 @@ defmodule ESpec.DocExample do
     case apply(Code, :fetch_docs, [module]) do
       {:docs_v1, anno, _, _, moduledoc, _, docs} ->
         moduledocs = extract_from_moduledoc(anno, moduledoc)
+
         docs =
           for doc <- Enum.sort(docs),
               doc <- extract_from_doc(doc),
               do: doc
+
         (moduledocs ++ docs)
         |> Enum.flat_map(&to_struct/1)
 
@@ -118,7 +120,9 @@ defmodule ESpec.DocExample do
   end
 
   # handles new
-  defp extract_from_doc({{kind, _, _}, _, _, doc, _}) when kind not in [:function, :macro] or doc in [:none, :hidden], do: []
+  defp extract_from_doc({{kind, _, _}, _, _, doc, _})
+       when kind not in [:function, :macro] or doc in [:none, :hidden],
+       do: []
 
   defp extract_from_doc({{_, name, arity}, anno, _, %{"en" => doc}, _}) do
     line = :erl_anno.line(anno)

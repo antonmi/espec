@@ -25,6 +25,7 @@ script:
   - mix test
   - mix espec
   - mix espec spec_formatters/test_spec.exs
+  - if [ "$TRAVIS_ELIXIR_VERSION" = "1.9.1" ]; then mix format --check-formatted; fi
   - mix espec --stale
 notifications:
   recipients:

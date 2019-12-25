@@ -588,9 +588,17 @@ expect :espec |> to(be_atom)  #is_atom(:espec) == true
 ... be_binary()
 ... be_bitstring()
 ... be_boolean()
+... be_integer()
+... be_float()
+... be_number()
 ... ...
 ... ...
 ... be_tuple()
+... be_list()
+... be_map()
+... be_port()
+... be_pid()
+... be_reference()
 ... be_function()
 ... be_function arity
 ... be_struct()
