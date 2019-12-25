@@ -1026,6 +1026,22 @@ ESpec, like ExUnit, uses very simple wrapper around OTP's cover. But you can ove
 
 Take a look to [coverex](https://github.com/alfert/coverex) as a perfect example.
 
+#### Stale
+
+Similar to ExUnit, the `--stale` command line option attempts to run only those test files which reference modules that have changed since the last time you ran this task with `--stale`.
+
+Running the whole test suite:
+
+```sh
+mix espec --stale
+```
+
+Running individual file(s):
+
+```sh
+mix espec spec/assertions/be_spec.exs spec/assertions/be_close_to_spec.exs --stale
+```
+
 ## Formatters
 There are three formatters in ESpec:
 - ESpec.Formatters.Doc

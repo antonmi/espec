@@ -8,6 +8,7 @@ defmodule ESpec.Runner do
   alias ESpec.Example
   alias ESpec.Output
   alias ESpec.SuiteRunner
+  alias Mix.Utils.Stale
 
   @doc "Starts the `ESpec.Runner` server"
   def start do
@@ -37,9 +38,25 @@ defmodule ESpec.Runner do
         run_suites(specs, opts)
       end
 
+    success = !Enum.any?(Example.failure(examples))
+
     Configuration.add(finish_specs_time: :os.timestamp())
+    stale_manifest_and_output(examples, stale: opts[:stale], success: success)
+
+    success
+  end
+
+  defp stale_manifest_and_output(examples, stale: true, success: success) do
+    if success, do: Stale.agent_write_manifest()
+
+    case examples do
+      [] -> Mix.shell().info("No stale tests to run...")
+      examples -> Output.final_result(examples)
+    end
+  end
+
+  defp stale_manifest_and_output(examples, _opts) do
     Output.final_result(examples)
-    !Enum.any?(Example.failure(examples))
   end
 
   defp run_suites(specs, opts, shuffle \\ true) do
