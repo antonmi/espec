@@ -152,13 +152,14 @@ defmodule Mix.Tasks.Espec do
 
   defp run_espec(project, files, cover) do
     ESpec.start()
-    parse_spec_files(project, files)
-    success = ESpec.run()
-
-    if cover, do: cover.()
-    ESpec.stop()
-
-    success
+    if parse_spec_files(project, files) do
+      success = ESpec.run()
+      if cover, do: cover.()
+      ESpec.stop()
+      success
+    else
+      false
+    end
   end
 
   defp require_spec_helper(dir) do
@@ -219,6 +220,8 @@ defmodule Mix.Tasks.Espec do
       Configuration.add(file_opts: files_with_opts)
       Configuration.add(shared_specs: shared_spec_files)
       Configuration.add(finish_loading_time: :os.timestamp())
+    else
+      false
     end
   end
 
