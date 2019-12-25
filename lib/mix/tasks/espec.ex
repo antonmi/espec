@@ -1,5 +1,6 @@
 defmodule Mix.Tasks.Espec do
   alias Mix.Utils.Stale
+  @version_limit "1.7.0"
 
   defmodule Cover do
     @moduledoc false
@@ -155,7 +156,9 @@ defmodule Mix.Tasks.Espec do
   end
 
   defp run_espec(project, files, cover) do
+    check_version!()
     ESpec.start()
+
     if parse_spec_files(project, files) do
       success = ESpec.run()
       if cover, do: cover.()
@@ -289,10 +292,17 @@ defmodule Mix.Tasks.Espec do
   defp compile({spec_files, parallel_require_callbacks}, include_shared: shared_spec_files) do
     shared_spec_files = shared_spec_files || []
 
-    # In Elixir 1.(6, 7, 8) Kernel.ParallelCompiler.compile/2 causes "redefining module CheckErrorSharedSpec (current version defined in memory)" issue when running stale feature so use Code.require_file/1
     shared_spec_files
     |> Enum.each(&Code.require_file/1)
 
     Kernel.ParallelCompiler.compile(spec_files -- shared_spec_files, parallel_require_callbacks)
+  end
+
+  defp check_version!() do
+    if Version.compare(System.version(), @version_limit) == :lt do
+      raise "ESpec requires at least #{@version_limit}."
+    else
+      true
+    end
   end
 end

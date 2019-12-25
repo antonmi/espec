@@ -15,39 +15,9 @@ defmodule ESpec.DocExample do
   """
   defstruct lhs: nil, rhs: nil, fun_arity: nil, line: nil, type: :test
   defmodule(Error, do: defexception([:message]))
-  @new_format_version "1.7.0"
 
   @doc "Extract module docs and returns a list of %ESpec.DocExample{} structs"
   def extract(module) do
-    if Version.compare(System.version(), @new_format_version) == :lt do
-      do_extract(module)
-    else
-      do_new_extract(module)
-    end
-  end
-
-  defp do_extract(module) do
-    all_docs = apply(Code, :get_docs, [module, :all])
-
-    unless all_docs do
-      raise Error,
-        message:
-          "could not retrieve the documentation for module #{inspect(module)}. " <>
-            "The module was not compiled with documentation or its beam file cannot be accessed"
-    end
-
-    moduledocs = extract_from_moduledoc(all_docs[:moduledoc])
-
-    docs =
-      for doc <- all_docs[:docs],
-          doc <- extract_from_doc(doc),
-          do: doc
-
-    (moduledocs ++ docs)
-    |> Enum.flat_map(&to_struct/1)
-  end
-
-  defp do_new_extract(module) do
     case apply(Code, :fetch_docs, [module]) do
       {:docs_v1, anno, _, _, moduledoc, _, docs} ->
         moduledocs = extract_from_moduledoc(anno, moduledoc)
@@ -102,15 +72,6 @@ defmodule ESpec.DocExample do
     }
   end
 
-  defp extract_from_moduledoc({_, doc}) when doc in [false, nil], do: []
-
-  defp extract_from_moduledoc({line, doc}) do
-    for test <- extract_tests(line, doc) do
-      %{test | fun_arity: {:moduledoc, 0}}
-    end
-  end
-
-  # handles new
   defp extract_from_moduledoc(_, doc) when doc in [:none, :hidden], do: []
 
   defp extract_from_moduledoc(anno, %{"en" => doc}) do
@@ -119,7 +80,6 @@ defmodule ESpec.DocExample do
     end
   end
 
-  # handles new
   defp extract_from_doc({{kind, _, _}, _, _, doc, _})
        when kind not in [:function, :macro] or doc in [:none, :hidden],
        do: []
