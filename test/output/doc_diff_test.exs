@@ -49,8 +49,13 @@ defmodule Formatters.DocDiffTest do
 
     output = output(SomeSpecEqNil.examples())
 
-    assert String.contains?(output, "\n\t  \e[36mexpected:\e[0m [1, 4, 3]\n")
-    assert String.contains?(output, "\n\t  \e[36mactual:\e[0m   nil\n")
+    if Version.match?(System.version(), ">= 1.10.0") do
+      assert String.contains?(output, "\n\t  \e[36mexpected:\e[0m \e[31m[1, 4, 3]\e[0m\n")
+      assert String.contains?(output, "\n\t  \e[36mactual:\e[0m   \e[32mnil\e[0m\n")
+    else
+      assert String.contains?(output, "\n\t  \e[36mexpected:\e[0m [1, 4, 3]\n")
+      assert String.contains?(output, "\n\t  \e[36mactual:\e[0m   nil\n")
+    end
   end
 
   test "failed eql with diff" do
@@ -61,8 +66,13 @@ defmodule Formatters.DocDiffTest do
 
     output = output(SomeSpecEql.examples())
 
-    assert String.contains?(output, "\n\t  \e[36mexpected:\e[0m 1.0\n")
-    assert String.contains?(output, "\n\t  \e[36mactual:\e[0m   1\n")
+    if Version.match?(System.version(), ">= 1.10.0") do
+      assert String.contains?(output, "\n\t  \e[36mexpected:\e[0m \e[31m1.0\e[0m\n")
+      assert String.contains?(output, "\n\t  \e[36mactual:\e[0m   \e[32m1\e[0m\n")
+    else
+      assert String.contains?(output, "\n\t  \e[36mexpected:\e[0m 1.0\n")
+      assert String.contains?(output, "\n\t  \e[36mactual:\e[0m   1\n")
+    end
   end
 
   test "failed eq with very long string" do
@@ -70,20 +80,22 @@ defmodule Formatters.DocDiffTest do
       use ESpec
 
       it do:
-           expect(String.duplicate("external", 1000))
-           |> to(eq(String.duplicate("expected", 1000)))
+           expect(String.duplicate("external", 100))
+           |> to(eq(String.duplicate("expected", 100)))
     end
 
     output = output(SomeSpecEqLongString.examples())
 
     assert String.contains?(
              output,
-             "\n\t  \e[36mexpected:\e[0m \"#{String.duplicate("expected", 1000)}\"\n"
+             "\n\t  \e[36mexpected:\e[0m \"#{
+               String.duplicate("ex\e[31mpec\e[0mte\e[31md\e[0m", 100)
+             }\"\n"
            )
 
     assert String.contains?(
              output,
-             "\n\t  \e[36mactual:\e[0m   \"#{String.duplicate("external", 1000)}\"\n"
+             "\n\t  \e[36mactual:\e[0m   \"#{String.duplicate("exte\e[32mrnal\e[0m", 100)}\"\n"
            )
   end
 
@@ -135,8 +147,13 @@ defmodule Formatters.DocDiffTest do
 
     output = output(SomeSpecHaveAtOnEmptyList.examples())
 
-    assert String.contains?(output, "\n\t  \e[36mexpected:\e[0m 65\n")
-    assert String.contains?(output, "\n\t  \e[36mactual:\e[0m   nil\n")
+    if Version.match?(System.version(), ">= 1.10.0") do
+      assert String.contains?(output, "\n\t  \e[36mexpected:\e[0m \e[31m65\e[0m\n")
+      assert String.contains?(output, "\n\t  \e[36mactual:\e[0m   \e[32mnil\e[0m\n")
+    else
+      assert String.contains?(output, "\n\t  \e[36mexpected:\e[0m 65\n")
+      assert String.contains?(output, "\n\t  \e[36mactual:\e[0m   nil\n")
+    end
   end
 
   test "failed negative have_at without diff" do
@@ -175,8 +192,13 @@ defmodule Formatters.DocDiffTest do
 
     output = output(SomeSpecHaveFirstOnEmptyList.examples())
 
-    assert String.contains?(output, "\n\t  \e[36mexpected:\e[0m 65\n")
-    assert String.contains?(output, "\n\t  \e[36mactual:\e[0m   nil\n")
+    if Version.match?(System.version(), ">= 1.10.0") do
+      assert String.contains?(output, "\n\t  \e[36mexpected:\e[0m \e[31m65\e[0m\n")
+      assert String.contains?(output, "\n\t  \e[36mactual:\e[0m   \e[32mnil\e[0m\n")
+    else
+      assert String.contains?(output, "\n\t  \e[36mexpected:\e[0m 65\n")
+      assert String.contains?(output, "\n\t  \e[36mactual:\e[0m   nil\n")
+    end
   end
 
   test "failed negative have_first without diff" do
@@ -215,8 +237,13 @@ defmodule Formatters.DocDiffTest do
 
     output = output(SomeSpecHaveLastOnEmptyList.examples())
 
-    assert String.contains?(output, "\n\t  \e[36mexpected:\e[0m 82\n")
-    assert String.contains?(output, "\n\t  \e[36mactual:\e[0m   nil\n")
+    if Version.match?(System.version(), ">= 1.10.0") do
+      assert String.contains?(output, "\n\t  \e[36mexpected:\e[0m \e[31m82\e[0m\n")
+      assert String.contains?(output, "\n\t  \e[36mactual:\e[0m   \e[32mnil\e[0m\n")
+    else
+      assert String.contains?(output, "\n\t  \e[36mexpected:\e[0m 82\n")
+      assert String.contains?(output, "\n\t  \e[36mactual:\e[0m   nil\n")
+    end
   end
 
   test "failed negative have_last without diff" do
@@ -271,8 +298,13 @@ defmodule Formatters.DocDiffTest do
 
     output = output(SomeSpecHaveTl.examples())
 
-    assert String.contains?(output, "\n\t  \e[36mexpected:\e[0m 20\n")
-    assert String.contains?(output, "\n\t  \e[36mactual:\e[0m   [2]\n")
+    if Version.match?(System.version(), ">= 1.10.0") do
+      assert String.contains?(output, "\n\t  \e[36mexpected:\e[0m \e[31m20\e[0m\n")
+      assert String.contains?(output, "\n\t  \e[36mactual:\e[0m   \e[32m[2]\e[0m\n")
+    else
+      assert String.contains?(output, "\n\t  \e[36mexpected:\e[0m 20\n")
+      assert String.contains?(output, "\n\t  \e[36mactual:\e[0m   [2]\n")
+    end
   end
 
   test "failed have_tl with longer list and diff" do
@@ -283,8 +315,13 @@ defmodule Formatters.DocDiffTest do
 
     output = output(SomeSpecHaveTlWithLongerList.examples())
 
-    assert String.contains?(output, "\n\t  \e[36mexpected:\e[0m 82\n")
-    assert String.contains?(output, "\n\t  \e[36mactual:\e[0m   [2, 82]\n")
+    if Version.match?(System.version(), ">= 1.10.0") do
+      assert String.contains?(output, "\n\t  \e[36mexpected:\e[0m \e[31m82\e[0m\n")
+      assert String.contains?(output, "\n\t  \e[36mactual:\e[0m   \e[32m[2, 82]\e[0m\n")
+    else
+      assert String.contains?(output, "\n\t  \e[36mexpected:\e[0m 82\n")
+      assert String.contains?(output, "\n\t  \e[36mactual:\e[0m   [2, 82]\n")
+    end
   end
 
   test "failed negative have_tl without diff" do
@@ -333,8 +370,13 @@ defmodule Formatters.DocDiffTest do
 
     output = output(SomeSpecStartWithOnEmptyString.examples())
 
-    assert String.contains?(output, "\n\t  \e[36mexpected:\e[0m \"start\"\n")
-    assert String.contains?(output, "\n\t  \e[36mactual:\e[0m   \"\"\n")
+    if Version.match?(System.version(), ">= 1.10.0") do
+      assert String.contains?(output, "\n\t  \e[36mexpected:\e[0m \"\e[31mstart\e[0m\"\n")
+      assert String.contains?(output, "\n\t  \e[36mactual:\e[0m   \"\e[48;5;28m\e[0m\"\n")
+    else
+      assert String.contains?(output, "\n\t  \e[36mexpected:\e[0m \"start\"\n")
+      assert String.contains?(output, "\n\t  \e[36mactual:\e[0m   \"\"\n")
+    end
   end
 
   test "failed negative start_with without diff" do
@@ -383,8 +425,13 @@ defmodule Formatters.DocDiffTest do
 
     output = output(SomeSpecEndWithOnEmptyString.examples())
 
-    assert String.contains?(output, "\n\t  \e[36mexpected:\e[0m \"end\"\n")
-    assert String.contains?(output, "\n\t  \e[36mactual:\e[0m   \"\"\n")
+    if Version.match?(System.version(), ">= 1.10.0") do
+      assert String.contains?(output, "\n\t  \e[36mexpected:\e[0m \"\e[31mend\e[0m\"\n")
+      assert String.contains?(output, "\n\t  \e[36mactual:\e[0m   \"\e[48;5;28m\e[0m\"\n")
+    else
+      assert String.contains?(output, "\n\t  \e[36mexpected:\e[0m \"end\"\n")
+      assert String.contains?(output, "\n\t  \e[36mactual:\e[0m   \"\"\n")
+    end
   end
 
   test "failed negative end_with without diff" do

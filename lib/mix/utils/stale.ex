@@ -1,7 +1,7 @@
 defmodule Mix.Utils.Stale do
   import Record
 
-  use Mix.Utils.StaleCompatible
+  import Mix.Utils.StaleCompatible
 
   defrecordp :source,
     source: nil,

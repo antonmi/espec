@@ -6,10 +6,18 @@ defmodule ESpec.Formatters.Doc do
   @red IO.ANSI.red()
   @cyan IO.ANSI.cyan()
   @yellow IO.ANSI.yellow()
+  # @grey IO.ANSI.light_black()
   @reset IO.ANSI.reset()
 
+  @main_colors [stacktrace: @cyan, diff_headers: @cyan]
   @status_colors [success: @green, failure: @red, pending: @yellow]
   @status_symbols [success: ".", failure: "F", pending: "*"]
+  @diff_colors [
+    diff_delete: :red,
+    diff_delete_whitespace: IO.ANSI.color_background(2, 0, 0),
+    diff_insert: :green,
+    diff_insert_whitespace: IO.ANSI.color_background(0, 2, 0)
+  ]
 
   alias ESpec.Example
 
@@ -23,7 +31,7 @@ defmodule ESpec.Formatters.Doc do
     if opts[:details] do
       trace_description(example)
     else
-      "#{color}#{symbol}#{@reset}"
+      colorize(color, symbol)
     end
   end
 
@@ -40,14 +48,12 @@ defmodule ESpec.Formatters.Doc do
   end
 
   defp format_failed(failed, opts) do
-    res =
-      failed
-      |> Enum.with_index()
-      |> Enum.map(fn {example, index} ->
-        do_format_failed_example(example, index, opts)
-      end)
-
-    Enum.join(res, "\n")
+    failed
+    |> Enum.with_index()
+    |> Enum.map(fn {example, index} ->
+      do_format_failed_example(example, index, opts)
+    end)
+    |> Enum.join("\n")
   end
 
   defp format_pending(pending) do
@@ -62,12 +68,13 @@ defmodule ESpec.Formatters.Doc do
   defp do_format_pending_example(example, info, index) do
     color = color_for_status(example.status)
     description = one_line_description(example)
+    file_line_ref = "#{example.file}:#{example.line}"
 
     [
       "\n",
       "\t#{index + 1}) #{description}",
-      "\t#{@cyan}#{example.file}:#{example.line}#{@reset}",
-      "\t#{color}#{info}#{@reset}"
+      "\t#{colorize(@main_colors[:stacktrace], file_line_ref)}",
+      "\t#{colorize(color, info)}"
     ]
     |> Enum.join("\n")
   end
@@ -80,12 +87,14 @@ defmodule ESpec.Formatters.Doc do
       example.error.message
       |> String.replace("\n", "\n\t  ")
 
+    stacktrace = do_format_stacktrace(example)
+
     Enum.join(
       [
         "\n",
         "\t#{index + 1}) #{description}",
-        "\t#{@cyan}#{do_format_stacktrace(example)}#{@reset}",
-        "\t#{color}#{error_message}#{@reset}"
+        "\t#{colorize(@main_colors[:stacktrace], stacktrace)}",
+        "\t#{colorize(color, error_message)}"
       ],
       "\n"
     ) <> if Map.get(opts, :diff_enabled?, true), do: do_format_diff(example.error), else: ""
@@ -147,47 +156,110 @@ defmodule ESpec.Formatters.Doc do
 
   defp do_format_diff(_), do: ""
 
-  defp format_diff({l, r}) do
-    [
-      "",
-      "\t  #{@cyan}expected:#{@reset} #{colorize_diff(r)}",
-      "\t  #{@cyan}actual:#{@reset}   #{colorize_diff(l)}"
-    ]
-    |> Enum.join("\n")
+  defp colorize(ansi_color_code, string) do
+    [ansi_color_code, string, @reset]
+    |> IO.ANSI.format_fragment(true)
+    |> IO.iodata_to_binary()
   end
 
-  defp colorize_diff([{:eq, text} | rest]) do
-    text <> colorize_diff(rest)
+  defp format_diff(nil) do
+    ""
   end
 
-  defp colorize_diff([{:ins, text} | rest]) do
-    "#{@green}#{text}#{@reset}" <> colorize_diff(rest)
-  end
+  if Version.match?(System.version(), ">= 1.10.0") do
+    defp format_diff(%ExUnit.Diff{
+           left: left,
+           right: right
+         }) do
+      left =
+        left
+        |> ExUnit.Diff.to_algebra(fn doc ->
+          Inspect.Algebra.color(
+            doc,
+            get_color_by_content(doc, :diff_delete, :diff_delete_whitespace),
+            %Inspect.Opts{syntax_colors: @diff_colors}
+          )
+        end)
+        |> Inspect.Algebra.nest(20)
+        |> Inspect.Algebra.format(80)
 
-  defp colorize_diff([{:del, text} | rest]) do
-    "#{@red}#{text}#{@reset}" <> colorize_diff(rest)
-  end
+      right =
+        right
+        |> ExUnit.Diff.to_algebra(fn doc ->
+          Inspect.Algebra.color(
+            doc,
+            get_color_by_content(doc, :diff_insert, :diff_insert_whitespace),
+            %Inspect.Opts{syntax_colors: @diff_colors}
+          )
+        end)
+        |> Inspect.Algebra.nest(20)
+        |> Inspect.Algebra.format(80)
 
-  defp colorize_diff([{:ins_whitespace, length} | rest]) do
-    String.duplicate(" ", length) <> colorize_diff(rest)
-  end
+      "\n\t  #{colorize(@main_colors[:diff_headers], "expected:")} " <>
+        IO.iodata_to_binary(left) <>
+        "\n\t  #{colorize(@main_colors[:diff_headers], "actual:")}   " <>
+        IO.iodata_to_binary(right)
+    end
 
-  defp colorize_diff([]), do: ""
+    defp get_color_by_content(content, color_if_normal, color_if_whitespace)
+         when is_binary(content) do
+      if String.trim_leading(content) == "", do: color_if_whitespace, else: color_if_normal
+    end
+
+    defp get_color_by_content(_content, color_if_normal, _color_if_whitespace) do
+      color_if_normal
+    end
+  else
+    defp format_diff({l, r}) do
+      [
+        "",
+        "\t  #{colorize(@main_colors[:diff_headers], "expected:")} #{colorize_diff(r)}",
+        "\t  #{colorize(@main_colors[:diff_headers], "actual:")}   #{colorize_diff(l)}"
+      ]
+      |> Enum.join("\n")
+    end
+
+    defp colorize_diff([{:eq, text} | rest]) do
+      text <> colorize_diff(rest)
+    end
+
+    defp colorize_diff([{:ins, text} | rest]) do
+      colorize(@diff_colors[:diff_insert], text) <> colorize_diff(rest)
+    end
+
+    defp colorize_diff([{:del, text} | rest]) do
+      colorize(@diff_colors[:diff_delete], text) <> colorize_diff(rest)
+    end
+
+    defp colorize_diff([{:ins_whitespace, length} | rest]) do
+      colorize(@diff_colors[:diff_insert_whitespace], String.duplicate(" ", length)) <>
+        colorize_diff(rest)
+    end
+
+    defp colorize_diff([]) do
+      ""
+    end
+  end
 
   defp format_footer(examples, failed, pending) do
-    color = get_color(failed, pending)
+    color = get_color_for_content(failed, pending)
     parts = ["#{Enum.count(examples)} examples", "#{Enum.count(failed)} failures"]
     parts = if Enum.any?(pending), do: parts ++ ["#{Enum.count(pending)} pending"], else: parts
-    "\n\n\t#{color}#{Enum.join(parts, ", ")}#{@reset}"
+    parts_string = Enum.join(parts, ", ")
+
+    "\n\n\t#{colorize(color, parts_string)}"
   end
 
   defp format_times({start_loading_time, finish_loading_time, finish_specs_time}, failed, pending) do
-    color = get_color(failed, pending)
+    color = get_color_for_content(failed, pending)
     load_time = :timer.now_diff(finish_loading_time, start_loading_time)
     spec_time = :timer.now_diff(finish_specs_time, finish_loading_time)
 
-    "\n\n\t#{color}Finished in #{us_to_sec(load_time + spec_time)} seconds" <>
-      " (#{us_to_sec(load_time)}s on load, #{us_to_sec(spec_time)}s on specs)#{@reset}\n\n"
+    finished_in =
+      "Finished in #{us_to_sec(load_time + spec_time)} seconds" <>
+        " (#{us_to_sec(load_time)}s on load, #{us_to_sec(spec_time)}s on specs)"
+
+    "\n\n\t#{colorize(color, finished_in)}\n\n"
   end
 
   defp format_seed do
@@ -201,11 +273,11 @@ defmodule ESpec.Formatters.Doc do
 
   defp us_to_sec(us), do: div(us, 10_000) / 100
 
-  defp get_color(failed, pending) do
+  defp get_color_for_content(failed, pending) do
     if Enum.any?(failed) do
-      @red
+      @status_colors[:failure]
     else
-      if Enum.any?(pending), do: @yellow, else: @green
+      if Enum.any?(pending), do: @status_colors[:pending], else: @status_colors[:success]
     end
   end
 
@@ -222,7 +294,7 @@ defmodule ESpec.Formatters.Doc do
 
     ex_desc =
       if String.length(example.description) > 0 do
-        "#{color}#{example.description}#{@reset}"
+        "#{colorize(color, example.description)}"
       else
         status_message(example, color)
       end
@@ -240,9 +312,9 @@ defmodule ESpec.Formatters.Doc do
 
   defp status_message(example, color) do
     if example.status == :failure do
-      "#{color}#{example.error.message}#{@reset}"
+      "#{colorize(color, example.error.message)}"
     else
-      "#{color}#{inspect(example.result)}#{@reset}"
+      "#{colorize(color, inspect(example.result))}"
     end
   end
 

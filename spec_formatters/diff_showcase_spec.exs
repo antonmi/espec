@@ -5,11 +5,11 @@ defmodule DiffShowcaseSpec do
   use ESpec, async: true
 
   it "shows eq" do
-    expect([1+1]) |> to(eq 2)
+    expect([1 + 1]) |> to(eq 2)
   end
 
   it "shows eql" do
-    expect("one") |> to(eq "none")
+    expect(" one") |> to(eq "none ")
   end
 
   it "shows be" do
@@ -28,7 +28,7 @@ defmodule DiffShowcaseSpec do
     expect([6, 9]) |> to(have_at(1, 8))
   end
 
-  it "shows have_first" do
+  it "passed have_first" do
     expect(["first", "second", "last"]) |> to(have_first("first"))
   end
 
@@ -52,19 +52,46 @@ defmodule DiffShowcaseSpec do
     expect("very big party") |> to(end_with("sleep"))
   end
 
+  it "shows a diff between big strings" do
+    expect(String.duplicate("external", 100))
+    |> to(eq(String.duplicate("expected", 100)))
+  end
+
+  it "shows a diff between big maps" do
+    expect(%{
+      "field one" => "23",
+      "field two" => "v2",
+      "a longer field three" => "23",
+      "f4" => "v2"
+    })
+    |> to(
+      eq(%{
+        "field X" => "15",
+        "field two" => "v2",
+        "a longer field three5" => "v",
+        "field one6" => "v"
+      })
+    )
+  end
+
   defp inside_function(x) do
-    Process.alive?(self()) # some code
-    expect(x).to be(3)
-    Process.alive?(self()) # some more code
+    # some code
+    Process.alive?(self())
+    expect(x) |> to(be(3))
+    # some more code
+    Process.alive?(self())
   end
 
   defp inside_function_wrapper(2.09 = x) do
-    expect(x).to be(3)
+    expect(x) |> to(be(3))
   end
+
   defp inside_function_wrapper(x) do
-    Process.alive?(self()) # some code
+    # some code
+    Process.alive?(self())
     inside_function(x)
-    Process.alive?(self()) # some more code
+    # some more code
+    Process.alive?(self())
   end
 
   it "shows a stacktrace for a function" do
