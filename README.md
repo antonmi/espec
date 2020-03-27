@@ -61,7 +61,7 @@ Add `espec` to dependencies in the `mix.exs` file:
 ```elixir
 def deps do
   ...
-  {:espec, "~> 1.8.1", only: :test},
+  {:espec, "~> 1.8.2", only: :test},
   #{:espec, github: "antonmi/espec", only: :test}, to get the latest version
   ...
 end
@@ -1195,7 +1195,9 @@ There are community supported formatters:
      - Add --stale option.
      - Remove support of Elixir 1.6.
   * 1.8.1
-     - Fix compilation warnings.            
+     - Fix compilation warnings.
+  * 1.8.2
+     - Elixir 1.10 compatibility.            
 ## Contributing
 ##### Contributions are welcome and appreciated!
 
