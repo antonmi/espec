@@ -3,22 +3,21 @@ elixir:
   - 1.7.2
   - 1.8.1
   - 1.9.4
+  - 1.10.2
 otp_release:
   - 20.3
   - 21.3
   - 22.2
 matrix:
   exclude:
-    - elixir: 1.9.4
-      otp_release: 19.3
-    - elixir: 1.8.1
-      otp_release: 19.3
+    - elixir: 1.10.2
+      otp_release: 20.3
 sudo: false
 script:
   - mix test
   - mix espec
   - mix espec spec_formatters/test_spec.exs
-  - if [ "$TRAVIS_ELIXIR_VERSION" = "1.9.4" ]; then mix format --check-formatted; fi
+  - if [ "$TRAVIS_ELIXIR_VERSION" = "1.10.2" ]; then mix format --check-formatted; fi
   - mix espec --stale
 notifications:
   recipients:

@@ -1,6 +1,8 @@
 defmodule AllowAcceptSpec do
   use ESpec
 
+  defmodule SomeModule, do: ""
+
   describe "allow(module).to accept(name, func)" do
     before do: allow(SomeModule) |> to(accept(:func, fn a -> "mock! #{a}" end))
 
