@@ -254,7 +254,7 @@ defmodule Mix.Tasks.Espec do
   end
 
   defp extract_files(paths, pattern) do
-    already_loaded = MapSet.new(Code.loaded_files())
+    already_loaded = MapSet.new(Code.required_files())
 
     paths
     |> Mix.Utils.extract_files(pattern)

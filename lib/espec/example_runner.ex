@@ -62,7 +62,7 @@ defmodule ESpec.ExampleRunner do
         do_rescue(example, assigns, start_time, error.example_error, false)
 
       other_error ->
-        error = %AssertionError{message: format_other_error(other_error)}
+        error = %AssertionError{message: format_other_error(other_error, __STACKTRACE__)}
         do_rescue(example, assigns, start_time, error)
     catch
       what, value -> do_catch(example, assigns, start_time, what, value)
@@ -204,7 +204,7 @@ defmodule ESpec.ExampleRunner do
     try do
       fun.()
     rescue
-      any_error -> do_before(any_error, {assigns, example})
+      any_error -> do_before(any_error, {assigns, example}, __STACKTRACE__)
     catch
       what, value -> do_catch(what, value, {assigns, example})
     end
@@ -222,12 +222,12 @@ defmodule ESpec.ExampleRunner do
     {map, example}
   end
 
-  defp do_before(error, {map, example}) do
+  defp do_before(error, {map, example}, stacktrace) do
     example =
       if example.error do
         example
       else
-        error = %AssertionError{message: format_other_error(error)}
+        error = %AssertionError{message: format_other_error(error, stacktrace)}
         %Example{example | status: :failure, error: error}
       end
 
@@ -259,10 +259,8 @@ defmodule ESpec.ExampleRunner do
     div(:timer.now_diff(end_time, start_time), 1000)
   end
 
-  defp format_other_error(error) do
-    error_message = Exception.format_banner(:error, error)
-    stacktrace = Exception.format_stacktrace(System.stacktrace())
-    error_message <> "\n" <> stacktrace
+  defp format_other_error(error, stacktrace) do
+    Exception.format_banner(:error, error) <> "\n" <> Exception.format_stacktrace(stacktrace)
   end
 
   defp format_catch(what, value), do: "#{what} #{inspect(value)}"

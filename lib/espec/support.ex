@@ -16,7 +16,7 @@ defmodule ESpec.Support do
 
   defp remove_unicode(string) do
     string
-    |> String.normalize(:nfd)
+    |> :unicode.characters_to_nfd_binary
     |> String.replace(~r/[^A-z\s]/u, "")
   end
 end
