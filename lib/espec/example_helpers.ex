@@ -41,17 +41,14 @@ defmodule ESpec.ExampleHelpers do
     end
   end
 
-  @doc "Example options only"
   defmacro example(opts, do: block) when is_list(opts) do
     quote do: example("", unquote(opts), do: unquote(block))
   end
 
-  @doc "Example with description only."
   defmacro example(description, do: block) do
     quote do: example(unquote(description), [], do: unquote(block))
   end
 
-  @doc "Defines the simplest example."
   defmacro example(do: block) do
     quote do: example("", [], do: unquote(block))
   end

@@ -17,53 +17,43 @@ defmodule ESpec.To do
     AllowTo.to({:accept, name, function}, {AllowTo, module})
   end
 
-  @doc false
   def to(module, {:accept, name, function, meck_options})
       when is_atom(name) and is_list(meck_options) do
     AllowTo.to({:accept, name, function, meck_options}, {AllowTo, module})
   end
 
-  @doc false
   def to(module, {:accept, list}) when is_list(list) do
     AllowTo.to({:accept, list}, {AllowTo, module})
   end
 
-  @doc false
   def to(module, {:accept, list, meck_options}) when is_list(list) and is_list(meck_options) do
     AllowTo.to({:accept, list, meck_options}, {AllowTo, module})
   end
 
-  @doc false
   def to(module, {:accept, name}) when is_atom(name) do
     AllowTo.to({:accept, name}, {AllowTo, module})
   end
 
-  @doc "Special case for `is_expected` when `subject` present."
   def to({ExpectTo, subject, stacktrace}, {module, data}) do
     ExpectTo.to({module, data}, {ExpectTo, subject, stacktrace})
   end
 
-  @doc "Wrapper for `ESpec.ExpectTo.to`."
   def to(subject, {module, data}) do
     ExpectTo.to({module, data}, {ExpectTo, subject, ESpec.Expect.pruned_stacktrace()})
   end
 
-  @doc "Special case for `is_expected` when `subject` present."
   def to_not({ExpectTo, subject, stacktrace}, {module, data}) do
     ExpectTo.to_not({module, data}, {ExpectTo, subject, stacktrace})
   end
 
-  @doc "Wrapper for `ESpec.ExpectTo.to_not`."
   def to_not(subject, {module, data}) do
     ExpectTo.to_not({module, data}, {ExpectTo, subject, ESpec.Expect.pruned_stacktrace()})
   end
 
-  @doc "Special case for `is_expected` when `subject` present."
   def not_to({ExpectTo, subject, stacktrace}, {module, data}) do
     to_not({ExpectTo, subject, stacktrace}, {module, data})
   end
 
-  @doc "Wrapper for `ESpec.ExpectTo.not_to`."
   def not_to(subject, {module, data}) do
     to_not(subject, {module, data})
   end
