@@ -174,7 +174,7 @@ defmodule Mix.Tasks.Espec do
       Code.require_file(file)
       true
     else
-      IO.inspect("Cannot run tests because spec helper file `#{file}` does not exist.")
+      IO.puts("Cannot run tests because spec helper file `#{file}` does not exist.")
       false
     end
   end
