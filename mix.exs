@@ -13,8 +13,7 @@ defmodule ESpec.Mixfile do
       package: package(),
       deps: deps(),
       source_url: "https://github.com/antonmi/espec",
-      preferred_cli_env: [espec: :test],
-      xref: [exclude: :cover]
+      preferred_cli_env: [espec: :test]
     ]
   end
 
