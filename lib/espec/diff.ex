@@ -5,7 +5,12 @@ defmodule ESpec.Diff do
 
   if Version.match?(System.version(), ">= 1.10.0") do
     defp edit_script(left, right) do
-      task = Task.async(ExUnit.Diff, :compute, [left, right, :expr])
+      task =
+        Task.async(ExUnit.Diff, :compute, [
+          left,
+          right,
+          if(Version.match?(System.version(), ">= 1.11.0"), do: :===, else: :expr)
+        ])
 
       case Task.yield(task, 1_500) || Task.shutdown(task, :brutal_kill) do
         {:ok, {script, _}} -> script

@@ -34,7 +34,7 @@ defmodule Formatters.DocStacktraceTest do
         |> Path.relative_to_cwd()
         |> Path.join("#{unquote(file)}.exs")
 
-      output = output(m.examples)
+      output = output(m.examples())
 
       start_line = 3
 

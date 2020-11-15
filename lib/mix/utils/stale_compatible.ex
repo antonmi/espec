@@ -225,18 +225,34 @@ defmodule Mix.Utils.StaleCompatible do
     end
   end
 
-  defp dependent_modules(%Version{major: 1, minor: minor}, module, modules, sources)
-       when minor >= 10 do
-    for CE.source(
-          source: source,
-          runtime_references: r,
-          compile_references: c,
-          struct_references: s
-        ) <- sources,
-        module in r or module in c or module in s,
-        CE.module(sources: sources, module: dependent_module) <- modules,
-        source in sources,
-        do: dependent_module
+  if Version.match?(System.version(), "< 1.11.0") do
+    defp dependent_modules(%Version{major: 1, minor: minor}, module, modules, sources)
+         when minor >= 10 do
+      for CE.source(
+            source: source,
+            runtime_references: r,
+            compile_references: c,
+            struct_references: s
+          ) <- sources,
+          module in r or module in c or module in s,
+          CE.module(sources: sources, module: dependent_module) <- modules,
+          source in sources,
+          do: dependent_module
+    end
+  else
+    defp dependent_modules(%Version{major: 1, minor: minor}, module, modules, sources)
+         when minor >= 11 do
+      for CE.source(
+            source: source,
+            runtime_references: r,
+            compile_references: c,
+            export_references: s
+          ) <- sources,
+          module in r or module in c or module in s,
+          CE.module(sources: sources, module: dependent_module) <- modules,
+          source in sources,
+          do: dependent_module
+    end
   end
 
   defp dependent_modules(%Version{}, module, modules, sources) do

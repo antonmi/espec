@@ -18,13 +18,13 @@ defmodule ESpec.Mixfile do
   end
 
   def application do
-    [applications: []]
+    [applications: [], extra_applications: [:eex, :meck]]
   end
 
   defp deps do
     [
       {:meck, "~> 0.8.13"},
-      {:credo, "1.0.2", only: [:dev, :test], runtime: false},
+      {:credo, "1.4.1", only: [:dev, :test], runtime: false},
       # Docs
       {:ex_doc, "0.19.3", only: [:docs, :dev]}
     ]

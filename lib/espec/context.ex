@@ -34,24 +34,20 @@ defmodule ESpec.Context do
     end
   end
 
-  @doc "context with opts only"
   defmacro context(opts, do: block) when is_list(opts) do
     quote do: context("", unquote(opts), do: unquote(block))
   end
 
-  @doc "context with description only"
   defmacro context(description, do: block) do
     quote do
       context(unquote(description), [], do: unquote(block))
     end
   end
 
-  @doc "context with block"
   defmacro context(do: block) do
     quote do: context("", [], do: unquote(block))
   end
 
-  @doc "empty context"
   defmacro context(_description) do
     quote do: context("", [], do: true)
   end

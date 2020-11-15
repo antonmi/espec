@@ -103,7 +103,6 @@ defmodule ESpec.Let do
     quote do: let(:subject, do: unquote(block))
   end
 
-  @doc "Defines 'subject'."
   defmacro subject(var) do
     quote do: let(:subject, do: unquote(var))
   end
@@ -113,23 +112,14 @@ defmodule ESpec.Let do
     quote do: let!(:subject, do: unquote(block))
   end
 
-  @doc "Defines 'subject!'."
   defmacro subject!(var) do
     quote do: let!(:subject, do: unquote(var))
   end
 
-  @doc """
-  Defines 'subject' with name.
-  It is just an alias for 'let'.
-  """
   defmacro subject(var, do: block) do
     quote do: let(unquote(var), do: unquote(block))
   end
 
-  @doc """
-  Defines 'subject!' with name.
-  It is just an alias for 'let!'.
-  """
   defmacro subject!(var, do: block) do
     quote do: let!(unquote(var), do: unquote(block))
   end
@@ -141,9 +131,6 @@ defmodule ESpec.Let do
     do_result_let(var, block, :ok, false)
   end
 
-  @doc """
-  Allows to define several 'let_ok's at once
-  """
   defmacro let_ok(keyword) when is_list(keyword) do
     if Keyword.keyword?(keyword) do
       Enum.map(keyword, fn {var, block} -> do_result_let(var, block, :ok, false) end)
@@ -159,9 +146,6 @@ defmodule ESpec.Let do
     do_result_let(var, block, :ok, true)
   end
 
-  @doc """
-  Allows to define several 'let_ok!'s at once
-  """
   defmacro let_ok!(keyword) when is_list(keyword) do
     if Keyword.keyword?(keyword) do
       Enum.map(keyword, fn {var, block} -> do_result_let(var, block, :ok, true) end)
@@ -177,9 +161,6 @@ defmodule ESpec.Let do
     do_result_let(var, block, :error, false)
   end
 
-  @doc """
-  Allows to define several 'let_error's at once
-  """
   defmacro let_error(keyword) when is_list(keyword) do
     if Keyword.keyword?(keyword) do
       Enum.map(keyword, fn {var, block} -> do_result_let(var, block, :error, false) end)
@@ -195,9 +176,6 @@ defmodule ESpec.Let do
     do_result_let(var, block, :error, true)
   end
 
-  @doc """
-  Allows to define several 'let_error!'s at once
-  """
   defmacro let_error!(keyword) when is_list(keyword) do
     if Keyword.keyword?(keyword) do
       Enum.map(keyword, fn {var, block} -> do_result_let(var, block, :error, true) end)
