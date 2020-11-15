@@ -216,21 +216,23 @@ defmodule Mix.Tasks.Espec do
       files_with_opts = if Enum.any?(files), do: parse_files(files), else: []
       shared_spec_files = extract_shared_specs(project)
 
-      compile_result = files_with_opts
-      |> Enum.map(&elem(&1, 0))
-      |> if_empty_use(spec_paths)
-      |> extract_files(spec_pattern)
-      |> filter_stale_files()
-      |> compile(include_shared: shared_spec_files)
+      compile_result =
+        files_with_opts
+        |> Enum.map(&elem(&1, 0))
+        |> if_empty_use(spec_paths)
+        |> extract_files(spec_pattern)
+        |> filter_stale_files()
+        |> compile(include_shared: shared_spec_files)
 
       case compile_result do
         {:error, _, _} ->
           false
+
         _ ->
           Configuration.add(file_opts: files_with_opts)
           Configuration.add(shared_specs: shared_spec_files)
           Configuration.add(finish_loading_time: :os.timestamp())
-        end
+      end
     else
       false
     end
