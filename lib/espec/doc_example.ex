@@ -80,6 +80,8 @@ defmodule ESpec.DocExample do
     end
   end
 
+  defp extract_from_moduledoc(_anno, %{}), do: []
+
   defp extract_from_doc({{kind, _, _}, _, _, doc, _})
        when kind not in [:function, :macro] or doc in [:none, :hidden],
        do: []

@@ -48,7 +48,7 @@ defmodule RaiseExceptionTest do
       it do:
            expect(func3())
            |> to_not(
-             raise_exception(FunctionClauseError, "no function clause matching in List.first/1")
+             raise_exception(FunctionClauseError, "no function clause matching in List.first/2")
            )
     end
   end
