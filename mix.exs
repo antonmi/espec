@@ -24,9 +24,9 @@ defmodule ESpec.Mixfile do
   defp deps do
     [
       {:meck, "~> 0.9"},
-      {:credo, "~> 1.5", only: [:dev, :test], runtime: false},
+      {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       # Docs
-      {:ex_doc, "~> 0.23", only: [:docs, :dev]}
+      {:ex_doc, "~> 0.28", only: [:docs, :dev]}
     ]
   end
 
