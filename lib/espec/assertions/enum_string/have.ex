@@ -92,8 +92,7 @@ defmodule ESpec.Assertions.EnumString.Have do
   defp get_value_from_keyword(list, key) do
     list
     |> Keyword.get_values(key)
-    |> Enum.map(&inspect/1)
-    |> Enum.join(" and ")
+    |> Enum.map_join(" and ", &inspect/1)
   end
 
   defp to(true), do: "to"

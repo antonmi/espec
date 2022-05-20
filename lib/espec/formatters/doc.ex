@@ -50,19 +50,17 @@ defmodule ESpec.Formatters.Doc do
   defp format_failed(failed, opts) do
     failed
     |> Enum.with_index()
-    |> Enum.map(fn {example, index} ->
+    |> Enum.map_join("\n", fn {example, index} ->
       do_format_failed_example(example, index, opts)
     end)
-    |> Enum.join("\n")
   end
 
   defp format_pending(pending) do
     pending
     |> Enum.with_index()
-    |> Enum.map(fn {example, index} ->
+    |> Enum.map_join("\n", fn {example, index} ->
       do_format_pending_example(example, example.result, index)
     end)
-    |> Enum.join("\n")
   end
 
   defp do_format_pending_example(example, info, index) do
