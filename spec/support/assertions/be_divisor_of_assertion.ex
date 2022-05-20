@@ -14,8 +14,6 @@ defmodule BeDivisorOfAssertion do
   defp error_message(subject, number, result, positive) do
     to = if positive, do: "to", else: "not to"
 
-    "Expected `#{inspect(subject)}` #{to} be the divisor of `#{number}`, but the remainder is '#{
-      result
-    }'."
+    "Expected `#{inspect(subject)}` #{to} be the divisor of `#{number}`, but the remainder is '#{result}'."
   end
 end

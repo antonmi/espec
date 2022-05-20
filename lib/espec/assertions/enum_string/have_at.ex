@@ -27,9 +27,7 @@ defmodule ESpec.Assertions.EnumString.HaveAt do
     to = if positive, do: "to", else: "not to"
 
     m =
-      "Expected `#{inspect(enum)}` #{to} have `#{inspect(val)}` at `#{inspect(pos)}` position, but it has `#{
-        result
-      }`."
+      "Expected `#{inspect(enum)}` #{to} have `#{inspect(val)}` at `#{inspect(pos)}` position, but it has `#{result}`."
 
     if positive and not is_binary(enum) do
       {m, %{diff_fn: fn -> ESpec.Diff.diff(Enum.at(enum, pos), val) end}}

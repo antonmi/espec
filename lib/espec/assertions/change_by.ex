@@ -19,24 +19,18 @@ defmodule ESpec.Assertions.ChangeBy do
   defp success_message(subject, [func, value], _result, positive) do
     to = if positive, do: "changes", else: "doesn't change"
 
-    "`#{inspect(subject)}` #{to} the value of `#{inspect(func)}` by `#{
-      inspect(Keyword.get(value, :by))
-    }`."
+    "`#{inspect(subject)}` #{to} the value of `#{inspect(func)}` by `#{inspect(Keyword.get(value, :by))}`."
   end
 
   defp error_message(subject, [func, value], {_then, _initial, true}, positive) do
     to = if positive, do: "to", else: "not to"
 
-    "Expected `#{inspect(subject)}` #{to} change the value of `#{inspect(func)}` by `#{
-      inspect(Keyword.get(value, :by))
-    }`, but was not changed"
+    "Expected `#{inspect(subject)}` #{to} change the value of `#{inspect(func)}` by `#{inspect(Keyword.get(value, :by))}`, but was not changed"
   end
 
   defp error_message(subject, [func, value], {then, initial, false}, positive) do
     to = if positive, do: "to", else: "not to"
 
-    "Expected `#{inspect(subject)}` #{to} change the value of `#{inspect(func)}` by `#{
-      inspect(Keyword.get(value, :by))
-    }`, but was changed by `#{inspect(then - initial)}`"
+    "Expected `#{inspect(subject)}` #{to} change the value of `#{inspect(func)}` by `#{inspect(Keyword.get(value, :by))}`, but was changed by `#{inspect(then - initial)}`"
   end
 end

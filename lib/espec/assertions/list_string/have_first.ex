@@ -27,9 +27,7 @@ defmodule ESpec.Assertions.ListString.HaveFirst do
     to = if positive, do: "to", else: "not to"
 
     m =
-      "Expected `#{inspect(list)}` #{to} have first element `#{inspect(val)}` but it has `#{
-        inspect(result)
-      }`."
+      "Expected `#{inspect(list)}` #{to} have first element `#{inspect(val)}` but it has `#{inspect(result)}`."
 
     if positive and not is_binary(list) do
       {m, %{diff_fn: fn -> ESpec.Diff.diff(List.first(list), val) end}}

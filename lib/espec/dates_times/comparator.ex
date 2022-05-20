@@ -44,7 +44,7 @@ defmodule ESpec.DatesTimes.Comparator do
   defp do_diff(a, b, :month), do: diff_months(a, b)
   defp do_diff(a, b, :year), do: diff_years(a, b)
 
-  defp do_diff(_, _, granularity) when not (granularity in @units),
+  defp do_diff(_, _, granularity) when granularity not in @units,
     do: {:error, {:invalid_granularity, granularity}}
 
   defp diff_years(a, b) do

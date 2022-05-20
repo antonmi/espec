@@ -56,9 +56,7 @@ defmodule ESpec.Assertions.EnumString.Have do
 
   defp build_error_message(enum, {key, value}, result, positive) do
     m =
-      "Expected `#{inspect(enum)}` #{to(positive)} have `#{inspect(value)}` for key `#{
-        inspect(key)
-      }`, but it #{has(result)}."
+      "Expected `#{inspect(enum)}` #{to(positive)} have `#{inspect(value)}` for key `#{inspect(key)}`, but it #{has(result)}."
 
     if positive do
       actual = get_value(enum, key)

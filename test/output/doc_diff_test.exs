@@ -88,9 +88,7 @@ defmodule Formatters.DocDiffTest do
 
     assert String.contains?(
              output,
-             "\n\t  \e[36mexpected:\e[0m \"#{
-               String.duplicate("ex\e[31mpec\e[0mte\e[31md\e[0m", 100)
-             }\"\n"
+             "\n\t  \e[36mexpected:\e[0m \"#{String.duplicate("ex\e[31mpec\e[0mte\e[31md\e[0m", 100)}\"\n"
            )
 
     assert String.contains?(

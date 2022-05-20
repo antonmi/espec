@@ -87,16 +87,12 @@ defmodule ESpec.Assertions.RaiseException do
   defp error_message(subject, [module, message], false, positive) do
     to = if positive, do: "to", else: "not to"
 
-    "Expected #{inspect(subject)} #{to} raise the `#{module}` exception with the message `#{
-      message
-    }`, but nothing was raised."
+    "Expected #{inspect(subject)} #{to} raise the `#{module}` exception with the message `#{message}`, but nothing was raised."
   end
 
   defp error_message(subject, [module, message], [err_module, err_message], positive) do
     to = if positive, do: "to", else: "not to"
 
-    "Expected #{inspect(subject)} #{to} raise the `#{module}` exception with the message `#{
-      message
-    }`, but the `#{err_module}` exception was raised with the message `#{err_message}`."
+    "Expected #{inspect(subject)} #{to} raise the `#{module}` exception with the message `#{message}`, but the `#{err_module}` exception was raised with the message `#{err_message}`."
   end
 end

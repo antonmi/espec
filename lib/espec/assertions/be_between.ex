@@ -20,8 +20,6 @@ defmodule ESpec.Assertions.BeBetween do
     to = if positive, do: "to", else: "not to"
     but = if result, do: "it is", else: "it isn't"
 
-    "Expected `#{inspect(subject)}` #{to} be between `#{inspect(l)}` and `#{inspect(r)}`, but #{
-      but
-    }."
+    "Expected `#{inspect(subject)}` #{to} be between `#{inspect(l)}` and `#{inspect(r)}`, but #{but}."
   end
 end

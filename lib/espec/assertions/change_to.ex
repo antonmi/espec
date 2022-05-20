@@ -22,24 +22,18 @@ defmodule ESpec.Assertions.ChangeTo do
   defp error_message(subject, [func, value], {then, true, false, false}, positive) do
     to = if positive, do: "to", else: "not to"
 
-    "Expected `#{inspect(subject)}` #{to} change the value of `#{inspect(func)}` to `#{
-      inspect(value)
-    }`, but was changed to `#{inspect(then)}`"
+    "Expected `#{inspect(subject)}` #{to} change the value of `#{inspect(func)}` to `#{inspect(value)}`, but was changed to `#{inspect(then)}`"
   end
 
   defp error_message(subject, [func, value], {_then, true, false, true}, positive) do
     to = if positive, do: "to", else: "not to"
 
-    "Expected `#{inspect(subject)}` #{to} change the value of `#{inspect(func)}` to `#{
-      inspect(value)
-    }`, but was not changed"
+    "Expected `#{inspect(subject)}` #{to} change the value of `#{inspect(func)}` to `#{inspect(value)}`, but was not changed"
   end
 
   defp error_message(subject, [func, value], {_then, false, _, _}, positive) do
     to = if positive, do: "to", else: "not to"
 
-    "Expected `#{inspect(subject)}` #{to} change the value of `#{inspect(func)}` to `#{
-      inspect(value)
-    }`, but the initial value is `#{inspect(value)}`"
+    "Expected `#{inspect(subject)}` #{to} change the value of `#{inspect(func)}` to `#{inspect(value)}`, but the initial value is `#{inspect(value)}`"
   end
 end
