@@ -1,12 +1,13 @@
 language: elixir
 elixir:
-  - 1.9.4
   - 1.10.4
   - 1.11.2
+  - 1.13.4
 otp_release:
-  - 21.3
   - 22.2
   - 23.0
+  - 24.0
+  - 25.0
 matrix:
   exclude:
     - elixir: 1.9.4
@@ -16,7 +17,7 @@ script:
   - mix test
   - mix espec
   - mix espec spec_formatters/test_spec.exs
-  - if [ "$TRAVIS_ELIXIR_VERSION" = "1.11.2" ]; then mix format --check-formatted; fi
+  - if [ "$TRAVIS_ELIXIR_VERSION" = "1.13.4" ]; then mix format --check-formatted; fi
   - mix espec --stale
 notifications:
   recipients:
