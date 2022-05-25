@@ -1,7 +1,8 @@
 defmodule ESpec.DocTestTest.Mod4 do
   @doc """
-    iex> String.to_atom((fn() -> 1 end).())
-    ** (ArgumentError) argument error
+    iex(1)> :a + 1
+    ** (ArithmeticError) bad argument in arithmetic expression
+        :erlang.+(:a, 1)
 
     iex> raise ArithmeticError
     ** (ArithmeticError) bad argument in arithmetic expression
