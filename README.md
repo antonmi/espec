@@ -61,7 +61,7 @@ Add `espec` to dependencies in the `mix.exs` file:
 ```elixir
 def deps do
   ...
-  {:espec, "~> 1.8.3", only: :test},
+  {:espec, "~> 1.9.0", only: :test},
   #{:espec, github: "antonmi/espec", only: :test}, to get the latest version
   ...
 end
@@ -1200,7 +1200,10 @@ There are community supported formatters:
      - Elixir 1.10 compatibility.
   * 1.8.3
      - Elixir 1.11 compatibility.
-     - Fails with compilation error if spec can't be compiled                
+     - Fails with compilation error if spec can't be compiled
+  * 1.8.3
+    - Erlang 25 and Elixir 1.13 compatibility.
+    
 ## Contributing
 ##### Contributions are welcome and appreciated!
 
