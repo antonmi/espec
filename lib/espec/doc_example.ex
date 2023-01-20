@@ -35,6 +35,7 @@ defmodule ESpec.DocExample do
 
       {:error, reason} ->
         IO.inspect("-----------------------------------------------------------")
+
         raise Error,
           module: module,
           message:

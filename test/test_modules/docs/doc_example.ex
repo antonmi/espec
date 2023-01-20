@@ -10,7 +10,6 @@ defmodule TestModules.Docs.DocExample do
     def f, do: :f
   end
 
-
   defmodule Mod2 do
     @doc """
       iex> 1 + 1
