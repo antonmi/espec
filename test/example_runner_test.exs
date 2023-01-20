@@ -18,7 +18,7 @@ defmodule ExampleRunnerTest do
 
     context "errors" do
       it do: expect(1) |> to(eq(2))
-      it do: UndefinedModule.run()
+      it do: apply(UndefinedModule, :run, [])
 
       context "throw term inside it block" do
         it do: throw(:some_term)

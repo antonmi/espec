@@ -62,7 +62,7 @@ defmodule TestModules.Docs.DocTestModules do
 
   defmodule Mod4 do
     @doc """
-      iex(1)> :a + 1
+      iex(1)> apply(Kernel, :+, [:a, 1])
       ** (ArithmeticError) bad argument in arithmetic expression
           :erlang.+(:a, 1)
 

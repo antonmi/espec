@@ -1,27 +1,19 @@
 defmodule MockTest do
   use ExUnit.Case
 
-  import ExUnit.TestHelpers
-
-  defmodule SomeModule do
-    def f, do: :f
-    def m, do: :m
-
-    def f1(a), do: a
-  end
-  |> write_beam
+  alias TestModules.Mocks.SomeModule
 
   defmodule SomeSpec do
     use ESpec
 
     context "with mock" do
       before do
-        allow(SomeModule) |> to(accept(:f, fn a -> "mock! #{a}" end))
-        allow(SomeModule) |> to(accept(x: fn -> :y end, q: fn -> :w end))
+        allow(TestModules.Mocks.SomeModule) |> to(accept(:f, fn a -> "mock! #{a}" end))
+        allow(TestModules.Mocks.SomeModule) |> to(accept(x: fn -> :y end, q: fn -> :w end))
       end
 
-      it do: SomeModule.f(1)
-      it do: SomeModule.q()
+      it do: apply(SomeModule, :f, [1])
+      it do: apply(SomeModule, :q, [])
 
       it "SomeModule.m is defined" do
         expect(SomeModule.m()) |> to(eq(:m))
@@ -29,7 +21,7 @@ defmodule MockTest do
 
       context "expect accepted" do
         it do: expect(SomeModule) |> to_not(accepted(:f, [1]))
-        before do: SomeModule.f(1)
+        before do: apply(SomeModule, :f, [1])
         it do: expect(SomeModule) |> to(accepted(:f, [1]))
       end
 
@@ -56,7 +48,7 @@ defmodule MockTest do
       end
 
       it do: expect(SomeModule.f()) |> to(be_nil())
-      it do: expect(SomeModule.q(10)) |> to(be_nil())
+      it do: expect(apply(SomeModule, :q, [10])) |> to(be_nil())
     end
 
     context "without mock" do
