@@ -14,7 +14,10 @@ defmodule ESpec.DocExample do
   Read 'ESpec.DocTest' doc for more info.
   """
   defstruct lhs: nil, rhs: nil, fun_arity: nil, line: nil, type: :test
-  defmodule(Error, do: defexception([:message]))
+
+  defmodule Error do
+    defexception [:message, :module]
+  end
 
   @doc "Extract module docs and returns a list of %ESpec.DocExample{} structs"
   def extract(module) do
@@ -31,6 +34,7 @@ defmodule ESpec.DocExample do
         |> Enum.flat_map(&to_struct/1)
 
       {:error, reason} ->
+        IO.inspect("-----------------------------------------------------------")
         raise Error,
           module: module,
           message:

@@ -12,6 +12,7 @@ defmodule ESpec.Mixfile do
       description: description(),
       package: package(),
       deps: deps(),
+      elixirc_paths: elixirc_paths(Mix.env()),
       source_url: "https://github.com/antonmi/espec",
       preferred_cli_env: [espec: :test]
     ]
@@ -29,6 +30,9 @@ defmodule ESpec.Mixfile do
       {:ex_doc, "~> 0.28", only: [:docs, :dev]}
     ]
   end
+
+  defp elixirc_paths(:test), do: ["lib", "test/test_modules"]
+  defp elixirc_paths(_), do: ["lib"]
 
   defp description do
     "BDD testing framework for Elixir inspired by RSpec."

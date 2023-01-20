@@ -1,22 +1,6 @@
-defmodule ESpec.DocTestTest.Mod4 do
-  @doc """
-    iex(1)> :a + 1
-    ** (ArithmeticError) bad argument in arithmetic expression
-        :erlang.+(:a, 1)
-
-    iex> raise ArithmeticError
-    ** (ArithmeticError) bad argument in arithmetic expression
-
-    iex> 1 + 1
-    ** (ArithmeticError) bad argument in arithmetic expression
-  """
-  def f, do: :f
-end
-|> ExUnit.TestHelpers.write_beam()
-
 defmodule ESpec.DocTest.ExceptionsSpec do
   use ESpec, async: true
-  doctest ESpec.DocTestTest.Mod4, only: [f: 0]
+  doctest TestModules.Docs.DocTestModules.Mod4, only: [f: 0]
 end
 |> ExUnit.TestHelpers.write_beam()
 
