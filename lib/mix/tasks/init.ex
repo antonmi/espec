@@ -14,17 +14,10 @@ defmodule Mix.Tasks.Espec.Init do
 
   @spec_folder "spec"
   @spec_helper "spec_helper.exs"
-  @shared_spec_folder "shared"
-  @shared_spec_example "example_spec.exs"
 
   def run(_args) do
     create_directory(@spec_folder)
     create_file(Path.join(@spec_folder, @spec_helper), spec_helper_template(nil))
-
-    shared_specs = Path.join(@spec_folder, @shared_spec_folder)
-
-    create_directory(shared_specs)
-    create_file(Path.join(shared_specs, @shared_spec_example), shared_spec_example_template(nil))
   end
 
   embed_template(:spec_helper, """

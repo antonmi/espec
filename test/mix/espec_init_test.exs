@@ -22,14 +22,4 @@ defmodule EspecInitTest do
     {:ok, content} = File.read(Path.join(@tmp_path, "spec/spec_helper.exs"))
     assert content =~ "ESpec.config"
   end
-
-  test "check shared example spec exists" do
-    assert File.regular?(Path.join(@tmp_path, "spec/shared/example_spec.exs"))
-  end
-
-  test "shared/example_spec.exs content" do
-    {:ok, content} = File.read(Path.join(@tmp_path, "spec/shared/example_spec.exs"))
-    assert content =~ "defmodule ExampleSharedSpec do"
-    assert content =~ "use ESpec, shared: true"
-  end
 end
