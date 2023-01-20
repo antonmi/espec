@@ -1,5 +1,5 @@
 defmodule BeforeTest do
-  use ExUnit.Case, async: true
+  use ExUnit.Case, async: false
 
   defmodule SomeSpec do
     use ESpec

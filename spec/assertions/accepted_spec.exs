@@ -86,7 +86,7 @@ defmodule AcceptedSpec do
   describe "pid option" do
     defmodule Server do
       def call(a, b) do
-        SomeModule.func(a, b)
+        apply(SomeModule, :func, [a, b])
       end
     end
 

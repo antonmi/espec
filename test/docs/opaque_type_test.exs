@@ -1,15 +1,6 @@
-defmodule ESpec.DocTestTest.Mod5 do
-  @doc """
-    iex> Enum.into([a: 10, b: 20], Map.new)
-    %{a: 10, b: 20}
-  """
-  def f, do: :f
-end
-|> ExUnit.TestHelpers.write_beam()
-
 defmodule ESpec.DocTestTest.OpaqueTypeSpec do
   use ESpec
-  doctest ESpec.DocTestTest.Mod5
+  doctest TestModules.Docs.DocTestModules.Mod5
 end
 |> ExUnit.TestHelpers.write_beam()
 

@@ -1,19 +1,14 @@
 defmodule AcceptedTest do
   use ExUnit.Case
-  import ExUnit.TestHelpers
 
-  defmodule SomeModule do
-    def f, do: :f
-    def m, do: :m
-  end
-  |> write_beam
+  alias TestModules.Mocks.SomeModule
 
   defmodule SomeSpec do
     use ESpec
 
     ESpec.Context.describe "function call in another process" do
       defmodule Server do
-        def call(a, b), do: SomeModule.func(a, b)
+        def call(a, b), do: apply(SomeModule, :func, [a, b])
       end
 
       before do
@@ -39,8 +34,8 @@ defmodule AcceptedTest do
     ESpec.Context.describe "count option" do
       before do
         allow(SomeModule) |> to(accept(:func, fn a, b -> a + b end))
-        SomeModule.func(1, 2)
-        SomeModule.func(1, 2)
+        apply(SomeModule, :func, [1, 2])
+        apply(SomeModule, :func, [1, 2])
       end
 
       it do: expect(SomeModule) |> to(accepted(:func, [1, 2], count: 2))
@@ -50,7 +45,7 @@ defmodule AcceptedTest do
     ESpec.Context.describe "any args" do
       before do
         allow(SomeModule) |> to(accept(:func, fn a, b -> a + b end))
-        SomeModule.func(1, 2)
+        apply(SomeModule, :func, [1, 2])
       end
 
       it do: expect(SomeModule) |> to(accepted(:func))
