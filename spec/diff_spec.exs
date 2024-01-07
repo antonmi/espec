@@ -3,7 +3,7 @@ defmodule DiffSpec do
 
   defmacrop diff_1_2 do
     if Version.match?(System.version(), ">= 1.10.0") and
-         Version.match?(System.version(), "< 1.16.0") do
+         Version.match?(System.version(), "< 1.15.0") do
       quote do
         %ExUnit.Diff{
           equivalent?: false,
