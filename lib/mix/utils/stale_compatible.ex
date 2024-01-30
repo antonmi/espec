@@ -31,37 +31,6 @@ defmodule Mix.Utils.StaleCompatible do
   ## Test changed dependency resolution
 
   cond do
-    Version.match?(System.version(), "< 1.16.0") ->
-      def tests_with_changed_references(%Version{major: 1, minor: minor} = version, test_sources)
-          when minor >= 10 and minor < 16 do
-        test_manifest = Stale.manifest()
-        [elixir_manifest] = Mix.Tasks.Compile.Elixir.manifests()
-
-        if Mix.Utils.stale?([elixir_manifest], [test_manifest]) do
-          compile_path = Mix.Project.compile_path()
-          {elixir_modules, elixir_sources} = apply(CE, :read_manifest, [elixir_manifest])
-
-          stale_modules =
-            for CE.module(module: module) <- elixir_modules,
-                beam = Path.join(compile_path, Atom.to_string(module) <> ".beam"),
-                Mix.Utils.stale?([beam], [test_manifest]),
-                do: module,
-                into: MapSet.new()
-
-          stale_modules =
-            find_all_dependent_on(version, stale_modules, elixir_sources, elixir_modules)
-
-          for module <- stale_modules,
-              source(source: source, runtime_references: r, compile_references: c) <-
-                test_sources,
-              module in r or module in c,
-              do: source,
-              into: MapSet.new()
-        else
-          MapSet.new()
-        end
-      end
-
     Version.match?(System.version(), "< 1.10.0") ->
       def tests_with_changed_references(%Version{major: 1, minor: minor} = version, test_sources)
           when minor < 10 do
@@ -102,9 +71,39 @@ defmodule Mix.Utils.StaleCompatible do
         end
       end
 
-    true ->
+    Version.match?(System.version(), "< 1.16.0") ->
       def tests_with_changed_references(%Version{major: 1, minor: minor} = version, test_sources)
-          when minor >= 16 do
+          when minor >= 10 and minor < 16 do
+        test_manifest = Stale.manifest()
+        [elixir_manifest] = Mix.Tasks.Compile.Elixir.manifests()
+
+        if Mix.Utils.stale?([elixir_manifest], [test_manifest]) do
+          compile_path = Mix.Project.compile_path()
+          {elixir_modules, elixir_sources} = apply(CE, :read_manifest, [elixir_manifest])
+
+          stale_modules =
+            for CE.module(module: module) <- elixir_modules,
+                beam = Path.join(compile_path, Atom.to_string(module) <> ".beam"),
+                Mix.Utils.stale?([beam], [test_manifest]),
+                do: module,
+                into: MapSet.new()
+
+          stale_modules =
+            find_all_dependent_on(version, stale_modules, elixir_sources, elixir_modules)
+
+          for module <- stale_modules,
+              source(source: source, runtime_references: r, compile_references: c) <-
+                test_sources,
+              module in r or module in c,
+              do: source,
+              into: MapSet.new()
+        else
+          MapSet.new()
+        end
+      end
+
+    true ->
+      def tests_with_changed_references(%Version{major: 1} = version, test_sources) do
         test_manifest = Stale.manifest()
         [elixir_manifest] = Mix.Tasks.Compile.Elixir.manifests()
 
