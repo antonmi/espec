@@ -26,7 +26,7 @@ defmodule Mix.Tasks.Espec do
     end
 
     defp cover_function(mod, output) do
-      case :cover.analyse_to_file(mod, '#{output}/#{mod}.html', [:html]) do
+      case :cover.analyse_to_file(mod, ~c"#{output}/#{mod}.html", [:html]) do
         {:ok, _} -> nil
         {:error, error} -> Mix.shell().info("#{error} while generating cover results for #{mod}")
       end

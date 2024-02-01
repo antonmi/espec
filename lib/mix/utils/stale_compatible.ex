@@ -31,46 +31,6 @@ defmodule Mix.Utils.StaleCompatible do
   ## Test changed dependency resolution
 
   cond do
-    Version.match?(System.version(), "< 1.10.0") ->
-      def tests_with_changed_references(%Version{major: 1, minor: minor} = version, test_sources)
-          when minor < 10 do
-        test_manifest = Stale.manifest()
-        [elixir_manifest] = Mix.Tasks.Compile.Elixir.manifests()
-
-        if Mix.Utils.stale?([elixir_manifest], [test_manifest]) do
-          elixir_manifest_entries =
-            apply(CE, :read_manifest, [elixir_manifest, Mix.Project.compile_path()])
-            |> Enum.group_by(&elem(&1, 0))
-
-          stale_modules =
-            for CE.module(module: module) <- elixir_manifest_entries.module,
-                #  version 1.9 has this:
-                # for CE.module(module: module, beam: beam) <- elixir_manifest_entries.module
-                # but beam was removed in v1.10.
-                beam = Path.join(Mix.Project.compile_path(), Atom.to_string(module) <> ".beam"),
-                Mix.Utils.stale?([beam], [test_manifest]),
-                do: module,
-                into: MapSet.new()
-
-          stale_modules =
-            find_all_dependent_on(
-              version,
-              stale_modules,
-              elixir_manifest_entries.source,
-              elixir_manifest_entries.module
-            )
-
-          for module <- stale_modules,
-              source(source: source, runtime_references: r, compile_references: c) <-
-                test_sources,
-              module in r or module in c,
-              do: source,
-              into: MapSet.new()
-        else
-          MapSet.new()
-        end
-      end
-
     Version.match?(System.version(), "< 1.16.0") ->
       def tests_with_changed_references(%Version{major: 1, minor: minor} = version, test_sources)
           when minor >= 10 and minor < 16 do
@@ -262,21 +222,6 @@ defmodule Mix.Utils.StaleCompatible do
   end
 
   cond do
-    Version.match?(System.version(), "< 1.11.0") ->
-      defp dependent_modules(%Version{major: 1, minor: minor}, module, modules, sources)
-           when minor >= 10 do
-        for CE.source(
-              source: source,
-              runtime_references: r,
-              compile_references: c,
-              struct_references: s
-            ) <- sources,
-            module in r or module in c or module in s,
-            CE.module(sources: sources, module: dependent_module) <- modules,
-            source in sources,
-            do: dependent_module
-      end
-
     Version.match?(System.version(), "< 1.16.0") ->
       defp dependent_modules(%Version{major: 1, minor: minor}, module, modules, sources)
            when minor >= 11 do
