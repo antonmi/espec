@@ -60,7 +60,7 @@ Add `espec` to dependencies in the `mix.exs` file:
 ```elixir
 def deps do
   ...
-  {:espec, "~> 1.9.1", only: :test},
+  {:espec, "~> 1.9.2", only: :test},
   ...
 end
 ```
