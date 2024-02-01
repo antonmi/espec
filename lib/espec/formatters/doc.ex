@@ -164,79 +164,47 @@ defmodule ESpec.Formatters.Doc do
     ""
   end
 
-  if Version.match?(System.version(), ">= 1.10.0") do
-    defp format_diff(%ExUnit.Diff{
-           left: left,
-           right: right
-         }) do
-      left =
-        left
-        |> ExUnit.Diff.to_algebra(fn doc ->
-          Inspect.Algebra.color(
-            doc,
-            get_color_by_content(doc, :diff_delete, :diff_delete_whitespace),
-            %Inspect.Opts{syntax_colors: @diff_colors}
-          )
-        end)
-        |> Inspect.Algebra.nest(20)
-        |> Inspect.Algebra.format(80)
+  defp format_diff(%ExUnit.Diff{
+         left: left,
+         right: right
+       }) do
+    left =
+      left
+      |> ExUnit.Diff.to_algebra(fn doc ->
+        Inspect.Algebra.color(
+          doc,
+          get_color_by_content(doc, :diff_delete, :diff_delete_whitespace),
+          %Inspect.Opts{syntax_colors: @diff_colors}
+        )
+      end)
+      |> Inspect.Algebra.nest(20)
+      |> Inspect.Algebra.format(80)
 
-      right =
-        right
-        |> ExUnit.Diff.to_algebra(fn doc ->
-          Inspect.Algebra.color(
-            doc,
-            get_color_by_content(doc, :diff_insert, :diff_insert_whitespace),
-            %Inspect.Opts{syntax_colors: @diff_colors}
-          )
-        end)
-        |> Inspect.Algebra.nest(20)
-        |> Inspect.Algebra.format(80)
+    right =
+      right
+      |> ExUnit.Diff.to_algebra(fn doc ->
+        Inspect.Algebra.color(
+          doc,
+          get_color_by_content(doc, :diff_insert, :diff_insert_whitespace),
+          %Inspect.Opts{syntax_colors: @diff_colors}
+        )
+      end)
+      |> Inspect.Algebra.nest(20)
+      |> Inspect.Algebra.format(80)
 
-      "\n\t  #{colorize(@main_colors[:diff_headers], "expected:")} " <>
-        IO.iodata_to_binary(left) <>
-        "\n\t  #{colorize(@main_colors[:diff_headers], "actual:")}   " <>
-        IO.iodata_to_binary(right)
-    end
+    "\n\t  #{colorize(@main_colors[:diff_headers], "expected:")} " <>
+      IO.iodata_to_binary(left) <>
+      "\n\t  #{colorize(@main_colors[:diff_headers], "actual:")}   " <>
+      IO.iodata_to_binary(right)
+  end
 
-    defp get_color_by_content(content, color_if_normal, color_if_whitespace)
-         when is_binary(content) do
-      if String.trim_leading(content) == "", do: color_if_whitespace, else: color_if_normal
-    end
+  defp get_color_by_content(content, color_if_normal, color_if_whitespace)
+       when is_binary(content) do
+    if String.trim_leading(content) == "", do: color_if_whitespace, else: color_if_normal
+  end
 
-    defp get_color_by_content(_content, color_if_normal, _color_if_whitespace) do
-      color_if_normal
-    end
-  else
-    defp format_diff({l, r}) do
-      [
-        "",
-        "\t  #{colorize(@main_colors[:diff_headers], "expected:")} #{colorize_diff(r)}",
-        "\t  #{colorize(@main_colors[:diff_headers], "actual:")}   #{colorize_diff(l)}"
-      ]
-      |> Enum.join("\n")
-    end
-
-    defp colorize_diff([{:eq, text} | rest]) do
-      text <> colorize_diff(rest)
-    end
-
-    defp colorize_diff([{:ins, text} | rest]) do
-      colorize(@diff_colors[:diff_insert], text) <> colorize_diff(rest)
-    end
-
-    defp colorize_diff([{:del, text} | rest]) do
-      colorize(@diff_colors[:diff_delete], text) <> colorize_diff(rest)
-    end
-
-    defp colorize_diff([{:ins_whitespace, length} | rest]) do
-      colorize(@diff_colors[:diff_insert_whitespace], String.duplicate(" ", length)) <>
-        colorize_diff(rest)
-    end
-
-    defp colorize_diff([]) do
-      ""
-    end
+  defp get_color_by_content(_content, color_if_normal, _color_if_whitespace) do
+    color_if_normal
   end
 
   defp format_footer(examples, failed, pending) do

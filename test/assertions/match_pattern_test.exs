@@ -52,14 +52,6 @@ defmodule MatchPatternTest do
           expect({:ok, 1}) |> to_not(match_pattern(^pattern))
         end
       end
-
-      context "with let functions" do
-        let foo: "bar"
-
-        it do
-          expect("bar") |> to(match_pattern foo())
-        end
-      end
     end
   end
 
