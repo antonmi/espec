@@ -2,7 +2,8 @@ defmodule DiffSpec do
   use ESpec, async: true
 
   defmacrop diff_1_2 do
-    if Version.match?(System.version(), ">= 1.10.0") do
+    if Version.match?(System.version(), ">= 1.10.0") and
+         Version.match?(System.version(), "< 1.15.0") do
       quote do
         %ExUnit.Diff{
           equivalent?: false,
@@ -12,7 +13,11 @@ defmodule DiffSpec do
       end
     else
       quote do
-        {[ins: "1"], [del: "2"]}
+        %ExUnit.Diff{
+          equivalent?: false,
+          left: %{delimiter: nil, contents: [true: "2"]},
+          right: %{delimiter: nil, contents: [true: "1"]}
+        }
       end
     end
   end

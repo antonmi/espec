@@ -21,7 +21,9 @@ defmodule ESpec.Assertions.Enum.HaveAllSpec do
 
     it "checks success with `to`" do
       message = expect(dict()) |> to(have_all(positive()))
-      expect(message) |> to(end_with "returns `true` for all elements in `%{a: 1, b: 2, c: 3}`.")
+
+      expect(message)
+      |> to(end_with "returns `true` for all elements in `#{inspect(%{a: 1, b: 2, c: 3})}`.")
     end
 
     it "checks success with `not_to`" do

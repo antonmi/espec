@@ -31,7 +31,7 @@ defmodule ESpec.Assertions.EqSpec do
           {:shared,
            expectation: fn -> expect(%{a: 2, b: 3, c: 4}) |> to(eq(%{a: 2, b: 4})) end,
            message:
-             "Expected `%{a: 2, b: 3, c: 4}` to equal (==) `%{a: 2, b: 4}`, but it doesn't.",
+             "Expected `#{inspect(%{a: 2, b: 3, c: 4})}` to equal (==) `%{a: 2, b: 4}`, but it doesn't.",
            extra: true}
         end
 

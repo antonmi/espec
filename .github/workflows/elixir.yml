@@ -23,6 +23,10 @@ jobs:
             elixir-version: '1.13.4'
           - otp-version: '25.0'
             elixir-version: '1.14.2'
+          - otp-version: '25.1.2'
+            elixir-version: '1.15.7'
+          - otp-version: '26.0'
+            elixir-version: '1.16.0'
     steps:
     - uses: actions/checkout@v2
     - name: Set up Elixir

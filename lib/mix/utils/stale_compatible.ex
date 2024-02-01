@@ -30,71 +30,107 @@ defmodule Mix.Utils.StaleCompatible do
 
   ## Test changed dependency resolution
 
-  def tests_with_changed_references(%Version{major: 1, minor: minor} = version, test_sources)
-      when minor >= 10 do
-    test_manifest = Stale.manifest()
-    [elixir_manifest] = Mix.Tasks.Compile.Elixir.manifests()
+  cond do
+    Version.match?(System.version(), "< 1.10.0") ->
+      def tests_with_changed_references(%Version{major: 1, minor: minor} = version, test_sources)
+          when minor < 10 do
+        test_manifest = Stale.manifest()
+        [elixir_manifest] = Mix.Tasks.Compile.Elixir.manifests()
 
-    if Mix.Utils.stale?([elixir_manifest], [test_manifest]) do
-      compile_path = Mix.Project.compile_path()
-      {elixir_modules, elixir_sources} = apply(CE, :read_manifest, [elixir_manifest])
+        if Mix.Utils.stale?([elixir_manifest], [test_manifest]) do
+          elixir_manifest_entries =
+            apply(CE, :read_manifest, [elixir_manifest, Mix.Project.compile_path()])
+            |> Enum.group_by(&elem(&1, 0))
 
-      stale_modules =
-        for CE.module(module: module) <- elixir_modules,
-            beam = Path.join(compile_path, Atom.to_string(module) <> ".beam"),
-            Mix.Utils.stale?([beam], [test_manifest]),
-            do: module,
-            into: MapSet.new()
+          stale_modules =
+            for CE.module(module: module) <- elixir_manifest_entries.module,
+                #  version 1.9 has this:
+                # for CE.module(module: module, beam: beam) <- elixir_manifest_entries.module
+                # but beam was removed in v1.10.
+                beam = Path.join(Mix.Project.compile_path(), Atom.to_string(module) <> ".beam"),
+                Mix.Utils.stale?([beam], [test_manifest]),
+                do: module,
+                into: MapSet.new()
 
-      stale_modules =
-        find_all_dependent_on(version, stale_modules, elixir_sources, elixir_modules)
+          stale_modules =
+            find_all_dependent_on(
+              version,
+              stale_modules,
+              elixir_manifest_entries.source,
+              elixir_manifest_entries.module
+            )
 
-      for module <- stale_modules,
-          source(source: source, runtime_references: r, compile_references: c) <- test_sources,
-          module in r or module in c,
-          do: source,
-          into: MapSet.new()
-    else
-      MapSet.new()
-    end
-  end
+          for module <- stale_modules,
+              source(source: source, runtime_references: r, compile_references: c) <-
+                test_sources,
+              module in r or module in c,
+              do: source,
+              into: MapSet.new()
+        else
+          MapSet.new()
+        end
+      end
 
-  def tests_with_changed_references(%Version{major: 1, minor: minor} = version, test_sources)
-      when minor < 10 do
-    test_manifest = Stale.manifest()
-    [elixir_manifest] = Mix.Tasks.Compile.Elixir.manifests()
+    Version.match?(System.version(), "< 1.16.0") ->
+      def tests_with_changed_references(%Version{major: 1, minor: minor} = version, test_sources)
+          when minor >= 10 and minor < 16 do
+        test_manifest = Stale.manifest()
+        [elixir_manifest] = Mix.Tasks.Compile.Elixir.manifests()
 
-    if Mix.Utils.stale?([elixir_manifest], [test_manifest]) do
-      elixir_manifest_entries =
-        apply(CE, :read_manifest, [elixir_manifest, Mix.Project.compile_path()])
-        |> Enum.group_by(&elem(&1, 0))
+        if Mix.Utils.stale?([elixir_manifest], [test_manifest]) do
+          compile_path = Mix.Project.compile_path()
+          {elixir_modules, elixir_sources} = apply(CE, :read_manifest, [elixir_manifest])
 
-      stale_modules =
-        for CE.module(module: module) <- elixir_manifest_entries.module,
-            #  version 1.9 has this:
-            # for CE.module(module: module, beam: beam) <- elixir_manifest_entries.module
-            # but beam was removed in v1.10.
-            beam = Path.join(Mix.Project.compile_path(), Atom.to_string(module) <> ".beam"),
-            Mix.Utils.stale?([beam], [test_manifest]),
-            do: module,
-            into: MapSet.new()
+          stale_modules =
+            for CE.module(module: module) <- elixir_modules,
+                beam = Path.join(compile_path, Atom.to_string(module) <> ".beam"),
+                Mix.Utils.stale?([beam], [test_manifest]),
+                do: module,
+                into: MapSet.new()
 
-      stale_modules =
-        find_all_dependent_on(
-          version,
-          stale_modules,
-          elixir_manifest_entries.source,
-          elixir_manifest_entries.module
-        )
+          stale_modules =
+            find_all_dependent_on(version, stale_modules, elixir_sources, elixir_modules)
 
-      for module <- stale_modules,
-          source(source: source, runtime_references: r, compile_references: c) <- test_sources,
-          module in r or module in c,
-          do: source,
-          into: MapSet.new()
-    else
-      MapSet.new()
-    end
+          for module <- stale_modules,
+              source(source: source, runtime_references: r, compile_references: c) <-
+                test_sources,
+              module in r or module in c,
+              do: source,
+              into: MapSet.new()
+        else
+          MapSet.new()
+        end
+      end
+
+    true ->
+      def tests_with_changed_references(%Version{major: 1} = version, test_sources) do
+        test_manifest = Stale.manifest()
+        [elixir_manifest] = Mix.Tasks.Compile.Elixir.manifests()
+
+        if Mix.Utils.stale?([elixir_manifest], [test_manifest]) do
+          compile_path = Mix.Project.compile_path()
+          {elixir_modules, elixir_sources} = apply(CE, :read_manifest, [elixir_manifest])
+
+          stale_modules =
+            for {module, _} <- elixir_modules,
+                beam = Path.join(compile_path, Atom.to_string(module) <> ".beam"),
+                Mix.Utils.stale?([beam], [test_manifest]),
+                do: module,
+                into: MapSet.new()
+
+          stale_modules =
+            find_all_dependent_on(version, stale_modules, elixir_sources, elixir_modules)
+
+          for module <- stale_modules,
+              source(source: source, runtime_references: r, compile_references: c) <-
+                test_sources,
+              module in r or module in c,
+              do: source,
+              into: MapSet.new()
+        else
+          MapSet.new()
+        end
+      end
   end
 
   ## ParallelRequire callback: Handled differently depending on Elixir version
@@ -225,42 +261,50 @@ defmodule Mix.Utils.StaleCompatible do
     end
   end
 
-  if Version.match?(System.version(), "< 1.11.0") do
-    defp dependent_modules(%Version{major: 1, minor: minor}, module, modules, sources)
-         when minor >= 10 do
-      for CE.source(
-            source: source,
-            runtime_references: r,
-            compile_references: c,
-            struct_references: s
-          ) <- sources,
-          module in r or module in c or module in s,
-          CE.module(sources: sources, module: dependent_module) <- modules,
-          source in sources,
-          do: dependent_module
-    end
-  else
-    defp dependent_modules(%Version{major: 1, minor: minor}, module, modules, sources)
-         when minor >= 11 do
-      for CE.source(
-            source: source,
-            runtime_references: r,
-            compile_references: c,
-            export_references: s
-          ) <- sources,
-          module in r or module in c or module in s,
-          CE.module(sources: sources, module: dependent_module) <- modules,
-          source in sources,
-          do: dependent_module
-    end
-  end
+  cond do
+    Version.match?(System.version(), "< 1.11.0") ->
+      defp dependent_modules(%Version{major: 1, minor: minor}, module, modules, sources)
+           when minor >= 10 do
+        for CE.source(
+              source: source,
+              runtime_references: r,
+              compile_references: c,
+              struct_references: s
+            ) <- sources,
+            module in r or module in c or module in s,
+            CE.module(sources: sources, module: dependent_module) <- modules,
+            source in sources,
+            do: dependent_module
+      end
 
-  defp dependent_modules(%Version{}, module, modules, sources) do
-    for CE.source(source: source, runtime_references: r, compile_references: c) <- sources,
-        module in r or module in c,
-        CE.module(sources: sources, module: dependent_module) <- modules,
-        source in sources,
-        do: dependent_module
+    Version.match?(System.version(), "< 1.16.0") ->
+      defp dependent_modules(%Version{major: 1, minor: minor}, module, modules, sources)
+           when minor >= 11 do
+        for CE.source(
+              source: source,
+              runtime_references: r,
+              compile_references: c,
+              export_references: s
+            ) <- sources,
+            module in r or module in c or module in s,
+            CE.module(sources: sources, module: dependent_module) <- modules,
+            source in sources,
+            do: dependent_module
+      end
+
+    true ->
+      defp dependent_modules(%Version{}, module, modules, sources) do
+        for {source,
+             CE.source(
+               runtime_references: r,
+               compile_references: c,
+               export_references: e
+             )} <- sources,
+            module in r or module in c or module in e,
+            {dependent_module, CE.module(sources: sources)} <- modules,
+            source in sources,
+            do: dependent_module
+      end
   end
 
   defp parse_version do
