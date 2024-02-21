@@ -1199,8 +1199,12 @@ There are community supported formatters:
   * 1.8.3
      - Elixir 1.11 compatibility.
      - Fails with compilation error if spec can't be compiled
-  * 1.8.3
+  * 1.9.0
     - Erlang 25 and Elixir 1.13 compatibility.
+  * 1.9.1
+    - Simplify espec.init.
+  * 1.9.2
+    - OTP 26 and Elixir 1.16 compatibility. 
     
 ## Contributing
 ##### Contributions are welcome and appreciated!
