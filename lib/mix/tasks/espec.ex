@@ -130,7 +130,7 @@ defmodule Mix.Tasks.Espec do
         cover[:tool].start(Mix.Project.compile_path(project), cover)
       end
 
-    Mix.shell().print_app
+    Mix.shell().print_app()
     Mix.Task.run("app.start", args)
 
     ensure_espec_loaded!()

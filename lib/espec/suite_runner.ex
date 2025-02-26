@@ -18,7 +18,7 @@ defmodule ESpec.SuiteRunner do
   end
 
   defp run_module_examples(module, opts, shuffle) do
-    examples_to_run = filter(module.examples, opts)
+    examples_to_run = filter(module.examples(), opts)
 
     if shuffle do
       run_examples(Enum.shuffle(examples_to_run))
