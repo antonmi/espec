@@ -25,7 +25,7 @@ defmodule ESpec.Assertions.List.HaveTl do
     if positive and not is_binary(list) do
       {m, %{diff_fn: fn -> ESpec.Diff.diff(tl(list), val) end}}
     else
-      m
+      {m, nil}
     end
   end
 end

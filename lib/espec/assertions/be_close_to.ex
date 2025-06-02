@@ -36,13 +36,19 @@ defmodule ESpec.Assertions.BeCloseTo do
     to = if positive, do: "to", else: "not to"
     but = if actual_delta == delta, do: "it is", else: "it isn't"
 
-    "Expected `#{inspect(subject)}` #{to} be close to `#{inspect(value)}` with delta `#{inspect(delta)}`, but #{but}. The actual delta is {:#{granularity}, #{actual_delta}}."
+    {
+      "Expected `#{inspect(subject)}` #{to} be close to `#{inspect(value)}` with delta `#{inspect(delta)}`, but #{but}. The actual delta is {:#{granularity}, #{actual_delta}}.",
+      nil
+    }
   end
 
   defp error_message(subject, [value, delta], result, positive) do
     to = if positive, do: "to", else: "not to"
     but = if result, do: "it is", else: "it isn't"
 
-    "Expected `#{inspect(subject)}` #{to} be close to `#{inspect(value)}` with delta `#{inspect(delta)}`, but #{but}."
+    {
+      "Expected `#{inspect(subject)}` #{to} be close to `#{inspect(value)}` with delta `#{inspect(delta)}`, but #{but}.",
+      nil
+    }
   end
 end

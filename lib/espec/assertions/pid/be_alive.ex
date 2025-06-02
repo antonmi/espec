@@ -19,6 +19,6 @@ defmodule ESpec.Assertions.PID.BeAlive do
   defp error_message(subject, _val, _result, positive) do
     to = if positive, do: "to", else: "not to"
     but = if positive, do: "it isn't", else: "it is"
-    "Expected `#{inspect(subject)}` #{to} be alive but #{but}."
+    {"Expected `#{inspect(subject)}` #{to} be alive but #{but}.", nil}
   end
 end

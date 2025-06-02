@@ -32,7 +32,7 @@ defmodule ESpec.Assertions.EnumString.HaveAt do
     if positive and not is_binary(enum) do
       {m, %{diff_fn: fn -> ESpec.Diff.diff(Enum.at(enum, pos), val) end}}
     else
-      m
+      {m, nil}
     end
   end
 end

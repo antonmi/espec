@@ -22,6 +22,6 @@ defmodule ESpec.Assertions.Enum.HaveAny do
   defp error_message(enum, func, result, positive) do
     to = if positive, do: "to", else: "not to"
 
-    "Expected `#{inspect(func)}` #{to} return `true` for at least one element in `#{inspect(enum)}` but it returns `#{result}` for all."
+    {"Expected `#{inspect(func)}` #{to} return `true` for at least one element in `#{inspect(enum)}` but it returns `#{result}` for all.", nil}
   end
 end

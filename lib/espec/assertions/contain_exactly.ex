@@ -49,7 +49,7 @@ defmodule ESpec.Assertions.ContainExactly do
     if positive do
       {m, %{diff_fn: fn -> diff(subject, data) end}}
     else
-      m
+      {m, nil}
     end
   end
 end

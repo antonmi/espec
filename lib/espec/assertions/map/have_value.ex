@@ -19,6 +19,9 @@ defmodule ESpec.Assertions.Map.HaveValue do
   defp error_message(dict, val, _result, positive) do
     to = if positive, do: "to", else: "not to"
     but = if positive, do: "doesn't have", else: "has"
-    "Expected `#{inspect(dict)}` #{to} have value `#{inspect(val)}` but it #{but}."
+    {
+      "Expected `#{inspect(dict)}` #{to} have value `#{inspect(val)}` but it #{but}.",
+      nil
+    }
   end
 end

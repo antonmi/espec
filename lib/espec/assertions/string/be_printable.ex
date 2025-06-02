@@ -19,6 +19,6 @@ defmodule ESpec.Assertions.String.BePrintable do
   defp error_message(string, _val, _result, positive) do
     to = if positive, do: "to", else: "not to"
     but = if positive, do: "it isn't", else: "it is"
-    "Expected `#{inspect(string)}` #{to} be printable but #{but}."
+    {"Expected `#{inspect(string)}` #{to} be printable but #{but}.", nil}
   end
 end
