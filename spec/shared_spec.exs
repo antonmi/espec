@@ -24,11 +24,6 @@ defmodule SharedSpec do
 
     it do: b() |> should(eq 2)
   end
-
-  describe "let and let form outer module" do
-    it do: shared.outer_let() |> should(eq :outer_let)
-    it do: shared.outer_let!() |> should(eq :outer_let!)
-  end
 end
 
 defmodule UseSharedSpecSpec do

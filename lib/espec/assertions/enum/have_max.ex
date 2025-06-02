@@ -19,6 +19,7 @@ defmodule ESpec.Assertions.Enum.HaveMax do
   defp error_message(enum, val, result, positive) do
     to = if positive, do: "to be", else: "not to be"
 
-    "Expected the maximum value of `#{inspect(enum)}` #{to} `#{val}` but the maximum is `#{result}`."
+    {"Expected the maximum value of `#{inspect(enum)}` #{to} `#{val}` but the maximum is `#{result}`.",
+     nil}
   end
 end

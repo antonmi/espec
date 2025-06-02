@@ -24,7 +24,7 @@ defmodule ESpec.Assertions.Eq do
     if positive do
       {m, %{diff_fn: fn -> ESpec.Diff.diff(subject, data) end}}
     else
-      m
+      {m, nil}
     end
   end
 end

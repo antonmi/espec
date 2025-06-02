@@ -6,6 +6,7 @@ defmodule AcceptedSpec do
   defmodule SomeModule do
     def f, do: :f
     def m, do: :m
+    def func(a, b), do: a - b
   end
   |> write_beam
 

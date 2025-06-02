@@ -70,7 +70,10 @@ defmodule ESpec.Assertions.Be do
          {actual_granularity, actual_delta},
          positive
        ) do
-    "Expected `#{inspect(subject)} #{op} #{inspect(val)}` to be `#{positive}` but got `#{!positive}` with delta `[#{granularity}: #{delta}]`. The actual delta is [#{actual_granularity}: #{actual_delta}], with an inclusive boundary."
+    {
+      "Expected `#{inspect(subject)} #{op} #{inspect(val)}` to be `#{positive}` but got `#{!positive}` with delta `[#{granularity}: #{delta}]`. The actual delta is [#{actual_granularity}: #{actual_delta}], with an inclusive boundary.",
+      nil
+    }
   end
 
   defp error_message(
@@ -79,10 +82,16 @@ defmodule ESpec.Assertions.Be do
          {actual_granularity, actual_delta},
          positive
        ) do
-    "Expected `#{inspect(subject)} #{op} #{inspect(val)}` to be `#{positive}` but got `#{!positive}` with delta `{:#{granularity}, #{delta}}`. The actual delta is {:#{actual_granularity}, #{actual_delta}}, with an inclusive boundary."
+    {
+      "Expected `#{inspect(subject)} #{op} #{inspect(val)}` to be `#{positive}` but got `#{!positive}` with delta `{:#{granularity}, #{delta}}`. The actual delta is {:#{actual_granularity}, #{actual_delta}}, with an inclusive boundary.",
+      nil
+    }
   end
 
   defp error_message(subject, [op, val], _result, positive) do
-    "Expected `#{inspect(subject)} #{op} #{inspect(val)}` to be `#{positive}` but got `#{!positive}`."
+    {
+      "Expected `#{inspect(subject)} #{op} #{inspect(val)}` to be `#{positive}` but got `#{!positive}`.",
+      nil
+    }
   end
 end

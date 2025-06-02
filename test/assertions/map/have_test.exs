@@ -23,13 +23,13 @@ defmodule Map.HaveTest do
     end
 
     context "Error" do
-      it do: expect(map()).to_not(have({:foo, "bar"}))
-      it do: expect(map()).to_not(have(foo: "bar"))
-      it do: expect(map()).to(have(4))
+      it do: expect(map()) |> to_not(have({:foo, "bar"}))
+      it do: expect(map()) |> to_not(have(foo: "bar"))
+      it do: expect(map()) |> to(have(4))
 
-      it do: expect(struct()).to_not(have({:foo, "bar"}))
-      it do: expect(struct()).to_not(have(foo: "bar"))
-      it do: expect(struct()).to(have(4))
+      it do: expect(struct()) |> to_not(have({:foo, "bar"}))
+      it do: expect(struct()) |> to_not(have(foo: "bar"))
+      it do: expect(struct()) |> to(have(4))
     end
   end
 

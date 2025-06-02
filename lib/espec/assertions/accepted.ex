@@ -77,6 +77,9 @@ defmodule ESpec.Assertions.Accepted do
     opts_count = Keyword.get(opts, :count) || :any
     count = if opts_count == :any, do: "at least once", else: "`#{opts_count}` times"
 
-    "Expected `#{inspect(subject)}` #{to} accept `#{inspect(func)}` with `#{inspect(args)}` in process `#{inspect(pid)}` #{count}, but #{but}. The function was called with arguments #{inspect(args)}"
+    {
+      "Expected `#{inspect(subject)}` #{to} accept `#{inspect(func)}` with `#{inspect(args)}` in process `#{inspect(pid)}` #{count}, but #{but}. The function was called with arguments #{inspect(args)}",
+      nil
+    }
   end
 end

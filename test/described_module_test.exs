@@ -12,6 +12,6 @@ defmodule ESpec.DescribedModuleTest do
 
   test ".described_module" do
     assert TheSpecModuleSpec.described_module() == TheSpecModule
-    assert TheSpecModuleSpec.described_module().test == :test
+    assert apply(TheSpecModuleSpec.described_module(), :test, []) == :test
   end
 end

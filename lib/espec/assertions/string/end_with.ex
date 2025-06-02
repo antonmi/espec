@@ -38,7 +38,7 @@ defmodule ESpec.Assertions.String.EndWith do
     if positive do
       {m, %{diff_fn: fn -> ESpec.Diff.diff(result, val) end}}
     else
-      m
+      {m, nil}
     end
   end
 end

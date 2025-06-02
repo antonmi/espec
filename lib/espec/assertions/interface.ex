@@ -34,13 +34,7 @@ defmodule ESpec.Assertions.Interface do
       end
 
       defp raise_error(subject, data, result, positive, stacktrace \\ nil) do
-        e = error_message(subject, data, result, positive)
-
-        {message, extra} =
-          case e do
-            {_, _} -> e
-            _ -> {e, nil}
-          end
+        {message, extra} = error_message(subject, data, result, positive)
 
         raise ESpec.AssertionError,
           subject: subject,

@@ -18,6 +18,6 @@ defmodule ESpec.Assertions.Binary.HaveByteSize do
 
   defp error_message(enum, val, result, positive) do
     to = if positive, do: "to", else: "not to"
-    "Expected `#{inspect(enum)}` #{to} have `#{val}` byte(s) but it has `#{result}`."
+    {"Expected `#{inspect(enum)}` #{to} have `#{val}` byte(s) but it has `#{result}`.", nil}
   end
 end

@@ -64,9 +64,15 @@ defmodule ESpec.Assertions.RaiseException do
 
   defp error_message(subject, [], false, positive) do
     if positive do
-      "Expected #{inspect(subject)} to raise an exception, but nothing was raised."
+      {
+        "Expected #{inspect(subject)} to raise an exception, but nothing was raised.",
+        nil
+      }
     else
-      "Expected #{inspect(subject)} not to raise an exception, but an exception was raised."
+      {
+        "Expected #{inspect(subject)} not to raise an exception, but an exception was raised.",
+        nil
+      }
     end
   end
 
@@ -74,25 +80,40 @@ defmodule ESpec.Assertions.RaiseException do
     if positive do
       case err_module do
         {false, nil} ->
-          "Expected #{inspect(subject)} to raise the `#{module}` exception, but nothing was raised."
+          {
+            "Expected #{inspect(subject)} to raise the `#{module}` exception, but nothing was raised.",
+            nil
+          }
 
         err_module ->
-          "Expected #{inspect(subject)} to raise the `#{module}` exception, but `#{err_module}` was raised instead."
+          {
+            "Expected #{inspect(subject)} to raise the `#{module}` exception, but `#{err_module}` was raised instead.",
+            nil
+          }
       end
     else
-      "Expected #{inspect(subject)} not to raise the `#{module}` exception, but the `#{err_module}` exception was raised."
+      {
+        "Expected #{inspect(subject)} not to raise the `#{module}` exception, but the `#{err_module}` exception was raised.",
+        nil
+      }
     end
   end
 
   defp error_message(subject, [module, message], false, positive) do
     to = if positive, do: "to", else: "not to"
 
-    "Expected #{inspect(subject)} #{to} raise the `#{module}` exception with the message `#{message}`, but nothing was raised."
+    {
+      "Expected #{inspect(subject)} #{to} raise the `#{module}` exception with the message `#{message}`, but nothing was raised.",
+      nil
+    }
   end
 
   defp error_message(subject, [module, message], [err_module, err_message], positive) do
     to = if positive, do: "to", else: "not to"
 
-    "Expected #{inspect(subject)} #{to} raise the `#{module}` exception with the message `#{message}`, but the `#{err_module}` exception was raised with the message `#{err_message}`."
+    {
+      "Expected #{inspect(subject)} #{to} raise the `#{module}` exception with the message `#{message}`, but the `#{err_module}` exception was raised with the message `#{err_message}`.",
+      nil
+    }
   end
 end

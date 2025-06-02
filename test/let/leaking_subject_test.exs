@@ -13,7 +13,7 @@ defmodule LeakingSubjectTest do
     ESpec.Context.describe "second" do
       it do: should(be_empty())
       it do: is_expected() |> to(be_empty())
-      it do: is_expected().to(be_empty())
+      it do: is_expected() |> to(be_empty())
     end
   end
 

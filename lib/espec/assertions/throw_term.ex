@@ -39,16 +39,27 @@ defmodule ESpec.Assertions.ThrowTerm do
   defp error_message(subject, [], term, positive) do
     to = if positive, do: "to", else: "not to"
     but = if positive, do: "nothing was thrown", else: "`#{inspect(term)}` was thrown"
-    "Expected `#{inspect(subject)}` #{to} throw term, but #{but}."
+
+    {
+      "Expected `#{inspect(subject)}` #{to} throw term, but #{but}.",
+      nil
+    }
   end
 
   defp error_message(subject, [data], {term, false}, positive) do
     to = if positive, do: "to", else: "not to"
     but = if positive, do: "nothing was thrown", else: "the `#{inspect(term)}` was thrown"
-    "Expected `#{inspect(subject)}` #{to} throw #{inspect(data)}, but #{but}."
+
+    {
+      "Expected `#{inspect(subject)}` #{to} throw #{inspect(data)}, but #{but}.",
+      nil
+    }
   end
 
   defp error_message(subject, [data], {term, true}, _positive) do
-    "Expected `#{inspect(subject)}` to throw #{inspect(data)}, but the `#{inspect(term)}` was thrown."
+    {
+      "Expected `#{inspect(subject)}` to throw #{inspect(data)}, but the `#{inspect(term)}` was thrown.",
+      nil
+    }
   end
 end

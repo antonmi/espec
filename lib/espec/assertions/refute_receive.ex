@@ -18,6 +18,9 @@ defmodule ESpec.Assertions.RefuteReceive do
   end
 
   defp error_message(_subject, _pattern, result, _positive) do
-    "Expected not to receive `#{result}`, but have received."
+    {
+      "Expected not to receive `#{result}`, but have received.",
+      nil
+    }
   end
 end

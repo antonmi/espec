@@ -24,9 +24,9 @@ defmodule ESpec.Assertions.Enum.BeEmpty do
 
   defp error_message(enum, _data, result, positive) do
     if positive do
-      "Expected `#{inspect(enum)}` to be empty, but it has `#{result}` elements."
+      {"Expected `#{inspect(enum)}` to be empty, but it has `#{result}` elements.", nil}
     else
-      "Expected `#{inspect(enum)}` not to be empty, but it is."
+      {"Expected `#{inspect(enum)}` not to be empty, but it is.", nil}
     end
   end
 end

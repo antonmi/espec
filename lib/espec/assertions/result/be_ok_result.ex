@@ -21,6 +21,6 @@ defmodule ESpec.Assertions.Result.BeOkResult do
   defp error_message(tuple, _data, _result, positive) do
     to = if positive, do: "to", else: "not to"
     but = if positive, do: "it is not", else: "it is"
-    "Expected `#{inspect(tuple)}` #{to} be a success result but #{but}."
+    {"Expected `#{inspect(tuple)}` #{to} be a success result but #{but}.", nil}
   end
 end

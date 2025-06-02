@@ -19,6 +19,6 @@ defmodule ESpec.Assertions.String.BeBlank do
   defp error_message(string, _val, _result, positive) do
     to = if positive, do: "to", else: "not to"
     but = if positive, do: "it isn't", else: "it is"
-    "Expected `#{inspect(string)}` #{to} be blank but #{but}."
+    {"Expected `#{inspect(string)}` #{to} be blank but #{but}.", nil}
   end
 end
