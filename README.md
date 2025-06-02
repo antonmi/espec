@@ -60,7 +60,7 @@ Add `espec` to dependencies in the `mix.exs` file:
 ```elixir
 def deps do
   ...
-  {:espec, "~> 1.9.2", only: :test},
+  {:espec, "~> 1.10.0", only: :test},
   ...
 end
 ```
@@ -1205,6 +1205,8 @@ There are community supported formatters:
     - Simplify espec.init.
   * 1.9.2
     - OTP 26 and Elixir 1.16 compatibility. 
+  * 1.10.0
+    - OTP 27 and Elixir 1.18 compatibility. 
     
 ## Contributing
 ##### Contributions are welcome and appreciated!

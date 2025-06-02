@@ -1,7 +1,7 @@
 defmodule ESpec.Mixfile do
   use Mix.Project
 
-  @version "1.9.2"
+  @version "1.10.0"
 
   def project do
     [
