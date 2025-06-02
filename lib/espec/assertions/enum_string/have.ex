@@ -68,7 +68,8 @@ defmodule ESpec.Assertions.EnumString.Have do
   end
 
   defp build_error_message(enum, value, result, positive) do
-    {"Expected `#{inspect(enum)}` #{to(positive)} have `#{inspect(value)}`, but it #{has(result)}.", nil}
+    {"Expected `#{inspect(enum)}` #{to(positive)} have `#{inspect(value)}`, but it #{has(result)}.",
+     nil}
   end
 
   defp get_value(list, key) when is_list(list) do

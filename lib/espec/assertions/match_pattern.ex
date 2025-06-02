@@ -25,6 +25,7 @@ defmodule ESpec.Assertions.MatchPattern do
     data = Macro.to_string(pattern)
     to = if positive, do: "to", else: "not to"
     but = if positive, do: "doesn't", else: "does"
+
     {
       "Expected `#{inspect(subject)}` #{to} match pattern (=) `#{data}`, but it #{but}.",
       nil

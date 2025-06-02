@@ -19,6 +19,7 @@ defmodule ESpec.Assertions.Match do
   defp error_message(subject, data, _result, positive) do
     to = if positive, do: "to", else: "not to"
     but = if positive, do: "doesn't", else: "does"
+
     {
       "Expected `#{inspect(subject)}` #{to} match (=~) `#{inspect(data)}`, but it #{but}.",
       nil

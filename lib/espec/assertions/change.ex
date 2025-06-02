@@ -22,6 +22,7 @@ defmodule ESpec.Assertions.Change do
   defp error_message(subject, [func], _result, positive) do
     to = if positive, do: "to", else: "not to"
     but = if positive, do: "didn't change", else: "changed"
+
     {
       "Expected `#{inspect(subject)}` #{to} change the value of `#{inspect(func)}`, but it #{but}.",
       nil

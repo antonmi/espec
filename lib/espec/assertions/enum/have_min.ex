@@ -19,6 +19,7 @@ defmodule ESpec.Assertions.Enum.HaveMin do
   defp error_message(enum, val, result, positive) do
     to = if positive, do: "to be", else: "not to be"
 
-    {"Expected the minimum value of `#{inspect(enum)}` #{to} `#{val}` but the minimum is `#{result}`.", nil}
+    {"Expected the minimum value of `#{inspect(enum)}` #{to} `#{val}` but the minimum is `#{result}`.",
+     nil}
   end
 end

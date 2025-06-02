@@ -13,6 +13,8 @@ defmodule BeOddAssertion do
 
   defp error_message(subject, [], result, positive) do
     to = if positive, do: "to", else: "not to"
-    {"Expected `#{inspect(subject)}` #{to} be the odd number, but the remainder is '#{result}'.", nil}
+
+    {"Expected `#{inspect(subject)}` #{to} be the odd number, but the remainder is '#{result}'.",
+     nil}
   end
 end
