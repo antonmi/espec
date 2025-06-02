@@ -97,10 +97,6 @@ defmodule DateTime.Extension do
     case from_naive(naive_datetime, time_zone) do
       {:ok, datetime} ->
         datetime
-
-      {:error, reason} ->
-        raise ArgumentError,
-              "cannot parse #{inspect(naive_datetime)} to datetime, reason: #{inspect(reason)}"
     end
   end
 end

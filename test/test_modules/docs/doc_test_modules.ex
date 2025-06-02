@@ -65,12 +65,6 @@ defmodule TestModules.Docs.DocTestModules do
       iex(1)> apply(Kernel, :+, [:a, 1])
       ** (ArithmeticError) bad argument in arithmetic expression
           :erlang.+(:a, 1)
-
-      iex> raise ArithmeticError
-      ** (ArithmeticError) bad argument in arithmetic expression
-
-      iex> 1 + 1
-      ** (ArithmeticError) bad argument in arithmetic expression
     """
     def f, do: :f
   end
