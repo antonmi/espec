@@ -12,3 +12,4 @@ results.txt
 results-no-diff.txt
 .elixir_ls/
 .tool-versions
+.DS_Store
