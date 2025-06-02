@@ -8,5 +8,5 @@ defmodule TheSpecModuleSpec do
 
   it do: expect(@described_module |> to(eq Elixir.TheSpecModule))
   it do: expect(described_module() |> to(eq Elixir.TheSpecModule))
-  it do: expect(described_module().test |> to(eq :test))
+  it do: expect(apply(described_module(), :test, []) |> to(eq :test))
 end

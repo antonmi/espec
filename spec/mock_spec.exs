@@ -5,7 +5,10 @@ defmodule MockSpec do
 
   defmodule SomeModule do
     def f, do: :f
+    def f(_a), do: :a
     def m, do: :m
+    def x, do: :x
+    def q, do: :q
 
     def f1(a), do: a
     def f2(a, b), do: "#{a} and #{b}"
@@ -20,12 +23,12 @@ defmodule MockSpec do
       allow SomeModule |> to(accept(x: fn -> :y end, q: fn -> :w end))
     end
 
-    it do: expect(SomeModule.f(1) |> to(eq "mock! 1"))
-    it do: expect(SomeModule.x() |> to(eq :y))
-    it do: expect(SomeModule.q() |> to(eq :w))
+    it do: expect(apply(SomeModule, :f, [1]) |> to(eq "mock! 1"))
+    it do: expect(apply(SomeModule, :x, []) |> to(eq :y))
+    it do: expect(apply(SomeModule, :q, []) |> to(eq :w))
 
     it "SomeModule.m is not mocked" do
-      expect(SomeModule.m() |> to(eq :m))
+      expect(apply(SomeModule, :m, []) |> to(eq :m))
     end
   end
 
@@ -35,12 +38,12 @@ defmodule MockSpec do
       allow SomeModule |> to(accept(x: fn -> :y end, q: fn -> :w end))
     end
 
-    it do: expect(SomeModule.f(1) |> to(eq "mock! 1"))
-    it do: expect(SomeModule.x() |> to(eq :y))
-    it do: expect(SomeModule.q() |> to(eq :w))
+    it do: expect(apply(SomeModule, :f, [1]) |> to(eq "mock! 1"))
+    it do: expect(apply(SomeModule, :x, []) |> to(eq :y))
+    it do: expect(apply(SomeModule, :q, []) |> to(eq :w))
 
     it "SomeModule.m is not mocked" do
-      expect(SomeModule.m() |> to(eq :m))
+      expect(apply(SomeModule, :m, []) |> to(eq :m))
     end
   end
 
@@ -51,10 +54,10 @@ defmodule MockSpec do
         allow(SomeModule) |> to(accept([:x, :q]))
       end
 
-      it do: expect(SomeModule.f()) |> to(be_nil())
+      it do: expect(apply(SomeModule, :f, [])) |> to(be_nil())
 
-      it do: expect(SomeModule.x()) |> to(be_nil())
-      it do: expect(SomeModule.q(10)) |> to(be_nil())
+      it do: expect(apply(SomeModule, :x, [])) |> to(be_nil())
+      it do: expect(apply(SomeModule, :q, [10])) |> to(be_nil())
     end
 
     context "with new syntax" do
@@ -63,23 +66,15 @@ defmodule MockSpec do
         allow SomeModule |> to(accept([:x, :q]))
       end
 
-      it do: expect(SomeModule.f() |> to(be_nil()))
+      it do: expect(apply(SomeModule, :f, [])) |> to(be_nil())
 
-      it do: expect(SomeModule.x() |> to(be_nil()))
-      it do: expect(SomeModule.q(10) |> to(be_nil()))
+      it do: expect(apply(SomeModule, :x, [])) |> to(be_nil())
+      it do: expect(apply(SomeModule, :q, [10])) |> to(be_nil())
     end
   end
 
   context "without mock" do
-    it do: expect(SomeModule.f()) |> to(eq(:f))
-  end
-
-  context "mock in another process doesn't mock functions in current process" do
-    before do
-      spawn(fn -> allow(SomeModule).to(accept(:f, fn a -> "mock! #{a}" end)) end)
-    end
-
-    # it do: expect(SomeModule.f).to eq(:f)
+    it do: expect(apply(SomeModule, :f, [])) |> to(eq(:f))
   end
 
   context "passthrough" do
